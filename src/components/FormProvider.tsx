@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import type React from 'react';
 import { type JSX, useMemo } from 'react';
 import { type DefaultValues, type FieldValues, FormProvider as RHFFormProvider, useForm } from 'react-hook-form';
 import { FormContext } from '../context/FormContext';
@@ -33,8 +34,8 @@ export function FormProvider<TFieldValues extends FieldValues>({
         reset
     } = form;
 
-    const handleFormSubmit = async (data: TFieldValues) => {
-        await onSubmit(data);
+    const handleFormSubmit = async (data: TFieldValues, event?: React.BaseSyntheticEvent) => {
+        await onSubmit(data, event);
         if (resetOnSubmit) {
             reset(defaultValues as DefaultValues<TFieldValues>);
         }

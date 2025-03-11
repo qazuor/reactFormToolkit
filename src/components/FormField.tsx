@@ -44,9 +44,11 @@ export function FormField<
                     // Clone the child element and pass the field props
                     if (isValidElement(children)) {
                         return cloneElement(children, {
-                            id: name,
-                            ...field,
                             ...children.props,
+                            ...field,
+                            // Forzamos un value string en vez de undefined
+                            value: field.value ?? '',
+                            id: name,
                             // Ensure onChange from react-hook-form is preserved
                             onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
                                 field.onChange(e);

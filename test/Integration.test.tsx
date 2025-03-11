@@ -20,8 +20,9 @@ describe('Integration Tests', () => {
             })
         });
 
-        const CountrySelect = () => (
-            <select>
+        type CountrySelectProps = React.SelectHTMLAttributes<HTMLSelectElement>;
+        const CountrySelect = (props: CountrySelectProps) => (
+            <select {...props}>
                 <option value=''>Select country</option>
                 <option value='us'>United States</option>
                 <option value='uk'>United Kingdom</option>
