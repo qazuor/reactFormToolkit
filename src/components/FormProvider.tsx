@@ -6,6 +6,47 @@ import { FormContext } from '../context/FormContext';
 import { defaultStyles } from '../styles/defaultStyles';
 import type { FormProviderProps } from '../types/form';
 
+/**
+ * FormProvider component that wraps the form and provides context to child components.
+ *
+ * @template TFieldValues - The type of the form values
+ * @param props - The component props
+ * @returns JSX element
+ *
+ * @example
+ * \`\`\`tsx
+ * const formSchema = z.object({
+ *   name: z.string().min(2, 'Name must be at least 2 characters'),
+ *   email: z.string().email('Please enter a valid email address'),
+ * });
+ *
+ * type FormValues = z.infer<typeof formSchema>;
+ *
+ * function MyForm() {
+ *   const handleSubmit = (data: FormValues) => {
+ *     console.log('Form submitted:', data);
+ *   };
+ *
+ *   return (
+ *     <FormProvider
+ *       onSubmit={handleSubmit}
+ *       schema={formSchema}
+ *       defaultValues={{ name: '', email: '' }}
+ *     >
+ *       <FormField name="name" label="Name">
+ *         <input type="text" />
+ *       </FormField>
+ *
+ *       <FormField name="email" label="Email">
+ *         <input type="email" />
+ *       </FormField>
+ *
+ *       <button type="submit">Submit</button>
+ *     </FormProvider>
+ *   );
+ * }
+ * \`\`\`
+ */
 export function FormProvider<TFieldValues extends FieldValues>({
     children,
     onSubmit,
@@ -34,6 +75,12 @@ export function FormProvider<TFieldValues extends FieldValues>({
         reset
     } = form;
 
+    /**
+     * Handle form submission
+     *
+     * @param data - The form data
+     * @param event - The form event
+     */
     const handleFormSubmit = async (data: TFieldValues, event?: React.BaseSyntheticEvent) => {
         await onSubmit(data, event);
         if (resetOnSubmit) {

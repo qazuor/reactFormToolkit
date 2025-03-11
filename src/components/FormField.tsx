@@ -5,6 +5,48 @@ import type { JSX } from 'react/jsx-runtime';
 import { useFormContext } from '../context/FormContext';
 import type { FormFieldProps } from '../types/form';
 
+/**
+ * FormField component for rendering form fields with labels, validation, and error messages.
+ *
+ * @template TFieldValues - The type of the form values
+ * @template TName - The name of the field (must be a key of TFieldValues)
+ * @param props - The component props
+ * @returns JSX element
+ *
+ * @example
+ * \`\`\`tsx
+ * // Text input
+ * <FormField name="name" label="Name" required>
+ *   <input type="text" />
+ * </FormField>
+ *
+ * // Email input with description
+ * <FormField
+ *   name="email"
+ *   label="Email"
+ *   description="We'll never share your email with anyone else."
+ * >
+ *   <input type="email" />
+ * </FormField>
+ *
+ * // Select input
+ * <FormField name="country" label="Country">
+ *   <select>
+ *     <option value="">Select a country</option>
+ *     <option value="us">United States</option>
+ *     <option value="ca">Canada</option>
+ *   </select>
+ * </FormField>
+ *
+ * // Checkbox
+ * <FormField name="agreeToTerms">
+ *   <div className="flex items-center">
+ *     <input type="checkbox" />
+ *     <span className="ml-2">I agree to the terms and conditions</span>
+ *   </div>
+ * </FormField>
+ * \`\`\`
+ */
 export function FormField<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
@@ -26,6 +68,11 @@ export function FormField<
 
     const fieldType = isValidElement(children) ? children.type : 'input';
 
+    /**
+     * Get the appropriate field style based on the field type
+     *
+     * @returns The CSS class for the field
+     */
     const getFieldStyle = () => {
         if (fieldType === 'select') {
             return styles.select;
