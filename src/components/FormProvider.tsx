@@ -3,6 +3,7 @@ import type React from 'react';
 import { type JSX, useMemo } from 'react';
 import { type DefaultValues, type FieldValues, FormProvider as RHFFormProvider, useForm } from 'react-hook-form';
 import { FormContext } from '../context/FormContext';
+import { defaultStyles } from '../styles/defaultStyles';
 import type { FormProviderProps } from '../types/form';
 
 export function FormProvider<TFieldValues extends FieldValues>({
@@ -12,7 +13,8 @@ export function FormProvider<TFieldValues extends FieldValues>({
     defaultValues,
     className,
     form: externalForm,
-    resetOnSubmit = false
+    resetOnSubmit = false,
+    styles
 }: FormProviderProps<TFieldValues>): JSX.Element {
     // Create the form instance
     const internalForm = useForm<TFieldValues>({
@@ -39,12 +41,14 @@ export function FormProvider<TFieldValues extends FieldValues>({
         }
     };
 
+    const formStyles = styles?.form || defaultStyles.form;
+
     return (
-        <FormContext.Provider value={{ form, errors }}>
+        <FormContext.Provider value={{ form, errors, styles: styles?.field || defaultStyles.field }}>
             <RHFFormProvider {...form}>
                 <form
                     onSubmit={handleSubmit(handleFormSubmit)}
-                    className={className}
+                    className={`${formStyles} ${className || ''}`}
                     noValidate={true}
                 >
                     {children}

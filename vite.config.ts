@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
+import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'path'
 
 export default defineConfig({
@@ -10,13 +11,14 @@ export default defineConfig({
       include: ["src/**/*"],
       exclude: ["src/**/*.test.ts", "src/**/*.test.tsx"],
     }),
+    tailwindcss()
   ],
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "ReactFormToolkit",
       fileName: "index",
-      formats: ["es"],
+      formats: ["es", "cjs"]
     },
     rollupOptions: {
       external: ["react", "react-dom", "react/jsx-runtime", "react-hook-form", "@hookform/resolvers/zod", "zod"],
@@ -29,7 +31,7 @@ export default defineConfig({
           "@hookform/resolvers/zod": "hookformResolversZod",
           zod: "zod",
         },
-      },
+      }
     },
   }
 })

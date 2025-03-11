@@ -13,26 +13,41 @@ export function FormField<
     label,
     description,
     children,
-    className = '',
-    labelClassName = 'block text-sm font-medium text-gray-700 mb-1',
-    descriptionClassName = 'mt-1 text-sm text-gray-500',
-    errorClassName = 'mt-1 text-sm text-red-600',
+    className,
+    labelClassName,
+    descriptionClassName,
+    errorClassName,
     required = false,
     rules
 }: FormFieldProps<TFieldValues, TName>): JSX.Element {
-    const { form, errors } = useFormContext<TFieldValues>();
+    const { form, errors, styles } = useFormContext<TFieldValues>();
     const error = errors[name];
     const errorMessage = error?.message as string | undefined;
 
+    const fieldType = isValidElement(children) ? children.type : 'input';
+
+    const getFieldStyle = () => {
+        if (fieldType === 'select') {
+            return styles.select;
+        }
+        if (fieldType === 'textarea') {
+            return styles.textarea;
+        }
+        if (fieldType === 'input' && isValidElement(children) && children.props.type === 'checkbox') {
+            return styles.checkbox;
+        }
+        return styles.input;
+    };
+
     return (
-        <div className={className}>
+        <div className={`${styles.wrapper} ${className || ''}`}>
             {label && (
                 <label
                     htmlFor={name}
-                    className={labelClassName}
+                    className={`${styles.label} ${labelClassName || ''}`}
                 >
                     {label}
-                    {required && <span className='ml-1 text-red-500'>*</span>}
+                    {required && <span className={styles.requiredMark}>*</span>}
                 </label>
             )}
 
@@ -46,26 +61,23 @@ export function FormField<
                         return cloneElement(children, {
                             ...children.props,
                             ...field,
-                            // Forzamos un value string en vez de undefined
                             value: field.value ?? '',
                             id: name,
-                            // Ensure onChange from react-hook-form is preserved
                             onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
                                 field.onChange(e);
                                 if (children.props.onChange) {
                                     children.props.onChange(e);
                                 }
                             },
-                            // Ensure onBlur from react-hook-form is preserved
                             onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
                                 field.onBlur();
                                 if (children.props.onBlur) {
                                     children.props.onBlur(e);
                                 }
                             },
-                            // Add aria attributes for accessibility
                             'aria-invalid': !!error,
-                            'aria-describedby': description ? `${name}-description` : undefined
+                            'aria-describedby': description ? `${name}-description` : undefined,
+                            className: `${getFieldStyle()} ${children.props.className || ''}`
                         });
                     }
                     return <></>;
@@ -75,7 +87,7 @@ export function FormField<
             {description && (
                 <p
                     id={`${name}-description`}
-                    className={descriptionClassName}
+                    className={`${styles.description} ${descriptionClassName || ''}`}
                 >
                     {description}
                 </p>
@@ -83,7 +95,7 @@ export function FormField<
 
             {errorMessage && (
                 <p
-                    className={errorClassName}
+                    className={`${styles.error} ${errorClassName || ''}`}
                     role='alert'
                 >
                     {errorMessage}

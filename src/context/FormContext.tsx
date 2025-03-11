@@ -6,7 +6,6 @@ import type { FormContextValue } from '../types/form';
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const FormContext = createContext<FormContextValue<any> | null>(null);
 
-// Custom hook to use the form context
 export function useFormContext<TFieldValues extends FieldValues>(): FormContextValue<TFieldValues> {
     const context = useContext(FormContext);
 
