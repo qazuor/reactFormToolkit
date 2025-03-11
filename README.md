@@ -16,22 +16,33 @@ A strongly-typed React form toolkit built on top of React Hook Form with Zod val
 
 ## Installation
 
-\`\`\`bash
+```bash
 # npm
-npm install react-form-toolkit react-hook-form @hookform/resolvers zod
+npm install react-form-toolkit react-hook-form @hookform/resolvers zod tailwindcss
 
 # yarn
-yarn add react-form-toolkit react-hook-form @hookform/resolvers zod
+yarn add react-form-toolkit react-hook-form @hookform/resolvers zod tailwindcss
 
 # pnpm
-pnpm add react-form-toolkit react-hook-form @hookform/resolvers zod
-\`\`\`
+pnpm add react-form-toolkit react-hook-form @hookform/resolvers zod tailwindcss
+```
+
+Next add the source in your tailwind file:
+
+```scss
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@source "../node_modules/react-form-toolkit/dist/index.js";
+```
 
 ## Basic Usage
 
 Here's a simple example of how to use React Form Toolkit:
 
-\`\`\`tsx
+```tsx
 import { z } from 'zod';
 import { FormProvider, FormField } from 'react-form-toolkit';
 
@@ -68,7 +79,7 @@ function MyForm() {
     </FormProvider>
   );
 }
-\`\`\`
+```
 
 ## Advanced Usage
 
@@ -76,7 +87,7 @@ function MyForm() {
 
 You can customize the styles of your form components:
 
-\`\`\`tsx
+```tsx
 import { FormProvider, FormField } from 'react-form-toolkit';
 
 // Custom styles
@@ -103,13 +114,13 @@ function StyledForm() {
     </FormProvider>
   );
 }
-\`\`\`
+```
 
 ### Different Input Types
 
 React Form Toolkit supports various input types:
 
-\`\`\`tsx
+```tsx
 <FormField name="name" label="Name">
   <input type="text" />
 </FormField>
@@ -138,13 +149,13 @@ React Form Toolkit supports various input types:
 <FormField name="agreeToTerms" label="I agree to the terms">
   <input type="checkbox" />
 </FormField>
-\`\`\`
+```
 
 ### Using External Form Instance
 
 You can use an external form instance from React Hook Form:
 
-\`\`\`tsx
+```tsx
 import { useForm } from 'react-hook-form';
 import { FormProvider } from 'react-form-toolkit';
 
@@ -169,7 +180,89 @@ function ExternalFormExample() {
     </>
   );
 }
-\`\`\`
+```
+
+### Internationalization (i18n)
+
+React Form Toolkit supports internationalization out of the box using i18next. It comes with built-in translations for English, Spanish, French, and Portuguese.
+
+```tsx
+import { FormProvider, FormField } from 'react-form-toolkit';
+
+function InternationalizedForm() {
+  return (
+    <FormProvider
+      onSubmit={handleSubmit}
+      schema={schema}
+      i18n={{ lng: 'es' }} // Set language to Spanish
+    >
+      <FormField name="name" label="Nombre" required>
+        <input type="text" />
+      </FormField>
+
+      <button type="submit">Enviar</button>
+    </FormProvider>
+  );
+}
+```
+
+#### Custom Translations
+
+You can provide custom translations that will override the default ones:
+
+```tsx
+const customResources = {
+  en: {
+    translation: {
+      validation: {
+        required: 'This field cannot be empty',
+      },
+    },
+  },
+  es: {
+    translation: {
+      form: {
+        submit: 'Enviar formulario',
+      },
+    },
+  },
+};
+
+function CustomTranslationsForm() {
+  return (
+    <FormProvider
+      onSubmit={handleSubmit}
+      schema={schema}
+      i18n={{
+        lng: 'es',
+        resources: customResources,
+      }}
+    >
+      {/* Form fields */}
+    </FormProvider>
+  );
+}
+```
+
+#### Using Your Own i18n Instance
+
+If you already have an i18n instance in your application, you can pass it directly:
+
+```tsx
+import i18n from './your-i18n-config';
+
+function CustomI18nForm() {
+  return (
+    <FormProvider
+      onSubmit={handleSubmit}
+      schema={schema}
+      i18n={{ i18n }}
+    >
+      {/* Form fields */}
+    </FormProvider>
+  );
+}
+```
 
 ## API Reference
 
@@ -187,6 +280,7 @@ The main component that provides form context to all child components.
 | `form` | `UseFormReturn<TFieldValues>` | External form instance from React Hook Form |
 | `resetOnSubmit` | `boolean` | Whether to reset the form after submission |
 | `styles` | `FormStyles` | Custom styles for form elements |
+| `i18n` | `I18nOptions` | Internationalization options (language, custom translations) |
 
 ### FormField
 
@@ -209,7 +303,7 @@ Component for rendering form fields with labels, validation, and error messages.
 
 Hook for accessing form context within child components.
 
-\`\`\`tsx
+```tsx
 import { useFormContext } from 'react-form-toolkit';
 
 function FormButton() {
@@ -224,7 +318,7 @@ function FormButton() {
     </button>
   );
 }
-\`\`\`
+```
 
 ## Contributing
 

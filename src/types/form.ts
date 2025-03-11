@@ -38,6 +38,29 @@ export interface FormStyles {
 }
 
 /**
+ * Options for internationalization (i18n).
+ */
+export interface I18nOptions {
+    /** Custom resources to merge with the default resources */
+    resources?: Record<string, unknown>;
+    /** Language to use (defaults to 'en') */
+    lng?: string;
+    /** Custom i18next instance */
+    i18n?: import('i18next').i18n;
+}
+
+/**
+ * Default i18next resources containing translations for all supported languages.
+ */
+export interface TranslationResources {
+    [key: string]: {
+        translation: {
+            [key: string]: string | { [key: string]: string };
+        };
+    };
+}
+
+/**
  * Props for the FormProvider component.
  *
  * @template TFieldValues - The type of the form values
@@ -59,6 +82,8 @@ export interface FormProviderProps<TFieldValues extends FieldValues> {
     resetOnSubmit?: boolean;
     /** Custom styles for form elements */
     styles?: FormStyles;
+    /** Internationalization options */
+    i18n?: I18nOptions;
 }
 
 /**

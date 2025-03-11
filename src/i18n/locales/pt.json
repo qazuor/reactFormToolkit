@@ -1,0 +1,22 @@
+{
+    "validation": {
+        "required": "Este campo é obrigatório",
+        "email": "Por favor, insira um endereço de e-mail válido",
+        "min": "Deve ter pelo menos {{min}} caracteres",
+        "max": "Deve ter no máximo {{max}} caracteres",
+        "minNumber": "Deve ser pelo menos {{min}}",
+        "maxNumber": "Deve ser no máximo {{max}}",
+        "pattern": "Formato inválido",
+        "url": "Por favor, insira uma URL válida"
+    },
+    "form": {
+        "submit": "Enviar",
+        "reset": "Redefinir",
+        "loading": "Carregando...",
+        "success": "Sucesso!",
+        "error": "Erro"
+    },
+    "field": {
+        "requiredMark": "*"
+    }
+}

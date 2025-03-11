@@ -1,6 +1,7 @@
 import type React from 'react';
 import { cloneElement, isValidElement } from 'react';
 import { Controller, type FieldPath, type FieldValues } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import type { JSX } from 'react/jsx-runtime';
 import { useFormContext } from '../context/FormContext';
 import type { FormFieldProps } from '../types/form';
@@ -14,7 +15,7 @@ import type { FormFieldProps } from '../types/form';
  * @returns JSX element
  *
  * @example
- * \`\`\`tsx
+ * ```tsx
  * // Text input
  * <FormField name="name" label="Name" required>
  *   <input type="text" />
@@ -45,7 +46,7 @@ import type { FormFieldProps } from '../types/form';
  *     <span className="ml-2">I agree to the terms and conditions</span>
  *   </div>
  * </FormField>
- * \`\`\`
+ * ```
  */
 export function FormField<
     TFieldValues extends FieldValues = FieldValues,
@@ -65,6 +66,8 @@ export function FormField<
     const { form, errors, styles } = useFormContext<TFieldValues>();
     const error = errors[name];
     const errorMessage = error?.message as string | undefined;
+    const { t } = useTranslation();
+    const requiredMark = t('field.requiredMark', { defaultValue: '*' });
 
     const fieldType = isValidElement(children) ? children.type : 'input';
 
@@ -94,7 +97,7 @@ export function FormField<
                     className={`${styles.label} ${labelClassName || ''}`}
                 >
                     {label}
-                    {required && <span className={styles.requiredMark}>*</span>}
+                    {required && <span className={styles.requiredMark}>{requiredMark}</span>}
                 </label>
             )}
 

@@ -2,9 +2,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import type React from 'react';
 import { type JSX, useMemo } from 'react';
 import { type DefaultValues, type FieldValues, FormProvider as RHFFormProvider, useForm } from 'react-hook-form';
+import { I18nextProvider } from 'react-i18next';
 import { FormContext } from '../context/FormContext';
+import { initI18n } from '../i18n';
 import { defaultStyles } from '../styles/defaultStyles';
-import type { FormProviderProps } from '../types/form';
+import type { FormProviderProps, TranslationResources } from '../types';
 
 /**
  * FormProvider component that wraps the form and provides context to child components.
@@ -14,7 +16,7 @@ import type { FormProviderProps } from '../types/form';
  * @returns JSX element
  *
  * @example
- * \`\`\`tsx
+ * ```tsx
  * const formSchema = z.object({
  *   name: z.string().min(2, 'Name must be at least 2 characters'),
  *   email: z.string().email('Please enter a valid email address'),
@@ -45,7 +47,7 @@ import type { FormProviderProps } from '../types/form';
  *     </FormProvider>
  *   );
  * }
- * \`\`\`
+ * ```
  */
 export function FormProvider<TFieldValues extends FieldValues>({
     children,
@@ -55,7 +57,8 @@ export function FormProvider<TFieldValues extends FieldValues>({
     className,
     form: externalForm,
     resetOnSubmit = false,
-    styles
+    styles,
+    i18n: i18nOptions
 }: FormProviderProps<TFieldValues>): JSX.Element {
     // Create the form instance
     const internalForm = useForm<TFieldValues>({
@@ -68,6 +71,14 @@ export function FormProvider<TFieldValues extends FieldValues>({
     const form = useMemo(() => {
         return externalForm || internalForm;
     }, [externalForm, internalForm]);
+
+    // Initialize i18n if options are provided
+    const i18nInstance = useMemo(() => {
+        if (i18nOptions?.i18n) {
+            return i18nOptions.i18n;
+        }
+        return initI18n(i18nOptions?.resources as TranslationResources, i18nOptions?.lng);
+    }, [i18nOptions]);
 
     const {
         handleSubmit,
@@ -91,16 +102,18 @@ export function FormProvider<TFieldValues extends FieldValues>({
     const formStyles = styles?.form || defaultStyles.form;
 
     return (
-        <FormContext.Provider value={{ form, errors, styles: styles?.field || defaultStyles.field }}>
-            <RHFFormProvider {...form}>
-                <form
-                    onSubmit={handleSubmit(handleFormSubmit)}
-                    className={`${formStyles} ${className || ''}`}
-                    noValidate={true}
-                >
-                    {children}
-                </form>
-            </RHFFormProvider>
-        </FormContext.Provider>
+        <I18nextProvider i18n={i18nInstance}>
+            <FormContext.Provider value={{ form, errors, styles: styles?.field || defaultStyles.field }}>
+                <RHFFormProvider {...form}>
+                    <form
+                        onSubmit={handleSubmit(handleFormSubmit)}
+                        className={`${formStyles} ${className || ''}`}
+                        noValidate={true}
+                    >
+                        {children}
+                    </form>
+                </RHFFormProvider>
+            </FormContext.Provider>
+        </I18nextProvider>
     );
 }

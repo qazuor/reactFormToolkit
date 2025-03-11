@@ -1,0 +1,22 @@
+{
+    "validation": {
+        "required": "This field is required",
+        "email": "Please enter a valid email address",
+        "min": "Must be at least {{min}} characters",
+        "max": "Must be at most {{max}} characters",
+        "minNumber": "Must be at least {{min}}",
+        "maxNumber": "Must be at most {{max}}",
+        "pattern": "Invalid format",
+        "url": "Please enter a valid URL"
+    },
+    "form": {
+        "submit": "Submit",
+        "reset": "Reset",
+        "loading": "Loading...",
+        "success": "Success!",
+        "error": "Error"
+    },
+    "field": {
+        "requiredMark": "*"
+    }
+}

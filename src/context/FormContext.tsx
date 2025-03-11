@@ -18,7 +18,7 @@ export const FormContext = createContext<FormContextValue<any> | null>(null);
  * @throws Error if used outside a FormProvider
  *
  * @example
- * \`\`\`tsx
+ * ```tsx
  * function SubmitButton() {
  *   const { form } = useFormContext();
  *   const { formState: { isSubmitting } } = form;
@@ -29,7 +29,7 @@ export const FormContext = createContext<FormContextValue<any> | null>(null);
  *     </button>
  *   );
  * }
- * \`\`\`
+ * ```
  */
 export function useFormContext<TFieldValues extends FieldValues>(): FormContextValue<TFieldValues> {
     const context = useContext(FormContext);
