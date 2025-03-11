@@ -1,5 +1,3 @@
-'use client';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import type React from 'react';
 import { type JSX, useMemo } from 'react';
