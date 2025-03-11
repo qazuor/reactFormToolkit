@@ -17,7 +17,8 @@ export function FormField<
     labelClassName = 'block text-sm font-medium text-gray-700 mb-1',
     descriptionClassName = 'mt-1 text-sm text-gray-500',
     errorClassName = 'mt-1 text-sm text-red-600',
-    required = false
+    required = false,
+    rules
 }: FormFieldProps<TFieldValues, TName>): JSX.Element {
     const { form, errors } = useFormContext<TFieldValues>();
     const error = errors[name];
@@ -38,6 +39,7 @@ export function FormField<
             <Controller
                 control={form.control}
                 name={name}
+                rules={rules}
                 render={({ field }) => {
                     // Clone the child element and pass the field props
                     if (isValidElement(children)) {

@@ -33,6 +33,7 @@ export interface FormFieldProps<
     descriptionClassName?: string;
     errorClassName?: string;
     required?: boolean;
+    rules?: Record<string, unknown>;
 }
 
 // HTML Input props
