@@ -81,6 +81,16 @@ export interface FormFieldProps<
     debounceTime?: number;
 }
 
+export interface SubmitButtonProps {
+    text?: string;
+    loadingText?: string;
+    className?: string;
+    successText?: string;
+    showSuccess?: boolean;
+    successDuration?: number;
+    'data-testid'?: string;
+}
+
 /** HTML Input props type */
 export type HTMLInputProps = ComponentProps<'input'>;
 

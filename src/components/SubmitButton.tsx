@@ -1,16 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormContext } from '../context/FormContext';
-
-interface SubmitButtonProps {
-    text?: string;
-    loadingText?: string;
-    className?: string;
-    successText?: string;
-    showSuccess?: boolean;
-    successDuration?: number;
-    'data-testid'?: string;
-}
+import type { SubmitButtonProps } from '../types';
 
 export function SubmitButton({
     text,
