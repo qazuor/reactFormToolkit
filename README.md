@@ -104,6 +104,7 @@ function MyForm() {
 
 - [Getting Started Guide](./docs/getting-started.md) - Detailed instructions to get started
 - [Advanced Usage](./docs/advanced-usage.md) - Customization, input types, and more
+- [Visual Feedback](./docs/visual-feedback.md) - Visual enhancements, indicators, and animations
 - [Internationalization](./docs/i18n.md) - i18n setup and usage
 - [API Reference](./docs/api-reference.md) - Complete API documentation
 - [Contribution Guide](./docs/contributing.md) - How to contribute to the project
@@ -143,7 +144,6 @@ function MyForm() {
   - [ ] support components libraries (shadcn, mantine, MUI, etc)
 - [ ] Validation
   - [ ] add form context global errors
-  - [ ] disable complete form on validate/submit
   - [ ] make errors msg more flexible and configurable
 
 ### Done ✓
@@ -153,6 +153,8 @@ function MyForm() {
 - [x] Validation
   - [x] set validation mode configurable
   - [x] async validation for FormField
+  - [x] disable complete form on validate/submit
+
 </details>
 
 ## 📄 License

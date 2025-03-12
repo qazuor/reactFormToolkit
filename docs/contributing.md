@@ -129,7 +129,6 @@ Here are some areas where contributions are especially appreciated:
   - [ ] support components libraries (shadcn, mantine, MUI, etc)
 - [ ] Validation
   - [ ] add form context global errors
-  - [ ] disable complete form on validate/submit
   - [ ] make errors msg more flexible and configurable
 
 ### Pull Request Workflow
