@@ -4,29 +4,8 @@ import { Controller, type FieldPath, type FieldValues, type RegisterOptions } fr
 import { useTranslation } from 'react-i18next';
 import type { JSX } from 'react/jsx-runtime';
 import { useFormContext } from '../context/FormContext';
-import type { FormFieldProps } from '../types/form';
-
-/**
- * Custom hook for debouncing values
- * @param value - The value to debounce
- * @param delay - The delay in milliseconds
- * @returns The debounced value
- */
-function useDebounce<T>(value: T, delay: number): T {
-    const [debouncedValue, setDebouncedValue] = useState<T>(value);
-
-    useEffect(() => {
-        const handler = setTimeout(() => {
-            setDebouncedValue(value);
-        }, delay);
-
-        return () => {
-            clearTimeout(handler);
-        };
-    }, [value, delay]);
-
-    return debouncedValue;
-}
+import { useDebounce } from '../hooks';
+import type { FormFieldProps } from '../types';
 
 /**
  * FormField component for rendering form fields with labels, validation, and error messages.
