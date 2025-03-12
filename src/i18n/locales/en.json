@@ -14,10 +14,20 @@
         "reset": "Reset",
         "loading": "Loading...",
         "success": "Success!",
-        "error": "Error"
+        "error": "Error",
+        "creating": "Creating...",
+        "created": "Created!",
+        "saving": "Saving...",
+        "saved": "Saved!",
+        "sending": "Sending...",
+        "sent": "Sent!",
+        "processing": "Processing...",
+        "processed": "Processed!"
     },
     "field": {
         "requiredMark": "*",
-        "validating": "Validating..."
+        "validating": "Validating...",
+        "valid": "Valid",
+        "invalid": "Invalid"
     }
 }

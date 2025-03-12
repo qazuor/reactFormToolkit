@@ -14,10 +14,20 @@
         "reset": "Restablecer",
         "loading": "Cargando...",
         "success": "¡Éxito!",
-        "error": "Error"
+        "error": "Error",
+        "creating": "Creando...",
+        "created": "¡Creado!",
+        "saving": "Guardando...",
+        "saved": "¡Guardado!",
+        "sending": "Enviando...",
+        "sent": "¡Enviado!",
+        "processing": "Procesando...",
+        "processed": "¡Procesado!"
     },
     "field": {
         "requiredMark": "*",
-        "validating": "Validando..."
+        "validating": "Validando...",
+        "valid": "Válido",
+        "invalid": "Inválido"
     }
 }

@@ -21,8 +21,14 @@ export interface FieldStyles {
     description?: string;
     /** CSS class for the required mark (*) */
     requiredMark?: string;
-    /** CSS class for the loading state during async validation */
+    /** CSS class for the validating state during async validation */
     validating?: string;
+    /** CSS class for the valid state */
+    valid?: string;
+    /** CSS class for the invalid state */
+    invalid?: string;
+    /** CSS class for the loading state during async validation */
+    loading?: string;
 }
 
 /**

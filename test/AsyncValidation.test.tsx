@@ -1,5 +1,3 @@
-"use client"
-
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import React from "react"

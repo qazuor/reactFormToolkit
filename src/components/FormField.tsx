@@ -88,23 +88,36 @@ export function FormField<
     const [isValidating, setIsValidating] = useState(false);
     const [fieldValue, setFieldValue] = useState<string>('');
     const debouncedValue = useDebounce(fieldValue, debounceTime);
+    const [isValid, setIsValid] = useState(false);
+    const [isTouched, setIsTouched] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Watch form state for submission status
+    useEffect(() => {
+        const { isSubmitting: submitting } = form.formState;
+        setIsSubmitting(submitting);
+    }, [form.formState]);
 
     // Set up async validation
     useEffect(() => {
         if (asyncValidate && debouncedValue !== '') {
+            setIsValidating(true);
             const validateField = async () => {
-                setIsValidating(true);
                 try {
                     const result = await asyncValidate(debouncedValue);
                     if (typeof result === 'string') {
                         form.setError(name, { type: 'validate', message: result });
+                        setIsValid(false);
                     } else if (result) {
                         form.clearErrors(name);
+                        setIsValid(true);
                     } else {
                         form.setError(name, { type: 'validate', message: 'Validation failed' });
+                        setIsValid(false);
                     }
                 } catch (_error) {
                     form.setError(name, { type: 'validate', message: 'Validation error' });
+                    setIsValid(false);
                 } finally {
                     setIsValidating(false);
                 }
@@ -113,6 +126,24 @@ export function FormField<
             validateField();
         }
     }, [debouncedValue, asyncValidate, form, name]);
+
+    // Actualizar el estado de validación cuando cambia el valor del campo
+    useEffect(() => {
+        const subscription = form.watch((value, { name: fieldName }) => {
+            if (fieldName === name || !fieldName) {
+                const fieldValue = value[name];
+
+                // Si hay un valor y no hay errores, marcar como válido
+                if (fieldValue && !errors[name] && isTouched) {
+                    setIsValid(true);
+                } else if (errors[name]) {
+                    setIsValid(false);
+                }
+            }
+        });
+
+        return () => subscription.unsubscribe();
+    }, [form, name, errors, isTouched]);
 
     const fieldType = isValidElement(children) ? children.type : 'input';
 
@@ -159,6 +190,11 @@ export function FormField<
         };
     }
 
+    // Determine if we should show validation indicators
+    const showValidIndicator = isTouched && isValid && !isValidating && !errorMessage && !isSubmitting;
+    const showInvalidIndicator = isTouched && !isValid && !isValidating && errorMessage && !isSubmitting;
+    const showLoadingIndicator = isValidating || isSubmitting;
+
     return (
         <div className={`${styles.wrapper} ${className || ''}`}>
             {label && (
@@ -200,18 +236,107 @@ export function FormField<
                             },
                             onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
                                 field.onBlur();
+                                setIsTouched(true);
+                                // Verificar validez después del blur
+                                const currentValue = e.target.value;
+                                if (currentValue && currentValue.length >= 3 && !errors[name]) {
+                                    setIsValid(true);
+                                }
                                 if (children.props.onBlur) {
                                     children.props.onBlur(e);
                                 }
                             },
                             'aria-invalid': !!error,
                             'aria-describedby': description ? `${name}-description` : undefined,
-                            className: `${getFieldStyle()} ${children.props.className || ''}`
+                            className: `${getFieldStyle()} ${children.props.className || ''} ${
+                                errorMessage ? 'border-red-500' : ''
+                            } ${isValid && isTouched ? 'border-green-500' : ''}`
                         });
                     }
                     return <></>;
                 }}
             />
+
+            {/* Validation indicators */}
+            {showValidIndicator && (
+                <span
+                    className={styles.valid || 'absolute top-9 right-3 animate-fadeIn text-green-500'}
+                    aria-hidden='true'
+                    data-testid='valid-indicator'
+                >
+                    <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        width='16'
+                        height='16'
+                        viewBox='0 0 24 24'
+                        fill='none'
+                        stroke='currentColor'
+                        strokeWidth='2'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                    >
+                        <title>{t('field.valid', { defaultValue: 'Valid' })}</title>
+                        <path d='M20 6L9 17l-5-5' />
+                    </svg>
+                </span>
+            )}
+
+            {showInvalidIndicator && (
+                <span
+                    className={styles.invalid || 'absolute top-9 right-3 animate-fadeIn text-red-500'}
+                    aria-hidden='true'
+                    data-testid='invalid-indicator'
+                >
+                    <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        width='16'
+                        height='16'
+                        viewBox='0 0 24 24'
+                        fill='none'
+                        stroke='currentColor'
+                        strokeWidth='2'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                    >
+                        <title>{t('field.invalid', { defaultValue: 'Invalid' })}</title>
+                        <line
+                            x1='18'
+                            y1='6'
+                            x2='6'
+                            y2='18'
+                        />
+                        <line
+                            x1='6'
+                            y1='6'
+                            x2='18'
+                            y2='18'
+                        />
+                    </svg>
+                </span>
+            )}
+
+            {showLoadingIndicator && (
+                <span
+                    className={styles.loading || 'absolute top-9 right-3 animate-spin text-gray-400'}
+                    aria-hidden='true'
+                    data-testid='loading-indicator'
+                >
+                    <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        width='16'
+                        height='16'
+                        viewBox='0 0 24 24'
+                        fill='none'
+                        stroke='currentColor'
+                        strokeWidth='2'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                    >
+                        <title>{t('field.loading', { defaultValue: 'Loading' })}</title>
+                        <path d='M21 12a9 9 0 1 1-6.219-8.56' />
+                    </svg>
+                </span>
+            )}
 
             {description && (
                 <p

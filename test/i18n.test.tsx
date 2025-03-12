@@ -1,5 +1,3 @@
-"use client"
-
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it, beforeEach } from "vitest"
 import { z } from "zod"

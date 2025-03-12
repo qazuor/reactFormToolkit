@@ -14,10 +14,20 @@
         "reset": "Réinitialiser",
         "loading": "Chargement...",
         "success": "Succès!",
-        "error": "Erreur"
+        "error": "Erreur",
+        "creating": "Création en cours...",
+        "created": "Créé!",
+        "saving": "Enregistrement...",
+        "saved": "Enregistré!",
+        "sending": "Envoi en cours...",
+        "sent": "Envoyé!",
+        "processing": "Traitement...",
+        "processed": "Traité!"
     },
     "field": {
         "requiredMark": "*",
-        "validating": "Validation en cours..."
+        "validating": "Validation en cours...",
+        "valid": "Valide",
+        "invalid": "Invalide"
     }
 }
