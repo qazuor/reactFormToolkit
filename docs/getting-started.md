@@ -22,13 +22,13 @@ To start using React Form Toolkit in your project, you need to install the packa
 
 ```bash
 # npm
-npm install react-form-toolkit react-hook-form @hookform/resolvers zod tailwindcss
+npm install @qazuor/react-form-toolkit react-hook-form @hookform/resolvers zod tailwindcss
 
 # yarn
-yarn add react-form-toolkit react-hook-form @hookform/resolvers zod tailwindcss
+yarn add @qazuor/react-form-toolkit react-hook-form @hookform/resolvers zod tailwindcss
 
 # pnpm
-pnpm add react-form-toolkit react-hook-form @hookform/resolvers zod tailwindcss
+pnpm add @qazuor/react-form-toolkit react-hook-form @hookform/resolvers zod tailwindcss
 ```
 
 ## Setup
@@ -43,7 +43,7 @@ Add the React Form Toolkit source in your Tailwind configuration file:
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
 
-@source "../node_modules/react-form-toolkit/dist/index.js";
+@source "../node_modules/@qazuor/react-form-toolkit/dist/index.js";
 ```
 
 ## Basic Usage
@@ -52,7 +52,7 @@ The following example shows how to create a simple form with validation:
 
 ```tsx
 import { z } from 'zod';
-import { FormProvider, FormField } from 'react-form-toolkit';
+import { FormProvider, FormField } from '@qazuor/react-form-toolkit';
 
 // Define your form schema with Zod
 const formSchema = z.object({
@@ -262,7 +262,7 @@ function ContactForm() {
 
 ```tsx
 import { z } from 'zod';
-import { FormProvider, FormField } from 'react-form-toolkit';
+import { FormProvider, FormField } from '@qazuor/react-form-toolkit';
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Please enter a valid name'),
@@ -309,7 +309,7 @@ function ContactForm() {
 
 ```tsx
 import { z } from 'zod';
-import { FormProvider, FormField } from 'react-form-toolkit';
+import { FormProvider, FormField } from '@qazuor/react-form-toolkit';
 
 const registerSchema = z.object({
   username: z.string().min(3, 'Username must be at least 3 characters'),

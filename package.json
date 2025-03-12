@@ -1,5 +1,5 @@
 {
-  "name": "react-form-toolkit",
+  "name": "@qazuor/react-form-toolkit",
   "version": "0.1.0",
   "description": "A strongly-typed React form toolkit built on top of React Hook Form",
   "type": "module",
@@ -22,7 +22,8 @@
     "lint:ci": "biome ci .",
     "lint-staged": "biome check . --write --no-errors-on-unmatched --files-ignore-unknown=true",
     "prepare": "husky",
-    "pack": "pnpm run build && npm pack"
+    "pack": "pnpm run build && npm pack",
+    "publish": "pnpm run build && npm publish --access public"
   },
   "keywords": [
     "react",
@@ -65,5 +66,8 @@
     "vite-plugin-dts": "^3.6.3",
     "vitest": "^0.34.6",
     "zod": "^3.21.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

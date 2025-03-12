@@ -24,7 +24,7 @@ You can easily customize the styles of your form components:
 <summary>Complete Style Customization</summary>
 
 ```tsx
-import { FormProvider, FormField } from 'react-form-toolkit';
+import { FormProvider, FormField } from '@qazuor/react-form-toolkit';
 
 // Custom styles
 const customStyles = {
@@ -104,7 +104,7 @@ You can use an external form instance from React Hook Form:
 
 ```tsx
 import { useForm } from 'react-hook-form';
-import { FormProvider } from 'react-form-toolkit';
+import { FormProvider } from '@qazuor/react-form-toolkit';
 
 function ExternalFormExample() {
   const form = useForm({
@@ -136,7 +136,7 @@ function ExternalFormExample() {
 Use the `useFormContext` hook to access form context within child components:
 
 ```tsx
-import { useFormContext } from 'react-form-toolkit';
+import { useFormContext } from '@qazuor/react-form-toolkit';
 
 function FormButton() {
   const { form } = useFormContext();
@@ -159,7 +159,7 @@ function FormButton() {
 
 ```tsx
 import { z } from 'zod';
-import { FormProvider, FormField } from 'react-form-toolkit';
+import { FormProvider, FormField } from '@qazuor/react-form-toolkit';
 
 // Custom validation with Zod
 const advancedSchema = z.object({
@@ -209,8 +209,8 @@ const advancedSchema = z.object({
 
 ```tsx
 import { z } from 'zod';
-import { FormProvider, FormField } from 'react-form-toolkit';
-import type { AsyncValidateFunction } from 'react-form-toolkit';
+import { FormProvider, FormField } from '@qazuor/react-form-toolkit';
+import type { AsyncValidateFunction } from '@qazuor/react-form-toolkit';
 
 // Define the form schema using Zod
 const formSchema = z.object({
@@ -305,7 +305,7 @@ When using `asyncValidate`, the component will:
 <summary>Integration with Shadcn/UI</summary>
 
 ```tsx
-import { FormProvider, FormField } from 'react-form-toolkit';
+import { FormProvider, FormField } from '@qazuor/react-form-toolkit';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -353,7 +353,7 @@ function ShadcnForm() {
 
 ```tsx
 import { useState } from 'react';
-import { FormProvider, FormField } from 'react-form-toolkit';
+import { FormProvider, FormField } from '@qazuor/react-form-toolkit';
 
 function ConditionalForm() {
   const [showAdditionalFields, setShowAdditionalFields] = useState(false);
@@ -399,7 +399,7 @@ For very large or complex forms, you can optimize performance:
 
 ```tsx
 import { memo } from 'react';
-import { FormProvider, FormField } from 'react-form-toolkit';
+import { FormProvider, FormField } from '@qazuor/react-form-toolkit';
 
 // Memoize field components to prevent unnecessary re-renders
 const MemoizedField = memo(({ name, label, type }) => (

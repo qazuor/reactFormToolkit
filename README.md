@@ -1,6 +1,6 @@
-# React Form Toolkit
+# Qazuor React Form Toolkit
 
-[![npm version](https://img.shields.io/npm/v/react-form-toolkit.svg)](https://www.npmjs.com/package/react-form-toolkit)
+[![npm version](https://img.shields.io/npm/v/@qazuor/react-form-toolkit.svg)](https://www.npmjs.com/package/@qazuor/react-form-toolkit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-4.9%2B-blue)](https://www.typescriptlang.org/)
 [![React Hook Form](https://img.shields.io/badge/React%20Hook%20Form-7.x-blue)](https://react-hook-form.com/)
@@ -10,7 +10,7 @@ A strongly-typed React form toolkit built on top of React Hook Form with Zod val
 
 ## 📋 Table of Contents
 
-- [React Form Toolkit](#react-form-toolkit)
+- [Qazuor React Form Toolkit](#qazuor-react-form-toolkit)
   - [📋 Table of Contents](#-table-of-contents)
   - [✨ Features](#-features)
   - [🚀 Quick Start](#-quick-start)
@@ -39,13 +39,13 @@ A strongly-typed React form toolkit built on top of React Hook Form with Zod val
 
 ```bash
 # npm
-npm install react-form-toolkit react-hook-form @hookform/resolvers zod tailwindcss
+npm install @qazuor/react-form-toolkit react-hook-form @hookform/resolvers zod tailwindcss
 
 # yarn
-yarn add react-form-toolkit react-hook-form @hookform/resolvers zod tailwindcss
+yarn add @qazuor/react-form-toolkit react-hook-form @hookform/resolvers zod tailwindcss
 
 # pnpm
-pnpm add react-form-toolkit react-hook-form @hookform/resolvers zod tailwindcss
+pnpm add @qazuor/react-form-toolkit react-hook-form @hookform/resolvers zod tailwindcss
 ```
 
 ### Basic Setup
@@ -56,14 +56,14 @@ pnpm add react-form-toolkit react-hook-form @hookform/resolvers zod tailwindcss
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
 
-@source "../node_modules/react-form-toolkit/dist/index.js";
+@source "../node_modules/@qazuor/react-form-toolkit/dist/index.js";
 ```
 
 ### Basic Example
 
 ```tsx
 import { z } from 'zod';
-import { FormProvider, FormField } from 'react-form-toolkit';
+import { FormProvider, FormField } from '@qazuor/react-form-toolkit';
 
 // Define your form schema with Zod
 const formSchema = z.object({
