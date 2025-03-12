@@ -31,6 +31,8 @@ export const defaultStyles = {
         /** Field description styles */
         description: 'mt-2 text-sm text-gray-500',
         /** Required field mark (*) styles */
-        requiredMark: 'ml-1 text-red-500'
+        requiredMark: 'ml-1 text-red-500',
+        /** Validating state styles */
+        validating: 'ml-2 text-xs text-blue-500 animate-pulse'
     }
 };

@@ -58,13 +58,14 @@ export function FormProvider<TFieldValues extends FieldValues>({
     form: externalForm,
     resetOnSubmit = false,
     styles,
-    i18n: i18nOptions
+    i18n: i18nOptions,
+    mode = 'onBlur'
 }: FormProviderProps<TFieldValues>): JSX.Element {
     // Create the form instance
     const internalForm = useForm<TFieldValues>({
         resolver: schema ? zodResolver(schema) : undefined,
         defaultValues: defaultValues as DefaultValues<TFieldValues>,
-        mode: 'onBlur'
+        mode
     });
 
     // Use external form if provided, otherwise use the internal form

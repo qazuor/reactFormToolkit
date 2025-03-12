@@ -1,10 +1,32 @@
 import type React from 'react';
-import { cloneElement, isValidElement } from 'react';
-import { Controller, type FieldPath, type FieldValues } from 'react-hook-form';
+import { cloneElement, isValidElement, useEffect, useState } from 'react';
+import { Controller, type FieldPath, type FieldValues, type RegisterOptions } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import type { JSX } from 'react/jsx-runtime';
 import { useFormContext } from '../context/FormContext';
 import type { FormFieldProps } from '../types/form';
+
+/**
+ * Custom hook for debouncing values
+ * @param value - The value to debounce
+ * @param delay - The delay in milliseconds
+ * @returns The debounced value
+ */
+function useDebounce<T>(value: T, delay: number): T {
+    const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedValue(value);
+        }, delay);
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [value, delay]);
+
+    return debouncedValue;
+}
 
 /**
  * FormField component for rendering form fields with labels, validation, and error messages.
@@ -46,6 +68,20 @@ import type { FormFieldProps } from '../types/form';
  *     <span className="ml-2">I agree to the terms and conditions</span>
  *   </div>
  * </FormField>
+ *
+ * // With async validation
+ * <FormField
+ *   name="username"
+ *   label="Username"
+ *   asyncValidate={async (value) => {
+ *     // Check if username is available
+ *     const response = await checkUsernameAvailability(value);
+ *     return response.available || "Username is already taken";
+ *   }}
+ *   debounceTime={500}
+ * >
+ *   <input type="text" />
+ * </FormField>
  * ```
  */
 export function FormField<
@@ -61,13 +97,43 @@ export function FormField<
     descriptionClassName,
     errorClassName,
     required = false,
-    rules
+    rules,
+    asyncValidate,
+    debounceTime = 500
 }: FormFieldProps<TFieldValues, TName>): JSX.Element {
     const { form, errors, styles } = useFormContext<TFieldValues>();
     const error = errors[name];
     const errorMessage = error?.message as string | undefined;
     const { t } = useTranslation();
     const requiredMark = t('field.requiredMark', { defaultValue: '*' });
+    const [isValidating, setIsValidating] = useState(false);
+    const [fieldValue, setFieldValue] = useState<string>('');
+    const debouncedValue = useDebounce(fieldValue, debounceTime);
+
+    // Set up async validation
+    useEffect(() => {
+        if (asyncValidate && debouncedValue !== '') {
+            const validateField = async () => {
+                setIsValidating(true);
+                try {
+                    const result = await asyncValidate(debouncedValue);
+                    if (typeof result === 'string') {
+                        form.setError(name, { type: 'validate', message: result });
+                    } else if (result) {
+                        form.clearErrors(name);
+                    } else {
+                        form.setError(name, { type: 'validate', message: 'Validation failed' });
+                    }
+                } catch (_error) {
+                    form.setError(name, { type: 'validate', message: 'Validation error' });
+                } finally {
+                    setIsValidating(false);
+                }
+            };
+
+            validateField();
+        }
+    }, [debouncedValue, asyncValidate, form, name]);
 
     const fieldType = isValidElement(children) ? children.type : 'input';
 
@@ -89,6 +155,31 @@ export function FormField<
         return styles.input;
     };
 
+    // Combine rules with required validation
+    const combinedRules: Omit<
+        RegisterOptions<TFieldValues, TName>,
+        'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
+    > = {
+        ...(required ? { required: 'This field is required' } : {}),
+        ...rules
+    };
+
+    if (asyncValidate) {
+        // If asyncValidate is provided, add it to the validation rules
+        combinedRules.validate = {
+            ...combinedRules.validate,
+            async asyncValidator(value: unknown) {
+                // Skip empty values (unless required, which is handled separately)
+                if (!(value || required)) {
+                    return true;
+                }
+
+                // Return true here as the actual validation happens in the useEffect
+                return true;
+            }
+        };
+    }
+
     return (
         <div className={`${styles.wrapper} ${className || ''}`}>
             {label && (
@@ -98,13 +189,18 @@ export function FormField<
                 >
                     {label}
                     {required && <span className={styles.requiredMark}>{requiredMark}</span>}
+                    {isValidating && (
+                        <span className={styles.validating || 'ml-2 text-gray-500 text-xs'}>
+                            {t('field.validating', { defaultValue: 'Validating...' })}
+                        </span>
+                    )}
                 </label>
             )}
 
             <Controller
                 control={form.control}
                 name={name}
-                rules={rules}
+                rules={combinedRules}
                 render={({ field }) => {
                     // Clone the child element and pass the field props
                     if (isValidElement(children)) {
@@ -115,6 +211,10 @@ export function FormField<
                             id: name,
                             onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
                                 field.onChange(e);
+                                if (asyncValidate) {
+                                    setFieldValue(e.target.value);
+                                    setIsValidating(true);
+                                }
                                 if (children.props.onChange) {
                                     children.props.onChange(e);
                                 }

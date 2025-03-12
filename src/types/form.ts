@@ -1,5 +1,13 @@
 import type { ComponentProps, ReactNode } from 'react';
-import type { DefaultValues, FieldErrors, FieldPath, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
+import type {
+    DefaultValues,
+    FieldErrors,
+    FieldPath,
+    FieldValues,
+    RegisterOptions,
+    SubmitHandler,
+    UseFormReturn
+} from 'react-hook-form';
 import type { ZodType, ZodTypeDef } from 'zod';
 
 /**
@@ -25,6 +33,8 @@ export interface FieldStyles {
     description?: string;
     /** CSS class for the required mark (*) */
     requiredMark?: string;
+    /** CSS class for the loading state during async validation */
+    validating?: string;
 }
 
 /**
@@ -84,6 +94,8 @@ export interface FormProviderProps<TFieldValues extends FieldValues> {
     styles?: FormStyles;
     /** Internationalization options */
     i18n?: I18nOptions;
+    /** Mode for validation trigger (defaults to 'onBlur') */
+    mode?: 'onChange' | 'onBlur' | 'onSubmit' | 'onTouched' | 'all';
 }
 
 /**
@@ -98,6 +110,22 @@ export interface FormContextValue<TFieldValues extends FieldValues> {
     errors: FieldErrors<TFieldValues>;
     /** Styles for form fields */
     styles: FieldStyles;
+}
+
+/**
+ * Type for async validation function
+ */
+export type AsyncValidateFunction<T = unknown> = (value: T) => Promise<boolean | string>;
+
+/**
+ * Extended validation rules for form fields
+ */
+export interface ValidationRules extends Omit<RegisterOptions, 'validate'> {
+    /** Custom validation functions */
+    validate?: {
+        /** Synchronous validation function */
+        [key: string]: ((value: unknown) => boolean | string) | AsyncValidateFunction;
+    };
 }
 
 /**
@@ -130,6 +158,10 @@ export interface FormFieldProps<
     required?: boolean;
     /** Additional validation rules */
     rules?: Record<string, unknown>;
+    /** Async validation function */
+    asyncValidate?: AsyncValidateFunction;
+    /** Debounce time for async validation in milliseconds */
+    debounceTime?: number;
 }
 
 /** HTML Input props type */

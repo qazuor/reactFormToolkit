@@ -17,6 +17,7 @@
         "error": "Erreur"
     },
     "field": {
-        "requiredMark": "*"
+        "requiredMark": "*",
+        "validating": "Validation en cours..."
     }
 }
