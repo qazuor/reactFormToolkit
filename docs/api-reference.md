@@ -1,5 +1,28 @@
 # API Reference
 
+## Table of Contents
+
+- [API Reference](#api-reference)
+  - [Table of Contents](#table-of-contents)
+  - [FormProvider](#formprovider)
+    - [Properties](#properties)
+    - [Example](#example)
+  - [FormField](#formfield)
+    - [Properties](#properties-1)
+    - [Example](#example-1)
+  - [useFormContext](#useformcontext)
+    - [Returns](#returns)
+    - [Example](#example-2)
+  - [Types](#types)
+    - [FormStyles](#formstyles)
+    - [I18nOptions](#i18noptions)
+  - [Data Models](#data-models)
+  - [Modifying Default Behavior](#modifying-default-behavior)
+  - [Tool Integration](#tool-integration)
+    - [TypeScript](#typescript)
+    - [React Hook Form](#react-hook-form)
+    - [Zod](#zod)
+
 This page provides a complete reference for all components, properties, and types available in React Form Toolkit.
 
 ## FormProvider

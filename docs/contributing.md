@@ -1,5 +1,23 @@
 # Contribution Guide
 
+## Table of Contents
+
+- [Contribution Guide](#contribution-guide)
+  - [Table of Contents](#table-of-contents)
+  - [Contribution Process](#contribution-process)
+  - [Development Environment Setup](#development-environment-setup)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+  - [Project Structure](#project-structure)
+  - [Code Guidelines](#code-guidelines)
+  - [Testing](#testing)
+  - [Documentation](#documentation)
+  - [TODO List](#todo-list)
+    - [TODO](#todo)
+    - [In Progress](#in-progress)
+    - [Pull Request Workflow](#pull-request-workflow)
+  - [License](#license)
+
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Contribution Process

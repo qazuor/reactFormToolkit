@@ -2,8 +2,27 @@
 
 [![npm version](https://img.shields.io/npm/v/react-form-toolkit.svg)](https://www.npmjs.com/package/react-form-toolkit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-4.9%2B-blue)](https://www.typescriptlang.org/)
+[![React Hook Form](https://img.shields.io/badge/React%20Hook%20Form-7.x-blue)](https://react-hook-form.com/)
+[![Zod](https://img.shields.io/badge/Zod-3.x-blue)](https://github.com/colinhacks/zod)
 
 A strongly-typed React form toolkit built on top of React Hook Form with Zod validation. This library provides a simple, flexible, and type-safe way to build forms in React applications.
+
+## 📋 Table of Contents
+
+- [React Form Toolkit](#react-form-toolkit)
+  - [📋 Table of Contents](#-table-of-contents)
+  - [✨ Features](#-features)
+  - [🚀 Quick Start](#-quick-start)
+    - [Installation](#installation)
+    - [Basic Setup](#basic-setup)
+    - [Basic Example](#basic-example)
+  - [📚 Documentation](#-documentation)
+  - [📋 Project Status](#-project-status)
+    - [TODO](#todo)
+    - [In Progress](#in-progress)
+    - [Done ✓](#done-)
+  - [📄 License](#-license)
 
 ## ✨ Features
 

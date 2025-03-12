@@ -1,5 +1,19 @@
 # Advanced Usage
 
+## Table of Contents
+
+- [Advanced Usage](#advanced-usage)
+  - [Table of Contents](#table-of-contents)
+  - [Custom Styling](#custom-styling)
+  - [Different Input Types](#different-input-types)
+  - [Using External Form Instance](#using-external-form-instance)
+  - [Form Context](#form-context)
+  - [Advanced Validation](#advanced-validation)
+  - [Integration with Component Libraries](#integration-with-component-libraries)
+  - [Dynamic Forms](#dynamic-forms)
+  - [Performance](#performance)
+  - [See Also](#see-also)
+
 This document covers more advanced use cases for React Form Toolkit, including custom styling, input types, advanced validation, and more.
 
 ## Custom Styling
@@ -186,6 +200,102 @@ const advancedSchema = z.object({
   <input type="text" />
 </FormField>
 ```
+
+
+</details>
+
+<details>
+<summary>Asynchronous Validation</summary>
+
+```tsx
+import { z } from 'zod';
+import { FormProvider, FormField } from 'react-form-toolkit';
+import type { AsyncValidateFunction } from 'react-form-toolkit';
+
+// Define the form schema using Zod
+const formSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters"),
+  email: z.string().email("Please enter a valid email address"),
+});
+
+// Simulated database of existing users
+const existingUsers = [
+  { username: "admin", email: "admin@example.com" },
+  { username: "user1", email: "user1@example.com" },
+];
+
+// Async validation function for username
+const validateUsername: AsyncValidateFunction = async (value) => {
+  // Simulate API call delay
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  // Check if username exists
+  const exists = existingUsers.some(
+    (user) => user.username.toLowerCase() === value.toLowerCase()
+  );
+  return exists ? "This username is already taken" : true;
+};
+
+// Async validation function for email
+const validateEmail: AsyncValidateFunction = async (value) => {
+  // Simulate API call delay
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+
+  // Check if email exists
+  const exists = existingUsers.some(
+    (user) => user.email.toLowerCase() === value.toLowerCase()
+  );
+  return exists ? "This email is already registered" : true;
+};
+
+function AsyncValidationForm() {
+  return (
+    <FormProvider
+      onSubmit={handleSubmit}
+      schema={formSchema}
+      defaultValues={{ username: "", email: "" }}
+      mode="onChange" // Use onChange mode for better UX with async validation
+    >
+      <FormField
+        name="username"
+        label="Username"
+        required={true}
+        asyncValidate={validateUsername}
+        debounceTime={500}
+      >
+        <input
+          type="text"
+          className="w-full rounded-md border border-gray-300 px-3 py-2"
+          placeholder="Choose a username"
+        />
+      </FormField>
+
+      <FormField
+        name="email"
+        label="Email Address"
+        required={true}
+        asyncValidate={validateEmail}
+        debounceTime={800}
+      >
+        <input
+          type="email"
+          className="w-full rounded-md border border-gray-300 px-3 py-2"
+          placeholder="your.email@example.com"
+        />
+      </FormField>
+
+      <button type="submit">Register</button>
+    </FormProvider>
+  );
+}
+```
+
+When using `asyncValidate`, the component will:
+
+1. Show a "Validating..." indicator while validation is in progress
+2. Debounce the validation requests to prevent excessive API calls
+3. Display validation errors when the async validation fails
+4. Allow form submission only when all validations pass
 
 </details>
 
