@@ -42,7 +42,7 @@ export interface FormStyles {
  */
 export interface I18nOptions {
     /** Custom resources to merge with the default resources */
-    resources?: Record<string, unknown>;
+    resources?: TranslationResources;
     /** Language to use (defaults to 'en') */
     lng?: string;
     /** Custom i18next instance */
@@ -52,13 +52,13 @@ export interface I18nOptions {
 /**
  * Default i18next resources containing translations for all supported languages.
  */
-export interface TranslationResources {
+export type TranslationResources = {
     [key: string]: {
-        translation: {
+        translation?: {
             [key: string]: string | { [key: string]: string };
         };
     };
-}
+};
 
 /**
  * Props for the FormProvider component.

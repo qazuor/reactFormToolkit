@@ -77,8 +77,5 @@ export const initI18n = (customResources?: TranslationResources, lng = 'en') => 
     return i18n;
 };
 
-// Initialize with default settings
-initI18n();
-
 // biome-ignore lint/style/noDefaultExport: <explanation>
 export default i18n;

@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import type React from 'react';
-import { type JSX, useMemo } from 'react';
+import { type JSX, useEffect, useMemo } from 'react';
 import { type DefaultValues, type FieldValues, FormProvider as RHFFormProvider, useForm } from 'react-hook-form';
 import { I18nextProvider } from 'react-i18next';
 import { FormContext } from '../context/FormContext';
@@ -73,12 +73,37 @@ export function FormProvider<TFieldValues extends FieldValues>({
     }, [externalForm, internalForm]);
 
     // Initialize i18n if options are provided
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     const i18nInstance = useMemo(() => {
         if (i18nOptions?.i18n) {
             return i18nOptions.i18n;
         }
         return initI18n(i18nOptions?.resources as TranslationResources, i18nOptions?.lng);
-    }, [i18nOptions]);
+    }, [i18nOptions?.i18n]);
+
+    // Update language when it changes
+    useEffect(() => {
+        if (i18nInstance && i18nOptions?.lng) {
+            i18nInstance.changeLanguage(i18nOptions.lng);
+        }
+    }, [i18nInstance, i18nOptions?.lng]);
+
+    // Update resources when they change
+    useEffect(() => {
+        if (i18nInstance && i18nOptions?.resources) {
+            for (const lang of Object.keys(i18nOptions.resources)) {
+                if (i18nOptions.resources?.[lang]?.translation) {
+                    i18nInstance.addResourceBundle(
+                        lang,
+                        'translation',
+                        i18nOptions.resources[lang].translation,
+                        true,
+                        true
+                    );
+                }
+            }
+        }
+    }, [i18nInstance, i18nOptions?.resources]);
 
     const {
         handleSubmit,
