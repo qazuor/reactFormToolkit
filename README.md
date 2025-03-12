@@ -334,3 +334,43 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
+
+## TODO
+
+- [ ] Validation
+  - [ ] Add Toast as option to show errors
+- [ ] Add more examples
+- [ ] Add more testing
+- [ ] Field Arrays
+- [ ] Conditional Fields
+- [ ] Dependants Fields
+- [ ] UI
+  - [ ] Add styles for non Tailwind projects
+  - [ ] Add extrahtml prop
+  - [ ] Add FormLayouts feature
+- [ ] Common Form implementations
+  - [ ] Signin, Signup, ForgotPassowrd
+  - [ ] Contact us
+- [ ] Add form persistense feature
+- [ ] Add Form generation from schema feature
+- [ ] Add more internacionalized texts
+- [ ] Add more languages
+- [ ] Create a demo website
+
+### In Progress
+
+- [ ] Extract types and interface code into several files by scope
+- [ ] UI
+  - [ ] Loading button, Cancel, Reset
+  - [ ] Add info tooltips
+  - [ ] support components libraries (shadcn, mantine, MUI, etc)
+- [ ] Validation
+  - [ ] set validation mode configurable
+  - [ ] add form context global errors
+  - [ ] async validation for FormField
+  - [ ] disable complete form on validate/submit
+  - [ ] make errors msg more flexible and configurable
+
+### Done ✓
+
+- [x] Add internacionalization
