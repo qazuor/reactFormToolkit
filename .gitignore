@@ -8,3 +8,4 @@ coverage
 dist
 dist/**/*
 
+react-form-toolkit-*.tgz
