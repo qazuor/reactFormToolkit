@@ -1,5 +1,3 @@
-'use client';
-
 import { useCallback, useState } from 'react';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import React from 'react';

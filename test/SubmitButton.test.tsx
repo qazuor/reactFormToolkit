@@ -3,10 +3,26 @@ import { describe, expect, it, vi } from "vitest"
 import { FormProvider, SubmitButton } from "../src"
 import React from "react"
 
+// Crear un mock completo del objeto form
+const createMockForm = (isSubmitting = false, isSubmitSuccessful = false) => ({
+  reset: vi.fn(),
+  handleSubmit: vi.fn().mockImplementation((cb) => cb),
+  formState: {
+    errors: {},
+    isSubmitting: isSubmitting,
+    isSubmitSuccessful: isSubmitSuccessful,
+    isDirty: false,
+  },
+  watch: vi.fn(),
+  setValue: vi.fn(),
+  getValues: vi.fn(),
+  control: { register: vi.fn() },
+})
+
 describe("SubmitButton", () => {
   it("renders with default text", () => {
     render(
-      <FormProvider onSubmit={() => {}}>
+      <FormProvider onSubmit={() => {}} form={createMockForm()}>
         <SubmitButton />
       </FormProvider>,
     )
@@ -16,7 +32,7 @@ describe("SubmitButton", () => {
 
   it("renders with custom text", () => {
     render(
-      <FormProvider onSubmit={() => {}}>
+      <FormProvider onSubmit={() => {}} form={createMockForm()}>
         <SubmitButton text="Save Changes" />
       </FormProvider>,
     )

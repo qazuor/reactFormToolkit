@@ -35,6 +35,7 @@ A strongly-typed React form toolkit built on top of React Hook Form with Zod val
 - 🔒 **Type-safe**: Built with TypeScript for complete type safety
 - 🧩 **Composable**: Build complex forms with simple, reusable components
 - 📝 **Validation**: Seamless integration with Zod for schema validation
+- 🚨 **Error Handling**: Comprehensive field-level and global error management
 - 🎨 **Customizable**: Easily customize styles and behavior
 - 🔄 **React Hook Form**: Built on top of the powerful React Hook Form library
 - 🧪 **Well-tested**: Comprehensive test suite ensures reliability
@@ -148,7 +149,6 @@ function MyForm() {
   - [ ] Add info tooltips
   - [ ] support components libraries (shadcn, mantine, MUI, etc)
 - [ ] Validation
-  - [ ] add form context global errors
   - [ ] make errors msg more flexible and configurable
 
 ### Done ✓
@@ -158,6 +158,7 @@ function MyForm() {
 - [x] UI
   - [x] Loading button, Cancel, Reset
 - [x] Validation
+  - [x] add form context global errors
   - [x] set validation mode configurable
   - [x] async validation for FormField
   - [x] disable complete form on validate/submit

@@ -1,8 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import type React from 'react';
-import { type JSX, useEffect, useMemo } from 'react';
+import { type JSX, useCallback, useEffect, useMemo, useState } from 'react';
 import { type DefaultValues, type FieldValues, FormProvider as RHFFormProvider, useForm } from 'react-hook-form';
-import { I18nextProvider } from 'react-i18next';
+import { I18nextProvider, useTranslation } from 'react-i18next';
 import { FormContext } from '../context/FormContext';
 import { initI18n } from '../i18n';
 import { defaultStyles } from '../styles/defaultStyles';
@@ -52,6 +52,7 @@ import type { FormProviderProps, TranslationResources } from '../types';
 export function FormProvider<TFieldValues extends FieldValues>({
     children,
     onSubmit,
+    onError,
     schema,
     defaultValues,
     className,
@@ -61,6 +62,10 @@ export function FormProvider<TFieldValues extends FieldValues>({
     i18n: i18nOptions,
     mode = 'onBlur'
 }: FormProviderProps<TFieldValues>): JSX.Element {
+    const { t } = useTranslation();
+    // State for global error
+    const [globalError, setGlobalErrorState] = useState<string | null>(null);
+
     // Create the form instance
     const internalForm = useForm<TFieldValues>({
         resolver: schema ? zodResolver(schema) : undefined,
@@ -112,6 +117,14 @@ export function FormProvider<TFieldValues extends FieldValues>({
         reset
     } = form;
 
+    const setGlobalError = useCallback((error: string | null) => {
+        setGlobalErrorState(error);
+    }, []);
+
+    const clearGlobalError = useCallback(() => {
+        setGlobalErrorState(null);
+    }, []);
+
     /**
      * Handle form submission
      *
@@ -119,9 +132,25 @@ export function FormProvider<TFieldValues extends FieldValues>({
      * @param event - The form event
      */
     const handleFormSubmit = async (data: TFieldValues, event?: React.BaseSyntheticEvent) => {
-        await onSubmit(data, event);
-        if (resetOnSubmit) {
-            reset(defaultValues as DefaultValues<TFieldValues>);
+        clearGlobalError();
+        try {
+            await onSubmit(data, event);
+            if (resetOnSubmit) {
+                reset(defaultValues as DefaultValues<TFieldValues>);
+            }
+        } catch (error) {
+            // Set global error if submission fails
+            if (error instanceof Error) {
+                setGlobalError(error.message);
+            } else if (typeof error === 'string') {
+                setGlobalError(error);
+            } else {
+                setGlobalError(t('form.unexpectedError', { defaultValue: 'An unexpected error occurred' }));
+            }
+            // Call onError callback if provided
+            if (onError) {
+                onError(error);
+            }
         }
     };
 
@@ -129,7 +158,16 @@ export function FormProvider<TFieldValues extends FieldValues>({
 
     return (
         <I18nextProvider i18n={i18nInstance}>
-            <FormContext.Provider value={{ form, errors, styles: styles?.field || defaultStyles.field }}>
+            <FormContext.Provider
+                value={{
+                    form,
+                    errors,
+                    styles: styles?.field || defaultStyles.field,
+                    globalError,
+                    setGlobalError,
+                    clearGlobalError
+                }}
+            >
                 <RHFFormProvider {...form}>
                     <form
                         onSubmit={handleSubmit(handleFormSubmit)}

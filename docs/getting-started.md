@@ -12,6 +12,7 @@
     - [FormProvider](#formprovider)
     - [FormField](#formfield)
   - [Form Validation](#form-validation)
+  - [Global Error Handling](#global-error-handling)
   - [Handling Form Submission](#handling-form-submission)
   - [Common Examples](#common-examples)
   - [Next Steps](#next-steps)
@@ -190,6 +191,55 @@ const formSchemaWithConfirmation = formSchema.refine(
   }
 );
 ```
+
+## Global Error Handling
+
+In addition to field-level validation, React Form Toolkit provides a way to handle and display global form errors:
+
+```tsx
+import { FormProvider, FormField, FormError, SubmitButton } from '@qazuor/react-form-toolkit';
+
+function LoginForm() {
+  const handleSubmit = async (data) => {
+    try {
+      // Attempt login
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (!response.ok) {
+        throw new Error('Invalid username or password');
+      }
+
+      // Handle successful login
+    } catch (error) {
+      // This error will be automatically set as a global error
+      throw error;
+    }
+  };
+
+  return (
+    <FormProvider onSubmit={handleSubmit} schema={loginSchema}>
+      <FormField name="username" label="Username">
+        <input type="text" />
+      </FormField>
+
+      <FormField name="password" label="Password">
+        <input type="password" />
+      </FormField>
+
+      {/* Display global error */}
+      <FormError className="p-3 bg-red-50 border border-red-200 rounded-md" />
+
+      <SubmitButton text="Log In" />
+    </FormProvider>
+  );
+}
+```
+
+For more details on global error handling, see the [Global Errors](./global-errors.md) documentation.
 
 ## Handling Form Submission
 

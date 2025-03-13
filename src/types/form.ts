@@ -29,6 +29,8 @@ export interface FormProviderProps<TFieldValues extends FieldValues> {
     i18n?: I18nOptions;
     /** Mode for validation trigger (defaults to 'onBlur') */
     mode?: 'onChange' | 'onBlur' | 'onSubmit' | 'onTouched' | 'all';
+    /** Function called when the form submission fails */
+    onError?: (error: any) => void;
 }
 
 /**
@@ -43,6 +45,12 @@ export interface FormContextValue<TFieldValues extends FieldValues> {
     errors: FieldErrors<TFieldValues>;
     /** Styles for form fields */
     styles: FieldStyles;
+    /** Global form error */
+    globalError: string | null;
+    /** Function to set a global form error */
+    setGlobalError: (error: string | null) => void;
+    /** Function to clear the global form error */
+    clearGlobalError: () => void;
 }
 
 /**
@@ -88,6 +96,20 @@ export interface SubmitButtonProps {
     successText?: string;
     showSuccess?: boolean;
     successDuration?: number;
+    'data-testid'?: string;
+}
+
+/**
+ * Props for the FormError component.
+ */
+export interface FormErrorProps {
+    /** CSS class for the error container */
+    className?: string;
+    /** Whether to show the error icon */
+    showIcon?: boolean;
+    /** Custom error message (if not provided, will use the global error) */
+    error?: string;
+    /** Data test ID for testing */
     'data-testid'?: string;
 }
 
