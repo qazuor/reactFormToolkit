@@ -8,6 +8,8 @@
 
 A strongly-typed React form toolkit built on top of React Hook Form with Zod validation. This library provides a simple, flexible, and type-safe way to build forms in React applications.
 
+[DEMO and docs page](https://react-form-toolkit-site.vercel.app)
+
 ## 📋 Table of Contents
 
 - [Qazuor React Form Toolkit](#qazuor-react-form-toolkit)
