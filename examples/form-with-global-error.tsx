@@ -25,7 +25,7 @@ const simulateLogin = async (data: FormValues) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Simulate a server error for specific credentials
-    if (data.username === 'admin' && data.password === 'wrong') {
+    if (data.username === 'admin' && data.password === 'wrongPassword') {
         throw new Error('Invalid credentials. Please try again.');
     }
 
@@ -43,6 +43,7 @@ export function FormWithGlobalError() {
     const [submitCount, setSubmitCount] = useState(0);
 
     const handleSubmit = async (data: FormValues) => {
+        setUser(null);
         // Increment submit count to track submission attempts
         setSubmitCount((prev) => prev + 1);
 
@@ -53,7 +54,7 @@ export function FormWithGlobalError() {
         setUser(result.user);
     };
 
-    const handleError = (error: any) => {
+    const handleError = (error: Error) => {
         console.error('Form submission error:', error);
         // You could do additional error handling here
     };
@@ -63,7 +64,7 @@ export function FormWithGlobalError() {
             <h2 className='mb-4 font-bold text-xl'>Login Form with Global Error</h2>
             <p className='mb-4 text-gray-600 text-sm'>
                 Try these combinations to see different errors:
-                <br />- Username: "admin", Password: "wrong" (Invalid credentials error)
+                <br />- Username: "admin", Password: "wrongPassword" (Invalid credentials error)
                 <br />- Any values (30% chance of network error)
             </p>
 
