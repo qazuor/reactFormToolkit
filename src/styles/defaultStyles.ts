@@ -1,9 +1,4 @@
 /**
- * Default styles for the form and its fields.
- * These styles are used when no custom styles are provided.
- */
-
-/**
  * Default styles object containing classes for form elements.
  * These are Tailwind CSS classes that provide a clean, modern look.
  */
@@ -39,6 +34,12 @@ export const defaultStyles = {
         /** Invalid state indicator styles */
         invalid: 'absolute right-3 top-9 text-red-500 animate-fadeIn',
         /** Loading state styles */
-        loading: 'animate-spin absolute right-3 top-9 text-gray-400'
+        loading: 'animate-spin absolute right-3 top-9 text-gray-400',
+        /** Tooltip container styles */
+        tooltipContainer: 'relative inline-block ml-1',
+        /** Tooltip icon styles */
+        tooltipIcon: 'text-gray-500 hover:text-gray-700 cursor-pointer transition-colors',
+        /** Tooltip content styles */
+        tooltipContent: 'absolute z-10 p-2 text-xs bg-gray-800 text-white rounded shadow-lg max-w-xs'
     }
 };

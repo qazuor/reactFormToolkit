@@ -6,6 +6,7 @@ import type { JSX } from 'react/jsx-runtime';
 import { useFormContext } from '../context/FormContext';
 import { useDebounce } from '../hooks';
 import type { FormFieldProps } from '../types';
+import { InfoTooltip } from './InfoTooltip';
 
 /**
  * FormField component for rendering form fields with labels, validation, and error messages.
@@ -78,7 +79,9 @@ export function FormField<
     required = false,
     rules,
     asyncValidate,
-    debounceTime = 500
+    debounceTime = 500,
+    tooltip,
+    tooltipPosition = 'top'
 }: FormFieldProps<TFieldValues, TName>): JSX.Element {
     const { form, errors, styles } = useFormContext<TFieldValues>();
     const error = errors[name];
@@ -204,6 +207,12 @@ export function FormField<
                 >
                     {label}
                     {required && <span className={styles.requiredMark}>{requiredMark}</span>}
+                    {tooltip && (
+                        <InfoTooltip
+                            content={tooltip}
+                            position={tooltipPosition}
+                        />
+                    )}
                     {isValidating && (
                         <span className={styles.validating || 'ml-2 text-gray-500 text-xs'}>
                             {t('field.validating', { defaultValue: 'Validating...' })}

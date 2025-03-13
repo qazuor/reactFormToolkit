@@ -122,4 +122,52 @@ describe('FormField', () => {
         const label = screen.getByText('Username');
         expect(label.textContent).toContain('*');
     });
+
+    it("renders tooltip when tooltip prop is provided", () => {
+        render(
+        // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
+        <FormProvider onSubmit={() => {}}>
+            <FormField name="password" label="Password" tooltip="Password must be at least 8 characters long">
+            <input type="password" />
+            </FormField>
+        </FormProvider>,
+        )
+
+        // Find the info icon button
+        const infoButton = screen.getByRole("button", { name: "More information" })
+        expect(infoButton).toBeInTheDocument()
+
+        // Hover over the info icon to show the tooltip
+        fireEvent.mouseEnter(infoButton)
+
+        // Check if tooltip content is visible
+        const tooltipContent = screen.getByRole("tooltip")
+        expect(tooltipContent).toBeInTheDocument()
+        expect(tooltipContent).toHaveTextContent("Password must be at least 8 characters long")
+    })
+
+    it("positions tooltip according to tooltipPosition prop", () => {
+        render(
+        // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
+        <FormProvider onSubmit={() => {}}>
+            <FormField name="email" label="Email" tooltip="We'll use this email for verification" tooltipPosition="right">
+            <input type="email" />
+            </FormField>
+        </FormProvider>,
+        )
+
+        // Find the info icon button
+        const infoButton = screen.getByRole("button", { name: "More information" })
+
+        // Hover over the info icon to show the tooltip
+        fireEvent.mouseEnter(infoButton)
+
+        // Check if tooltip content is visible with the right position
+        const tooltipContent = screen.getByRole("tooltip")
+        expect(tooltipContent).toBeInTheDocument()
+
+        // Check if the tooltip has the right position class
+        // This is a simplified check - in a real test you might want to check the actual positioning
+        expect(tooltipContent.className).toContain("left-full")
+    })
 });

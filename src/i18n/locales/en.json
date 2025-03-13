@@ -36,6 +36,7 @@
         "requiredMark": "*",
         "validating": "Validating...",
         "valid": "Valid",
-        "invalid": "Invalid"
+        "invalid": "Invalid",
+        "tooltipInfo": "Info"
     }
 }

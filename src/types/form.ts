@@ -55,6 +55,24 @@ export interface FormContextValue<TFieldValues extends FieldValues> {
 
 /**
  * Props for the FormField component.
+ */
+export interface InfoTooltipProps {
+    /** The tooltip content/message */
+    content: string;
+    /** Optional CSS class for the tooltip container */
+    className?: string;
+    /** Optional CSS class for the tooltip content */
+    contentClassName?: string;
+    /** Optional CSS class for the info icon */
+    iconClassName?: string;
+    /** Position of the tooltip relative to the icon */
+    position?: 'top' | 'right' | 'bottom' | 'left';
+    /** Optional data-testid for testing */
+    'data-testid'?: string;
+}
+
+/**
+ * Props for the FormField component.
  *
  * @template TFieldValues - The type of the form values
  * @template TName - The name of the field (must be a key of TFieldValues)
@@ -87,6 +105,10 @@ export interface FormFieldProps<
     asyncValidate?: AsyncValidateFunction;
     /** Debounce time for async validation in milliseconds */
     debounceTime?: number;
+    /** Tooltip content */
+    tooltip?: string;
+    /** The position for the info Tooltip */
+    tooltipPosition?: 'top' | 'right' | 'bottom' | 'left';
 }
 
 export interface SubmitButtonProps {

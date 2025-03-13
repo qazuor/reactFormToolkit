@@ -29,6 +29,12 @@ export interface FieldStyles {
     invalid?: string;
     /** CSS class for the loading state during async validation */
     loading?: string;
+    /** CSS class for tooltip container */
+    tooltipContainer?: string;
+    /** CSS class for tooltip icon */
+    tooltipIcon?: string;
+    /** CSS class for tooltip content */
+    tooltipContent?: string;
 }
 
 /**
