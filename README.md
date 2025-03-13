@@ -146,7 +146,6 @@ function MyForm() {
 ### In Progress
 
 - [ ] UI
-  - [ ] Add info tooltips
   - [ ] support components libraries (shadcn, mantine, MUI, etc)
 - [ ] Validation
   - [ ] make errors msg more flexible and configurable
@@ -156,6 +155,7 @@ function MyForm() {
 - [x] Add internationalization
 - [x] Extract types and interface code into several files by scope
 - [x] UI
+  - [x] Add info tooltips
   - [x] Loading button, Cancel, Reset
 - [x] Validation
   - [x] add form context global errors

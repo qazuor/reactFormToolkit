@@ -124,10 +124,8 @@ Here are some areas where contributions are especially appreciated:
 ### In Progress
 
 - [ ] UI
-  - [ ] Add info tooltips
   - [ ] support components libraries (shadcn, mantine, MUI, etc)
 - [ ] Validation
-  - [ ] add form context global errors
   - [ ] make errors msg more flexible and configurable
 
 ### Pull Request Workflow
