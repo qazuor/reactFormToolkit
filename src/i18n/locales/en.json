@@ -12,6 +12,9 @@
     "form": {
         "submit": "Submit",
         "reset": "Reset",
+        "cancel": "Cancel",
+        "confirmReset": "Confirm Reset",
+        "confirmCancel": "Confirm Cancel",
         "loading": "Loading...",
         "success": "Success!",
         "error": "Error",

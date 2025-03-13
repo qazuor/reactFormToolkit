@@ -12,6 +12,9 @@
     "form": {
         "submit": "Enviar",
         "reset": "Restablecer",
+        "cancel": "Cancelar",
+        "confirmReset": "Confirmar Restablecimiento",
+        "confirmCancel": "Confirmar Cancelación",
         "loading": "Cargando...",
         "success": "¡Éxito!",
         "error": "Error",

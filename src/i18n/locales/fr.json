@@ -12,6 +12,9 @@
     "form": {
         "submit": "Soumettre",
         "reset": "Réinitialiser",
+        "cancel": "Annuler",
+        "confirmReset": "Confirmer la Réinitialisation",
+        "confirmCancel": "Confirmer l'Annulation",
         "loading": "Chargement...",
         "success": "Succès!",
         "error": "Erreur",

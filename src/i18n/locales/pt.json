@@ -12,6 +12,9 @@
     "form": {
         "submit": "Enviar",
         "reset": "Redefinir",
+        "cancel": "Cancelar",
+        "confirmReset": "Confirmar Redefinição",
+        "confirmCancel": "Confirmar Cancelamento",
         "loading": "Carregando...",
         "success": "Sucesso!",
         "error": "Erro",
