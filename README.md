@@ -145,7 +145,6 @@ function MyForm() {
 ### In Progress
 
 - [ ] UI
-  - [ ] Loading button, Cancel, Reset
   - [ ] Add info tooltips
   - [ ] support components libraries (shadcn, mantine, MUI, etc)
 - [ ] Validation
@@ -156,6 +155,8 @@ function MyForm() {
 
 - [x] Add internationalization
 - [x] Extract types and interface code into several files by scope
+- [x] UI
+  - [x] Loading button, Cancel, Reset
 - [x] Validation
   - [x] set validation mode configurable
   - [x] async validation for FormField

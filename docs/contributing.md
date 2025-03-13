@@ -124,7 +124,6 @@ Here are some areas where contributions are especially appreciated:
 ### In Progress
 
 - [ ] UI
-  - [ ] Loading button, Cancel, Reset
   - [ ] Add info tooltips
   - [ ] support components libraries (shadcn, mantine, MUI, etc)
 - [ ] Validation
