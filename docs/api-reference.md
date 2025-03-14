@@ -22,6 +22,9 @@
     - [TypeScript](#typescript)
     - [React Hook Form](#react-hook-form)
     - [Zod](#zod)
+  - [Additional Components](#additional-components)
+    - [FormError](#formerror)
+    - [SubmitButton](#submitbutton)
 
 This page provides a complete reference for all components, properties, and types available in React Form Toolkit.
 
@@ -292,3 +295,43 @@ const schema = z.object({
     )
 });
 ```
+
+## Additional Components
+
+### FormError
+
+The `FormError` component is used to display global errors that affect the entire form. It can be used in conjunction with the `FormProvider` to show errors that occur during form submission or validation.
+
+```tsx
+import { FormError } from '@qazuor/react-form-toolkit';
+
+function MyForm() {
+  return (
+    <FormProvider onSubmit={handleSubmit}>
+      <FormField name="username" label="Username" required>
+        <input type="text" />
+      </FormField>
+      <FormError />
+      <button type="submit">Submit</button>
+    </FormProvider>
+  );
+}
+```
+
+### SubmitButton
+
+The `SubmitButton` component is a specialized button that can handle different states such as loading, success, and error. It simplifies the process of managing button states during form submission.
+
+```tsx
+import { SubmitButton } from '@qazuor/react-form-toolkit';
+
+function MyForm() {
+  return (
+    <FormProvider onSubmit={handleSubmit}>
+      <FormField name="email" label="Email" required>
+        <input type="email" />
+      </FormField>
+      <SubmitButton text="Submit" loadingText="Submitting..." />
+    </FormProvider>
+  );
+}

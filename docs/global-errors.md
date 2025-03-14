@@ -12,6 +12,7 @@
   - [API Errors](#api-errors)
   - [Validation Errors](#validation-errors)
   - [Network Errors](#network-errors)
+- [Handling Global Errors](#handling-global-errors)
 - [Customization](#customization)
   - [Styling](#styling)
   - [Custom Error Components](#custom-error-components)
@@ -89,3 +90,146 @@ function LoginForm() {
 }
 ```
 
+## Handling Global Errors
+
+To handle global errors effectively, consider the following strategies:
+
+- **Centralized Error State**: Maintain a centralized state for global errors in your form component. This allows you to manage and display errors consistently across your application.
+- **User Feedback**: Provide clear feedback to users when an error occurs. Use the `FormError` component to display messages that inform users of the issue and suggest corrective actions.
+- **Logging**: Implement logging for global errors to track issues that occur in production. This will help you identify and resolve problems quickly.
+
+### Example of Global Error Handling
+```tsx
+import { FormProvider, FormError } from '@qazuor/react-form-toolkit';
+
+function MyForm() {
+  const handleSubmit = async (data) => {
+    try {
+      // Submit data
+    } catch (error) {
+      // Set global error
+      throw new Error('Submission failed. Please try again later.');
+    }
+  };
+
+  return (
+    <FormProvider onSubmit={handleSubmit}>
+      <FormError />
+      <button type="submit">Submit</button>
+    </FormProvider>
+  );
+}
+```
+
+## Error Handling Strategies
+
+### API Errors
+
+API errors occur when there's a problem with the API request or response. These errors can be handled by catching the error and setting a global error message.
+
+### Validation Errors
+
+Validation errors occur when the user input fails to meet the validation rules. These errors can be handled by displaying an error message next to the field or by setting a global error message.
+
+### Network Errors
+
+Network errors occur when there's a problem with the network connection. These errors can be handled by displaying an error message and providing an option to retry the request.
+
+## Customization
+
+### Styling
+
+You can customize the styling of the `FormError` component by using CSS classes or by passing a custom `className` prop.
+
+### Custom Error Components
+
+You can create a custom error component by extending the `FormError` component or by creating a new component that displays the error message.
+
+## Examples
+
+### Basic Global Error
+
+```tsx
+import { FormProvider, FormError } from '@qazuor/react-form-toolkit';
+
+function MyForm() {
+  const handleSubmit = async (data) => {
+    try {
+      // Submit data
+    } catch (error) {
+      // Set global error
+      throw new Error('Submission failed. Please try again later.');
+    }
+  };
+
+  return (
+    <FormProvider onSubmit={handleSubmit}>
+      <FormError />
+      <button type="submit">Submit</button>
+    </FormProvider>
+  );
+}
+```
+
+### Error with Custom Styling
+
+```tsx
+import { FormProvider, FormError } from '@qazuor/react-form-toolkit';
+
+function MyForm() {
+  const handleSubmit = async (data) => {
+    try {
+      // Submit data
+    } catch (error) {
+      // Set global error
+      throw new Error('Submission failed. Please try again later.');
+    }
+  };
+
+  return (
+    <FormProvider onSubmit={handleSubmit}>
+      <FormError className="custom-error" />
+      <button type="submit">Submit</button>
+    </FormProvider>
+  );
+}
+```
+
+### Comprehensive Error Handling
+
+```tsx
+import { FormProvider, FormError } from '@qazuor/react-form-toolkit';
+
+function MyForm() {
+  const handleSubmit = async (data) => {
+    try {
+      // Submit data
+    } catch (error) {
+      // Set global error
+      throw new Error('Submission failed. Please try again later.');
+    }
+  };
+
+  return (
+    <FormProvider onSubmit={handleSubmit}>
+      <FormError />
+      <button type="submit">Submit</button>
+      <button type="button" onClick={() => console.log('Error logged')}>Log Error</button>
+    </FormProvider>
+  );
+}
+```
+
+## API Reference
+
+* `FormError` component
+* `FormProvider` component
+* `onSubmit` prop
+* `schema` prop
+
+## Best Practices
+
+* Always handle global errors in your form components.
+* Provide clear feedback to users when an error occurs.
+* Implement logging for global errors to track issues that occur in production.
+* Use a centralized state for global errors in your form component.

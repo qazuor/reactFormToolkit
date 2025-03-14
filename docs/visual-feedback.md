@@ -18,8 +18,9 @@
     - [Built-in Animations](#built-in-animations)
     - [Animation Timing](#animation-timing)
   - [Customizing Visual Feedback](#customizing-visual-feedback)
-    - [Styling Indicators](#styling-indicators)
+    - [Custom Styles](#custom-styles)
     - [Custom Icons](#custom-icons)
+    - [Custom Animations](#custom-animations)
     - [Theming](#theming)
   - [Accessibility Considerations](#accessibility-considerations)
     - [Screen Reader Support](#screen-reader-support)
@@ -189,22 +190,23 @@ Animations are carefully timed to provide feedback without being distracting:
 
 ## Customizing Visual Feedback
 
-### Styling Indicators
+### Custom Styles
 
-You can customize the appearance of all visual indicators through the `styles` prop:
+You can define custom styles for valid, invalid, and loading states:
 
 ```tsx
 const customStyles = {
   field: {
-    valid: "absolute right-3 top-9 text-emerald-500 animate-fadeIn",
-    invalid: "absolute right-3 top-9 text-rose-500 animate-fadeIn",
-    loading: "animate-spin absolute right-3 top-9 text-sky-500",
-    validating: "ml-2 text-xs text-sky-500 animate-pulse",
-  }
+    valid: 'border-green-500',
+    invalid: 'border-red-500',
+    loading: 'border-yellow-500',
+  },
 };
 
 <FormProvider styles={customStyles}>
-  {/* Form fields */}
+  <FormField name="email" label="Email" required>
+    <input type="email" />
+  </FormField>
 </FormProvider>
 ```
 

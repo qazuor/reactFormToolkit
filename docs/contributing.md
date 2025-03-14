@@ -11,7 +11,7 @@
   - [Project Structure](#project-structure)
   - [Code Guidelines](#code-guidelines)
   - [Testing](#testing)
-  - [Documentation](#documentation)
+  - [Documentation Contribution](#documentation-contribution)
   - [TODO List](#todo-list)
     - [TODO](#todo)
     - [In Progress](#in-progress)
@@ -91,9 +91,20 @@ For watch mode:
 npm test -- --watch
 ```
 
-## Documentation
+## Documentation Contribution
 
-If you add a new feature, please also update the corresponding documentation. Documentation can be found in the `/docs` folder.
+When contributing to the documentation, please ensure that:
+
+- The documentation is clear and concise.
+- Examples are up-to-date and reflect the current implementation.
+- Any new features are documented in the appropriate sections.
+- Follow the existing formatting and style guidelines.
+
+### Updating Documentation
+If you add a new feature or make significant changes to existing features, please update the corresponding documentation files in the `/docs` directory. This helps keep the documentation aligned with the codebase.
+
+### Review Process
+All documentation contributions will be reviewed as part of the pull request process. Ensure that your changes are well-tested and do not introduce any errors in the documentation.
 
 ## TODO List
 
@@ -101,8 +112,6 @@ Here are some areas where contributions are especially appreciated:
 
 ### TODO
 
-- [ ] Validation
-  - [ ] Add Toast as an option to show errors
 - [ ] Add more examples
 - [ ] Add more testing
 - [ ] Field Arrays
@@ -126,7 +135,7 @@ Here are some areas where contributions are especially appreciated:
 - [ ] UI
   - [ ] support components libraries (shadcn, mantine, MUI, etc)
 - [ ] Validation
-  - [ ] make errors msg more flexible and configurable
+  - [ ] Add Toast as an option to show errors
 
 ### Pull Request Workflow
 

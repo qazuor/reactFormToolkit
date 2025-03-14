@@ -13,6 +13,7 @@
   - [Dynamic Forms](#dynamic-forms)
   - [Performance](#performance)
   - [See Also](#see-also)
+  - [Additional Usage Scenarios](#additional-usage-scenarios)
 
 This document covers more advanced use cases for React Form Toolkit, including custom styling, input types, advanced validation, and more.
 
@@ -432,6 +433,73 @@ function LargeForm() {
 ```
 
 </details>
+
+## Additional Usage Scenarios
+
+### Dynamic Forms
+Dynamic forms allow you to add or remove fields based on user input. This can be particularly useful for applications where the number of fields is not known in advance.
+
+```tsx
+import { useState } from 'react';
+import { FormProvider, FormField } from '@qazuor/react-form-toolkit';
+
+function DynamicForm() {
+  const [fields, setFields] = useState([{ name: '', email: '' }]);
+
+  const addField = () => {
+    setFields([...fields, { name: '', email: '' }]);
+  };
+
+  return (
+    <FormProvider onSubmit={handleSubmit}>
+      {fields.map((field, index) => (
+        <div key={index}>
+          <FormField name={`fields[${index}].name`} label={`Name ${index + 1}`} required>
+            <input type="text" />
+          </FormField>
+          <FormField name={`fields[${index}].email`} label={`Email ${index + 1}`} required>
+            <input type="email" />
+          </FormField>
+        </div>
+      ))}
+      <button type="button" onClick={addField}>Add Another Field</button>
+      <button type="submit">Submit</button>
+    </FormProvider>
+  );
+}
+```
+
+### Performance Optimization
+For larger forms, consider optimizing performance by using memoization techniques or lazy loading components to improve user experience.
+
+```tsx
+import React, { memo } from 'react';
+
+const MemoizedField = memo(({ name, label }) => (
+  <FormField name={name} label={label} required>
+    <input type="text" />
+  </FormField>
+));
+```
+
+### Integration with Third-Party Libraries
+You can integrate React Form Toolkit with various third-party libraries like Material-UI or Ant Design to enhance your forms visually and functionally.
+
+```tsx
+import { FormProvider, FormField } from '@qazuor/react-form-toolkit';
+import { TextField } from '@mui/material';
+
+function MaterialUIForm() {
+  return (
+    <FormProvider onSubmit={handleSubmit}>
+      <FormField name="name" label="Name" required>
+        <TextField variant="outlined" />
+      </FormField>
+      <button type="submit">Submit</button>
+    </FormProvider>
+  );
+}
+```
 
 ## See Also
 

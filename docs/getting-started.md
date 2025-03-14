@@ -7,6 +7,9 @@
   - [Installation](#installation)
   - [Setup](#setup)
     - [Tailwind Configuration](#tailwind-configuration)
+  - [Additional Setup](#additional-setup)
+    - [Environment Variables](#environment-variables)
+    - [Running the Project](#running-the-project)
   - [Basic Usage](#basic-usage)
   - [Core Components](#core-components)
     - [FormProvider](#formprovider)
@@ -46,6 +49,32 @@ Add the React Form Toolkit source in your Tailwind configuration file:
 
 @source "../node_modules/@qazuor/react-form-toolkit/dist/index.js";
 ```
+
+## Additional Setup
+
+### Environment Variables
+For certain features, you may need to set environment variables. Create a `.env` file in the root of your project and add the following variables:
+
+```env
+REACT_APP_API_URL=https://api.example.com
+REACT_APP_I18N_LANGUAGE=en
+```
+
+### Running the Project
+After setting up the environment variables, you can run the project using:
+
+```bash
+# npm
+npm start
+
+# yarn
+yarn start
+
+# pnpm
+pnpm start
+```
+
+This will start the development server and open the application in your default browser.
 
 ## Basic Usage
 
