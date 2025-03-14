@@ -1,98 +1,86 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
-// biome-ignore lint/correctness/noUnusedImports: <explanation>
-import React from "react"
 import { describe, expect, it, vi } from "vitest"
-import { z } from "zod"
 import { FormField, FormProvider } from "../src"
-import type { AsyncValidateFunction } from "../src/types"
+import type { AsyncValidateFunction } from "../src/types/validation"
+import React from "react"
 
 describe("Async Validation", () => {
   it("handles async validation correctly", async () => {
     // Mock async validation function
     const asyncValidate: AsyncValidateFunction = vi.fn().mockImplementation(async (value) => {
-      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 100))
-      return value === "taken" ? "This value is already taken" : true
-    })
-
-    const schema = z.object({
-      username: z.string().min(2, "Username too short"),
+      return value !== "taken" ? true : "This value is already taken"
     })
 
     render(
-      <FormProvider onSubmit={() => {}} schema={schema} defaultValues={{ username: "" }} mode="onChange">
-        <FormField name="username" label="Username" asyncValidate={asyncValidate} debounceTime={100}>
+      <FormProvider onSubmit={() => {}} mode="onChange">
+        <FormField
+          name="username"
+          label="Username"
+          asyncValidate={asyncValidate}
+          debounceTime={0} // Set to 0 for testing
+        >
           <input type="text" data-testid="username-input" />
         </FormField>
         <button type="submit">Submit</button>
       </FormProvider>,
     )
 
-    // Use getByTestId instead of getByLabelText
-    const usernameInput = screen.getByTestId("username-input")
-
-    // Enter a value that will pass validation
-    fireEvent.change(usernameInput, { target: { value: "available" } })
-
-    // Wait for validation to complete
-    await waitFor(() => {
-      expect(asyncValidate).toHaveBeenCalledWith("available")
-    })
+    const input = screen.getByTestId("username-input")
 
     // Enter a value that will fail validation
-    fireEvent.change(usernameInput, { target: { value: "taken" } })
+    fireEvent.change(input, { target: { value: "taken" } })
+    fireEvent.blur(input)
 
     // Wait for validation error to appear
     await waitFor(() => {
-      expect(screen.getByText("This value is already taken")).toBeInTheDocument()
+      const errorElement = screen.getByRole("alert")
+      expect(errorElement).toBeInTheDocument()
+      expect(errorElement).toHaveTextContent("This value is already taken")
+    })
+
+    // Change to a valid value
+    fireEvent.change(input, { target: { value: "available" } })
+    fireEvent.blur(input)
+
+    // Wait for validation to pass
+    await waitFor(() => {
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument()
     })
   })
 
   it("shows validating state during async validation", async () => {
-    // Mock async validation function with longer delay
+    // Mock async validation function with delay
     const asyncValidate: AsyncValidateFunction = vi.fn().mockImplementation(async (value) => {
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 100))
       return true
     })
 
     render(
-      <FormProvider onSubmit={() => {}} defaultValues={{ username: "" }} mode="onChange">
+      <FormProvider onSubmit={() => {}} mode="onChange">
         <FormField
           name="username"
           label="Username"
           asyncValidate={asyncValidate}
-          debounceTime={0} // Set debounce to 0 for testing
+          debounceTime={0} // Set to 0 for testing
         >
           <input type="text" data-testid="username-input" />
         </FormField>
       </FormProvider>,
     )
 
-    // Use getByTestId instead of getByLabelText
-    const usernameInput = screen.getByTestId("username-input")
+    const input = screen.getByTestId("username-input")
 
-    // Enter a value to trigger validation
-    fireEvent.change(usernameInput, { target: { value: "testuser" } })
+    // Enter input to trigger async validation
+    fireEvent.change(input, { target: { value: "testuser" } })
 
-    // Use findByText instead of getByText to wait for the element to appear
-    const validatingMessage = await screen.findByText("Validating...", {}, { timeout: 1000 })
-    expect(validatingMessage).toBeInTheDocument()
+    // Check for validating text
+    expect(screen.getByText("Validating...")).toBeInTheDocument()
 
     // Wait for validation to complete
-    await waitFor(
-      () => {
-        expect(asyncValidate).toHaveBeenCalledWith("testuser")
-      },
-      { timeout: 1000 },
-    )
-
-    // Wait for the validating message to disappear
-    await waitFor(
-      () => {
-        expect(screen.queryByText("Validating...")).not.toBeInTheDocument()
-      },
-      { timeout: 1000 },
-    )
+    await waitFor(() => {
+      expect(screen.queryByText("Validating...")).not.toBeInTheDocument()
+    })
   })
 })
 

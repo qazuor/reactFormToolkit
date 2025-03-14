@@ -11,8 +11,7 @@ describe("Visual Feedback", () => {
       name: z.string().min(3, "Name must be at least 3 characters"),
     })
 
-    // Renderizar con modo "onChange" para validación inmediata
-    const { container } = render(
+    render(
       <FormProvider onSubmit={() => {}} schema={schema} mode="onChange">
         <FormField name="name" label="Name">
           <input type="text" data-testid="name-input" />
@@ -68,7 +67,11 @@ describe("Visual Feedback", () => {
     })
 
     // Check for error message
-    expect(screen.getByText("Name must be at least 3 characters")).toBeInTheDocument()
+    await waitFor(() => {
+      const errorElement = screen.getByRole("alert")
+      expect(errorElement).toBeInTheDocument()
+      expect(errorElement).toHaveTextContent("Name must be at least 3 characters")
+    })
   })
 
   it("shows loading indicator during async validation", async () => {
@@ -132,7 +135,9 @@ describe("Visual Feedback", () => {
 
     // Check for error message with animation class
     await waitFor(() => {
-      const errorElement = screen.getByText("Please enter a valid email")
+      const errorElement = screen.getByRole("alert")
+      expect(errorElement).toBeInTheDocument()
+      expect(errorElement).toHaveTextContent("Please enter a valid email")
       expect(errorElement).toHaveClass("animate-fadeIn")
     })
   })

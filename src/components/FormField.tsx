@@ -1,11 +1,12 @@
 import type React from 'react';
-import { cloneElement, isValidElement, useEffect, useState } from 'react';
+import { cloneElement, isValidElement, useEffect, useMemo, useState } from 'react';
 import { Controller, type FieldPath, type FieldValues, type RegisterOptions } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import type { JSX } from 'react/jsx-runtime';
 import { useFormContext } from '../context/FormContext';
 import { useDebounce } from '../hooks';
 import type { FormFieldProps } from '../types';
+import { FieldError } from './FieldError';
 import { InfoTooltip } from './InfoTooltip';
 
 /**
@@ -62,8 +63,21 @@ import { InfoTooltip } from './InfoTooltip';
  * >
  *   <input type="text" />
  * </FormField>
+ *
+ * // With custom error display
+ * <FormField
+ *   name="password"
+ *   label="Password"
+ *   errorDisplay={{
+ *     position: 'right',
+ *     animation: 'shake',
+ *     showIcon: true
+ *   }}
+ * >
+ *   <input type="password" />
  * ```
  */
+
 export function FormField<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
@@ -81,9 +95,10 @@ export function FormField<
     asyncValidate,
     debounceTime = 500,
     tooltip,
-    tooltipPosition = 'top'
+    tooltipPosition = 'top',
+    errorDisplay
 }: FormFieldProps<TFieldValues, TName>): JSX.Element {
-    const { form, errors, styles } = useFormContext<TFieldValues>();
+    const { form, errors, styles, errorDisplay: globalErrorDisplay } = useFormContext<TFieldValues>();
     const error = errors[name];
     const errorMessage = error?.message as string | undefined;
     const { t } = useTranslation();
@@ -94,6 +109,21 @@ export function FormField<
     const [isValid, setIsValid] = useState(false);
     const [isTouched, setIsTouched] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [errorKey, setErrorKey] = useState(0); // Add a key to force error re-render
+
+    // Merge global and field-specific error display settings
+    const mergedErrorDisplay = useMemo(() => {
+        // If global settings should override field settings
+        if (globalErrorDisplay?.overrideFieldSettings) {
+            return globalErrorDisplay;
+        }
+
+        // Otherwise, merge with field settings taking precedence
+        return {
+            ...globalErrorDisplay,
+            ...errorDisplay
+        };
+    }, [globalErrorDisplay, errorDisplay]);
 
     // Watch form state for submission status
     useEffect(() => {
@@ -111,16 +141,22 @@ export function FormField<
                     if (typeof result === 'string') {
                         form.setError(name, { type: 'validate', message: result });
                         setIsValid(false);
+                        // Force error animation to restart
+                        setErrorKey((prev) => prev + 1);
                     } else if (result) {
                         form.clearErrors(name);
                         setIsValid(true);
                     } else {
                         form.setError(name, { type: 'validate', message: 'Validation failed' });
                         setIsValid(false);
+                        // Force error animation to restart
+                        setErrorKey((prev) => prev + 1);
                     }
                 } catch (_error) {
                     form.setError(name, { type: 'validate', message: 'Validation error' });
                     setIsValid(false);
+                    // Force error animation to restart
+                    setErrorKey((prev) => prev + 1);
                 } finally {
                     setIsValidating(false);
                 }
@@ -130,23 +166,47 @@ export function FormField<
         }
     }, [debouncedValue, asyncValidate, form, name]);
 
-    // Actualizar el estado de validación cuando cambia el valor del campo
+    // Update validation state when field value changes or when errors change
     useEffect(() => {
         const subscription = form.watch((value, { name: fieldName }) => {
             if (fieldName === name || !fieldName) {
                 const fieldValue = value[name];
 
-                // Si hay un valor y no hay errores, marcar como válido
-                if (fieldValue && !errors[name] && isTouched) {
-                    setIsValid(true);
-                } else if (errors[name]) {
-                    setIsValid(false);
+                // Actualizar el estado de validez basado en la presencia de errores
+                if (isTouched) {
+                    if (errors[name]) {
+                        if (isValid) {
+                            setIsValid(false);
+                            setErrorKey((prev) => prev + 1); // Reiniciar animación
+                        }
+                    } else if (!isValid && fieldValue) {
+                        setIsValid(true);
+                    }
                 }
             }
         });
 
+        // Verificar el estado actual de errores
+        if (isTouched) {
+            const currentValue = form.getValues(name);
+            const hasError = !!errors[name];
+
+            if (hasError && isValid) {
+                setIsValid(false);
+            } else if (!(hasError || isValid) && currentValue) {
+                setIsValid(true);
+            }
+        }
+
         return () => subscription.unsubscribe();
-    }, [form, name, errors, isTouched]);
+    }, [form, name, errors, isTouched, isValid]);
+
+    // Force error animation to restart when error message changes
+    useEffect(() => {
+        if (errorMessage) {
+            setErrorKey((prev) => prev + 1);
+        }
+    }, [errorMessage]);
 
     const fieldType = isValidElement(children) ? children.type : 'input';
 
@@ -197,6 +257,31 @@ export function FormField<
     const showValidIndicator = isTouched && isValid && !isValidating && !errorMessage && !isSubmitting;
     const showInvalidIndicator = isTouched && !isValid && !isValidating && errorMessage && !isSubmitting;
     const showLoadingIndicator = isValidating || isSubmitting;
+    // Determine if we should show the error message based on groupErrors setting
+    const showErrorMessage = errorMessage && !mergedErrorDisplay.groupErrors;
+
+    // Render description based on position
+    const renderDescription = () => {
+        if (!description) {
+            return null;
+        }
+
+        return (
+            <p
+                id={`${name}-description`}
+                className={`${styles.description} ${descriptionClassName || ''}`}
+            >
+                {description}
+            </p>
+        );
+    };
+
+    // Check if error position is right
+    const isRightErrorPosition = mergedErrorDisplay?.position === 'right';
+    const isTooltipErrorPosition = mergedErrorDisplay?.position === 'tooltip';
+
+    // Create a unique key for the error component to force animation re-render
+    const errorComponentKey = `${name}-error-${errorKey}`;
 
     return (
         <div className={`${styles.wrapper} ${className || ''}`}>
@@ -221,149 +306,367 @@ export function FormField<
                 </label>
             )}
 
-            <Controller
-                control={form.control}
-                name={name}
-                rules={combinedRules}
-                render={({ field }) => {
-                    // Clone the child element and pass the field props
-                    if (isValidElement(children)) {
-                        return cloneElement(children, {
-                            ...children.props,
-                            ...field,
-                            value: field.value ?? '',
-                            id: name,
-                            onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-                                field.onChange(e);
-                                if (asyncValidate) {
-                                    setFieldValue(e.target.value);
-                                    setIsValidating(true);
+            {/* Render error message based on position */}
+            {(() => {
+                const position = mergedErrorDisplay?.position || 'bottom';
+
+                // For top position, render before the input
+                if (position === 'top') {
+                    return (
+                        <>
+                            <FieldError
+                                key={errorComponentKey}
+                                name={name}
+                                errorMessage={errorMessage}
+                                showError={!!showErrorMessage}
+                                errorDisplay={mergedErrorDisplay}
+                                className={errorClassName}
+                                isGrouped={mergedErrorDisplay?.groupErrors}
+                            />
+                            {/* For top position, render description before input */}
+                            {renderDescription()}
+                        </>
+                    );
+                }
+
+                return null;
+            })()}
+
+            {/* For right error position, wrap input and error in a flex container */}
+            {isRightErrorPosition ? (
+                <div className='flex items-center'>
+                    <div className='relative'>
+                        <Controller
+                            control={form.control}
+                            name={name}
+                            rules={combinedRules}
+                            render={({ field }) => {
+                                // Clone the child element and pass the field props
+                                if (isValidElement(children)) {
+                                    return cloneElement(children, {
+                                        ...children.props,
+                                        ...field,
+                                        value: field.value ?? '',
+                                        id: name,
+                                        onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                                            field.onChange(e);
+                                            if (asyncValidate) {
+                                                setFieldValue(e.target.value);
+                                                setIsValidating(true);
+                                            }
+                                            if (children.props.onChange) {
+                                                children.props.onChange(e);
+                                            }
+                                        },
+                                        onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
+                                            field.onBlur();
+                                            setIsTouched(true);
+                                            // No establecemos manualmente la validez aquí, dejamos que el sistema de validación lo maneje
+                                            if (children.props.onBlur) {
+                                                children.props.onBlur(e);
+                                            }
+                                        },
+                                        'aria-invalid': !!error,
+                                        'aria-describedby': description ? `${name}-description` : undefined,
+                                        className: `${getFieldStyle()} ${children.props.className || ''} ${
+                                            errorMessage ? 'border-red-500' : ''
+                                        } ${isValid && isTouched ? 'border-green-500' : ''} ${
+                                            isRightErrorPosition ? 'inline-block w-auto' : ''
+                                        }`
+                                    });
                                 }
-                                if (children.props.onChange) {
-                                    children.props.onChange(e);
+                                return <></>;
+                            }}
+                        />
+
+                        {/* Validation indicators */}
+                        {showValidIndicator && (
+                            <span
+                                className={
+                                    styles.valid ||
+                                    '-translate-y-1/2 absolute top-1/2 right-3 animate-fadeIn text-green-500'
                                 }
-                            },
-                            onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
-                                field.onBlur();
-                                setIsTouched(true);
-                                // Verificar validez después del blur
-                                const currentValue = e.target.value;
-                                if (currentValue && currentValue.length >= 3 && !errors[name]) {
-                                    setIsValid(true);
+                                aria-hidden='true'
+                                data-testid='valid-indicator'
+                            >
+                                <svg
+                                    xmlns='http://www.w3.org/2000/svg'
+                                    width='16'
+                                    height='16'
+                                    viewBox='0 0 24 24'
+                                    fill='none'
+                                    stroke='currentColor'
+                                    strokeWidth='2'
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                >
+                                    <title>{t('field.valid', { defaultValue: 'Valid' })}</title>
+                                    <path d='M20 6L9 17l-5-5' />
+                                </svg>
+                            </span>
+                        )}
+
+                        {showInvalidIndicator && (
+                            <span
+                                className={
+                                    styles.invalid ||
+                                    '-translate-y-1/2 absolute top-1/2 right-3 animate-fadeIn text-red-500'
                                 }
-                                if (children.props.onBlur) {
-                                    children.props.onBlur(e);
+                                aria-hidden='true'
+                                data-testid='invalid-indicator'
+                            >
+                                <svg
+                                    xmlns='http://www.w3.org/2000/svg'
+                                    width='16'
+                                    height='16'
+                                    viewBox='0 0 24 24'
+                                    fill='none'
+                                    stroke='currentColor'
+                                    strokeWidth='2'
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                >
+                                    <title>{t('field.invalid', { defaultValue: 'Invalid' })}</title>
+                                    <line
+                                        x1='18'
+                                        y1='6'
+                                        x2='6'
+                                        y2='18'
+                                    />
+                                    <line
+                                        x1='6'
+                                        y1='6'
+                                        x2='18'
+                                        y2='18'
+                                    />
+                                </svg>
+                            </span>
+                        )}
+
+                        {showLoadingIndicator && (
+                            <span
+                                className={
+                                    styles.loading ||
+                                    '-translate-y-1/2 absolute top-1/2 right-3 animate-spin text-gray-400'
                                 }
-                            },
-                            'aria-invalid': !!error,
-                            'aria-describedby': description ? `${name}-description` : undefined,
-                            className: `${getFieldStyle()} ${children.props.className || ''} ${
-                                errorMessage ? 'border-red-500' : ''
-                            } ${isValid && isTouched ? 'border-green-500' : ''}`
-                        });
+                                aria-hidden='true'
+                                data-testid='loading-indicator'
+                            >
+                                <svg
+                                    xmlns='http://www.w3.org/2000/svg'
+                                    width='16'
+                                    height='16'
+                                    viewBox='0 0 24 24'
+                                    fill='none'
+                                    stroke='currentColor'
+                                    strokeWidth='2'
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                >
+                                    <title>{t('field.loading', { defaultValue: 'Loading' })}</title>
+                                    <path d='M21 12a9 9 0 1 1-6.219-8.56' />
+                                </svg>
+                            </span>
+                        )}
+                    </div>
+
+                    {/* For right position, render error after input */}
+                    <FieldError
+                        key={errorComponentKey}
+                        name={name}
+                        errorMessage={errorMessage}
+                        showError={!!showErrorMessage}
+                        errorDisplay={mergedErrorDisplay}
+                        className={errorClassName}
+                        isGrouped={mergedErrorDisplay?.groupErrors}
+                    />
+                </div>
+            ) : (
+                <div className={`relative ${isTooltipErrorPosition ? 'group' : ''}`}>
+                    <Controller
+                        control={form.control}
+                        name={name}
+                        rules={combinedRules}
+                        render={({ field }) => {
+                            // Clone the child element and pass the field props
+                            if (isValidElement(children)) {
+                                return cloneElement(children, {
+                                    ...children.props,
+                                    ...field,
+                                    value: field.value ?? '',
+                                    id: name,
+                                    onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                                        field.onChange(e);
+                                        if (asyncValidate) {
+                                            setFieldValue(e.target.value);
+                                            setIsValidating(true);
+                                        }
+                                        if (children.props.onChange) {
+                                            children.props.onChange(e);
+                                        }
+                                    },
+                                    onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
+                                        field.onBlur();
+                                        setIsTouched(true);
+                                        // No establecemos manualmente la validez aquí, dejamos que el sistema de validación lo maneje
+                                        if (children.props.onBlur) {
+                                            children.props.onBlur(e);
+                                        }
+                                    },
+                                    'aria-invalid': !!error,
+                                    'aria-describedby': description ? `${name}-description` : undefined,
+                                    className: `${getFieldStyle()} ${children.props.className || ''} ${
+                                        errorMessage ? 'border-red-500' : ''
+                                    } ${isValid && isTouched ? 'border-green-500' : ''}`
+                                });
+                            }
+                            return <></>;
+                        }}
+                    />
+
+                    {/* Render error message for tooltip position */}
+                    {isTooltipErrorPosition && (
+                        <FieldError
+                            key={errorComponentKey}
+                            name={name}
+                            errorMessage={errorMessage}
+                            showError={!!showErrorMessage}
+                            errorDisplay={mergedErrorDisplay}
+                            className={errorClassName}
+                            isGrouped={mergedErrorDisplay?.groupErrors}
+                        />
+                    )}
+
+                    {/* Validation indicators */}
+                    {showValidIndicator && (
+                        <span
+                            className={
+                                styles.valid ||
+                                '-translate-y-1/2 absolute top-1/2 right-3 animate-fadeIn text-green-500'
+                            }
+                            aria-hidden='true'
+                            data-testid='valid-indicator'
+                        >
+                            <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                width='16'
+                                height='16'
+                                viewBox='0 0 24 24'
+                                fill='none'
+                                stroke='currentColor'
+                                strokeWidth='2'
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                            >
+                                <title>{t('field.valid', { defaultValue: 'Valid' })}</title>
+                                <path d='M20 6L9 17l-5-5' />
+                            </svg>
+                        </span>
+                    )}
+
+                    {showInvalidIndicator && (
+                        <span
+                            className={
+                                styles.invalid ||
+                                '-translate-y-1/2 absolute top-1/2 right-3 animate-fadeIn text-red-500'
+                            }
+                            aria-hidden='true'
+                            data-testid='invalid-indicator'
+                        >
+                            <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                width='16'
+                                height='16'
+                                viewBox='0 0 24 24'
+                                fill='none'
+                                stroke='currentColor'
+                                strokeWidth='2'
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                            >
+                                <title>{t('field.invalid', { defaultValue: 'Invalid' })}</title>
+                                <line
+                                    x1='18'
+                                    y1='6'
+                                    x2='6'
+                                    y2='18'
+                                />
+                                <line
+                                    x1='6'
+                                    y1='6'
+                                    x2='18'
+                                    y2='18'
+                                />
+                            </svg>
+                        </span>
+                    )}
+
+                    {showLoadingIndicator && (
+                        <span
+                            className={
+                                styles.loading || '-translate-y-1/2 absolute top-1/2 right-3 animate-spin text-gray-400'
+                            }
+                            aria-hidden='true'
+                            data-testid='loading-indicator'
+                        >
+                            <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                width='16'
+                                height='16'
+                                viewBox='0 0 24 24'
+                                fill='none'
+                                stroke='currentColor'
+                                strokeWidth='2'
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                            >
+                                <title>{t('field.loading', { defaultValue: 'Loading' })}</title>
+                                <path d='M21 12a9 9 0 1 1-6.219-8.56' />
+                            </svg>
+                        </span>
+                    )}
+                </div>
+            )}
+
+            {/* Render description for positions other than top */}
+            {(() => {
+                const position = mergedErrorDisplay?.position || 'bottom';
+
+                if (position !== 'top') {
+                    // For bottom position, render description before error
+                    if (position === 'bottom' && description) {
+                        return renderDescription();
                     }
-                    return <></>;
-                }}
-            />
 
-            {/* Validation indicators */}
-            {showValidIndicator && (
-                <span
-                    className={styles.valid || 'absolute top-9 right-3 animate-fadeIn text-green-500'}
-                    aria-hidden='true'
-                    data-testid='valid-indicator'
-                >
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        width='16'
-                        height='16'
-                        viewBox='0 0 24 24'
-                        fill='none'
-                        stroke='currentColor'
-                        strokeWidth='2'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                    >
-                        <title>{t('field.valid', { defaultValue: 'Valid' })}</title>
-                        <path d='M20 6L9 17l-5-5' />
-                    </svg>
-                </span>
-            )}
+                    // For other positions, render description after input
+                    if (position === 'right' && description) {
+                        return renderDescription();
+                    }
+                }
 
-            {showInvalidIndicator && (
-                <span
-                    className={styles.invalid || 'absolute top-9 right-3 animate-fadeIn text-red-500'}
-                    aria-hidden='true'
-                    data-testid='invalid-indicator'
-                >
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        width='16'
-                        height='16'
-                        viewBox='0 0 24 24'
-                        fill='none'
-                        stroke='currentColor'
-                        strokeWidth='2'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                    >
-                        <title>{t('field.invalid', { defaultValue: 'Invalid' })}</title>
-                        <line
-                            x1='18'
-                            y1='6'
-                            x2='6'
-                            y2='18'
+                return null;
+            })()}
+
+            {/* Render error message for bottom position */}
+            {(() => {
+                const position = mergedErrorDisplay?.position || 'bottom';
+
+                if (position === 'bottom') {
+                    return (
+                        <FieldError
+                            key={errorComponentKey}
+                            name={name}
+                            errorMessage={errorMessage}
+                            showError={!!showErrorMessage}
+                            errorDisplay={mergedErrorDisplay}
+                            className={errorClassName}
+                            isGrouped={mergedErrorDisplay?.groupErrors}
                         />
-                        <line
-                            x1='6'
-                            y1='6'
-                            x2='18'
-                            y2='18'
-                        />
-                    </svg>
-                </span>
-            )}
+                    );
+                }
 
-            {showLoadingIndicator && (
-                <span
-                    className={styles.loading || 'absolute top-9 right-3 animate-spin text-gray-400'}
-                    aria-hidden='true'
-                    data-testid='loading-indicator'
-                >
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        width='16'
-                        height='16'
-                        viewBox='0 0 24 24'
-                        fill='none'
-                        stroke='currentColor'
-                        strokeWidth='2'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                    >
-                        <title>{t('field.loading', { defaultValue: 'Loading' })}</title>
-                        <path d='M21 12a9 9 0 1 1-6.219-8.56' />
-                    </svg>
-                </span>
-            )}
-
-            {description && (
-                <p
-                    id={`${name}-description`}
-                    className={`${styles.description} ${descriptionClassName || ''}`}
-                >
-                    {description}
-                </p>
-            )}
-
-            {errorMessage && (
-                <p
-                    className={`${styles.error} ${errorClassName || ''}`}
-                    role='alert'
-                >
-                    {errorMessage}
-                </p>
-            )}
+                return null;
+            })()}
         </div>
     );
 }

@@ -41,5 +41,12 @@ export const defaultStyles = {
         tooltipIcon: 'text-gray-500 hover:text-gray-700 cursor-pointer transition-colors',
         /** Tooltip content styles */
         tooltipContent: 'absolute z-10 p-2 text-xs bg-gray-800 text-white rounded shadow-lg max-w-xs'
+    },
+    animations: {
+        fadeIn: 'animate-fadeIn',
+        slideIn: 'animate-slideIn',
+        shake: 'animate-shake',
+        pulse: 'animate-pulse',
+        spin: 'animate-spin'
     }
 };

@@ -1,7 +1,14 @@
 import type { ComponentProps, ReactNode } from 'react';
 import type { DefaultValues, FieldErrors, FieldPath, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import type { ZodType, ZodTypeDef } from 'zod';
-import type { AsyncValidateFunction, FieldStyles, FormStyles, I18nOptions } from './index.ts';
+import type {
+    AsyncValidateFunction,
+    ErrorDisplayOptions,
+    FieldStyles,
+    FormStyles,
+    GlobalErrorDisplayConfig,
+    I18nOptions
+} from './index.ts';
 
 /**
  * Props for the FormProvider component.
@@ -31,6 +38,8 @@ export interface FormProviderProps<TFieldValues extends FieldValues> {
     mode?: 'onChange' | 'onBlur' | 'onSubmit' | 'onTouched' | 'all';
     /** Function called when the form submission fails */
     onError?: (error: any) => void;
+    /** Global error display configuration */
+    errorDisplay?: GlobalErrorDisplayConfig;
 }
 
 /**
@@ -51,6 +60,8 @@ export interface FormContextValue<TFieldValues extends FieldValues> {
     setGlobalError: (error: string | null) => void;
     /** Function to clear the global form error */
     clearGlobalError: () => void;
+    /** Error display configuration */
+    errorDisplay: GlobalErrorDisplayConfig;
 }
 
 /**
@@ -109,6 +120,8 @@ export interface FormFieldProps<
     tooltip?: string;
     /** The position for the info Tooltip */
     tooltipPosition?: 'top' | 'right' | 'bottom' | 'left';
+    /** Field-specific error display configuration */
+    errorDisplay?: ErrorDisplayOptions;
 }
 
 export interface SubmitButtonProps {
@@ -133,6 +146,8 @@ export interface FormErrorProps {
     error?: string;
     /** Data test ID for testing */
     'data-testid'?: string;
+    /** Error display configuration */
+    errorDisplay?: ErrorDisplayOptions;
 }
 
 /** HTML Input props type */

@@ -28,6 +28,7 @@ describe("FormError", () => {
     )
 
     expect(screen.queryByTestId("form-error")).not.toBeInTheDocument()
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument()
   })
 
   it("renders global error when present", async () => {

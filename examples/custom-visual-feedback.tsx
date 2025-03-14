@@ -41,9 +41,9 @@ export function CustomVisualFeedbackForm() {
             description: 'text-gray-500 text-xs mt-1 italic',
             requiredMark: 'text-purple-500 ml-1',
             validating: 'ml-2 text-xs text-purple-500 animate-pulse',
-            valid: 'absolute right-3 top-9 text-green-500 animate-fadeIn',
-            invalid: 'absolute right-3 top-10 text-red-500',
-            loading: 'absolute right-3 top-10 text-purple-500 animate-spin'
+            valid: 'absolute right-3 top-4 text-green-500 animate-fadeIn',
+            invalid: 'absolute right-3 top-4 text-red-500',
+            loading: 'absolute right-3 top-4 text-purple-500 animate-spin'
         }
     };
 

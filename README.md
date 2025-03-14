@@ -22,6 +22,8 @@ A strongly-typed React form toolkit built on top of React Hook Form with Zod val
   - [🚀 Quick Start](#-quick-start)
     - [Installation](#installation)
     - [Basic Setup](#basic-setup)
+      - [In your main css file](#in-your-main-css-file)
+      - [In your app entry point](#in-your-app-entry-point)
     - [Basic Example](#basic-example)
   - [📚 Documentation](#-documentation)
   - [📋 Project Status](#-project-status)
@@ -57,6 +59,8 @@ pnpm add @qazuor/react-form-toolkit react-hook-form @hookform/resolvers zod tail
 
 ### Basic Setup
 
+#### In your main css file
+
 ```scss
 @layer theme, base, components, utilities;
 @import "tailwindcss/theme.css" layer(theme);
@@ -64,6 +68,12 @@ pnpm add @qazuor/react-form-toolkit react-hook-form @hookform/resolvers zod tail
 @import "tailwindcss/utilities.css" layer(utilities);
 
 @source "../node_modules/@qazuor/react-form-toolkit/dist/index.js";
+```
+
+#### In your app entry point
+
+```tsx
+import "../node_modules/@qazuor/react-form-toolkit/dist/style.css";
 ```
 
 ### Basic Example
@@ -123,8 +133,6 @@ function MyForm() {
 
 ### TODO
 
-- [ ] Validation
-  - [ ] Add Toast as an option to show errors
 - [ ] Add more examples
 - [ ] Add more testing
 - [ ] Field Arrays
@@ -141,14 +149,14 @@ function MyForm() {
 - [ ] Add Form generation from schema feature
 - [ ] Add more internationalized texts
 - [ ] Add more languages
-- [ ] Create a demo website
 
 ### In Progress
 
 - [ ] UI
   - [ ] support components libraries (shadcn, mantine, MUI, etc)
 - [ ] Validation
-  - [ ] make errors msg more flexible and configurable
+  - [ ] Add Toast as an option to show errors
+- [ ] Create a demo website
 
 ### Done ✓
 
@@ -162,9 +170,12 @@ function MyForm() {
   - [x] set validation mode configurable
   - [x] async validation for FormField
   - [x] disable complete form on validate/submit
+  - [x] make errors msg more flexible and configurable
 
 </details>
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+Made with ❤️ by [qazuor]('https://github.com/qazuor')

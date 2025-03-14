@@ -5,3 +5,5 @@ export * from './ResetButton';
 export * from './CancelButton';
 export * from './FormError';
 export * from './InfoTooltip';
+export * from './FieldError';
+export * from './ErrorGroup';

@@ -44,47 +44,7 @@ const config: Config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-      },
-      animation: {
-        fadeIn: "fadeIn 0.3s ease-in-out",
-        fadeOut: "fadeOut 0.3s ease-in-out",
-        pulse: "pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        bounce: "bounce 1s infinite",
-        spin: "spin 1s linear infinite",
-        shake: "shake 0.5s ease-in-out",
-      },
-      keyframes: {
-        fadeIn: {
-          "0%": { opacity: "0" },
-          "100%": { opacity: "1" },
-        },
-        fadeOut: {
-          "0%": { opacity: "1" },
-          "100%": { opacity: "0" },
-        },
-        pulse: {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: ".5" },
-        },
-        bounce: {
-          "0%, 100%": {
-            transform: "translateY(-25%)",
-            animationTimingFunction: "cubic-bezier(0.8, 0, 1, 1)",
-          },
-          "50%": {
-            transform: "translateY(0)",
-            animationTimingFunction: "cubic-bezier(0, 0, 0.2, 1)",
-          },
-        },
-        spin: {
-          to: { transform: "rotate(360deg)" },
-        },
-        shake: {
-          "0%, 100%": { transform: "translateX(0)" },
-          "10%, 30%, 50%, 70%, 90%": { transform: "translateX(-5px)" },
-          "20%, 40%, 60%, 80%": { transform: "translateX(5px)" },
-        },
-      },
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],

@@ -12,6 +12,8 @@
   - [Code Guidelines](#code-guidelines)
   - [Testing](#testing)
   - [Documentation Contribution](#documentation-contribution)
+    - [Updating Documentation](#updating-documentation)
+    - [Review Process](#review-process)
   - [TODO List](#todo-list)
     - [TODO](#todo)
     - [In Progress](#in-progress)
@@ -128,7 +130,6 @@ Here are some areas where contributions are especially appreciated:
 - [ ] Add Form generation from schema feature
 - [ ] Add more internationalized texts
 - [ ] Add more languages
-- [ ] Create a demo website
 
 ### In Progress
 
@@ -136,6 +137,7 @@ Here are some areas where contributions are especially appreciated:
   - [ ] support components libraries (shadcn, mantine, MUI, etc)
 - [ ] Validation
   - [ ] Add Toast as an option to show errors
+- [ ] Create a demo website
 
 ### Pull Request Workflow
 

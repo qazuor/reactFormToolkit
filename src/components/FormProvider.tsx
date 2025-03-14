@@ -7,6 +7,7 @@ import { FormContext } from '../context/FormContext';
 import { initI18n } from '../i18n';
 import { defaultStyles } from '../styles/defaultStyles';
 import type { FormProviderProps, TranslationResources } from '../types';
+import { ErrorGroup } from './ErrorGroup';
 
 /**
  * FormProvider component that wraps the form and provides context to child components.
@@ -34,6 +35,7 @@ import type { FormProviderProps, TranslationResources } from '../types';
  *       onSubmit={handleSubmit}
  *       schema={formSchema}
  *       defaultValues={{ name: '', email: '' }}
+ *       errorDisplay={{ position: 'right', animation: 'shake' }}
  *     >
  *       <FormField name="name" label="Name">
  *         <input type="text" />
@@ -60,17 +62,43 @@ export function FormProvider<TFieldValues extends FieldValues>({
     resetOnSubmit = false,
     styles,
     i18n: i18nOptions,
-    mode = 'onBlur'
+    mode = 'onBlur',
+    errorDisplay
 }: FormProviderProps<TFieldValues>): JSX.Element {
     const { t } = useTranslation();
     // State for global error
     const [globalError, setGlobalErrorState] = useState<string | null>(null);
 
-    // Create the form instance
+    // Default error display configuration
+    const defaultErrorDisplay = {
+        position: 'bottom' as const,
+        animation: 'fade' as const,
+        delay: 0,
+        showIcon: true,
+        groupErrors: false,
+        maxErrors: Number.POSITIVE_INFINITY,
+        autoDismiss: false,
+        dismissAfter: 5000,
+        overrideFieldSettings: false
+    };
+
+    // Merge default error display with user-provided options
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    const mergedErrorDisplay = useMemo(
+        () => ({
+            ...defaultErrorDisplay,
+            ...errorDisplay
+        }),
+        [errorDisplay]
+    );
+
+    // Create the form instance with improved validation
     const internalForm = useForm<TFieldValues>({
         resolver: schema ? zodResolver(schema) : undefined,
         defaultValues: defaultValues as DefaultValues<TFieldValues>,
-        mode
+        mode,
+        criteriaMode: 'all', // Show all validation criteria
+        reValidateMode: 'onChange' // Re-validate on change after submission
     });
 
     // Use external form if provided, otherwise use the internal form
@@ -156,25 +184,56 @@ export function FormProvider<TFieldValues extends FieldValues>({
 
     const formStyles = styles?.form || defaultStyles.form;
 
+    // Convert errors object to a format suitable for ErrorGroup
+    const errorMessages = useMemo(() => {
+        if (!errors) {
+            return {};
+        }
+
+        return Object.entries(errors).reduce(
+            (acc, [key, error]) => {
+                if (error?.message) {
+                    acc[key] = error.message as string;
+                }
+                return acc;
+            },
+            {} as Record<string, string>
+        );
+    }, [errors]);
+
+    const contextValue = useMemo(
+        () => ({
+            form,
+            errors,
+            styles: styles?.field || defaultStyles.field,
+            globalError,
+            setGlobalError,
+            clearGlobalError,
+            errorDisplay: mergedErrorDisplay
+        }),
+        [form, errors, styles?.field, globalError, setGlobalError, clearGlobalError, mergedErrorDisplay]
+    );
+
     return (
         <I18nextProvider i18n={i18nInstance}>
-            <FormContext.Provider
-                value={{
-                    form,
-                    errors,
-                    styles: styles?.field || defaultStyles.field,
-                    globalError,
-                    setGlobalError,
-                    clearGlobalError
-                }}
-            >
+            <FormContext.Provider value={contextValue}>
                 <RHFFormProvider {...form}>
                     <form
                         onSubmit={handleSubmit(handleFormSubmit)}
                         className={`${formStyles} ${className || ''}`}
                         noValidate={true}
+                        name={JSON.stringify(form.getValues())}
                     >
                         {children}
+
+                        {/* Render grouped errors if enabled */}
+                        {mergedErrorDisplay.groupErrors && Object.keys(errorMessages).length > 0 && (
+                            <ErrorGroup
+                                errors={errorMessages}
+                                maxErrors={mergedErrorDisplay.maxErrors}
+                                animation={mergedErrorDisplay.animation}
+                            />
+                        )}
                     </form>
                 </RHFFormProvider>
             </FormContext.Provider>
