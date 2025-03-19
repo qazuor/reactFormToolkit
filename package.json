@@ -1,0 +1,81 @@
+{
+	"name": "@qazuor/react-form-toolkit",
+	"version": "0.1.0",
+	"homepage": "https://github.com/qazuor/reactFormToolkit",
+	"description": "A strongly-typed React form toolkit built on top of React Hook Form with Zod validation. This library provides a simple, flexible, and type-safe way to build forms in React applications.",
+	"keywords": ["react", "form", "validation", "typescript", "zod"],
+	"author": "Qazuor <qazuor@gmail.com> (https://github.com/qazuor/)",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/qazuor/react-form-toolkit"
+	},
+	"bugs": {
+		"url": "https://github.com/qazuor/reactFormToolkit/issues",
+		"email": "qazuor@gmail.com"
+	},
+	"private": false,
+	"workspaces": ["examples"],
+	"type": "module",
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js"
+		}
+	},
+	"files": ["dist", "README.md"],
+	"scripts": {
+		"preinstall": "npx only-allow pnpm",
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"lint": "biome check .",
+		"test": "vitest",
+		"test:coverage": "vitest run --coverage",
+		"format": "biome format --write .",
+		"lint:fix": "biome check --apply .",
+		"prepublishOnly": "npm run build",
+		"example:dev": "npm run dev -w examples",
+		"example:build": "npm run build -w examples"
+	},
+	"peerDependencies": {
+		"react": "^18.0.0",
+		"react-dom": "^18.0.0"
+	},
+	"dependencies": {
+		"@hookform/resolvers": "^3.3.4",
+		"i18next": "^24.2.2",
+		"i18next-browser-languagedetector": "^7.2.0",
+		"react-hook-form": "^7.51.0",
+		"react-i18next": "^15.4.1",
+		"zod": "^3.22.4"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@testing-library/react": "^16.2.0",
+		"@testing-library/jest-dom": "^6.6.3",
+		"@testing-library/react-hooks": "^8.0.1",
+		"@types/node": "^20.10.0",
+		"@types/react": "^18.3.5",
+		"@types/react-dom": "^18.3.0",
+		"@vitejs/plugin-react": "^4.2.0",
+		"@vitest/coverage-v8": "^1.3.1",
+		"happy-dom": "^12.10.3",
+		"jsdom": "^24.0.0",
+		"react": "^19",
+		"react-dom": "^19",
+		"tsup": "^8.0.2",
+		"typescript": "^5.5.3",
+		"vite": "^5.0.0",
+		"vite-plugin-dts": "^3.9.1",
+		"vitest": "^1.3.1",
+		"zod": "^3.22.4"
+	},
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"packageManager": "pnpm@10.5.2"
+}
