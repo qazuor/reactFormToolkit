@@ -23,7 +23,7 @@ export function InfoTooltipIcon({ title }: IconProps): JSX.Element {
             strokeLinecap='round'
             strokeLinejoin='round'
         >
-            <title>{title || defaultTitle}</title>
+            <title aria-label={title || defaultTitle}> </title>
             <circle
                 cx='12'
                 cy='12'

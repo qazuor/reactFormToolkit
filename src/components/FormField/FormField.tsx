@@ -20,7 +20,14 @@ import { FieldLabel } from './FieldLabel';
  * </FormField>
  * ```
  */
-export function FormField({ name, label, required = false, children, description }: FormFieldProps): ReactElement {
+export function FormField({
+    name,
+    label,
+    required = false,
+    children,
+    description,
+    tooltip
+}: FormFieldProps): ReactElement {
     // Determine field type and properties
     const isCheckbox = isValidElement(children) && children.props.type === 'checkbox';
     const { hasError, error } = useFieldStatus(name);
@@ -59,6 +66,7 @@ export function FormField({ name, label, required = false, children, description
                 <FieldLabel
                     htmlFor={name}
                     required={required}
+                    tooltip={tooltip}
                 >
                     {label}
                 </FieldLabel>

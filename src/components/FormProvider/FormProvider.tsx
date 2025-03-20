@@ -1,3 +1,4 @@
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { FormContext } from '@/context/FormContext';
 import type { FormProviderProps } from '@/types/form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -48,13 +49,19 @@ export function FormProvider<TFieldValues extends FieldValues>({
     });
 
     return (
-        <FormContext.Provider value={{ form: form as UseFormReturn<FieldValues> }}>
-            <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                noValidate={true}
-            >
-                {children}
-            </form>
-        </FormContext.Provider>
+        <TooltipProvider
+            delayDuration={0}
+            skipDelayDuration={0}
+            disableHoverableContent={true}
+        >
+            <FormContext.Provider value={{ form: form as UseFormReturn<FieldValues> }}>
+                <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    noValidate={true}
+                >
+                    {children}
+                </form>
+            </FormContext.Provider>
+        </TooltipProvider>
     );
 }

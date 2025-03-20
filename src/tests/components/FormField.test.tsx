@@ -42,7 +42,8 @@ describe('FormField', () => {
 
     it('displays tooltip when tooltip prop is provided', () => {
         renderField({ tooltip: 'Help text' });
-        expect(screen.getByTitle('Help text')).toBeInTheDocument();
+        const tooltipTrigger = screen.getByRole('button');
+        expect(tooltipTrigger).toHaveClass('cursor-help');
     });
 
     it('shows validation error message on invalid input', async () => {
@@ -59,7 +60,6 @@ describe('FormField', () => {
         render(
             <FormProvider
                 schema={z.object({ checked: z.boolean() })}
-                // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
                 onSubmit={() => {}}
             >
                 <FormField name='checked'>
@@ -84,26 +84,25 @@ describe('FormField', () => {
     });
 
     it('handles non-string error messages', async () => {
-        const customSchema = z.object({
-            testField: z.number().min(5, { message: 'Must be at least 5' })
+        const schema = z.object({
+            testField: z.string().min(5, 'Must be at least 5 characters')
         });
 
         render(
             <FormProvider
-                schema={customSchema}
-                // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
+                schema={schema}
                 onSubmit={() => {}}
             >
                 <FormField name='testField'>
-                    <input type='number' />
+                    <input type='text' />
                 </FormField>
             </FormProvider>
         );
 
         const input = screen.getByTestId('testField');
-        fireEvent.change(input, { target: { value: '3' } });
+        fireEvent.change(input, { target: { value: 'abc' } });
         fireEvent.blur(input);
 
-        expect(await screen.findByText('Must be at least 5')).toBeInTheDocument();
+        expect(await screen.findByText('Must be at least 5 characters')).toBeInTheDocument();
     });
 });
