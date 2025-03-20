@@ -40,6 +40,7 @@ export function ValidationForm() {
                 <FormField
                     name='username'
                     label={t('form.username')}
+                    tooltip={t('form.usernameTooltip')}
                     required={true}
                 >
                     <input
@@ -52,6 +53,7 @@ export function ValidationForm() {
                 <FormField
                     name='email'
                     label={t('form.email')}
+                    tooltip={t('form.emailTooltip')}
                     required={true}
                 >
                     <input
@@ -64,6 +66,7 @@ export function ValidationForm() {
                 <FormField
                     name='password'
                     label={t('form.password')}
+                    tooltip={t('form.passwordTooltip')}
                     required={true}
                 >
                     <input
@@ -76,6 +79,7 @@ export function ValidationForm() {
                 <FormField
                     name='confirmPassword'
                     label={t('form.confirmPassword')}
+                    tooltip={t('form.confirmPasswordTooltip')}
                     required={true}
                 >
                     <input

@@ -25,6 +25,7 @@ export function BasicForm() {
                 <FormField
                     name='email'
                     label={t('form.email')}
+                    tooltip={t('form.emailTooltip')}
                     required={true}
                 >
                     <input
@@ -37,6 +38,7 @@ export function BasicForm() {
                 <FormField
                     name='password'
                     label={t('form.password')}
+                    tooltip={t('form.passwordTooltip')}
                     required={true}
                 >
                     <input

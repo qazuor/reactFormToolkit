@@ -29,6 +29,7 @@ export function ComplexForm() {
                     <FormField
                         name='firstName'
                         label={t('form.firstName')}
+                        tooltip={t('form.firstNameTooltip')}
                         required={true}
                     >
                         <input
@@ -41,6 +42,7 @@ export function ComplexForm() {
                     <FormField
                         name='lastName'
                         label={t('form.lastName')}
+                        tooltip={t('form.lastNameTooltip')}
                         required={true}
                     >
                         <input
@@ -54,6 +56,7 @@ export function ComplexForm() {
                 <FormField
                     name='email'
                     label={t('form.email')}
+                    tooltip={t('form.emailTooltip')}
                     required={true}
                 >
                     <input
@@ -66,6 +69,7 @@ export function ComplexForm() {
                 <FormField
                     name='phone'
                     label={t('form.phone')}
+                    tooltip={t('form.phoneTooltip')}
                     required={true}
                 >
                     <input
@@ -78,6 +82,7 @@ export function ComplexForm() {
                 <FormField
                     name='message'
                     label={t('form.message')}
+                    tooltip={t('form.messageTooltip')}
                     required={true}
                 >
                     <textarea
