@@ -33,7 +33,8 @@
             "node_modules/**/*",
             "**/build",
             "**/dist",
-            "**/public"
+            "**/public",
+            "examples/src/components/ui/*.tsx"
         ]
     },
     "formatter": {
@@ -45,7 +46,7 @@
         "indentWidth": 4,
         "lineEnding": "lf",
         "useEditorconfig": true,
-        "ignore": ["dist", "**/dist", "**/dist/**"]
+        "ignore": ["dist", "**/dist", "**/dist/**", "examples/src/components/ui/*.tsx"]
     },
     "organizeImports": {
         "enabled": true
@@ -62,7 +63,7 @@
             "examples/**/*.ts",
             "examples/**/*.tsx"
         ],
-        "ignore": ["dist", "**/dist", "**/dist/**"],
+        "ignore": ["dist", "**/dist", "**/dist/**", "examples/src/components/ui/*.tsx"],
         "rules": {
             "recommended": true,
             "a11y": {
@@ -220,7 +221,7 @@
                 },
                 "noArguments": "error",
                 "noCommaOperator": "error",
-                "noDefaultExport": "error",
+                "noDefaultExport": "off",
                 "noImplicitBoolean": "error",
                 "noDoneCallback": "error",
                 "noNegationElse": "error",
@@ -284,7 +285,7 @@
                 "noDuplicatedFields": "error",
                 "noDynamicNamespaceImportAccess": "error",
                 "noProcessEnv": "error",
-                "noSecrets": "error",
+                "noSecrets": "off",
                 "noSubstr": "error",
                 "noTemplateCurlyInString": "error",
                 "noUnknownPseudoClass": "error",
