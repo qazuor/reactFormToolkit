@@ -1,6 +1,6 @@
-import { z } from 'zod';
-import { FormProvider, FormField } from '@qazuor/react-form-toolkit';
+import { FormField, FormProvider } from '@qazuor/react-form-toolkit';
 import { useTranslation } from 'react-i18next';
+import { z } from 'zod';
 
 const schema = z.object({
     email: z.string().email(),
@@ -13,46 +13,46 @@ export function BasicForm() {
     const { t } = useTranslation();
 
     const handleSubmit = async (data: LoginForm) => {
-        console.log('Form submitted:', data);
+        console.info('Form submitted:', data);
     };
 
     return (
-        <FormProvider<typeof schema>
+        <FormProvider
             schema={schema}
             onSubmit={handleSubmit}
         >
-            <div className="space-y-6">
+            <div className='space-y-6'>
                 <FormField
-                    name="email"
+                    name='email'
                     label={t('form.email')}
-                    required
+                    required={true}
                 >
                     <input
-                        type="email"
-                        className="w-full px-3 py-2 border rounded-md"
+                        type='email'
+                        className='w-full rounded-md border px-3 py-2'
                         placeholder={t('form.emailPlaceholder')}
                     />
                 </FormField>
-                
+
                 <FormField
-                    name="password"
+                    name='password'
                     label={t('form.password')}
-                    required
+                    required={true}
                 >
                     <input
-                        type="password"
-                        className="w-full px-3 py-2 border rounded-md"
+                        type='password'
+                        className='w-full rounded-md border px-3 py-2'
                         placeholder={t('form.passwordPlaceholder')}
                     />
                 </FormField>
 
                 <button
-                    type="submit"
-                    className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                    type='submit'
+                    className='w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700'
                 >
                     {t('form.submit')}
                 </button>
             </div>
         </FormProvider>
-    )
+    );
 }

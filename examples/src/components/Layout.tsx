@@ -1,30 +1,26 @@
-import { Outlet, Link, useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
 export function Layout() {
     const { t } = useTranslation();
     const location = useLocation();
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto">
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                        {t('examples.title')}
-                    </h1>
-                    <p className="text-lg text-gray-600">
-                        {t('examples.description')}
-                    </p>
+        <div className='min-h-screen bg-gray-50 px-4 py-12 sm:px-6 lg:px-8'>
+            <div className='mx-auto max-w-3xl'>
+                <div className='mb-12 text-center'>
+                    <h1 className='mb-4 font-bold text-4xl text-gray-900'>{t('examples.title')}</h1>
+                    <p className='text-gray-600 text-lg'>{t('examples.description')}</p>
                 </div>
 
-                <nav className="mb-8">
-                    <ul className="flex space-x-4 justify-center">
+                <nav className='mb-8'>
+                    <ul className='flex justify-center space-x-4'>
                         <li>
                             <Link
-                                to="/examples/basic"
+                                to='/examples/basic'
                                 className={cn(
-                                    'px-4 py-2 rounded-md transition-colors',
+                                    'rounded-md px-4 py-2 transition-colors',
                                     location.pathname === '/examples/basic'
                                         ? 'bg-blue-600 text-white'
                                         : 'text-gray-600 hover:text-gray-900'
@@ -35,9 +31,9 @@ export function Layout() {
                         </li>
                         <li>
                             <Link
-                                to="/examples/complex"
+                                to='/examples/complex'
                                 className={cn(
-                                    'px-4 py-2 rounded-md transition-colors',
+                                    'rounded-md px-4 py-2 transition-colors',
                                     location.pathname === '/examples/complex'
                                         ? 'bg-blue-600 text-white'
                                         : 'text-gray-600 hover:text-gray-900'
@@ -48,9 +44,9 @@ export function Layout() {
                         </li>
                         <li>
                             <Link
-                                to="/examples/validation"
+                                to='/examples/validation'
                                 className={cn(
-                                    'px-4 py-2 rounded-md transition-colors',
+                                    'rounded-md px-4 py-2 transition-colors',
                                     location.pathname === '/examples/validation'
                                         ? 'bg-blue-600 text-white'
                                         : 'text-gray-600 hover:text-gray-900'
@@ -62,7 +58,7 @@ export function Layout() {
                     </ul>
                 </nav>
 
-                <div className="bg-white shadow-lg rounded-lg p-6">
+                <div className='rounded-lg bg-white p-6 shadow-lg'>
                     <Outlet />
                 </div>
             </div>

@@ -1,6 +1,6 @@
-import { z } from 'zod';
-import { FormProvider, FormField } from '@qazuor/react-form-toolkit';
+import { FormField, FormProvider } from '@qazuor/react-form-toolkit';
 import { useTranslation } from 'react-i18next';
+import { z } from 'zod';
 
 const schema = z.object({
     firstName: z.string().min(2),
@@ -16,83 +16,83 @@ export function ComplexForm() {
     const { t } = useTranslation();
 
     const handleSubmit = async (data: ContactForm) => {
-        console.log('Form submitted:', data);
+        console.info('Form submitted:', data);
     };
 
     return (
-        <FormProvider<typeof schema>
+        <FormProvider
             schema={schema}
             onSubmit={handleSubmit}
         >
-            <div className="space-y-6">
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div className='space-y-6'>
+                <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
                     <FormField
-                        name="firstName"
+                        name='firstName'
                         label={t('form.firstName')}
-                        required
+                        required={true}
                     >
                         <input
-                            type="text"
-                            className="w-full px-3 py-2 border rounded-md"
+                            type='text'
+                            className='w-full rounded-md border px-3 py-2'
                             placeholder={t('form.firstNamePlaceholder')}
                         />
                     </FormField>
 
                     <FormField
-                        name="lastName"
+                        name='lastName'
                         label={t('form.lastName')}
-                        required
+                        required={true}
                     >
                         <input
-                            type="text"
-                            className="w-full px-3 py-2 border rounded-md"
+                            type='text'
+                            className='w-full rounded-md border px-3 py-2'
                             placeholder={t('form.lastNamePlaceholder')}
                         />
                     </FormField>
                 </div>
 
                 <FormField
-                    name="email"
+                    name='email'
                     label={t('form.email')}
-                    required
+                    required={true}
                 >
                     <input
-                        type="email"
-                        className="w-full px-3 py-2 border rounded-md"
+                        type='email'
+                        className='w-full rounded-md border px-3 py-2'
                         placeholder={t('form.emailPlaceholder')}
                     />
                 </FormField>
 
                 <FormField
-                    name="phone"
+                    name='phone'
                     label={t('form.phone')}
-                    required
+                    required={true}
                 >
                     <input
-                        type="tel"
-                        className="w-full px-3 py-2 border rounded-md"
+                        type='tel'
+                        className='w-full rounded-md border px-3 py-2'
                         placeholder={t('form.phonePlaceholder')}
                     />
                 </FormField>
 
                 <FormField
-                    name="message"
+                    name='message'
                     label={t('form.message')}
-                    required
+                    required={true}
                 >
                     <textarea
-                        className="w-full px-3 py-2 border rounded-md h-32"
+                        className='h-32 w-full rounded-md border px-3 py-2'
                         placeholder={t('form.messagePlaceholder')}
                     />
                 </FormField>
 
                 <button
-                    type="submit"
-                    className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                    type='submit'
+                    className='w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700'
                 >
                     {t('form.submit')}
                 </button>
             </div>
         </FormProvider>
-    )
+    );
 }
