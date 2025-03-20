@@ -3,10 +3,14 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+    optimizeDeps: {
+        include: ['@qazuor/react-form-toolkit']
+    },
     plugins: [react()],
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src')
-        }
+        },
+        preserveSymlinks: true
     }
 });
