@@ -34,6 +34,7 @@
 		"watch": "tsup --watch",
 		"lint": "biome check ./src",
 		"test": "vitest",
+		"test:file": "vitest run",
 		"test:coverage": "vitest run --coverage",
 		"format": "biome format --write ./src",
 		"lint:fix": "biome check --apply ./src",
