@@ -37,10 +37,10 @@
 		"format": "biome format --write ./src",
 		"lint:fix": "biome check --apply ./src",
 		"prepublishOnly": "pnpm run build",
-		"example:dev": "pnpm run dev -w examples",
-		"example:build": "pnpm run build -w examples",
-		"example:lint": "pnpm run lint -w examples",
-		"example:format": "pnpm run format -w examples"
+		"example:dev": "pnpm run dev examples",
+		"example:build": "pnpm run build examples",
+		"example:lint": "pnpm run lint examples",
+		"example:format": "pnpm run format examples"
 	},
 	"peerDependencies": {
 		"react": "^18.3.1",
