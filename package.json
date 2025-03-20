@@ -36,9 +36,9 @@
 		"test:coverage": "vitest run --coverage",
 		"format": "biome format --write .",
 		"lint:fix": "biome check --apply .",
-		"prepublishOnly": "npm run build",
-		"example:dev": "npm run dev -w examples",
-		"example:build": "npm run build -w examples"
+		"prepublishOnly": "pnpm run build",
+		"example:dev": "pnpm run dev -w examples",
+		"example:build": "pnpm run build -w examples"
 	},
 	"peerDependencies": {
 		"react": "^18.0.0",
@@ -54,7 +54,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
-		"@testing-library/react": "^16.2.0",
+		"@testing-library/react": "^14.2.1",
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/react-hooks": "^8.0.1",
 		"@types/node": "^20.10.0",
@@ -64,8 +64,8 @@
 		"@vitest/coverage-v8": "^1.3.1",
 		"happy-dom": "^12.10.3",
 		"jsdom": "^24.0.0",
-		"react": "^19",
-		"react-dom": "^19",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
 		"tsup": "^8.0.2",
 		"typescript": "^5.5.3",
 		"vite": "^5.0.0",
