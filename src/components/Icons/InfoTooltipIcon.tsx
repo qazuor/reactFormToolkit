@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
  */
 export function InfoTooltipIcon({ title }: IconProps): JSX.Element {
     const { t } = useTranslation();
-    const defaultTitle = t('field.info', { defaultValue: 'Information' });
+    const defaultTitle = t('field.info', { defaultValue: 'More Information' });
 
     return (
         <svg

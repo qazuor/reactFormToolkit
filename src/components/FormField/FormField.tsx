@@ -1,11 +1,11 @@
-import { FieldError } from '@/components/FormField/FieldError';
-import { FieldInput } from '@/components/FormField/FieldInput';
-import { FieldLabel } from '@/components/FormField/FieldLabel';
 import { useFormContext } from '@/context/FormContext';
 import { useFieldStatus } from '@/hooks/useFieldStatus';
 import type { FormFieldProps } from '@/types/form';
 import { type ReactElement, cloneElement, isValidElement } from 'react';
 import { Controller, type ControllerRenderProps, type FieldValues as TFieldValues } from 'react-hook-form';
+import { FieldError } from './FieldError';
+import { FieldInput } from './FieldInput';
+import { FieldLabel } from './FieldLabel';
 
 /**
  * FormField component for rendering form inputs with validation

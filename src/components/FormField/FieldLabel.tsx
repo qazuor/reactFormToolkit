@@ -20,7 +20,7 @@ export function FieldLabel({ htmlFor, children, required, tooltip }: FieldLabelP
             {required && <span className='ml-1 text-red-500'>*</span>}
             {tooltip && (
                 <span className='ml-1 inline-block align-middle text-gray-400'>
-                    <InfoTooltipIcon title={t('field.info', { defaultValue: tooltip })} />
+                    <InfoTooltipIcon title={t('field.info', { defaultValue: 'More Information' })} />
                 </span>
             )}
         </label>

@@ -60,6 +60,11 @@ export interface FormFieldProps {
      * Field description
      */
     description?: string;
+
+    /**
+     * Optional tooltip text to show on hover
+     */
+    tooltip?: string;
 }
 
 /**
