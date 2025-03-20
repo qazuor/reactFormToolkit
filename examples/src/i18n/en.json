@@ -1,0 +1,21 @@
+{
+    "examples": {
+        "title": "React Form Toolkit",
+        "description": "A comprehensive form management library for React applications",
+        "github": "View on GitHub",
+        "tabs": {
+            "docs": "Documentation",
+            "basic": "Basic Form",
+            "complex": "Complex Form",
+            "validation": "Validation",
+            "preview": "Preview",
+            "code": "Code"
+        },
+        "footer": {
+            "text": "Built with ❤️ by"
+        }
+    },
+    "errors": {
+        "docLoadFailed": "Failed to load documentation. Please try again later."
+    }
+}
