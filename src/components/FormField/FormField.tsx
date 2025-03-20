@@ -1,7 +1,7 @@
+import { useFormContext } from '@/context/FormContext';
+import type { FormFieldProps } from '@/types/form';
 import { type ReactElement, cloneElement, isValidElement } from 'react';
 import { Controller, type ControllerRenderProps, type FieldValues as TFieldValues } from 'react-hook-form';
-import { useFormContext } from '../../context/FormContext';
-import type { FormFieldProps } from '../../types/form';
 
 /**
  * FormField component for rendering form inputs with validation

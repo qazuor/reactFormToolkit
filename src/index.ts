@@ -1,4 +1,3 @@
-export * from './components/FormProvider/FormProvider';
-export * from './components/FormField/FormField';
-export * from './context/FormContext';
-export * from './types/form';
+export * from '@/components';
+export * from '@/context/FormContext';
+export * from '@/types';

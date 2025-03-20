@@ -1,3 +1,4 @@
+import { resolve } from 'node:path';
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
@@ -9,4 +10,7 @@ export default defineConfig({
     clean: true,
     treeshake: true,
     external: ['react', 'react-dom'],
+    alias: {
+        '@': resolve(__dirname, './src')
+    }
 });
