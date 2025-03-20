@@ -65,9 +65,9 @@ export interface FormFieldProps {
 /**
  * Form context value type
  */
-export interface FormContextValue<TFieldValues extends FieldValues> {
+export type FormContextValue<TFieldValues extends FieldValues = FieldValues> = {
     /**
      * Form methods from react-hook-form
      */
     form: UseFormReturn<TFieldValues>;
-}
+};

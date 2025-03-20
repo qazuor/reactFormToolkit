@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { JSX } from 'react';
-import { type DefaultValues, type FieldValues, useForm } from 'react-hook-form';
+import { type DefaultValues, type FieldValues, type UseFormReturn, useForm } from 'react-hook-form';
 import { FormContext } from '../../context/FormContext';
 import type { FormProviderProps } from '../../types/form';
 
@@ -39,7 +39,7 @@ export function FormProvider<TFieldValues extends FieldValues>({
     onSubmit,
     mode = 'onBlur'
 }: FormProviderProps<TFieldValues>): JSX.Element {
-    const form = useForm<TFieldValues>({
+    const form: UseFormReturn<TFieldValues> = useForm<TFieldValues>({
         resolver: schema ? zodResolver(schema) : undefined,
         defaultValues: defaultValues as DefaultValues<TFieldValues>,
         mode,
@@ -48,7 +48,7 @@ export function FormProvider<TFieldValues extends FieldValues>({
     });
 
     return (
-        <FormContext.Provider value={{ form }}>
+        <FormContext.Provider value={{ form: form as UseFormReturn<FieldValues> }}>
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 noValidate={true}
