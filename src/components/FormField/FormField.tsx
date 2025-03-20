@@ -1,4 +1,8 @@
+import { FieldError } from '@/components/FormField/FieldError';
+import { FieldInput } from '@/components/FormField/FieldInput';
+import { FieldLabel } from '@/components/FormField/FieldLabel';
 import { useFormContext } from '@/context/FormContext';
+import { useFieldStatus } from '@/hooks/useFieldStatus';
 import type { FormFieldProps } from '@/types/form';
 import { type ReactElement, cloneElement, isValidElement } from 'react';
 import { Controller, type ControllerRenderProps, type FieldValues as TFieldValues } from 'react-hook-form';
@@ -19,12 +23,9 @@ import { Controller, type ControllerRenderProps, type FieldValues as TFieldValue
 export function FormField({ name, label, required = false, children, description }: FormFieldProps): ReactElement {
     // Determine field type and properties
     const isCheckbox = isValidElement(children) && children.props.type === 'checkbox';
+    const { hasError, error } = useFieldStatus(name);
 
     const { form } = useFormContext();
-    const {
-        formState: { errors }
-    } = form;
-    const error = errors[name];
 
     if (!isValidElement(children)) {
         return <></>;
@@ -53,19 +54,29 @@ export function FormField({ name, label, required = false, children, description
     };
 
     return (
-        <div>
+        <div className='space-y-2'>
             {label && (
-                <label htmlFor={name}>
+                <FieldLabel
+                    htmlFor={name}
+                    required={required}
+                >
                     {label}
-                    {required && <span>*</span>}
-                </label>
+                </FieldLabel>
             )}
             <Controller
                 control={form.control}
                 name={name}
-                render={({ field }) => renderChildElement(field)}
+                render={({ field }) => (
+                    <FieldInput
+                        id={name}
+                        hasError={hasError}
+                        description={description}
+                    >
+                        {renderChildElement(field)}
+                    </FieldInput>
+                )}
             />
-            {error && <p>{error.message?.toString()}</p>}
+            <FieldError message={error?.message?.toString()} />
         </div>
     );
 }
