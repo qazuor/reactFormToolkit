@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import type { DefaultValues, FieldValues, UseFormReturn } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import type { ZodType, ZodTypeDef } from 'zod';
+import type { DescriptionOptions } from './description';
 import type { TooltipOptions } from './field';
 
 /**
@@ -60,7 +61,12 @@ export interface FormFieldProps {
     /**
      * Field description
      */
-    description?: string;
+    description?: string | ReactNode;
+
+    /**
+     * Optional description configuration options
+     */
+    descriptionOptions?: DescriptionOptions;
 
     /**
      * Optional tooltip text to show on hover

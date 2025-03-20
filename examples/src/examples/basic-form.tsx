@@ -1,4 +1,4 @@
-import { FormField, FormProvider } from '@qazuor/react-form-toolkit';
+import { FormDescription, FormField, FormProvider } from '@qazuor/react-form-toolkit';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
@@ -21,10 +21,22 @@ export function BasicForm() {
             schema={schema}
             onSubmit={handleSubmit}
         >
+            <FormDescription
+                position='above'
+                className='bg-blue-50 p-4 rounded-lg'
+            >
+                {t('form.description')}
+            </FormDescription>
             <div className='space-y-6'>
                 <FormField
                     name='email'
                     label={t('form.email')}
+                    description={t('form.emailDescription')}
+                    descriptionOptions={{
+                        position: 'below',
+                        className: 'text-blue-600',
+                        role: 'note'
+                    }}
                     tooltip={t('form.emailTooltip')}
                     tooltipOptions={{
                         position: 'right',
@@ -46,9 +58,9 @@ export function BasicForm() {
                     label={t('form.password')}
                     tooltip={t('form.passwordTooltip')}
                     tooltipOptions={{
-                        position: 'top',
+                        position: 'right',
                         align: 'start',
-                        sideOffset: 80
+                        sideOffset: 8
                     }}
                     required={true}
                 >

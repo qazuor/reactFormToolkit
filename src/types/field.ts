@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
-
+/**
+ * Tooltip configuration options
+ */
 export type TooltipOptions = {
     position?: 'top' | 'right' | 'bottom' | 'left';
     align?: 'start' | 'center' | 'end';
