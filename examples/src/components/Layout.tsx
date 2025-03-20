@@ -2,6 +2,7 @@ import { cn } from '@/lib/utils';
 import { Book, Code, Github, Menu } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { LanguageSelector } from './LanguageSelector';
 import { MainNakLink } from './MainNavLink';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
@@ -42,6 +43,7 @@ export function Layout() {
                         </Link>
                     </div>
                     <div className='flex items-center gap-4'>
+                        <LanguageSelector />
                         <a
                             href='https://github.com/qazuor/reactFormToolkit'
                             target='_blank'

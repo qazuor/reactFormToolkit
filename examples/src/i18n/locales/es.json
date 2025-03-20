@@ -1,0 +1,64 @@
+{
+    "translation": {
+        "examples": {
+            "title": "React Form Toolkit",
+            "description": "Una biblioteca completa para gestión de formularios en React",
+            "github": "Ver en GitHub",
+            "tabs": {
+                "docs": "Documentación",
+                "basic": "Formulario Básico",
+                "complex": "Formulario Complejo",
+                "validation": "Validación",
+                "preview": "Vista Previa",
+                "code": "Código"
+            },
+            "footer": {
+                "text": "Hecho con ❤️ por"
+            }
+        },
+        "docs": {
+            "tabs": {
+                "components": "Componentes",
+                "deployment": "Despliegue",
+                "hooks": "Hooks"
+            }
+        },
+        "form": {
+            "description": "Por favor complete todos los campos requeridos",
+            "email": "Correo Electrónico",
+            "emailDescription": "Nunca compartiremos tu correo",
+            "emailTooltip": "Ingresa tu correo electrónico principal",
+            "emailPlaceholder": "Ingresa tu correo",
+            "password": "Contraseña",
+            "passwordTooltip": "Debe tener al menos 8 caracteres",
+            "passwordPlaceholder": "Ingresa tu contraseña",
+            "submit": "Enviar",
+            "contactDescription": "Envíanos un mensaje",
+            "firstName": "Nombre",
+            "firstNameTooltip": "Ingresa tu nombre",
+            "firstNameDescription": "Como aparece en tu identificación",
+            "firstNamePlaceholder": "Juan",
+            "lastName": "Apellido",
+            "lastNameTooltip": "Ingresa tu apellido",
+            "lastNamePlaceholder": "Pérez",
+            "phone": "Teléfono",
+            "phoneTooltip": "Ingresa tu número de teléfono",
+            "phoneDescription": "Incluye el código de país",
+            "phonePlaceholder": "+1234567890",
+            "message": "Mensaje",
+            "messageTooltip": "Ingresa tu mensaje",
+            "messagePlaceholder": "Tu mensaje aquí...",
+            "validationDescription": "Completa el formulario con validación",
+            "username": "Usuario",
+            "usernameTooltip": "Elige un nombre de usuario único",
+            "usernameDescription": "3-20 caracteres",
+            "usernamePlaceholder": "juanperez",
+            "confirmPassword": "Confirmar Contraseña",
+            "confirmPasswordTooltip": "Vuelve a ingresar tu contraseña",
+            "confirmPasswordPlaceholder": "Repite la contraseña"
+        },
+        "errors": {
+            "docLoadFailed": "Error al cargar la documentación. Por favor intenta de nuevo."
+        }
+    }
+}

@@ -1,0 +1,64 @@
+{
+    "translation": {
+        "examples": {
+            "title": "React Form Toolkit",
+            "description": "A comprehensive form management library for React applications",
+            "github": "View on GitHub",
+            "tabs": {
+                "docs": "Documentation",
+                "basic": "Basic Form",
+                "complex": "Complex Form",
+                "validation": "Validation",
+                "preview": "Preview",
+                "code": "Code"
+            },
+            "footer": {
+                "text": "Built with ❤️ by"
+            }
+        },
+        "docs": {
+            "tabs": {
+                "components": "Components",
+                "deployment": "Deployment",
+                "hooks": "Hooks"
+            }
+        },
+        "form": {
+            "description": "Please fill out all required fields",
+            "email": "Email",
+            "emailDescription": "We'll never share your email",
+            "emailTooltip": "Enter your primary email address",
+            "emailPlaceholder": "Enter your email",
+            "password": "Password",
+            "passwordTooltip": "Must be at least 8 characters",
+            "passwordPlaceholder": "Enter your password",
+            "submit": "Submit",
+            "contactDescription": "Send us a message",
+            "firstName": "First Name",
+            "firstNameTooltip": "Enter your first name",
+            "firstNameDescription": "As it appears on your ID",
+            "firstNamePlaceholder": "John",
+            "lastName": "Last Name",
+            "lastNameTooltip": "Enter your last name",
+            "lastNamePlaceholder": "Doe",
+            "phone": "Phone",
+            "phoneTooltip": "Enter your phone number",
+            "phoneDescription": "Include country code",
+            "phonePlaceholder": "+1234567890",
+            "message": "Message",
+            "messageTooltip": "Enter your message",
+            "messagePlaceholder": "Your message here...",
+            "validationDescription": "Fill out the form with validation",
+            "username": "Username",
+            "usernameTooltip": "Choose a unique username",
+            "usernameDescription": "3-20 characters long",
+            "usernamePlaceholder": "johndoe",
+            "confirmPassword": "Confirm Password",
+            "confirmPasswordTooltip": "Re-enter your password",
+            "confirmPasswordPlaceholder": "Re-enter password"
+        },
+        "errors": {
+            "docLoadFailed": "Failed to load documentation. Please try again later."
+        }
+    }
+}
