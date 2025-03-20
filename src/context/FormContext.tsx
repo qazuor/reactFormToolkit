@@ -1,11 +1,11 @@
 import { createContext, useContext } from 'react';
-import { FieldValues } from 'react-hook-form';
-import { FormContextValue } from '../types/form';
+import type { FieldValues } from 'react-hook-form';
+import type { FormContextValue } from '../types/form';
 
 /**
  * Context for sharing form state and methods
  */
-export const FormContext = createContext<FormContextValue<any> | null>(null);
+export const FormContext = createContext<FormContextValue<FieldValues> | null>(null);
 
 /**
  * Hook to access form context
@@ -14,10 +14,10 @@ export const FormContext = createContext<FormContextValue<any> | null>(null);
  */
 export function useFormContext<T extends FieldValues>(): FormContextValue<T> {
     const context = useContext(FormContext);
-    
+
     if (!context) {
         throw new Error('useFormContext must be used within FormProvider');
     }
-    
+
     return context as FormContextValue<T>;
 }
