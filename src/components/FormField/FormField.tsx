@@ -6,7 +6,6 @@ import { type ReactElement, cloneElement, isValidElement } from 'react';
 import { Controller, type ControllerRenderProps, type FieldValues as TFieldValues } from 'react-hook-form';
 import { FieldDescription } from './FieldDescription';
 import { FieldError } from './FieldError';
-import { FieldInput } from './FieldInput';
 import { FieldLabel } from './FieldLabel';
 
 /**
@@ -97,15 +96,7 @@ export function FormField({
             <Controller
                 control={form.control}
                 name={name}
-                render={({ field }) => (
-                    <FieldInput
-                        id={name}
-                        hasError={hasError}
-                        description={description}
-                    >
-                        {renderChildElement(field)}
-                    </FieldInput>
-                )}
+                render={({ field }) => renderChildElement(field)}
             />
             {description && (!descriptionOptions?.position || descriptionOptions?.position === 'below') && (
                 <FieldDescription

@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 /**
  * Tooltip configuration options
  */
@@ -39,36 +38,6 @@ export interface FieldLabelProps {
      * Optional tooltip configuration options
      */
     tooltipOptions?: TooltipOptions;
-}
-
-/**
- * Props for the FieldInput component
- */
-export interface FieldInputProps {
-    /**
-     * Field identifier
-     */
-    id: string;
-
-    /**
-     * Whether the field has an error
-     */
-    hasError?: boolean;
-
-    /**
-     * Whether the field is disabled
-     */
-    disabled?: boolean;
-
-    /**
-     * Child input element
-     */
-    children: ReactNode;
-
-    /**
-     * Description for accessibility
-     */
-    description?: string;
 }
 
 /**
