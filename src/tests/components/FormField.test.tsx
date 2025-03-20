@@ -88,6 +88,7 @@ describe('FormField', () => {
         render(
             <FormProvider
                 schema={z.object({ checked: z.boolean() })}
+                // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
                 onSubmit={() => {}}
             >
                 <FormField name='checked'>
@@ -119,6 +120,7 @@ describe('FormField', () => {
         render(
             <FormProvider
                 schema={schema}
+                // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
                 onSubmit={() => {}}
             >
                 <FormField name='testField'>
