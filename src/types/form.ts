@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import type { DefaultValues, FieldValues, UseFormReturn } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import type { ZodType, ZodTypeDef } from 'zod';
+import type { TooltipOptions } from './field';
 
 /**
  * Props for the FormProvider component
@@ -65,6 +66,11 @@ export interface FormFieldProps {
      * Optional tooltip text to show on hover
      */
     tooltip?: string;
+
+    /**
+     * Optional tooltip configuration options
+     */
+    tooltipOptions?: TooltipOptions;
 }
 
 /**

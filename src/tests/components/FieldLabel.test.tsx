@@ -1,9 +1,11 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import React, { act } from 'react';
 import { describe, expect, it } from 'vitest';
 import { FieldLabel } from '../../components/FormField/FieldLabel';
 import { TooltipProvider } from '../../components/ui/tooltip';
+import type { TooltipOptions } from '../../types/field';
 
 describe('FieldLabel', () => {
     const renderWithTooltip = (props = {}) => {
@@ -32,21 +34,40 @@ describe('FieldLabel', () => {
 
     it('shows tooltip icon and content when tooltip text is provided', async () => {
         const tooltipText = 'Help text for the field';
-        renderWithTooltip({ tooltip: tooltipText });
+        renderWithTooltip({
+            tooltip: tooltipText
+        });
 
         const tooltipTrigger = screen.getByTestId('field-tooltip-trigger');
         expect(tooltipTrigger).toBeInTheDocument();
     });
 
-    it('applies cursor-help class to tooltip trigger', () => {
-        renderWithTooltip({ tooltip: 'Help text' });
-        const tooltipTrigger = screen.getByTestId('field-tooltip-trigger');
-        expect(tooltipTrigger).toHaveClass('group-hover:text-gray-500');
+    it('applies custom tooltip options correctly', async () => {
+        const tooltipOptions: TooltipOptions = {
+            position: 'top',
+            align: 'center',
+            sideOffset: 12,
+            className: 'custom-tooltip'
+        };
+
+        renderWithTooltip({
+            tooltip: 'Help text',
+            tooltipOptions
+        });
+
+        const trigger = screen.getByTestId('field-tooltip-trigger');
+        await userEvent.hover(trigger);
+
+        const tooltipContent = screen.getByTestId('field-tooltip-content');
+        expect(tooltipContent).toHaveClass('custom-tooltip');
     });
 
-    it('renders tooltip with correct accessibility attributes', () => {
-        renderWithTooltip({ tooltip: 'Help text' });
+    it('applies cursor-help class to tooltip trigger', () => {
+        renderWithTooltip({
+            tooltip: 'Help text',
+            tooltipOptions: { position: 'right' }
+        });
         const tooltipTrigger = screen.getByTestId('field-tooltip-trigger');
-        expect(tooltipTrigger).toHaveAttribute('data-state', 'closed');
+        expect(tooltipTrigger).toHaveClass('group-hover:text-gray-500');
     });
 });

@@ -1,5 +1,14 @@
 import type { ReactNode } from 'react';
 
+export type TooltipOptions = {
+    position?: 'top' | 'right' | 'bottom' | 'left';
+    align?: 'start' | 'center' | 'end';
+    delay?: number;
+    className?: string;
+    sideOffset?: number;
+    hideDelay?: number;
+};
+
 /**
  * Props for the FieldLabel component
  */
@@ -20,9 +29,14 @@ export interface FieldLabelProps {
     required?: boolean;
 
     /**
-     * Optional tooltip text
+     * Optional tooltip content
      */
     tooltip?: string;
+
+    /**
+     * Optional tooltip configuration options
+     */
+    tooltipOptions?: TooltipOptions;
 }
 
 /**

@@ -26,7 +26,8 @@ export function FormField({
     required = false,
     children,
     description,
-    tooltip
+    tooltip,
+    tooltipOptions
 }: FormFieldProps): ReactElement {
     // Determine field type and properties
     const isCheckbox = isValidElement(children) && children.props.type === 'checkbox';
@@ -67,6 +68,7 @@ export function FormField({
                     htmlFor={name}
                     required={required}
                     tooltip={tooltip}
+                    tooltipOptions={tooltipOptions}
                 >
                     {label}
                 </FieldLabel>

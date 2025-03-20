@@ -11,7 +11,14 @@ The `FormField` component is a compound component that handles form field render
 - `required` (boolean, optional): Whether the field is required
 - `children` (ReactNode, required): Input element to render
 - `description` (string, optional): Accessible description text
-- `tooltip` (string, optional): Tooltip text shown when hovering over the info icon
+- `tooltip` (string, optional): Content text for the tooltip
+- `tooltipOptions` (object, optional): Configuration options for the tooltip
+  - `position`: 'top' | 'right' | 'bottom' | 'left'
+  - `align`: 'start' | 'center' | 'end'
+  - `delay`: number
+  - `className`: string
+  - `sideOffset`: number
+  - `hideDelay`: number
 
 ### Example
 
@@ -21,6 +28,11 @@ The `FormField` component is a compound component that handles form field render
     label="Email Address"
     required
     tooltip="Enter your primary email address"
+    tooltipOptions={{
+        position: 'right',
+        align: 'start',
+        sideOffset: 8
+    }}
     description="Enter your primary email address"
 >
     <input type="email" />
@@ -36,13 +48,25 @@ Renders a form field label with optional required indicator and tooltip.
 - `htmlFor` (string, required): ID of the associated input element
 - `children` (string, required): Label text
 - `required` (boolean, optional): Shows required indicator
-- `tooltip` (string, optional): Tooltip text for additional information
+- `tooltip` (string, optional): Content text for the tooltip
+- `tooltipOptions` (object, optional): Configuration options for the tooltip
+  - `position`: 'top' | 'right' | 'bottom' | 'left'
+  - `align`: 'start' | 'center' | 'end'
+  - `delay`: number
+  - `className`: string
+  - `sideOffset`: number
+  - `hideDelay`: number
 
 ```tsx
 <FieldLabel
     htmlFor="email"
     required
     tooltip="Enter your primary email address"
+    tooltipOptions={{
+        position: 'right',
+        align: 'start',
+        sideOffset: 8
+    }}
 >
     Email Address
 </FieldLabel>

@@ -26,6 +26,12 @@ export function BasicForm() {
                     name='email'
                     label={t('form.email')}
                     tooltip={t('form.emailTooltip')}
+                    tooltipOptions={{
+                        position: 'right',
+                        align: 'start',
+                        sideOffset: 8,
+                        className: 'custom-tooltip'
+                    }}
                     required={true}
                 >
                     <input
@@ -39,6 +45,11 @@ export function BasicForm() {
                     name='password'
                     label={t('form.password')}
                     tooltip={t('form.passwordTooltip')}
+                    tooltipOptions={{
+                        position: 'top',
+                        align: 'start',
+                        sideOffset: 80
+                    }}
                     required={true}
                 >
                     <input

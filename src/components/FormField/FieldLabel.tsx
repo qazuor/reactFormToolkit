@@ -1,5 +1,6 @@
 import { InfoTooltipIcon } from '@/components/Icons';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
 import type { FieldLabelProps } from '@/types/field';
 import type { JSX } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +10,13 @@ import { useTranslation } from 'react-i18next';
  * @param props - Component properties
  * @returns Form field label component
  */
-export function FieldLabel({ htmlFor, children, required, tooltip }: FieldLabelProps): JSX.Element {
+export function FieldLabel({
+    htmlFor,
+    children,
+    required,
+    tooltip,
+    tooltipOptions = {}
+}: FieldLabelProps): JSX.Element {
     const { t } = useTranslation();
     const tooltipTitle = t('field.info');
 
@@ -29,7 +36,7 @@ export function FieldLabel({ htmlFor, children, required, tooltip }: FieldLabelP
                 </span>
             )}
             {tooltip && (
-                <Tooltip open={undefined}>
+                <Tooltip>
                     <TooltipTrigger asChild={true}>
                         <button
                             type='button'
@@ -40,11 +47,12 @@ export function FieldLabel({ htmlFor, children, required, tooltip }: FieldLabelP
                         </button>
                     </TooltipTrigger>
                     <TooltipContent
-                        side='right'
-                        align='start'
-                        sideOffset={8}
+                        align={tooltipOptions?.align || 'start'}
+                        className={tooltipOptions.className}
+                        side={tooltipOptions?.position || 'right'}
+                        sideOffset={tooltipOptions?.sideOffset || 8}
                     >
-                        <p className='text-sm'>{tooltip}</p>
+                        <p className={cn('text-sm', tooltipOptions?.className)}>{tooltip}</p>
                     </TooltipContent>
                 </Tooltip>
             )}

@@ -1,10 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import React from 'react';
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
 import { FormField } from '../../components/FormField/FormField';
 import { FormProvider } from '../../components/FormProvider/FormProvider';
+import type { TooltipOptions } from '../../types/field';
 
 describe('FormField', () => {
     const schema = z.object({
@@ -41,9 +43,35 @@ describe('FormField', () => {
     });
 
     it('displays tooltip when tooltip prop is provided', () => {
-        renderField({ tooltip: 'Help text' });
+        renderField({
+            tooltip: 'Help text',
+            tooltipOptions: {
+                position: 'right',
+                align: 'start'
+            }
+        });
         const tooltipTrigger = screen.getByRole('button');
         expect(tooltipTrigger).toHaveClass('cursor-help');
+    });
+
+    it('passes tooltipOptions to FieldLabel', async () => {
+        const tooltipOptions: TooltipOptions = {
+            position: 'top',
+            align: 'center',
+            sideOffset: 12,
+            className: 'custom-tooltip'
+        };
+
+        renderField({
+            tooltip: 'Help text',
+            tooltipOptions
+        });
+
+        const trigger = screen.getByTestId('field-tooltip-trigger');
+        await userEvent.hover(trigger);
+
+        const tooltipContent = screen.getByTestId('field-tooltip-content');
+        expect(tooltipContent).toHaveClass('custom-tooltip');
     });
 
     it('shows validation error message on invalid input', async () => {
