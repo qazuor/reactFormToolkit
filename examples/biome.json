@@ -1,0 +1,90 @@
+{
+    "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": true,
+        "root": "."
+    },
+    "files": {
+        "ignoreUnknown": false,
+        "include": ["./src/**/*.js", "./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.json", "./src/**/*.css"],
+        "ignore": [
+            "package.json",
+            "package-lock.json",
+            "pnpm-lock.json",
+            "pnpm-lock.yaml",
+            "./dist",
+            "**/dist",
+            "**/dist/**",
+            "dev/**/*",
+            ".vercel/**/*",
+            ".vinxi/**/*",
+            "coverage/**/*",
+            "node_modules/**/*",
+            "src/components/ui/**/*"
+        ]
+    },
+    "formatter": {
+        "enabled": true,
+        "indentStyle": "space",
+        "lineWidth": 100,
+        "formatWithErrors": true,
+        "attributePosition": "multiline",
+        "indentWidth": 4,
+        "lineEnding": "lf",
+        "useEditorconfig": true
+    },
+    "javascript": {
+        "formatter": {
+            "enabled": true,
+            "quoteStyle": "single",
+            "lineWidth": 120,
+            "arrowParentheses": "always",
+            "bracketSameLine": false,
+            "bracketSpacing": true,
+            "jsxQuoteStyle": "single",
+            "quoteProperties": "asNeeded",
+            "semicolons": "always",
+            "trailingCommas": "none",
+            "indentStyle": "space",
+            "indentWidth": 4,
+            "lineEnding": "lf"
+        }
+    },
+    "json": {
+        "formatter": {
+            "enabled": true,
+            "lineWidth": 120,
+            "trailingCommas": "none"
+        },
+        "parser": {
+            "allowComments": true
+        }
+    },
+    "css": {
+        "formatter": {
+            "enabled": true,
+            "lineWidth": 120,
+            "quoteStyle": "single"
+        }
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true,
+            "suspicious": {
+                "noArrayIndexKey": "error",
+                "noConsole": {
+                    "level": "error",
+                    "options": {
+                        "allow": ["error", "warn", "info"]
+                    }
+                }
+            },
+            "correctness": {
+                "useExhaustiveDependencies": "error"
+            }
+        }
+    }
+}

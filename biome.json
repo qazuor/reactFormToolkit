@@ -8,33 +8,20 @@
     },
     "files": {
         "ignoreUnknown": false,
-        "include": [
-            "src/**/*.js",
-            "src/**/*.ts",
-            "src/**/*.tsx",
-            "src/**/*.json",
-            "src/**/*.css",
-            "examples/**/*.js",
-            "examples/**/*.ts",
-            "examples/**/*.tsx"
-        ],
+        "include": ["./src/**/*.js", "./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.json", "./src/**/*.css"],
         "ignore": [
             "package.json",
             "package-lock.json",
             "pnpm-lock.json",
             "pnpm-lock.yaml",
-            "dist",
+            "./dist",
             "**/dist",
             "**/dist/**",
             "dev/**/*",
             ".vercel/**/*",
             ".vinxi/**/*",
             "coverage/**/*",
-            "node_modules/**/*",
-            "**/build",
-            "**/dist",
-            "**/public",
-            "examples/src/components/ui/*.tsx"
+            "node_modules/**/*"
         ]
     },
     "formatter": {
