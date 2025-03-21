@@ -1,6 +1,8 @@
+import { Marked } from 'marked';
+import { markedHighlight } from 'marked-highlight';
 import { useEffect, useState } from 'react';
-import { marked } from 'marked';
 import { useTranslation } from 'react-i18next';
+import { getHighlighter } from 'shiki';
 
 interface DocsViewerProps {
     path: string;
@@ -12,23 +14,51 @@ export function DocsViewer({ path }: DocsViewerProps) {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        fetch(path)
-            .then((response) => {
+        async function loadContent() {
+            try {
+                const highlighter = await getHighlighter({
+                    themes: ['github-light', 'github-dark'],
+                    langs: ['typescript', 'tsx', 'javascript', 'jsx', 'bash', 'json', 'markdown', 'yaml']
+                });
+
+                const marked = new Marked(
+                    markedHighlight({
+                        async: true,
+                        async highlight(code, lang) {
+                            if (!lang) {
+                                return code;
+                            }
+                            return highlighter.codeToHtml(code, {
+                                lang,
+                                theme: 'github-light'
+                            });
+                        }
+                    })
+                );
+
+                marked.setOptions({
+                    gfm: true,
+                    breaks: true,
+                    headerIds: true,
+                    mangle: false
+                });
+
+                const response = await fetch(path);
                 if (!response.ok) {
                     throw new Error(`Failed to load documentation: ${response.statusText}`);
                 }
-                return response.text();
-            })
-            .then((text) => {
-                const htmlContent = marked(text, { mangle: false, headerIds: false });
+                const text = await response.text();
+                const htmlContent = await marked.parse(text);
                 setContent(htmlContent);
                 setError(null);
-            })
-            .catch((error) => {
+            } catch (error) {
                 console.error('Error loading documentation:', error);
                 setError(t('errors.docLoadFailed'));
-            });
-    }, [path]);
+            }
+        }
+
+        loadContent();
+    }, [path, t]);
 
     if (error) {
         return <div className='rounded-lg bg-red-50 p-4 text-red-600'>{error}</div>;
@@ -37,14 +67,14 @@ export function DocsViewer({ path }: DocsViewerProps) {
     if (!content) {
         return (
             <div className='flex items-center justify-center p-8'>
-                <div className='animate-spin h-8 w-8 border-4 border-blue-600 border-t-transparent rounded-full' />
+                <div className='h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent' />
             </div>
         );
     }
 
     return (
         <div
-            className='prose prose-slate max-w-none dark:prose-invert'
+            className='prose prose-slate dark:prose-invert prose-pre:bg-[var(--shiki-color-background)] prose-code:text-[var(--shiki-token-keyword)] max-w-none'
             dangerouslySetInnerHTML={{ __html: content }}
         />
     );

@@ -16,7 +16,7 @@ export function Layout() {
 
     return (
         <div className='flex min-h-screen flex-col'>
-            <header className='sticky top-0 z-50 border-b bg-white px-4 py-3 shadow-sm'>
+            <header className='border-b bg-white px-4 py-3 shadow-sm sticky top-0 z-50'>
                 <div className='mx-auto flex w-full max-w-7xl items-center justify-between'>
                     <div className='flex items-center gap-4'>
                         <Sheet>
@@ -71,14 +71,19 @@ export function Layout() {
                     </div>
                 </aside>
                 <main className='flex-1 overflow-hidden'>
-                    <div className='container mx-auto max-w-5xl px-4 py-8'>
-                        <div className={cn('rounded-lg bg-white p-6 shadow-lg', isDocsRoute && 'p-8')}>
+                    <div className='container mx-auto max-w-4xl px-4 py-12'>
+                        <div
+                            className={cn(
+                                'rounded-xl bg-white p-8 shadow-sm ring-1 ring-gray-900/5',
+                                isDocsRoute && 'p-10'
+                            )}
+                        >
                             <Outlet />
                         </div>
                     </div>
                 </main>
             </div>
-            <footer className='border-t bg-white px-4 py-6 text-center text-gray-600 text-sm'>
+            <footer className='mt-auto border-t bg-white px-4 py-6 text-center text-gray-500 text-sm'>
                 <div className='mx-auto max-w-7xl'>
                     <p>
                         {t('examples.footer.text')}{' '}
@@ -86,7 +91,7 @@ export function Layout() {
                             href='https://github.com/qazuor'
                             target='_blank'
                             rel='noopener noreferrer'
-                            className='text-blue-600 hover:underline'
+                            className='font-medium text-blue-600 transition-colors hover:text-blue-700'
                         >
                             Qazuor
                         </a>
@@ -106,7 +111,7 @@ function SidebarContent() {
                 <Link
                     to='/'
                     className={cn(
-                        'mb-4 flex w-full items-center space-y-1 rounded-md p-2 font-semibold text-gray-900 text-sm transition-colors',
+                        'mb-4 p-2 rounded-md space-y-1 flex w-full items-center font-semibold text-gray-900 text-sm transition-colors',
                         location.pathname === '/'
                             ? 'bg-blue-50 text-blue-600'
                             : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'

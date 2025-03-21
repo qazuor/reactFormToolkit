@@ -59,27 +59,173 @@
 }
 
 /* Syntax highlighting customization */
+:root.dark {
+    --shiki-color-text: #c9d1d9;
+    --shiki-color-background: #0d1117;
+    --shiki-token-constant: #79c0ff;
+    --shiki-token-string: #a5d6ff;
+    --shiki-token-comment: #8b949e;
+    --shiki-token-keyword: #ff7b72;
+    --shiki-token-parameter: #c9d1d9;
+    --shiki-token-function: #d2a8ff;
+    --shiki-token-string-expression: #a5d6ff;
+    --shiki-token-punctuation: #c9d1d9;
+    --shiki-token-link: #a5d6ff;
+}
+
 :root {
-    --shiki-color-text: #e1e4e8;
-    --shiki-color-background: transparent;
-    --shiki-token-constant: #79b8ff;
-    --shiki-token-string: #9ecbff;
-    --shiki-token-comment: #6a737d;
-    --shiki-token-keyword: #f97583;
-    --shiki-token-parameter: #e1e4e8;
-    --shiki-token-function: #b392f0;
-    --shiki-token-string-expression: #9ecbff;
-    --shiki-token-punctuation: #e1e4e8;
-    --shiki-token-link: #9ecbff;
+    --shiki-color-text: #24292f;
+    --shiki-color-background: #f6f8fa;
+    --shiki-token-constant: #0550ae;
+    --shiki-token-string: #0a3069;
+    --shiki-token-comment: #6e7781;
+    --shiki-token-keyword: #cf222e;
+    --shiki-token-parameter: #24292f;
+    --shiki-token-function: #8250df;
+    --shiki-token-string-expression: #0a3069;
+    --shiki-token-punctuation: #24292f;
+    --shiki-token-link: #0a3069;
 }
 
-pre {
-    margin: 0;
+/* GitHub-style syntax highlighting */
+:root {
+    --shiki-color-text: #24292f;
+    --shiki-color-background: #f6f8fa;
+    --shiki-token-constant: #0550ae;
+    --shiki-token-string: #0a3069;
+    --shiki-token-comment: #6e7781;
+    --shiki-token-keyword: #cf222e;
+    --shiki-token-parameter: #24292f;
+    --shiki-token-function: #8250df;
+    --shiki-token-string-expression: #0a3069;
+    --shiki-token-punctuation: #24292f;
+    --shiki-token-link: #0a3069;
+}
+
+:root.dark {
+    --shiki-color-text: #c9d1d9;
+    --shiki-color-background: #0d1117;
+    --shiki-token-constant: #79c0ff;
+    --shiki-token-string: #a5d6ff;
+    --shiki-token-comment: #8b949e;
+    --shiki-token-keyword: #ff7b72;
+    --shiki-token-parameter: #c9d1d9;
+    --shiki-token-function: #d2a8ff;
+    --shiki-token-string-expression: #a5d6ff;
+    --shiki-token-punctuation: #c9d1d9;
+    --shiki-token-link: #a5d6ff;
+}
+
+.prose {
+    max-width: none;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--shiki-color-text);
+}
+
+.prose pre {
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: var(--shiki-color-background);
+    border: 1px solid var(--shiki-token-comment);
+}
+
+.prose code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-size: 85%;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    background-color: transparent;
+    color: var(--shiki-token-keyword);
+    border: 1px solid var(--shiki-token-comment);
+}
+
+.prose pre code {
     padding: 0;
+    background-color: transparent;
+    border-radius: 0;
+    border: none;
 }
 
-code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+.prose h1 {
+    font-size: 2.25em;
+    font-weight: 600;
+    margin: 0 0 1em;
+    letter-spacing: -0.025em;
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #e5e7eb;
+    color: #111827;
+}
+
+.prose h2 {
+    font-size: 1.75em;
+    font-weight: 600;
+    margin: 2em 0 1em;
+    letter-spacing: -0.025em;
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #e5e7eb;
+    color: #111827;
+}
+
+.prose h3 {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin: 1.5em 0 0.75em;
+    letter-spacing: -0.025em;
+    color: #111827;
+}
+
+.prose p {
+    margin: 1.25em 0;
+    line-height: 1.7;
+}
+
+.prose ul,
+.prose ol {
+    margin: 1.25em 0;
+    padding-left: 2em;
+    line-height: 1.7;
+}
+
+.prose li {
+    margin: 0.5em 0;
+    padding-left: 0.5em;
+}
+
+.prose blockquote {
+    margin: 1.5em 0;
+    padding: 0.5em 1em;
+    color: var(--tw-prose-quotes);
+    border-left: 4px solid #e5e7eb;
+    background-color: #f9fafb;
+    border-radius: 0 4px 4px 0;
+}
+
+.prose table {
+    margin: 2em 0;
+    border-collapse: collapse;
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+
+.prose th,
+.prose td {
+    padding: 0.75em 1em;
+    border: 1px solid #e5e7eb;
+}
+
+.prose th {
+    font-weight: 600;
+    text-align: left;
+    background-color: #f9fafb;
+    color: #111827;
 }
 
 

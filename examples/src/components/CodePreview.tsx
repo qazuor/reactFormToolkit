@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { type Theme, getHighlighter } from 'shiki';
+import { getHighlighter } from 'shiki';
 
 interface CodePreviewProps {
     code: string;
@@ -13,14 +13,13 @@ export function CodePreview({ code, language = 'tsx' }: CodePreviewProps) {
         async function highlight() {
             try {
                 const highlighter = await getHighlighter({
-                    themes: ['github-dark'],
+                    themes: ['github-light'],
                     langs: ['typescript', 'tsx', 'javascript', 'jsx']
                 });
 
-                await highlighter.loadTheme('github-dark' as Theme);
                 const html = highlighter.codeToHtml(code, {
                     lang: language,
-                    theme: 'github-dark'
+                    theme: 'github-light'
                 });
                 setHighlightedCode(html);
             } catch (error) {
@@ -34,14 +33,16 @@ export function CodePreview({ code, language = 'tsx' }: CodePreviewProps) {
     }, [code, language]);
 
     return (
-        <div className='overflow-x-auto rounded-lg bg-[#0d1117] p-4 text-sm'>
+        <div className='overflow-x-auto rounded-lg bg-[var(--shiki-color-background)] p-4'>
             {highlightedCode ? (
                 <div
-                    className='font-mono text-xs leading-relaxed'
+                    className='font-mono text-[13px] leading-relaxed'
                     dangerouslySetInnerHTML={{ __html: highlightedCode }}
                 />
             ) : (
-                <pre className='whitespace-pre-wrap font-mono text-gray-300 text-xs leading-relaxed'>{code}</pre>
+                <pre className='whitespace-pre-wrap font-mono text-[13px] leading-relaxed text-[var(--shiki-color-text)]'>
+                    {code}
+                </pre>
             )}
         </div>
     );

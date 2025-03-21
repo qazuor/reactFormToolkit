@@ -47,6 +47,50 @@ export default {
     },
     plugins: [
         require('tailwindcss-animate'),
-        require('@tailwindcss/typography')
+        require('@tailwindcss/typography')({
+            className: 'prose',
+            theme: {
+                light: {
+                    css: {
+                        '--tw-prose-body': '#24292f',
+                        '--tw-prose-headings': '#24292f',
+                        '--tw-prose-lead': '#57606a',
+                        '--tw-prose-links': '#0969da',
+                        '--tw-prose-bold': '#24292f',
+                        '--tw-prose-counters': '#57606a',
+                        '--tw-prose-bullets': '#57606a',
+                        '--tw-prose-hr': '#d0d7de',
+                        '--tw-prose-quotes': '#24292f',
+                        '--tw-prose-quote-borders': '#d0d7de',
+                        '--tw-prose-captions': '#57606a',
+                        '--tw-prose-code': '#24292f',
+                        '--tw-prose-pre-code': '#24292f',
+                        '--tw-prose-pre-bg': '#f6f8fa',
+                        '--tw-prose-th-borders': '#d0d7de',
+                        '--tw-prose-td-borders': '#d0d7de'
+                    }
+                },
+                dark: {
+                    css: {
+                        '--tw-prose-body': '#c9d1d9',
+                        '--tw-prose-headings': '#c9d1d9',
+                        '--tw-prose-lead': '#8b949e',
+                        '--tw-prose-links': '#58a6ff',
+                        '--tw-prose-bold': '#c9d1d9',
+                        '--tw-prose-counters': '#8b949e',
+                        '--tw-prose-bullets': '#8b949e',
+                        '--tw-prose-hr': '#30363d',
+                        '--tw-prose-quotes': '#c9d1d9',
+                        '--tw-prose-quote-borders': '#30363d',
+                        '--tw-prose-captions': '#8b949e',
+                        '--tw-prose-code': '#c9d1d9',
+                        '--tw-prose-pre-code': '#c9d1d9',
+                        '--tw-prose-pre-bg': '#161b22',
+                        '--tw-prose-th-borders': '#30363d',
+                        '--tw-prose-td-borders': '#30363d'
+                    }
+                }
+            }
+        })
     ]
 };
