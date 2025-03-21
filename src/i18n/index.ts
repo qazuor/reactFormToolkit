@@ -20,3 +20,5 @@ i18n.use(LanguageDetector)
             escapeValue: false
         }
     });
+export * from './zodErrorMap';
+export * from './locales';

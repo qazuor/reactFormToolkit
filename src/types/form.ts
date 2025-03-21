@@ -4,6 +4,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import type { ZodType, ZodTypeDef } from 'zod';
 import type { DescriptionOptions } from './description';
 import type { TooltipOptions } from './field';
+import type { I18nOptions } from './i18n';
 
 /**
  * Props for the FormProvider component
@@ -31,6 +32,9 @@ export interface FormProviderProps<TFieldValues extends FieldValues> {
 
     /** Mode for validation trigger (defaults to 'onBlur') */
     mode?: 'onChange' | 'onBlur' | 'onSubmit' | 'onTouched' | 'all';
+
+    /** Internationalization options */
+    i18n?: I18nOptions;
 }
 
 /**

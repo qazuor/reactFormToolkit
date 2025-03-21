@@ -38,7 +38,8 @@ export function FormProvider<TFieldValues extends FieldValues>({
     schema,
     defaultValues,
     onSubmit,
-    mode = 'onBlur'
+    mode = 'onBlur',
+    i18n: i18nOptions
 }: FormProviderProps<TFieldValues>): JSX.Element {
     const form: UseFormReturn<TFieldValues> = useForm<TFieldValues>({
         resolver: schema ? zodResolver(schema) : undefined,
