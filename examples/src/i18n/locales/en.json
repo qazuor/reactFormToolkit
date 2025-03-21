@@ -1,7 +1,8 @@
 {
     "translation": {
+        "title": "React Form Toolkit",
         "examples": {
-            "title": "React Form Toolkit",
+            "title": "Examples",
             "description": "A comprehensive form management library for React applications",
             "github": "View on GitHub",
             "tabs": {
@@ -17,6 +18,7 @@
             }
         },
         "docs": {
+            "title": "Documentation",
             "tabs": {
                 "components": "Components",
                 "deployment": "Deployment",

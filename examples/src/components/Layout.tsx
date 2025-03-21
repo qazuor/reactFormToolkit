@@ -16,7 +16,7 @@ export function Layout() {
 
     return (
         <div className='flex min-h-screen flex-col'>
-            <header className='border-b bg-white px-4 py-3 shadow-sm sticky top-0 z-50'>
+            <header className='sticky top-0 z-50 border-b bg-white px-4 py-3 shadow-sm'>
                 <div className='mx-auto flex w-full max-w-7xl items-center justify-between'>
                     <div className='flex items-center gap-4'>
                         <Sheet>
@@ -39,7 +39,7 @@ export function Layout() {
                             to='/'
                             className='flex items-center gap-2'
                         >
-                            <h1 className='font-bold text-gray-900 text-xl'>{t('examples.title')}</h1>
+                            <h1 className='font-bold text-gray-900 text-xl'>{t('title')}</h1>
                         </Link>
                     </div>
                     <div className='flex items-center gap-4'>
@@ -103,13 +103,19 @@ function SidebarContent() {
     return (
         <div className='space-y-6'>
             <div>
-                <h2 className='font-semibold text-gray-900 text-sm'>Documentation</h2>
+                <Link
+                    to='/'
+                    className={cn(
+                        'mb-4 flex w-full items-center space-y-1 rounded-md p-2 font-semibold text-gray-900 text-sm transition-colors',
+                        location.pathname === '/'
+                            ? 'bg-blue-50 text-blue-600'
+                            : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                    )}
+                >
+                    Home
+                </Link>
+                <h2 className='font-semibold text-gray-900 text-sm'>{t('docs.title')}</h2>
                 <ul className='mt-2 space-y-1'>
-                    <MainNakLink
-                        path='/'
-                        text='Home'
-                        icon={<Book className='h-4 w-4' />}
-                    />
                     <MainNakLink
                         path='/docs/components'
                         text={t('docs.tabs.components')}
@@ -128,7 +134,7 @@ function SidebarContent() {
                 </ul>
             </div>
             <div>
-                <h2 className='font-semibold text-gray-900 text-sm'>Examples</h2>
+                <h2 className='font-semibold text-gray-900 text-sm'>{t('examples.title')}</h2>
                 <ul className='mt-2 space-y-1'>
                     <MainNakLink
                         path='/examples/basic'
