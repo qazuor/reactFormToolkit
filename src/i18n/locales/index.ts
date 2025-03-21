@@ -1,7 +1,8 @@
 import en from './en.json';
 import es from './es.json';
 
-export const zodTranslations = {
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export const zodTranslations: Record<SupportedLangs, Record<string, any>> = {
     en,
     es
 };
