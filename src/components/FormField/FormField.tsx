@@ -98,6 +98,7 @@ export function FormField({
                 name={name}
                 render={({ field }) => renderChildElement(field)}
             />
+            <FieldError message={error?.message?.toString()} />
             {description && (!descriptionOptions?.position || descriptionOptions?.position === 'below') && (
                 <FieldDescription
                     id={descriptionOptions?.id || `${name}-description`}
@@ -109,7 +110,6 @@ export function FormField({
                     {description}
                 </FieldDescription>
             )}
-            <FieldError message={error?.message?.toString()} />
         </div>
     );
 }
