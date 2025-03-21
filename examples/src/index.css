@@ -58,6 +58,29 @@
     }
 }
 
+/* Syntax highlighting customization */
+:root {
+    --shiki-color-text: #e1e4e8;
+    --shiki-color-background: transparent;
+    --shiki-token-constant: #79b8ff;
+    --shiki-token-string: #9ecbff;
+    --shiki-token-comment: #6a737d;
+    --shiki-token-keyword: #f97583;
+    --shiki-token-parameter: #e1e4e8;
+    --shiki-token-function: #b392f0;
+    --shiki-token-string-expression: #9ecbff;
+    --shiki-token-punctuation: #e1e4e8;
+    --shiki-token-link: #9ecbff;
+}
+
+pre {
+    margin: 0;
+    padding: 0;
+}
+
+code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
 
 
 @layer base {

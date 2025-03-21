@@ -34,7 +34,10 @@ export function ExampleViewer({ example, code, title, description }: ExampleView
                 </TabsContent>
 
                 <TabsContent value='code'>
-                    <CodePreview code={code} />
+                    <CodePreview
+                        code={code}
+                        language='tsx'
+                    />
                 </TabsContent>
             </Tabs>
         </div>
