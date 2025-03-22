@@ -1,5 +1,19 @@
 # Components Documentation
 
+## Form Utilities
+
+The form toolkit provides utility functions for form handling:
+
+```tsx
+import { formUtils } from '@qazuor/react-form-toolkit';
+
+// Check if a field is required based on schema
+const isRequired = formUtils.isFieldRequired('email', schema);
+
+// Get field validation rules
+const validationRules = formUtils.getFieldValidation('email', schema);
+```
+
 ## FormField
 
 The `FormField` component is a compound component that handles form field rendering, validation, and error display.
@@ -8,7 +22,7 @@ The `FormField` component is a compound component that handles form field render
 
 - `name` (string, required): Field identifier that matches the schema property
 - `label` (string, optional): Field label text
-- `required` (boolean, optional): Whether the field is required
+- `required` (boolean, optional): Override schema-based required validation
 - `children` (ReactNode, required): Input element to render
 - `description` (string | ReactNode, optional): Field description content
 - `descriptionOptions` (object, optional): Configuration options for the description
