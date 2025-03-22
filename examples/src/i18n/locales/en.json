@@ -3,7 +3,7 @@
         "title": "React Form Toolkit",
         "examples": {
             "title": "Examples",
-            "description": "A comprehensive form management library for React applications",
+            "description": "A strongly-typed React form toolkit built on top of React Hook Form with Zod validation",
             "github": "View on GitHub",
             "tabs": {
                 "docs": "Documentation",
@@ -11,6 +11,7 @@
                 "complex": "Complex Form",
                 "validation": "Validation",
                 "i18n": "Internationalization",
+                "api-reference": "API Reference",
                 "preview": "Preview",
                 "code": "Code"
             },
@@ -23,7 +24,10 @@
             "tabs": {
                 "components": "Components",
                 "deployment": "Deployment",
-                "hooks": "Hooks"
+                "hooks": "Hooks",
+                "i18n": "Internationalization",
+                "api-reference": "API Reference",
+                "docs": "Documentation"
             }
         },
         "form": {

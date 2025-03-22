@@ -3,7 +3,7 @@
         "title": "React Form Toolkit",
         "examples": {
             "title": "Ejemplos",
-            "description": "Una biblioteca completa para gestión de formularios en React",
+            "description": "Un kit de herramientas de formularios React con tipado fuerte construido sobre React Hook Form con validación Zod",
             "github": "Ver en GitHub",
             "tabs": {
                 "docs": "Documentación",
@@ -11,6 +11,7 @@
                 "complex": "Formulario Complejo",
                 "validation": "Validación",
                 "i18n": "Internacionalización",
+                "api-reference": "Referencia API",
                 "preview": "Vista Previa",
                 "code": "Código"
             },
@@ -23,7 +24,10 @@
             "tabs": {
                 "components": "Componentes",
                 "deployment": "Despliegue",
-                "hooks": "Hooks"
+                "hooks": "Hooks",
+                "i18n": "Internacionalización",
+                "api-reference": "Referencia API",
+                "docs": "Documentación"
             }
         },
         "form": {
