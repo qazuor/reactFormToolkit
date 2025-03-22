@@ -7,6 +7,16 @@ import { QRFTTranslations } from '../i18n/locales';
 
 let globalI18nInstance: i18n | null = null;
 
+const addNamespaceToTranslations = (translations: Record<string, ResourceContent>, namespace: string) => {
+    return Object.entries(translations).reduce<Record<string, { [namespace]: ResourceContent }>>(
+        (acc, [lang, value]) => {
+            acc[lang] = { [namespace]: value };
+            return acc;
+        },
+        {}
+    );
+};
+
 /**
  * Utility functions for i18n handling
  */
@@ -25,7 +35,7 @@ export const i18nUtils = {
             .use(LanguageDetector)
             .use(initReactI18next)
             .init({
-                resources: QRFTTranslations,
+                resources: addNamespaceToTranslations(QRFTTranslations, 'QRFT'),
                 fallbackLng: 'en',
                 interpolation: {
                     escapeValue: false
@@ -43,13 +53,12 @@ export const i18nUtils = {
     initializeI18n: (options?: I18nOptions): i18n => {
         // Use provided instance or get/create global instance
         const i18nInstance = options?.i18n || i18nUtils.getI18nInstance();
-        globalI18nInstance = i18nInstance;
 
         if (!i18nInstance.isInitialized) {
             const resources = options?.resources
-                ? Object.entries(options.resources).reduce<Record<string, { translation: ResourceContent }>>(
+                ? Object.entries(options.resources).reduce<Record<string, { QRFT: ResourceContent }>>(
                       (acc, [lang, value]) => {
-                          acc[lang] = { translation: value };
+                          acc[lang] = { QRFT: value };
                           return acc;
                       },
                       {}
@@ -79,6 +88,7 @@ export const i18nUtils = {
             i18nInstance.changeLanguage(options.lng);
         }
 
+        globalI18nInstance = i18nInstance;
         return i18nInstance;
     },
 

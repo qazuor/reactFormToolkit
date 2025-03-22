@@ -1,11 +1,21 @@
 import { vi } from 'vitest';
+import { QRFTTranslations } from '../../i18n/locales';
 
 const resources: Record<string, Record<string, any>> = {};
 
 export const getMockI18n = () => {
     const mockI18n = {
-        t: (key: string, params?: Record<string, string | number>) =>
-            params ? `${key} ${JSON.stringify(params)}` : key,
+        t: (key: string, params?: Record<string, string | number>) => {
+            if (params) {
+                return `${key} ${JSON.stringify(params)}`;
+            }
+            const parts = key.split('.');
+            let value = QRFTTranslations.en;
+            for (const part of parts) {
+                value = value?.[part];
+            }
+            return value || key;
+        },
         language: 'en',
         isInitialized: false,
         use: vi.fn().mockReturnThis(),

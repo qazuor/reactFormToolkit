@@ -21,7 +21,7 @@ describe('i18nUtils', () => {
     describe('initializeI18n', () => {
         it('should initialize new i18n instance with default values', () => {
             const i18n = i18nUtils.initializeI18n();
-            expect(i18n.language).toBe('en');
+            expect(i18n.language.split('-')[0]).toBe('en');
         });
 
         it('should merge custom resources with defaults', () => {
@@ -32,7 +32,7 @@ describe('i18nUtils', () => {
                 i18n: mockI18n as unknown as i18n
             };
             const i18n = i18nUtils.initializeI18n(options);
-            expect(i18n.getResource('en', 'translation', 'key')).toBe('value');
+            expect(i18n.getResource('en', 'QRFT', 'key')).toBe('value');
         });
 
         it('should use provided language', () => {
@@ -49,7 +49,7 @@ describe('i18nUtils', () => {
                 }
             };
             i18nUtils.initializeI18n(options);
-            expect(mockI18n.addResourceBundle).toHaveBeenCalledWith('en', 'translation', { key: 'value' }, true, true);
+            expect(mockI18n.addResourceBundle).toHaveBeenCalledWith('en', 'QRFT', { key: 'value' }, true, true);
         });
     });
 

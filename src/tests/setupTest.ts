@@ -2,9 +2,8 @@
 // It's imported by Vitest before running tests
 
 import '@testing-library/jest-dom';
-import i18next from 'i18next';
-import { initReactI18next } from 'react-i18next';
 import { vi } from 'vitest';
+import { i18nUtils } from '../lib/i18n';
 
 // Mock ResizeObserver
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
@@ -13,30 +12,13 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
     disconnect: vi.fn()
 }));
 
-i18next.use(initReactI18next).init({
-    lng: 'en',
-    fallbackLng: 'en',
-    ns: ['translation'],
-    defaultNS: 'translation',
-    resources: {
-        en: {
-            translation: {
-                field: {
-                    error: 'Field Error',
-                    info: 'Information tooltip'
-                },
-                form: {
-                    error: 'Form Error',
-                    loading: 'Loading',
-                    success: 'Success'
-                }
-            }
-        }
-    },
-    interpolation: {
-        escapeValue: false
-    },
-    react: {
-        useSuspense: false
-    }
-});
+// Mock ResizeObserver
+global.ResizeObserver = vi.fn().mockImplementation(() => ({
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+    disconnect: vi.fn()
+}));
+
+// Create a new i18next instance for testing
+const i18nInstance = i18nUtils.initializeI18n();
+export default i18nInstance;
