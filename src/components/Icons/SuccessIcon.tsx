@@ -1,6 +1,6 @@
+import { useQRFTTranslation } from '@/hooks';
 import type { IconProps } from '@/types';
 import type { JSX } from 'react';
-import { useTranslation } from 'react-i18next';
 
 /**
  * SuccessIcon component for displaying success states
@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
  * @returns {JSX.Element} Success icon component
  */
 export function SuccessIcon({ title }: IconProps): JSX.Element {
-    const { t } = useTranslation('QRFT');
+    const { t } = useQRFTTranslation();
     const defaultTitle = t('form.success');
 
     return (

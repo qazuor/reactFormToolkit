@@ -1,17 +1,50 @@
 import type { I18nOptions, ResourceContent, SupportedLanguage } from '@/types/i18n';
 import type { i18n } from 'i18next';
 import i18next from 'i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
+import { QRFTTranslations } from '../i18n/locales';
+
+let globalI18nInstance: i18n | null = null;
 
 /**
  * Utility functions for i18n handling
  */
 export const i18nUtils = {
     /**
+     * Get or create i18n instance
+     */
+    getI18nInstance: (): i18n => {
+        if (globalI18nInstance) {
+            return globalI18nInstance;
+        }
+
+        // Create new instance with default translations
+        const i18nInstance = i18next.createInstance();
+        i18nInstance
+            .use(LanguageDetector)
+            .use(initReactI18next)
+            .init({
+                resources: QRFTTranslations,
+                fallbackLng: 'en',
+                interpolation: {
+                    escapeValue: false
+                },
+                returnNull: false
+            });
+
+        globalI18nInstance = i18nInstance;
+        return i18nInstance;
+    },
+
+    /**
      * Initialize i18n instance with merged resources
      */
     initializeI18n: (options?: I18nOptions): i18n => {
-        const i18nInstance = options?.i18n || i18next;
+        // Use provided instance or get/create global instance
+        const i18nInstance = options?.i18n || i18nUtils.getI18nInstance();
+        globalI18nInstance = i18nInstance;
+
         if (!i18nInstance.isInitialized) {
             const resources = options?.resources
                 ? Object.entries(options.resources).reduce<Record<string, { translation: ResourceContent }>>(
@@ -26,14 +59,17 @@ export const i18nUtils = {
             i18nInstance.use(initReactI18next).init({
                 lng: options?.lng || 'en',
                 fallbackLng: 'en',
-                resources,
+                resources: {
+                    ...QRFTTranslations,
+                    ...resources
+                },
                 interpolation: {
                     escapeValue: false
                 },
                 returnNull: false
             });
         } else if (options?.resources) {
-            // Add or update resources in existing instance
+            // Add or update resources in existing instance under QRFT namespace
             for (const [lang, value] of Object.entries(options.resources)) {
                 i18nInstance.addResourceBundle(lang, 'QRFT', value, true, true);
             }
@@ -50,13 +86,15 @@ export const i18nUtils = {
      * Gets translation by path with type safety
      */
     getTranslation: (i18n: i18n, path: string, params?: Record<string, string | number>): string => {
-        return i18n.t(path, params) || path;
+        const i18nInstance = i18n || i18nUtils.getI18nInstance();
+        return i18nInstance.t(path, params) || path;
     },
 
     /**
      * Gets current language with type safety
      */
     getCurrentLanguage: (i18n: i18n): SupportedLanguage => {
-        return (i18n.language || 'en') as SupportedLanguage;
+        const i18nInstance = i18n || i18nUtils.getI18nInstance();
+        return (i18nInstance.language || 'en') as SupportedLanguage;
     }
 };

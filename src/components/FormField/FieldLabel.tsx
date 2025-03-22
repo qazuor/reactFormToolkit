@@ -1,9 +1,9 @@
 import { InfoTooltipIcon } from '@/components';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { useQRFTTranslation } from '@/hooks';
 import { cn } from '@/lib';
 import type { FieldLabelProps } from '@/types';
 import type { JSX } from 'react';
-import { useTranslation } from 'react-i18next';
 
 /**
  * FieldLabel component for rendering form field labels
@@ -17,7 +17,7 @@ export function FieldLabel({
     tooltip,
     tooltipOptions = {}
 }: FieldLabelProps): JSX.Element {
-    const { t } = useTranslation('QRFT');
+    const { t } = useQRFTTranslation();
     const tooltipTitle = t('field.info');
 
     return (

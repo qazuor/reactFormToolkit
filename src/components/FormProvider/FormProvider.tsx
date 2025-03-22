@@ -1,12 +1,12 @@
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { FormContext } from '@/context/FormContext';
-import { QRFTTranslations } from '@/i18n/locales';
+import { useQRFTTranslation } from '@/hooks';
 import { i18nUtils } from '@/lib';
 import type { FormProviderProps, FormSchema } from '@/types/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type JSX, useEffect } from 'react';
 import { type DefaultValues, type FieldValues, type UseFormReturn, useForm } from 'react-hook-form';
-import { I18nextProvider, useTranslation } from 'react-i18next';
+import { I18nextProvider } from 'react-i18next';
 import type { z } from 'zod';
 
 /**
@@ -48,23 +48,17 @@ export function FormProvider<
     mode = 'onBlur',
     i18n: i18nOptions
 }: FormProviderProps<TFieldValues>): JSX.Element {
-    let i18n = i18nOptions?.i18n;
-    const { i18n: i18nInstance } = useTranslation('QRFT');
-    if (!i18n) {
-        i18n = i18nInstance;
-    }
+    // Get i18n instance from context or create new one
+    const { i18n: contextI18n } = useQRFTTranslation({ useSuspense: false });
+    const i18n = i18nOptions?.i18n || contextI18n || i18nUtils.getI18nInstance();
 
     useEffect(() => {
-        // Always initialize with Zod translations and merge custom resources if provided
-        const mergedOptions = {
+        // Initialize i18n with current instance and any custom resources
+        i18nUtils.initializeI18n({
             i18n,
-            ...i18nOptions,
-            resources: {
-                ...QRFTTranslations,
-                ...(i18nOptions?.resources || {})
-            }
-        };
-        i18nUtils.initializeI18n(mergedOptions);
+            resources: i18nOptions?.resources,
+            lng: i18nOptions?.lng
+        });
     }, [i18nOptions, i18n]);
 
     const form: UseFormReturn<TFieldValues> = useForm<TFieldValues>({

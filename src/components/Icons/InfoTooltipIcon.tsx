@@ -1,6 +1,6 @@
+import { useQRFTTranslation } from '@/hooks';
 import type { IconProps } from '@/types';
 import type { JSX } from 'react';
-import { useTranslation } from 'react-i18next';
 
 /**
  * InfoTooltipIcon component for displaying information tooltips
@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
  * @returns {JSX.Element} Info tooltip icon component
  */
 export function InfoTooltipIcon({ title }: IconProps): JSX.Element {
-    const { t } = useTranslation('QRFT');
+    const { t } = useQRFTTranslation();
     const defaultTitle = t('field.info');
 
     return (

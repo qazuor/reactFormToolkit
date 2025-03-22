@@ -1,6 +1,6 @@
+import { useQRFTTranslation } from '@/hooks';
 import type { IconProps } from '@/types';
 import type { JSX } from 'react';
-import { useTranslation } from 'react-i18next';
 
 /**
  * FormErrorIcon component for displaying form-level errors
@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
  * @returns {JSX.Element} Form error icon component
  */
 export function FormErrorIcon({ title }: IconProps): JSX.Element {
-    const { t } = useTranslation('QRFT');
+    const { t } = useQRFTTranslation();
     const defaultTitle = t('form.error');
 
     return (

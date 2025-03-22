@@ -1,6 +1,6 @@
+import { useQRFTTranslation } from '@/hooks';
 import type { IconProps } from '@/types';
 import type { JSX } from 'react';
-import { useTranslation } from 'react-i18next';
 
 /**
  * FieldErrorIcon component for displaying field-level validation errors
@@ -8,9 +8,8 @@ import { useTranslation } from 'react-i18next';
  * @returns {JSX.Element} Field error icon component
  */
 export function FieldErrorIcon({ title }: IconProps): JSX.Element {
-    const { t } = useTranslation('QRFT');
+    const { t } = useQRFTTranslation();
     const defaultTitle = t('field.error');
-
     return (
         <svg
             xmlns='http://www.w3.org/2000/svg'
