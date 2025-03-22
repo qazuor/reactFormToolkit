@@ -17,8 +17,8 @@ export const router = createBrowserRouter([
                 element: <Home />
             },
             {
-                path: '/docs',
-                element: <DocsViewer path='readme.md' />
+                path: '/docs/readme',
+                element: <DocsViewer path='README.md' />
             },
             {
                 path: '/docs/components',
@@ -31,6 +31,14 @@ export const router = createBrowserRouter([
             {
                 path: '/docs/hooks',
                 element: <DocsViewer path='../hooks.md' />
+            },
+            {
+                path: '/docs/i18n',
+                element: <DocsViewer path='../i18n.md' />
+            },
+            {
+                path: '/docs/api-reference',
+                element: <DocsViewer path='../api-reference.md' />
             },
             {
                 path: 'examples/basic',
