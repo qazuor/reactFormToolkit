@@ -1,8 +1,10 @@
 import { FormDescription, FormField, FormProvider } from '@qazuor/react-form-toolkit';
+import { formUtils } from '@qazuor/react-form-toolkit';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
-const schema = z
+const validationSchema = z
     .object({
         username: z
             .string()
@@ -22,14 +24,21 @@ const schema = z
         path: ['confirmPassword']
     });
 
-type ValidationForm = z.infer<typeof schema>;
+type ValidationForm = z.infer<typeof validationSchema>;
 
 export function ValidationFormExample() {
     const { t } = useTranslation();
+    const schema = useMemo(() => {
+        return validationSchema;
+    }, []);
 
     const handleSubmit = async (data: ValidationForm) => {
         console.info('Form submitted:', data);
     };
+
+    // Example of using form utilities
+    const isEmailRequired = formUtils.isFieldRequired('email', schema);
+    // const emailValidation = formUtils.getFieldValidation('email', schema);
 
     return (
         <FormProvider
@@ -39,7 +48,7 @@ export function ValidationFormExample() {
         >
             <FormDescription
                 position='above'
-                className='bg-blue-50 p-4 rounded-lg'
+                className='rounded-lg bg-blue-50 p-4'
             >
                 {t('form.validationDescription')}
             </FormDescription>
@@ -69,13 +78,13 @@ export function ValidationFormExample() {
 
                 <FormField
                     name='email'
-                    label={t('form.email')}
+                    // The required prop is optional as it's inferred from schema
                     tooltip={t('form.emailTooltip')}
                     tooltipOptions={{
                         position: 'right',
                         align: 'start'
                     }}
-                    required={true}
+                    required={isEmailRequired}
                 >
                     <input
                         type='email'
