@@ -1,14 +1,12 @@
 {
-    "translation": {
-        "field": {
-            "info": "Field Info",
-            "error": "Field Error"
-        },
-        "form": {
-            "error": "Form Error",
-            "loading": "Loading",
-            "success": "Success"
-        }
+    "field": {
+        "info": "Field Info",
+        "error": "Field Error"
+    },
+    "form": {
+        "error": "Form Error",
+        "loading": "Loading",
+        "success": "Success"
     },
     "zod": {
         "errors": {

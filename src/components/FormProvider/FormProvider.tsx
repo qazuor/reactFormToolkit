@@ -1,6 +1,6 @@
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { FormContext } from '@/context/FormContext';
-import { zodTranslations } from '@/i18n/locales';
+import { QRFTTranslations } from '@/i18n/locales';
 import { i18nUtils } from '@/lib';
 import type { FormProviderProps, FormSchema } from '@/types/form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -49,7 +49,7 @@ export function FormProvider<
     i18n: i18nOptions
 }: FormProviderProps<TFieldValues>): JSX.Element {
     let i18n = i18nOptions?.i18n;
-    const { i18n: i18nInstance } = useTranslation();
+    const { i18n: i18nInstance } = useTranslation('QRFT');
     if (!i18n) {
         i18n = i18nInstance;
     }
@@ -60,7 +60,7 @@ export function FormProvider<
             i18n,
             ...i18nOptions,
             resources: {
-                ...zodTranslations,
+                ...QRFTTranslations,
                 ...(i18nOptions?.resources || {})
             }
         };

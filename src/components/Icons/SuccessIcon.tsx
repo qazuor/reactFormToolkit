@@ -8,8 +8,8 @@ import { useTranslation } from 'react-i18next';
  * @returns {JSX.Element} Success icon component
  */
 export function SuccessIcon({ title }: IconProps): JSX.Element {
-    const { t } = useTranslation();
-    const defaultTitle = t('form.success', { defaultValue: 'Success' });
+    const { t } = useTranslation('QRFT');
+    const defaultTitle = t('form.success');
 
     return (
         <svg

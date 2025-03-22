@@ -1,14 +1,12 @@
 {
-    "translation": {
-        "field": {
-            "info": "Información del Campo",
-            "error": "Error del Campo"
-        },
-        "form": {
-            "error": "Error del Formulario",
-            "loading": "Cargando",
-            "success": "Éxito"
-        }
+    "field": {
+        "info": "Información del Campo",
+        "error": "Error del Campo"
+    },
+    "form": {
+        "error": "Error del Formulario",
+        "loading": "Cargando",
+        "success": "Éxito"
     },
     "zod": {
         "errors": {

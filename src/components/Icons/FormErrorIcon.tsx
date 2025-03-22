@@ -8,8 +8,8 @@ import { useTranslation } from 'react-i18next';
  * @returns {JSX.Element} Form error icon component
  */
 export function FormErrorIcon({ title }: IconProps): JSX.Element {
-    const { t } = useTranslation();
-    const defaultTitle = t('form.error', { defaultValue: 'Form Error' });
+    const { t } = useTranslation('QRFT');
+    const defaultTitle = t('form.error');
 
     return (
         <svg

@@ -35,7 +35,7 @@ export const i18nUtils = {
         } else if (options?.resources) {
             // Add or update resources in existing instance
             for (const [lang, value] of Object.entries(options.resources)) {
-                i18nInstance.addResourceBundle(lang, 'translation', value, true, true);
+                i18nInstance.addResourceBundle(lang, 'QRFT', value, true, true);
             }
         }
 

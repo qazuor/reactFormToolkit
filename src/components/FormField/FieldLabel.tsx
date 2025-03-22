@@ -17,7 +17,7 @@ export function FieldLabel({
     tooltip,
     tooltipOptions = {}
 }: FieldLabelProps): JSX.Element {
-    const { t } = useTranslation();
+    const { t } = useTranslation('QRFT');
     const tooltipTitle = t('field.info');
 
     return (

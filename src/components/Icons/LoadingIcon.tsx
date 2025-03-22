@@ -8,8 +8,8 @@ import { useTranslation } from 'react-i18next';
  * @returns {JSX.Element} Loading icon component
  */
 export function LoadingIcon({ title }: IconProps): JSX.Element {
-    const { t } = useTranslation();
-    const defaultTitle = t('form.loading', { defaultValue: 'Loading' });
+    const { t } = useTranslation('QRFT');
+    const defaultTitle = t('form.loading');
 
     return (
         <svg

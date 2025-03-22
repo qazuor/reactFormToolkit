@@ -8,8 +8,8 @@ import { useTranslation } from 'react-i18next';
  * @returns {JSX.Element} Info tooltip icon component
  */
 export function InfoTooltipIcon({ title }: IconProps): JSX.Element {
-    const { t } = useTranslation();
-    const defaultTitle = t('field.info', { defaultValue: 'More Information' });
+    const { t } = useTranslation('QRFT');
+    const defaultTitle = t('field.info');
 
     return (
         <svg

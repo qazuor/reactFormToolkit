@@ -8,8 +8,8 @@ import { useTranslation } from 'react-i18next';
  * @returns {JSX.Element} Field error icon component
  */
 export function FieldErrorIcon({ title }: IconProps): JSX.Element {
-    const { t } = useTranslation();
-    const defaultTitle = t('field.error', { defaultValue: 'Field Error' });
+    const { t } = useTranslation('QRFT');
+    const defaultTitle = t('field.error');
 
     return (
         <svg
