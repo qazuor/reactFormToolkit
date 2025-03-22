@@ -1,6 +1,6 @@
 import { FormFieldContext, useFormContext } from '@/context';
 import { useFieldStatus } from '@/hooks';
-import { cn, formUtils } from '@/lib';
+import { cn, formUtils, mergeStyles } from '@/lib';
 import type { FormFieldProps } from '@/types';
 import { type ReactElement, cloneElement, isValidElement, useMemo } from 'react';
 import { Controller, type ControllerRenderProps, type FieldValues as TFieldValues } from 'react-hook-form';
@@ -29,9 +29,16 @@ export function FormField({
     description,
     descriptionOptions,
     tooltip,
-    tooltipOptions
+    tooltipOptions,
+    styleOptions
 }: FormFieldProps): ReactElement {
-    const { form, schema } = useFormContext();
+    const { form, schema, styleOptions: providerStyles } = useFormContext();
+
+    // Merge component styles with provider styles
+    const mergedStyles = useMemo(
+        () => mergeStyles(providerStyles || {}, undefined, styleOptions as Record<string, string>),
+        [providerStyles, styleOptions]
+    );
 
     // Determine if field is required based on schema
     const isRequired = useMemo(() => required ?? formUtils.isFieldRequired(name, schema), [name, required, schema]);
@@ -58,11 +65,14 @@ export function FormField({
     const renderChildElement = (field: ControllerRenderProps<TFieldValues, string>): ReactElement => {
         // Properties specific to checkboxes
         const checkboxProps = isCheckbox ? { checked: !!field.value } : {};
-        const baseClasses = 'block w-full rounded-md border px-3 py-2 text-sm transition-colors';
+
+        const inputType = isCheckbox ? 'checkbox' : 'input';
+        const baseClasses = mergedStyles.field?.[inputType];
+
         const stateClasses = cn({
-            'border-red-300 focus:border-red-500 focus:ring-red-500': hasError,
-            'border-gray-300 focus:border-blue-500 focus:ring-blue-500': !hasError,
-            'cursor-not-allowed bg-gray-50 text-gray-500': field.disabled
+            [(mergedStyles.field?.isInvalid as string) || '']: hasError,
+            [(mergedStyles.field?.isValid as string) || '']: !hasError,
+            [(mergedStyles.field?.isLoading as string) || '']: field.disabled
         });
 
         // Filter out non-DOM props to avoid React warnings
@@ -82,13 +92,13 @@ export function FormField({
     };
 
     return (
-        <div className='space-y-2'>
+        <div className={cn(mergedStyles.field?.wrapper)}>
             <FormFieldContext.Provider value={contextValue}>
                 {description && descriptionOptions?.position === 'above' && (
                     <FieldDescription
                         id={descriptionOptions?.id || `${name}-description`}
                         position='above'
-                        className={descriptionOptions?.className}
+                        className={cn(mergedStyles.field?.description, descriptionOptions?.className)}
                         role={descriptionOptions?.role}
                         aria-label={descriptionOptions?.['aria-label']}
                     >

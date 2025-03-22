@@ -2,6 +2,7 @@ import type React from 'react';
 import type { ReactNode } from 'react';
 import type { FieldValues, UseFormReturn } from 'react-hook-form';
 import type { DescriptionOptions } from './description';
+import type { ComponentStyleOptions } from './styles';
 
 /**
  * Tooltip configuration options
@@ -43,6 +44,11 @@ export interface FieldLabelProps {
      * Optional tooltip configuration options
      */
     tooltipOptions?: TooltipOptions;
+
+    /**
+     * Optional style overrides for this field
+     */
+    styleOptions?: ComponentStyleOptions;
 }
 
 /**
@@ -117,6 +123,11 @@ export interface FormFieldProps {
      * Optional tooltip configuration options
      */
     tooltipOptions?: TooltipOptions;
+
+    /**
+     * Optional style overrides for this field
+     */
+    styleOptions?: ComponentStyleOptions;
 }
 
 export interface FormFieldComponent extends React.FC<FormFieldProps>, FormFieldComposition {}

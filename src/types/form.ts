@@ -3,6 +3,7 @@ import type { DefaultValues, FieldValues, UseFormReturn } from 'react-hook-form'
 import type { SubmitHandler } from 'react-hook-form';
 import type { z } from 'zod';
 import type { I18nOptions } from './i18n';
+import type { FormProviderStyleOptions } from './styles';
 
 export type FormSchema<T extends z.ZodType> = T;
 
@@ -36,6 +37,9 @@ export interface FormProviderProps<
     /** Mode for validation trigger (defaults to 'onBlur') */
     mode?: 'onChange' | 'onBlur' | 'onSubmit' | 'onTouched' | 'all';
 
+    /** Style options for form components */
+    styleOptions?: FormProviderStyleOptions;
+
     /** Internationalization options */
     i18n?: I18nOptions;
 }
@@ -56,4 +60,9 @@ export type FormContextValue<
      * Zod schema for form validation
      */
     schema?: TSchema;
+
+    /**
+     * Style options for form components
+     */
+    styleOptions?: FormProviderStyleOptions;
 };

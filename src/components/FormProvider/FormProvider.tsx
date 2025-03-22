@@ -1,10 +1,10 @@
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { FormContext } from '@/context/FormContext';
 import { useQRFTTranslation } from '@/hooks';
-import { i18nUtils } from '@/lib';
+import { defaultStyles, i18nUtils, mergeStyles } from '@/lib';
 import type { FormProviderProps, FormSchema } from '@/types/form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type JSX, useEffect } from 'react';
+import { type JSX, useEffect, useMemo } from 'react';
 import { type DefaultValues, type FieldValues, type UseFormReturn, useForm } from 'react-hook-form';
 import { I18nextProvider } from 'react-i18next';
 import type { z } from 'zod';
@@ -46,11 +46,15 @@ export function FormProvider<
     defaultValues,
     onSubmit,
     mode = 'onBlur',
+    styleOptions,
     i18n: i18nOptions
 }: FormProviderProps<TFieldValues>): JSX.Element {
     // Get i18n instance from context or create new one
     const { i18n: contextI18n } = useQRFTTranslation({ useSuspense: false });
     const i18n = i18nOptions?.i18n || contextI18n || i18nUtils.getI18nInstance();
+
+    // Merge style options with defaults
+    const mergedStyles = useMemo(() => mergeStyles(defaultStyles, styleOptions), [styleOptions]);
 
     useEffect(() => {
         // Initialize i18n with current instance and any custom resources
@@ -76,7 +80,13 @@ export function FormProvider<
                 skipDelayDuration={0}
                 disableHoverableContent={true}
             >
-                <FormContext.Provider value={{ form: form as UseFormReturn<FieldValues>, schema: schema as TSchema }}>
+                <FormContext.Provider
+                    value={{
+                        form: form as UseFormReturn<FieldValues>,
+                        schema: schema as TSchema,
+                        styleOptions: mergedStyles
+                    }}
+                >
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
                         noValidate={true}
