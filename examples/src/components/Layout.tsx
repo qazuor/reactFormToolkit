@@ -117,10 +117,15 @@ function SidebarContent() {
                             : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                     )}
                 >
-                    Home
+                    {t('title')}
                 </Link>
                 <h2 className='font-semibold text-gray-900 text-sm'>{t('docs.title')}</h2>
                 <ul className='mt-2 space-y-1'>
+                    <MainNakLink
+                        path='/docs/readme'
+                        text={t('docs.tabs.readme')}
+                        icon={<Book className='h-4 w-4' />}
+                    />
                     <MainNakLink
                         path='/docs/components'
                         text={t('docs.tabs.components')}
@@ -134,6 +139,16 @@ function SidebarContent() {
                     <MainNakLink
                         path='/docs/hooks'
                         text={t('docs.tabs.hooks')}
+                        icon={<Book className='h-4 w-4' />}
+                    />
+                    <MainNakLink
+                        path='/docs/i18n'
+                        text={t('docs.tabs.i18n')}
+                        icon={<Book className='h-4 w-4' />}
+                    />
+                    <MainNakLink
+                        path='/docs/api-reference'
+                        text={t('docs.tabs.api-reference')}
                         icon={<Book className='h-4 w-4' />}
                     />
                 </ul>
