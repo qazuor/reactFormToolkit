@@ -10,6 +10,7 @@
                 "basic": "Basic Form",
                 "complex": "Complex Form",
                 "validation": "Validation",
+                "i18n": "Internationalization",
                 "preview": "Preview",
                 "code": "Code"
             },

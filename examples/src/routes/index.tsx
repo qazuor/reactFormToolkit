@@ -3,6 +3,7 @@ import { Home } from '@/components/Home';
 import { Layout } from '@/components/Layout';
 import { BasicForm } from '@/examples/basic-form';
 import { ComplexForm } from '@/examples/complex-form';
+import { I18nForm } from '@/examples/i18n-form';
 import { ValidationForm } from '@/examples/validation-form';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
             {
                 path: 'examples/validation',
                 element: <ValidationForm />
+            },
+            {
+                path: 'examples/i18n',
+                element: <I18nForm />
             }
         ]
     }

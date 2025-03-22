@@ -1,347 +1,152 @@
+import { i18nUtils } from '@/lib/i18n';
 import type { i18n } from 'i18next';
 import {
     type ErrorMapCtx,
-    type ZodCustomIssue,
     type ZodErrorMap,
-    type ZodInvalidArgumentsIssue,
-    type ZodInvalidDateIssue,
-    type ZodInvalidEnumValueIssue,
-    type ZodInvalidIntersectionTypesIssue,
-    type ZodInvalidLiteralIssue,
-    type ZodInvalidReturnTypeIssue,
     type ZodInvalidStringIssue,
     type ZodInvalidTypeIssue,
-    type ZodInvalidUnionDiscriminatorIssue,
-    type ZodInvalidUnionIssue,
     ZodIssueCode,
     type ZodIssueOptionalMessage,
-    type ZodNotFiniteIssue,
-    type ZodNotMultipleOfIssue,
     ZodParsedType,
     type ZodTooBigIssue,
-    type ZodTooSmallIssue,
-    type ZodUnrecognizedKeysIssue
+    type ZodTooSmallIssue
 } from 'zod';
 import { type SupportedLangs, zodTranslations } from './locales';
 
-// TODO: Move this to a shared utils file
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-const jsonStringifyReplacer = (_: string, value: any): any => {
-    if (typeof value === 'bigint') {
-        return value.toString();
-    }
-    return value;
-};
+/**
+ * Creates a Zod error map that uses i18n for error messages
+ * @param i18n - i18next instance
+ * @returns Zod error map function
+ */
+export function getI18nextZodErrorMap(i18nInstance: i18n): ZodErrorMap {
+    // Initialize i18n with our error messages if needed
+    i18nUtils.initializeI18n({ i18n: i18nInstance, resources: zodTranslations });
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-const joinValues = <T extends any[]>(array: T, separator = ' | '): string => {
-    return array.map((val) => (typeof val === 'string' ? `'${val}'` : val)).join(separator);
-};
+    return (issue: ZodIssueOptionalMessage, ctx: ErrorMapCtx): { message: string } => {
+        const lang = (i18nInstance.language || 'en') as SupportedLangs;
+        let message = '';
 
-const isRecord = (value: unknown): value is Record<string, unknown> => {
-    if (typeof value !== 'object' || value === null) {
-        return false;
-    }
-
-    for (const key in value) {
-        if (!Object.prototype.hasOwnProperty.call(value, key)) {
-            return false;
-        }
-    }
-
-    return true;
-};
-
-const getKeyAndValues = (
-    param: unknown,
-    defaultKey: string
-): {
-    values: Record<string, unknown>;
-    key: string;
-} => {
-    if (typeof param === 'string') {
-        return { key: param, values: {} };
-    }
-
-    if (isRecord(param)) {
-        const key = 'key' in param && typeof param.key === 'string' ? param.key : defaultKey;
-        const values = 'values' in param && isRecord(param.values) ? param.values : {};
-        return { key, values };
-    }
-
-    return { key: defaultKey, values: {} };
-};
-
-export function getTranslationByStringPath(
-    lang: SupportedLangs,
-    pathStr: string,
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    params?: Record<string, any>
-): string | undefined {
-    const translationRoot = zodTranslations[lang];
-    const translation = pathStr.split('.').reduce((acc, key) => (acc ? acc[key] : undefined), translationRoot);
-    if (typeof translation !== 'string') {
-        return undefined;
-    }
-    return params ? fillTemplate(translation, params) : translation;
-}
-
-function fillTemplate(template: string, params: Record<string, string>) {
-    return Object.entries(params).reduce((acc, [key, value]) => {
-        const pattern = new RegExp(`{{${key}}}`, 'g');
-        return acc.replace(pattern, value);
-    }, template);
-}
-
-export function getI18nextZodErrorMap(i18n: i18n): ZodErrorMap {
-    return (issue, ctx) => {
-        const { code } = issue;
-        let message: string | undefined;
-        const lang = (i18n.resolvedLanguage || 'en') as SupportedLangs;
-        switch (code) {
+        switch (issue.code) {
             case ZodIssueCode.invalid_type:
-                message = actForInvalidType(issue, ctx, lang);
-                break;
-            case ZodIssueCode.invalid_literal:
-                message = actForInvalidLiteral(issue, ctx, lang);
-                break;
-            case ZodIssueCode.unrecognized_keys:
-                message = actForUnrecognizedKeys(issue, ctx, lang);
-                break;
-            case ZodIssueCode.invalid_union:
-                message = actForInvalidUnion(issue, ctx, lang);
-                break;
-            case ZodIssueCode.invalid_union_discriminator:
-                message = actForInvalidUnionDiscriminator(issue, ctx, lang);
-                break;
-            case ZodIssueCode.invalid_enum_value:
-                message = actForInvalidEnumValue(issue, ctx, lang);
-                break;
-            case ZodIssueCode.invalid_arguments:
-                message = actForInvalidArguments(issue, ctx, lang);
-                break;
-            case ZodIssueCode.invalid_return_type:
-                message = actForInvalidReturnType(issue, ctx, lang);
-                break;
-            case ZodIssueCode.invalid_date:
-                message = actForInvalidDate(issue, ctx, lang);
+                message = handleInvalidType(issue, lang, i18nInstance);
                 break;
             case ZodIssueCode.invalid_string:
-                message = actForInvalidString(issue, ctx, lang);
+                message = handleInvalidString(issue, lang, i18nInstance);
                 break;
             case ZodIssueCode.too_small:
-                message = actForTooSmall(issue, ctx, lang);
+                message = handleTooSmall(issue, lang, i18nInstance);
                 break;
             case ZodIssueCode.too_big:
-                message = actForTooBig(issue, ctx, lang);
+                message = handleTooBig(issue, lang, i18nInstance);
                 break;
-            case ZodIssueCode.custom:
-                message = actForCustom(issue, ctx, lang);
+            case ZodIssueCode.invalid_literal:
+                message = i18nInstance.t('zod.errors.invalid_literal', {
+                    expected: JSON.stringify(issue.expected)
+                });
+                break;
+            case ZodIssueCode.unrecognized_keys:
+                message = i18nInstance.t('zod.errors.unrecognized_keys', {
+                    keys: (issue.keys || []).join(', ')
+                });
+                break;
+            case ZodIssueCode.invalid_union:
+                message = i18nInstance.t('zod.errors.invalid_union');
+                break;
+            case ZodIssueCode.invalid_union_discriminator:
+                message = i18nInstance.t('zod.errors.invalid_union_discriminator', {
+                    options: (issue.options || []).join(' | ')
+                });
+                break;
+            case ZodIssueCode.invalid_enum_value:
+                message = i18nInstance.t('zod.errors.invalid_enum_value', {
+                    options: (issue.options || []).join(' | '),
+                    received: issue.received
+                });
+                break;
+            case ZodIssueCode.invalid_arguments:
+                message = i18nInstance.t('zod.errors.invalid_arguments');
+                break;
+            case ZodIssueCode.invalid_return_type:
+                message = i18nInstance.t('zod.errors.invalid_return_type');
+                break;
+            case ZodIssueCode.invalid_date:
+                message = i18nInstance.t('zod.errors.invalid_date');
                 break;
             case ZodIssueCode.invalid_intersection_types:
-                message = actForInvalidIntersectionTypes(issue, ctx, lang);
+                message = i18nInstance.t('zod.errors.invalid_intersection_types');
                 break;
             case ZodIssueCode.not_multiple_of:
-                message = actForNotMultipleOf(issue, ctx, lang);
+                message = i18nInstance.t('zod.errors.not_multiple_of', {
+                    multipleOf: issue.multipleOf
+                });
                 break;
             case ZodIssueCode.not_finite:
-                message = actForNotFinite(issue, ctx, lang);
+                message = i18nInstance.t('zod.errors.not_finite');
+                break;
+            case ZodIssueCode.custom:
+                message = i18nInstance.t('zod.errors.custom');
                 break;
             default:
-                message = actForDefaultError(issue, ctx, lang);
-                break;
+                message = ctx.defaultError;
         }
-        if (!message) {
-            return { message: `${ctx.defaultError} - ([Missing translation] ${code})` };
-        }
+
         return {
-            message
+            message: message.charAt(0).toUpperCase() + message.slice(1) || ctx.defaultError
         };
     };
 }
 
-
-const actForDefaultError = (
-    issue: ZodIssueOptionalMessage,
-    _ctx: ErrorMapCtx,
-    lang: SupportedLangs
-): string | undefined => {
-    return getTranslationByStringPath(lang, 'zodErrors.default_error', { path: issue.path });
-};
-
-const actForInvalidType = (issue: ZodInvalidTypeIssue, _ctx: ErrorMapCtx, lang: SupportedLangs): string | undefined => {
+function handleInvalidType(issue: ZodInvalidTypeIssue, _lang: SupportedLangs, i18n: i18n): string {
     if (issue.received === ZodParsedType.undefined) {
-        return getTranslationByStringPath(lang, 'zodErrors.invalid_type_received_undefined', { path: issue.path });
+        return i18n.t('zod.errors.invalid_type_received_undefined');
     }
     if (issue.received === ZodParsedType.null) {
-        return getTranslationByStringPath(lang, 'zodErrors.invalid_type_received_null', { path: issue.path });
+        return i18n.t('zod.errors.invalid_type_received_null');
     }
-    return getTranslationByStringPath(lang, 'zodErrors.invalid_type', {
-        path: issue.path,
-        expected:
-            getTranslationByStringPath(lang, `types.${issue.expected}`) ||
-            (issue.expected as keyof typeof zodTranslations.en.types),
-        received:
-            getTranslationByStringPath(lang, `types.${issue.received}`) ||
-            (issue.received as keyof typeof zodTranslations.en.types)
+    return i18n.t('zod.errors.invalid_type', {
+        expected: i18n.t(`zod.types.${issue.expected}`),
+        received: i18n.t(`zod.types.${issue.received}`)
     });
-};
+}
 
-const actForInvalidLiteral = (
-    issue: ZodInvalidLiteralIssue,
-    _ctx: ErrorMapCtx,
-    lang: SupportedLangs
-): string | undefined => {
-    return getTranslationByStringPath(lang, 'zodErrors.invalid_literal', {
-        path: issue.path,
-        expected: JSON.stringify(issue.expected, jsonStringifyReplacer)
-    });
-};
-
-const actForUnrecognizedKeys = (
-    issue: ZodUnrecognizedKeysIssue,
-    _ctx: ErrorMapCtx,
-    lang: SupportedLangs
-): string | undefined => {
-    return getTranslationByStringPath(lang, 'zodErrors.unrecognized_keys', {
-        path: issue.path,
-        keys: joinValues(issue.keys, ', '),
-        count: issue.keys.length
-    });
-};
-
-const actForInvalidUnion = (
-    issue: ZodInvalidUnionIssue,
-    _ctx: ErrorMapCtx,
-    lang: SupportedLangs
-): string | undefined => {
-    return getTranslationByStringPath(lang, 'zodErrors.invalid_union', { path: issue.path });
-};
-
-const actForInvalidUnionDiscriminator = (
-    issue: ZodInvalidUnionDiscriminatorIssue,
-    _ctx: ErrorMapCtx,
-    lang: SupportedLangs
-): string | undefined => {
-    return getTranslationByStringPath(lang, 'zodErrors.invalid_union_discriminator', {
-        path: issue.path,
-        options: joinValues(issue.options)
-    });
-};
-
-const actForInvalidEnumValue = (
-    issue: ZodInvalidEnumValueIssue,
-    _ctx: ErrorMapCtx,
-    lang: SupportedLangs
-): string | undefined => {
-    return getTranslationByStringPath(lang, 'zodErrors.invalid_enum_value', {
-        path: issue.path,
-        options: joinValues(issue.options),
-        received: issue.received
-    });
-};
-
-const actForInvalidArguments = (
-    issue: ZodInvalidArgumentsIssue,
-    _ctx: ErrorMapCtx,
-    lang: SupportedLangs
-): string | undefined => {
-    return getTranslationByStringPath(lang, 'zodErrors.invalid_arguments', { path: issue.path });
-};
-
-const actForInvalidReturnType = (
-    issue: ZodInvalidReturnTypeIssue,
-    _ctx: ErrorMapCtx,
-    lang: SupportedLangs
-): string | undefined => {
-    return getTranslationByStringPath(lang, 'zodErrors.invalid_return_type', { path: issue.path });
-};
-
-const actForInvalidDate = (issue: ZodInvalidDateIssue, _ctx: ErrorMapCtx, lang: SupportedLangs): string | undefined => {
-    return getTranslationByStringPath(lang, 'zodErrors.invalid_date', { path: issue.path });
-};
-
-const actForInvalidString = (
-    issue: ZodInvalidStringIssue,
-    _ctx: ErrorMapCtx,
-    lang: SupportedLangs
-): string | undefined => {
+function handleInvalidString(issue: ZodInvalidStringIssue, _lang: SupportedLangs, i18n: i18n): string {
     if (typeof issue.validation === 'object') {
         if ('startsWith' in issue.validation) {
-            return getTranslationByStringPath(lang, 'zodErrors.invalid_string.startsWith', {
-                path: issue.path,
+            return i18n.t('zod.errors.invalid_string.startsWith', {
                 startsWith: issue.validation.startsWith
             });
         }
-
         if ('endsWith' in issue.validation) {
-            return getTranslationByStringPath(lang, 'zodErrors.invalid_string.endsWith', {
-                path: issue.path,
+            return i18n.t('zod.errors.invalid_string.endsWith', {
                 endsWith: issue.validation.endsWith
             });
         }
     }
-    return getTranslationByStringPath(lang, `zodErrors.invalid_string.${issue.validation}`, {
-        path: issue.path,
-        validation:
-            getTranslationByStringPath(lang, `validations.${issue.validation}`) ||
-            (issue.validation as keyof typeof zodTranslations.en.validation)
+    return i18n.t(`zod.errors.invalid_string.${issue.validation}`, {
+        validation: i18n.t(`zod.validations.${issue.validation}`)
     });
-};
+}
 
-const actForTooSmall = (issue: ZodTooSmallIssue, _ctx: ErrorMapCtx, lang: SupportedLangs): string | undefined => {
-    const minimum = issue.type === 'date' ? new Date(issue.minimum as number) : issue.minimum;
-    return getTranslationByStringPath(
-        lang,
-        `zodErrors.too_small.${issue.type}.${issue.exact ? 'exact' : issue.inclusive ? 'inclusive' : 'not_inclusive'}`,
-        {
-            path: issue.path,
-            minimum,
-            count: typeof minimum === 'number' ? minimum : undefined
-        }
-    );
-};
-
-const actForTooBig = (issue: ZodTooBigIssue, _ctx: ErrorMapCtx, lang: SupportedLangs): string | undefined => {
-    const maximum = issue.type === 'date' ? new Date(issue.maximum as number) : issue.maximum;
-    return getTranslationByStringPath(
-        lang,
-        `zodErrors.too_big.${issue.type}.${issue.exact ? 'exact' : issue.inclusive ? 'inclusive' : 'not_inclusive'}`,
-        {
-            path: issue.path,
-            maximum,
-            count: typeof maximum === 'number' ? maximum : undefined
-        }
-    );
-};
-
-const actForCustom = (issue: ZodCustomIssue, _ctx: ErrorMapCtx, lang: SupportedLangs): string | undefined => {
-    const { key, values } = getKeyAndValues(issue.params?.i18n, 'errors.custom');
-    return getTranslationByStringPath(lang, key, {
-        ...values,
-        path: issue.path
+function handleTooSmall(issue: ZodTooSmallIssue, _lang: SupportedLangs, i18n: i18n): string {
+    const key = `zod.errors.too_small.${issue.type}.${
+        issue.exact ? 'exact' : issue.inclusive ? 'inclusive' : 'not_inclusive'
+    }`;
+    return i18n.t(key, {
+        minimum: typeof issue.minimum === 'bigint' ? Number(issue.minimum) : issue.minimum,
+        type: issue.type,
+        inclusive: issue.inclusive,
+        count: typeof issue.minimum === 'bigint' ? Number(issue.minimum) : issue.minimum
     });
-};
+}
 
-const actForInvalidIntersectionTypes = (
-    issue: ZodInvalidIntersectionTypesIssue,
-    _ctx: ErrorMapCtx,
-    lang: SupportedLangs
-): string | undefined => {
-    return getTranslationByStringPath(lang, 'zodErrors.invalid_intersection_types', { path: issue.path });
-};
-
-const actForNotMultipleOf = (
-    issue: ZodNotMultipleOfIssue,
-    _ctx: ErrorMapCtx,
-    lang: SupportedLangs
-): string | undefined => {
-    return getTranslationByStringPath(lang, 'zodErrors.not_multiple_of', {
-        path: issue.path,
-        multipleOf: issue.multipleOf
+function handleTooBig(issue: ZodTooBigIssue, _lang: SupportedLangs, i18n: i18n): string {
+    const key = `zod.errors.too_big.${issue.type}.${
+        issue.exact ? 'exact' : issue.inclusive ? 'inclusive' : 'not_inclusive'
+    }`;
+    return i18n.t(key, {
+        maximum: typeof issue.maximum === 'bigint' ? Number(issue.maximum) : issue.maximum,
+        type: issue.type,
+        inclusive: issue.inclusive,
+        count: typeof issue.maximum === 'bigint' ? Number(issue.maximum) : issue.maximum
     });
-};
-
-const actForNotFinite = (issue: ZodNotFiniteIssue, _ctx: ErrorMapCtx, lang: SupportedLangs): string | undefined => {
-    return getTranslationByStringPath(lang, 'zodErrors.notFinite', { path: issue.path });
-};
+}

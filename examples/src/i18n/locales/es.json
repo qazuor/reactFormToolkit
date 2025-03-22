@@ -10,6 +10,7 @@
                 "basic": "Formulario Básico",
                 "complex": "Formulario Complejo",
                 "validation": "Validación",
+                "i18n": "Internacionalización",
                 "preview": "Vista Previa",
                 "code": "Código"
             },

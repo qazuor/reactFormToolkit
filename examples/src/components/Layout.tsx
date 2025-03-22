@@ -156,6 +156,11 @@ function SidebarContent() {
                         text={t('examples.tabs.validation')}
                         icon={<Code className='h-4 w-4' />}
                     />
+                    <MainNakLink
+                        path='/examples/i18n'
+                        text={t('examples.tabs.i18n')}
+                        icon={<Code className='h-4 w-4' />}
+                    />
                 </ul>
             </div>
         </div>

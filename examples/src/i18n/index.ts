@@ -16,14 +16,14 @@ i18n.use(LanguageDetector)
         },
         supportedLngs: ['en', 'es'],
         fallbackLng: 'en',
-        debug: process.env.NODE_ENV === 'development',
+        debug: true,
         interpolation: {
             escapeValue: false
-        },
-        detection: {
-            order: ['localStorage', 'navigator']
-        },
-        react: { useSuspense: true }
+        }
+        // detection: {
+        //     order: ['localStorage', 'navigator']
+        // },
+        // react: { useSuspense: true }
     });
 
 z.setErrorMap(getI18nextZodErrorMap(i18n));
