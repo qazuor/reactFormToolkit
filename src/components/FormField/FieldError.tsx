@@ -1,5 +1,5 @@
-import { FieldErrorIcon } from '@/components/Icons';
-import type { FieldErrorProps } from '@/types/field';
+import { FieldErrorIcon } from '@/components';
+import type { FieldErrorProps } from '@/types';
 import type { JSX } from 'react';
 
 /**

@@ -1,7 +1,7 @@
-import { InfoTooltipIcon } from '@/components/Icons';
+import { InfoTooltipIcon } from '@/components';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { cn } from '@/lib/utils';
-import type { FieldLabelProps } from '@/types/field';
+import { cn } from '@/lib';
+import type { FieldLabelProps } from '@/types';
 import type { JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 

@@ -1,4 +1,4 @@
-import type { IconProps } from '@/types/icons';
+import type { IconProps } from '@/types';
 import type { JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 

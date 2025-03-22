@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils';
-import type { DescriptionProps } from '@/types/description';
+import { cn } from '@/lib';
+import type { DescriptionProps } from '@/types';
 import type { JSX } from 'react';
 
 /**

@@ -1,6 +1,6 @@
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { FormContext } from '@/context/FormContext';
-import type { FormProviderProps } from '@/types/form';
+import type { FormProviderProps, FormSchema } from '@/types/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { JSX } from 'react';
 import { type DefaultValues, type FieldValues, type UseFormReturn, useForm } from 'react-hook-form';
