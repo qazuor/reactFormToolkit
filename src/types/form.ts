@@ -1,16 +1,19 @@
 import type { ReactNode } from 'react';
 import type { DefaultValues, FieldValues, UseFormReturn } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
-import type { ZodType, ZodTypeDef } from 'zod';
-import type { DescriptionOptions } from './description';
-import type { TooltipOptions } from './field';
+import type { z } from 'zod';
 import type { I18nOptions } from './i18n';
+
+export type FormSchema<T extends z.ZodType> = T;
 
 /**
  * Props for the FormProvider component
  * @template T - Zod schema type
  */
-export interface FormProviderProps<TFieldValues extends FieldValues> {
+export interface FormProviderProps<
+    TFieldValues extends FieldValues,
+    TSchema extends FormSchema<z.ZodType<TFieldValues>> = FormSchema<z.ZodType<TFieldValues>>
+> {
     /**
      * Callback function called when the form is submitted
      * @param data - The validated form data
@@ -20,7 +23,7 @@ export interface FormProviderProps<TFieldValues extends FieldValues> {
     /**
      * Zod schema for form validation
      */
-    schema?: ZodType<TFieldValues, ZodTypeDef, TFieldValues>;
+    schema?: TSchema;
 
     /**
      * Optional default values for form fields
@@ -38,57 +41,19 @@ export interface FormProviderProps<TFieldValues extends FieldValues> {
 }
 
 /**
- * Props for the FormField component
- */
-export interface FormFieldProps {
-    /**
-     * Field name, must match the schema property
-     */
-    name: string;
-
-    /**
-     * Optional field label
-     */
-    label?: string;
-
-    /**
-     * Whether the field is required
-     * @default false
-     */
-    required?: boolean;
-
-    /**
-     * Field input component
-     */
-    children: ReactNode;
-
-    /**
-     * Field description
-     */
-    description?: string | ReactNode;
-
-    /**
-     * Optional description configuration options
-     */
-    descriptionOptions?: DescriptionOptions;
-
-    /**
-     * Optional tooltip text to show on hover
-     */
-    tooltip?: string;
-
-    /**
-     * Optional tooltip configuration options
-     */
-    tooltipOptions?: TooltipOptions;
-}
-
-/**
  * Form context value type
  */
-export type FormContextValue<TFieldValues extends FieldValues = FieldValues> = {
+export type FormContextValue<
+    TFieldValues extends FieldValues = FieldValues,
+    TSchema extends FormSchema<z.ZodType<TFieldValues>> = FormSchema<z.ZodType<TFieldValues>>
+> = {
     /**
      * Form methods from react-hook-form
      */
     form: UseFormReturn<TFieldValues>;
+
+    /**
+     * Zod schema for form validation
+     */
+    schema?: TSchema;
 };

@@ -1,3 +1,8 @@
+import type React from 'react';
+import type { ReactNode } from 'react';
+import type { FieldValues, UseFormReturn } from 'react-hook-form';
+import type { DescriptionOptions } from './description';
+
 /**
  * Tooltip configuration options
  */
@@ -49,3 +54,69 @@ export interface FieldErrorProps {
      */
     message?: string;
 }
+
+export interface FormFieldContextValue<TFieldValues extends FieldValues = FieldValues> {
+    name: keyof TFieldValues & string;
+    form: UseFormReturn<TFieldValues>;
+}
+
+export interface FormFieldDescriptionProps {
+    /**
+     * Description text content
+     */
+    children: string;
+}
+
+export interface FormFieldComposition {
+    label: React.FC<FieldLabelProps>;
+    description: React.FC<FormFieldDescriptionProps>;
+    error: React.FC<FieldErrorProps>;
+}
+
+/**
+ * Props for the FormField component
+ */
+export interface FormFieldProps {
+    /**
+     * Field name, must match the schema property
+     */
+    name: string;
+
+    /**
+     * Optional field label
+     */
+    label?: string;
+
+    /**
+     * Whether the field is required
+     * @default false
+     */
+    required?: boolean;
+
+    /**
+     * Field input component
+     */
+    children: ReactNode;
+
+    /**
+     * Field description
+     */
+    description?: string | ReactNode;
+
+    /**
+     * Optional description configuration options
+     */
+    descriptionOptions?: DescriptionOptions;
+
+    /**
+     * Optional tooltip text to show on hover
+     */
+    tooltip?: string;
+
+    /**
+     * Optional tooltip configuration options
+     */
+    tooltipOptions?: TooltipOptions;
+}
+
+export interface FormFieldComponent extends React.FC<FormFieldProps>, FormFieldComposition {}
