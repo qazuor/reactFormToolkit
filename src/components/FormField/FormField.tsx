@@ -24,18 +24,29 @@ import { FieldLabel } from './FieldLabel';
 export function FormField({
     name,
     label,
-    required = false,
+    required,
     children,
     description,
     descriptionOptions,
     tooltip,
     tooltipOptions
 }: FormFieldProps): ReactElement {
+    const { form, schema } = useFormContext();
+
+    // Determine if field is required based on schema
+    const isRequired = useMemo(() => required ?? formUtils.isFieldRequired(name, schema), [name, required, schema]);
+
     // Determine field type and properties
     const isCheckbox = isValidElement(children) && children.props.type === 'checkbox';
     const { hasError, error } = useFieldStatus(name);
 
-    const { form } = useFormContext();
+    const contextValue = useMemo(
+        () => ({
+            name,
+            form
+        }),
+        [name, form]
+    );
 
     if (!isValidElement(children)) {
         return <></>;
@@ -72,44 +83,46 @@ export function FormField({
 
     return (
         <div className='space-y-2'>
-            {description && descriptionOptions?.position === 'above' && (
-                <FieldDescription
-                    id={descriptionOptions?.id || `${name}-description`}
-                    position='above'
-                    className={descriptionOptions?.className}
-                    role={descriptionOptions?.role}
-                    aria-label={descriptionOptions?.['aria-label']}
-                >
-                    {description}
-                </FieldDescription>
-            )}
-            {label && (
-                <FieldLabel
-                    htmlFor={name}
-                    required={required}
-                    tooltip={tooltip}
-                    tooltipOptions={tooltipOptions}
-                >
-                    {label}
-                </FieldLabel>
-            )}
-            <Controller
-                control={form.control}
-                name={name}
-                render={({ field }) => renderChildElement(field)}
-            />
-            <FieldError message={error?.message?.toString()} />
-            {description && (!descriptionOptions?.position || descriptionOptions?.position === 'below') && (
-                <FieldDescription
-                    id={descriptionOptions?.id || `${name}-description`}
-                    position='below'
-                    className={descriptionOptions?.className}
-                    role={descriptionOptions?.role}
-                    aria-label={descriptionOptions?.['aria-label']}
-                >
-                    {description}
-                </FieldDescription>
-            )}
+            <FormFieldContext.Provider value={contextValue}>
+                {description && descriptionOptions?.position === 'above' && (
+                    <FieldDescription
+                        id={descriptionOptions?.id || `${name}-description`}
+                        position='above'
+                        className={descriptionOptions?.className}
+                        role={descriptionOptions?.role}
+                        aria-label={descriptionOptions?.['aria-label']}
+                    >
+                        {description}
+                    </FieldDescription>
+                )}
+                {label && (
+                    <FieldLabel
+                        htmlFor={name}
+                        required={isRequired}
+                        tooltip={tooltip}
+                        tooltipOptions={tooltipOptions}
+                    >
+                        {label}
+                    </FieldLabel>
+                )}
+                <Controller
+                    control={form.control}
+                    name={name}
+                    render={({ field }) => renderChildElement(field)}
+                />
+                <FieldError message={error?.message?.toString()} />
+                {description && (!descriptionOptions?.position || descriptionOptions?.position === 'below') && (
+                    <FieldDescription
+                        id={descriptionOptions?.id || `${name}-description`}
+                        position='below'
+                        className={descriptionOptions?.className}
+                        role={descriptionOptions?.role}
+                        aria-label={descriptionOptions?.['aria-label']}
+                    >
+                        {description}
+                    </FieldDescription>
+                )}
+            </FormFieldContext.Provider>
         </div>
     );
 }

@@ -1,12 +1,14 @@
+import { TooltipProvider } from '@radix-ui/react-tooltip';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
 import { FormField } from '../../components/FormField/FormField';
 import { FormProvider } from '../../components/FormProvider/FormProvider';
 import type { TooltipOptions } from '../../types/field';
+const TestWrapper = ({ children }: { children: ReactNode }) => <TooltipProvider>{children}</TooltipProvider>;
 
 describe('FormField', () => {
     const schema = z.object({
@@ -15,25 +17,27 @@ describe('FormField', () => {
 
     const renderField = (props = {}) => {
         return render(
-            <FormProvider
-                schema={schema}
-                // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
-                onSubmit={() => {}}
-            >
-                <FormField
-                    name='testField'
-                    label='Test Field'
-                    {...props}
+            <TestWrapper>
+                <FormProvider
+                    schema={schema}
+                    // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
+                    onSubmit={() => {}}
                 >
-                    <input type='text' />
-                </FormField>
-            </FormProvider>
+                    <FormField
+                        name='testField'
+                        label='Test Field'
+                        {...props}
+                    >
+                        <input type='text' />
+                    </FormField>
+                </FormProvider>
+            </TestWrapper>
         );
     };
 
     it('renders with label and input', () => {
         renderField();
-        expect(screen.getByLabelText('Test Field')).toBeInTheDocument();
+        expect(screen.getByTestId('field-label-text')).toHaveTextContent('Test Field');
         expect(screen.getByTestId('testField')).toBeInTheDocument();
     });
 
