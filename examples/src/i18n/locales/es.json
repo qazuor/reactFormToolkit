@@ -70,7 +70,36 @@
             "confirmPasswordTooltip": "Vuelve a ingresar tu contraseña",
             "confirmPasswordPlaceholder": "Repite la contraseña",
             "styledTitle": "Ejemplo de Formulario Estilizado",
-            "styledDescription": "Un formulario con estilos personalizados usando el sistema de estilos"
+            "styledDescription": "Un formulario con estilos personalizados usando el sistema de estilos",
+            "errorConfig": {
+                "title": "Configuración de Errores",
+                "position": "Posición",
+                "animation": "Animación",
+                "delay": "Retraso (ms)",
+                "showIcon": "Mostrar Ícono",
+                "groupErrors": "Agrupar Errores",
+                "autoDismiss": "Auto Ocultar",
+                "maxErrors": "Máximo de Errores",
+                "dismissAfter": "Ocultar Después (ms)",
+                "clear": "Limpiar Configuración"
+            },
+            "exampleForm": {
+                "title": "Formulario de Ejemplo",
+                "username": {
+                    "label": "Usuario",
+                    "placeholder": "Ingrese usuario"
+                },
+                "email": {
+                    "label": "Correo",
+                    "placeholder": "Ingrese correo"
+                },
+                "password": {
+                    "label": "Contraseña",
+                    "placeholder": "Ingrese contraseña"
+                },
+                "submit": "Enviar",
+                "reset": "Reiniciar"
+            }
         },
         "errors": {
             "docLoadFailed": "Error al cargar la documentación. Por favor intenta de nuevo."

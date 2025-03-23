@@ -70,7 +70,36 @@
             "confirmPasswordTooltip": "Re-enter your password",
             "confirmPasswordPlaceholder": "Re-enter password",
             "styledTitle": "Styled Form Example",
-            "styledDescription": "A form with custom styling using the style system"
+            "styledDescription": "A form with custom styling using the style system",
+            "errorConfig": {
+                "title": "Error Display Configuration",
+                "position": "Position",
+                "animation": "Animation",
+                "delay": "Delay (ms)",
+                "showIcon": "Show Icon",
+                "groupErrors": "Group Errors",
+                "autoDismiss": "Auto Dismiss",
+                "maxErrors": "Max Errors",
+                "dismissAfter": "Dismiss After (ms)",
+                "clear": "Clear Configuration"
+            },
+            "exampleForm": {
+                "title": "Example Form",
+                "username": {
+                    "label": "Username",
+                    "placeholder": "Enter username"
+                },
+                "email": {
+                    "label": "Email",
+                    "placeholder": "Enter email"
+                },
+                "password": {
+                    "label": "Password",
+                    "placeholder": "Enter password"
+                },
+                "submit": "Submit",
+                "reset": "Reset"
+            }
         },
         "errors": {
             "docLoadFailed": "Failed to load documentation. Please try again later."
