@@ -5,6 +5,7 @@ import i18n from './i18n';
 import { router } from './routes';
 import './index.css';
 import { I18nextProvider } from 'react-i18next';
+import '@qazuor/react-form-toolkit/animations.css';
 
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 createRoot(document.getElementById('root')!).render(

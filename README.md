@@ -51,7 +51,7 @@ pnpm add @qazuor/react-form-toolkit react-hook-form @hookform/resolvers zod tail
 #### In your app entry point
 
 ```tsx
-import "../node_modules/@qazuor/react-form-toolkit/dist/style.css";
+import '@qazuor/react-form-toolkit/animations.css';
 ```
 
 ## Quick Start
