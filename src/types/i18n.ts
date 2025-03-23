@@ -36,7 +36,7 @@ export interface ResourceContent {
         types?: Record<string, string>;
     };
     form?: Record<string, string>;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 export type TranslationResources = Record<SupportedLanguage, ResourceContent>;

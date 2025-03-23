@@ -56,8 +56,10 @@ export const i18nUtils = {
 
         if (!i18nInstance.isInitialized) {
             const resources = options?.resources
-                ? Object.entries(options.resources).reduce<Record<string, { QRFT: ResourceContent }>>(
+                ? // biome-ignore lint/style/useNamingConvention: <explanation>
+                  Object.entries(options.resources).reduce<Record<string, { QRFT: ResourceContent }>>(
                       (acc, [lang, value]) => {
+                          // biome-ignore lint/style/useNamingConvention: <explanation>
                           acc[lang] = { QRFT: value };
                           return acc;
                       },

@@ -17,7 +17,6 @@ export function GroupedErrors({
     maxErrors,
     className,
     animation = 'fadeIn',
-    delay = 0,
     autoDismiss = false,
     dismissAfter = 5000
 }: GroupedErrorsProps): JSX.Element | null {
@@ -39,7 +38,7 @@ export function GroupedErrors({
             resetState();
             return;
         }
-    }, [errorEntries.length, delay, resetState]);
+    }, [errorEntries.length, resetState]);
 
     useEffect(() => {
         if (errorEntries.length === 0 || !autoDismiss) {
