@@ -6,7 +6,6 @@
             "description": "A strongly-typed React form toolkit built on top of React Hook Form with Zod validation",
             "github": "View on GitHub",
             "tabs": {
-                "readme": "README",
                 "docs": "Documentation",
                 "basic": "Basic Form",
                 "complex": "Complex Form",
@@ -24,6 +23,7 @@
         "docs": {
             "title": "Documentation",
             "tabs": {
+                "readme": "README",
                 "components": "Components",
                 "deployment": "Deployment",
                 "hooks": "Hooks",

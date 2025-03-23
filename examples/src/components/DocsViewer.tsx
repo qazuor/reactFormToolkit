@@ -18,7 +18,7 @@ export function DocsViewer({ path }: DocsViewerProps) {
             try {
                 const highlighter = await getHighlighter({
                     themes: ['github-light', 'github-dark'],
-                    langs: ['typescript', 'tsx', 'javascript', 'jsx', 'bash', 'json', 'markdown', 'yaml']
+                    langs: ['typescript', 'tsx', 'javascript', 'jsx', 'bash', 'json', 'markdown', 'yaml', 'scss']
                 });
 
                 const marked = new Marked(
@@ -43,7 +43,7 @@ export function DocsViewer({ path }: DocsViewerProps) {
                     mangle: false
                 });
 
-                const response = await fetch(path);
+                const response = await fetch(`/docs/${path}`);
                 if (!response.ok) {
                     throw new Error(`Failed to load documentation: ${response.statusText}`);
                 }
@@ -74,7 +74,7 @@ export function DocsViewer({ path }: DocsViewerProps) {
 
     return (
         <div
-            className='prose prose-slate dark:prose-invert prose-pre:bg-[var(--shiki-color-background)] prose-code:text-[var(--shiki-token-keyword)] max-w-none'
+            className='prose prose-slate dark:prose-invert max-w-none prose-pre:bg-[var(--shiki-color-background)] prose-code:text-[var(--shiki-token-keyword)]'
             dangerouslySetInnerHTML={{ __html: content }}
         />
     );

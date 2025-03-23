@@ -23,27 +23,27 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/docs/components',
-                element: <DocsViewer path='../components.md' />
+                element: <DocsViewer path='components.md' />
             },
             {
                 path: '/docs/deployment',
-                element: <DocsViewer path='../deployment.md' />
+                element: <DocsViewer path='deployment.md' />
             },
             {
                 path: '/docs/hooks',
-                element: <DocsViewer path='../hooks.md' />
+                element: <DocsViewer path='hooks.md' />
             },
             {
                 path: '/docs/i18n',
-                element: <DocsViewer path='../i18n.md' />
+                element: <DocsViewer path='i18n.md' />
             },
             {
                 path: '/docs/styling',
-                element: <DocsViewer path='../styling.md' />
+                element: <DocsViewer path='styling.md' />
             },
             {
                 path: '/docs/api-reference',
-                element: <DocsViewer path='../api-reference.md' />
+                element: <DocsViewer path='api-reference.md' />
             },
             {
                 path: 'examples/basic',
