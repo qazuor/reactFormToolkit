@@ -147,6 +147,11 @@ function SidebarContent() {
                         icon={<Book className='h-4 w-4' />}
                     />
                     <MainNakLink
+                        path='/docs/styling'
+                        text={t('docs.tabs.styling')}
+                        icon={<Book className='h-4 w-4' />}
+                    />
+                    <MainNakLink
                         path='/docs/api-reference'
                         text={t('docs.tabs.api-reference')}
                         icon={<Book className='h-4 w-4' />}
@@ -174,6 +179,11 @@ function SidebarContent() {
                     <MainNakLink
                         path='/examples/i18n'
                         text={t('examples.tabs.i18n')}
+                        icon={<Code className='h-4 w-4' />}
+                    />
+                    <MainNakLink
+                        path='/examples/styled'
+                        text={t('examples.tabs.styled')}
                         icon={<Code className='h-4 w-4' />}
                     />
                 </ul>

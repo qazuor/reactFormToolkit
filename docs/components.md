@@ -1,5 +1,26 @@
 # Components Documentation
 
+## Style System
+
+All components support customization through the style system. Styles can be applied at both the provider level and component level:
+
+```tsx
+// Provider-level styles
+<FormProvider styleOptions={{
+    field: {
+        input: 'custom-input-class',
+        label: 'custom-label-class'
+    }
+}}>
+
+// Component-level styles
+<FormField
+    styleOptions={{
+        input: 'specific-input-class'
+    }}
+>
+```
+
 ## Form Utilities
 
 The form toolkit provides utility functions for form handling:
@@ -24,6 +45,7 @@ The `FormField` component is a compound component that handles form field render
 - `label` (string, optional): Field label text
 - `required` (boolean, optional): Override schema-based required validation
 - `children` (ReactNode, required): Input element to render
+- `styleOptions` (ComponentStyleOptions, optional): Style overrides for this field
 - `description` (string | ReactNode, optional): Field description content
 - `descriptionOptions` (object, optional): Configuration options for the description
   - `className`: string - Custom CSS classes
@@ -78,6 +100,7 @@ Renders a form field label with optional required indicator and tooltip.
 - `htmlFor` (string, required): ID of the associated input element
 - `children` (string, required): Label text
 - `required` (boolean, optional): Shows required indicator
+- `styleOptions` (ComponentStyleOptions, optional): Style overrides for this label
 - `tooltip` (string, optional): Content text for the tooltip
 - `tooltipOptions` (object, optional): Configuration options for the tooltip
   - `position`: 'top' | 'right' | 'bottom' | 'left'
@@ -111,6 +134,7 @@ Renders a description for form fields with positioning support.
 - `children` (ReactNode, required): Description content
 - `className` (string, optional): Custom CSS classes
 - `position` ('above' | 'below', optional): Position relative to the field
+- `styleOptions` (ComponentStyleOptions, optional): Style overrides for this description
 - Additional HTML attributes are supported
 
 ```tsx
@@ -132,6 +156,7 @@ Renders a form-level description with positioning support.
 - `children` (ReactNode, required): Description content
 - `className` (string, optional): Custom CSS classes
 - `position` ('above' | 'below', optional): Position relative to the form
+- `styleOptions` (ComponentStyleOptions, optional): Style overrides for this description
 - Additional HTML attributes are supported
 
 ```tsx

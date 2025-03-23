@@ -11,6 +11,7 @@
                 "complex": "Formulario Complejo",
                 "validation": "Validación",
                 "i18n": "Internacionalización",
+                "styled": "Formulario Estilizado",
                 "api-reference": "Referencia API",
                 "preview": "Vista Previa",
                 "code": "Código"
@@ -22,12 +23,14 @@
         "docs": {
             "title": "Documentación",
             "tabs": {
+                "readme": "Leeme",
                 "components": "Componentes",
                 "deployment": "Despliegue",
                 "hooks": "Hooks",
                 "i18n": "Internacionalización",
                 "api-reference": "Referencia API",
-                "docs": "Documentación"
+                "docs": "Documentación",
+                "styling": "Estilos"
             }
         },
         "form": {
@@ -62,7 +65,9 @@
             "usernamePlaceholder": "juanperez",
             "confirmPassword": "Confirmar Contraseña",
             "confirmPasswordTooltip": "Vuelve a ingresar tu contraseña",
-            "confirmPasswordPlaceholder": "Repite la contraseña"
+            "confirmPasswordPlaceholder": "Repite la contraseña",
+            "styledTitle": "Ejemplo de Formulario Estilizado",
+            "styledDescription": "Un formulario con estilos personalizados usando el sistema de estilos"
         },
         "errors": {
             "docLoadFailed": "Error al cargar la documentación. Por favor intenta de nuevo."

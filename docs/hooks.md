@@ -1,5 +1,36 @@
 # Hooks Documentation
 
+## useStyles
+
+Custom hook for accessing and merging form styles.
+
+### Parameters
+
+- `componentStyles` (ComponentStyleOptions): Optional component-level style overrides
+
+### Returns
+
+```typescript
+{
+    styles: FormProviderStyleOptions;     // Merged styles
+    mergeComponentStyles: (componentStyles?: ComponentStyleOptions) => FormProviderStyleOptions;
+}
+```
+
+### Example
+
+```tsx
+function CustomField({ styleOptions }) {
+    const { styles } = useStyles(styleOptions);
+
+    return (
+        <div className={styles.field?.wrapper}>
+            <input className={styles.field?.input} />
+        </div>
+    );
+}
+```
+
 ## useFieldStatus
 
 Custom hook for managing form field status including validation state.

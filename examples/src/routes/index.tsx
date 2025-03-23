@@ -4,6 +4,7 @@ import { Layout } from '@/components/Layout';
 import { BasicForm } from '@/examples/basic-form';
 import { ComplexForm } from '@/examples/complex-form';
 import { I18nForm } from '@/examples/i18n-form';
+import { StyledForm } from '@/examples/styled-form';
 import { ValidationForm } from '@/examples/validation-form';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
                 element: <DocsViewer path='../i18n.md' />
             },
             {
+                path: '/docs/styling',
+                element: <DocsViewer path='../styling.md' />
+            },
+            {
                 path: '/docs/api-reference',
                 element: <DocsViewer path='../api-reference.md' />
             },
@@ -55,6 +60,10 @@ export const router = createBrowserRouter([
             {
                 path: 'examples/i18n',
                 element: <I18nForm />
+            },
+            {
+                path: 'examples/styled',
+                element: <StyledForm />
             }
         ]
     }
