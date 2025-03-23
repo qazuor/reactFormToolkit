@@ -2,7 +2,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { type ReactNode, useRef } from 'react';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import React from 'react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
 import { FieldError } from '../../components/FormField/FieldError';
 import { FormProvider } from '../../components/FormProvider/FormProvider';
@@ -107,9 +107,9 @@ describe('FieldError', () => {
     it('should apply custom position classes', () => {
         renderError({
             message: 'Invalid input',
-            options: { position: 'above' }
+            options: { position: 'right' }
         });
-        expect(screen.getByTestId('field-error')).toHaveClass('mb-1');
+        expect(screen.getByTestId('field-error')).toHaveClass('flex-shrink-0', 'whitespace-nowrap');
     });
 
     it('should apply custom animation classes', () => {
@@ -205,5 +205,119 @@ describe('FieldError', () => {
         await waitFor(() => {
             expect(screen.getByTestId('error-tooltip')).toBeInTheDocument();
         });
+    });
+
+    it('should handle position above correctly', () => {
+        renderError({
+            message: 'Invalid input',
+            options: { position: 'above' }
+        });
+        expect(screen.getByTestId('field-error')).toHaveClass('mb-1');
+    });
+
+    it('should handle position below correctly', () => {
+        renderError({
+            message: 'Invalid input',
+            options: { position: 'below' }
+        });
+        expect(screen.getByTestId('field-error')).toHaveClass('mt-1');
+    });
+
+    it('should handle tooltip position with custom styles', async () => {
+        const TestComponent = () => {
+            const ref = useRef<HTMLDivElement>(null);
+            return (
+                <div ref={ref}>
+                    <FieldError
+                        name='test'
+                        message='Invalid input'
+                        options={{
+                            position: 'tooltip',
+                            className: 'custom-tooltip-class'
+                        }}
+                        inputRef={ref}
+                    />
+                </div>
+            );
+        };
+
+        render(
+            <TestWrapper>
+                <TestComponent />
+            </TestWrapper>
+        );
+
+        const tooltipContent = await screen.findByTestId('error-tooltip');
+        expect(tooltipContent).toHaveClass('custom-tooltip-class');
+    });
+
+    it('should handle multiple animations correctly', () => {
+        const animations: ErrorAnimation[] = ['fadeIn', 'slideIn', 'pulse', 'shake'];
+
+        animations.forEach((animation) => {
+            const { unmount } = renderError({
+                message: 'Invalid input',
+                options: { animation }
+            });
+
+            expect(screen.getByTestId('field-error')).toHaveClass(`animate-${animation}`);
+            unmount();
+        });
+    });
+
+    it('should respect delay option', async () => {
+        const delay = 100;
+        renderError({
+            message: 'Invalid input',
+            options: { delay }
+        });
+
+        expect(screen.queryByTestId('field-error')).not.toBeInTheDocument();
+
+        await waitFor(
+            () => {
+                expect(screen.getByTestId('field-error')).toBeInTheDocument();
+            },
+            { timeout: delay + 50 }
+        );
+    });
+
+    it('should handle error message updates', () => {
+        const { rerender } = renderError({
+            message: 'First error'
+        });
+
+        expect(screen.getByText('First error')).toBeInTheDocument();
+
+        rerender(
+            <TestWrapper>
+                <FieldError
+                    name='test'
+                    message='Updated error'
+                />
+            </TestWrapper>
+        );
+
+        expect(screen.getByText('Updated error')).toBeInTheDocument();
+    });
+
+    it('should cleanup timeouts on unmount', () => {
+        vi.useFakeTimers();
+
+        const { unmount } = renderError({
+            message: 'Error message',
+            options: {
+                delay: 1000,
+                autoDismiss: true,
+                dismissAfter: 2000
+            }
+        });
+
+        unmount();
+        vi.runAllTimers();
+
+        expect(screen.queryByTestId('field-error')).not.toBeInTheDocument();
+
+        vi.useRealTimers();
     });
 });
