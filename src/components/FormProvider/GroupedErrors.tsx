@@ -22,17 +22,15 @@ export function GroupedErrors({
     dismissAfter = 5000
 }: GroupedErrorsProps): JSX.Element | null {
     const { t } = useQRFTTranslation();
-    const [visible, setVisible] = useState(false);
     const [dismissed, setDismissed] = useState(false);
 
     const errorEntries = Object.entries(errors || {});
-    const shouldShowErrors = errorEntries.length > 0 && visible && !dismissed;
+    const shouldShowErrors = errorEntries.length > 0 && !dismissed;
     const shouldLimitErrors = maxErrors && maxErrors > 0;
-    const displayErrors = shouldLimitErrors ? errorEntries.slice(0, maxErrors) : errorEntries;
+    const displayErrors = shouldLimitErrors && maxErrors > 0 ? errorEntries.slice(0, maxErrors) : errorEntries;
     const remainingErrors = shouldLimitErrors ? errorEntries.length - maxErrors : 0;
 
     const resetState = useCallback(() => {
-        setVisible(false);
         setDismissed(false);
     }, []);
 
@@ -41,12 +39,6 @@ export function GroupedErrors({
             resetState();
             return;
         }
-
-        const showTimeout = setTimeout(() => {
-            setVisible(true);
-        }, delay);
-
-        return () => clearTimeout(showTimeout);
     }, [errorEntries.length, delay, resetState]);
 
     useEffect(() => {
@@ -68,24 +60,34 @@ export function GroupedErrors({
     return (
         <div
             className={cn(`mt-4 rounded-lg border border-red-200 bg-red-50 p-4 animate-${animation}`, className)}
-            role='alert'
+            data-testid='grouped-errors'
+            aria-live='polite'
         >
             <h3 className='mb-2 font-medium text-red-800'>{t('form.validationErrors')}</h3>
-            <ul className='list-inside list-disc space-y-2'>
+            <ul
+                className='list-inside list-disc space-y-2'
+                data-testid='error-list'
+            >
                 {displayErrors.map(([field, message]) => (
                     <li
                         key={field}
                         className='text-red-600 text-sm'
+                        data-testid='error-item'
+                        aria-label={`${field}: ${message}`}
                     >
                         <span className='font-medium'>{field}:</span> {message}
                     </li>
                 ))}
-                {remainingErrors > 0 && (
-                    <li className='text-red-500 text-sm italic'>
-                        {t('form.viewMoreErrors', { count: errorEntries.length - (maxErrors || 0) })}
-                    </li>
-                )}
             </ul>
+            {remainingErrors > 0 && (
+                <p
+                    className='mt-2 text-red-500 text-sm italic'
+                    data-testid='remaining-errors'
+                    aria-label={t('form.remainingErrors', { count: remainingErrors })}
+                >
+                    {t('form.remainingErrors', { count: remainingErrors })}
+                </p>
+            )}
         </div>
     );
 }

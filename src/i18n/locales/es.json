@@ -8,6 +8,8 @@
         "loading": "Cargando",
         "success": "Éxito",
         "validationErrors": "Errores de Validación",
+        "remainingErrors": "y {{count}} error más",
+        "remainingErrors_plural": "y {{count}} errores más",
         "viewMoreErrors": "Ver más errores"
     },
     "zod": {

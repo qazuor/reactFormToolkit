@@ -29,16 +29,18 @@ const POSITION_CLASSES: Record<ErrorPosition, string> = {
 export function FieldError({
     options,
     name,
+    message: propMessage,
     inputRef
 }: FieldErrorProps & {
     options?: ErrorDisplayOptions;
     name: string;
+    message?: string;
     inputRef?: React.RefObject<HTMLElement>;
 }): JSX.Element | null {
     const { errorDisplayOptions: providerOptions } = useFormContext();
     const { error } = useFieldStatus(name);
-    const message = error?.message;
-    const [visible, setVisible] = useState(false);
+    const message = propMessage || error?.message;
+    const [visible, setVisible] = useState(!options?.delay);
     const [dismissed, setDismissed] = useState(false);
     const [showTooltip, setShowTooltip] = useState(false);
 
@@ -51,29 +53,33 @@ export function FieldError({
     const animation = options?.animation || 'fadeIn';
     const showIcon = options?.showIcon ?? true;
 
-    // Show error after delay
+    // Handle delay and auto-dismiss
     // biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
     useEffect(() => {
-        if (!message) {
-            return;
-        }
-        const showTimeout = setTimeout(() => {
-            setVisible(true);
-        }, options?.delay || 0);
-        return () => clearTimeout(showTimeout);
-    }, [message, options?.delay]);
+        let showTimeout: NodeJS.Timeout | undefined;
+        let dismissTimeout: NodeJS.Timeout | undefined;
 
-    // Auto-dismiss error if enabled
-    // biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
-    useEffect(() => {
-        if (!(message && options?.autoDismiss)) {
-            return;
+        if (message) {
+            if (options?.delay) {
+                showTimeout = setTimeout(() => setVisible(true), options.delay);
+            } else {
+                setVisible(true);
+            }
+
+            if (options?.autoDismiss && options.dismissAfter) {
+                dismissTimeout = setTimeout(() => setDismissed(true), options.dismissAfter);
+            }
         }
-        const dismissTimeout = setTimeout(() => {
-            setDismissed(true);
-        }, options?.dismissAfter || 5000);
-        return () => clearTimeout(dismissTimeout);
-    }, [message, options?.autoDismiss, options?.dismissAfter]);
+
+        return () => {
+            if (showTimeout) {
+                clearTimeout(showTimeout);
+            }
+            if (dismissTimeout) {
+                clearTimeout(dismissTimeout);
+            }
+        };
+    }, [message, options?.delay, options?.autoDismiss, options?.dismissAfter]);
 
     // Handle tooltip visibility
     // biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
@@ -104,9 +110,10 @@ export function FieldError({
                 ANIMATION_CLASSES[animation],
                 options?.className
             )}
-            role='alert'
+            data-testid='field-error'
+            aria-live='polite'
         >
-            {showIcon && <FieldErrorIcon className={cn('h-4 w-4 shrink-0', options?.iconClassName)} />}
+            {showIcon && <FieldErrorIcon className={cn(options?.iconClassName || 'h-4 w-4 shrink-0')} />}
             <span>{message.toString()}</span>
         </div>
     );
@@ -117,6 +124,7 @@ export function FieldError({
                 <Tooltip
                     open={showTooltip}
                     delayDuration={0}
+                    data-testid='tooltip-wrapper'
                 >
                     <TooltipTrigger asChild={true}>
                         <div className='absolute inset-0' />
@@ -125,9 +133,11 @@ export function FieldError({
                         side='bottom'
                         align='start'
                         sideOffset={0}
+                        data-testid='error-tooltip'
                         className={cn(
                             'z-50 border-red-200 bg-red-50 text-red-600',
-                            animation === 'pulse' && 'animate-pulse'
+                            animation === 'pulse' && 'animate-pulse',
+                            options?.className
                         )}
                     >
                         {errorContent}

@@ -8,7 +8,9 @@
         "loading": "Loading",
         "success": "Success",
         "validationErrors": "Validation Errors",
-        "viewMoreErrors": "View more errors"
+        "viewMoreErrors": "View more errors",
+        "remainingErrors": "and {{count}} more error",
+        "remainingErrors_plural": "and {{count}} more errors"
     },
     "zod": {
         "errors": {

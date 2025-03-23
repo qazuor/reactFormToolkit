@@ -1,28 +1,46 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { useRef } from 'react';
+import { type ReactNode, useRef } from 'react';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import React from 'react';
 import { describe, expect, it } from 'vitest';
+import { z } from 'zod';
 import { FieldError } from '../../components/FormField/FieldError';
+import { FormProvider } from '../../components/FormProvider/FormProvider';
 import { TooltipProvider } from '../../components/ui/tooltip';
+
+const testSchema = z.object({
+    test: z.string().min(3, 'Invalid input')
+});
+
+const TestWrapper = ({ children }: { children: ReactNode }) => (
+    <FormProvider
+        schema={testSchema}
+        onSubmit={() => {}}
+    >
+        <TooltipProvider>{children}</TooltipProvider>
+    </FormProvider>
+);
 
 describe('FieldError', () => {
     const renderError = (props: any) => {
         return render(
-            <TooltipProvider>
-                <FieldError {...props} />
-            </TooltipProvider>
+            <TestWrapper>
+                <FieldError
+                    name='test'
+                    {...props}
+                />
+            </TestWrapper>
         );
     };
 
     it('should not render when no message is provided', () => {
-        const { container } = renderError({});
-        expect(container.firstChild).toBeNull();
+        renderError({});
+        expect(screen.queryByTestId('field-error')).not.toBeInTheDocument();
     });
 
     it('should render error message with default position and animation', () => {
         renderError({ message: 'Invalid input' });
-        const error = screen.getByRole('alert');
+        const error = screen.getByTestId('field-error');
         expect(error).toHaveTextContent('Invalid input');
         expect(error).toHaveClass('mt-1', 'animate-fadeIn');
     });
@@ -32,7 +50,7 @@ describe('FieldError', () => {
             message: 'Invalid input',
             options: { position: 'above' }
         });
-        expect(screen.getByRole('alert')).toHaveClass('-mb-1');
+        expect(screen.getByTestId('field-error')).toHaveClass('-mb-1');
     });
 
     it('should apply custom animation classes', () => {
@@ -40,7 +58,7 @@ describe('FieldError', () => {
             message: 'Invalid input',
             options: { animation: 'shake' }
         });
-        expect(screen.getByRole('alert')).toHaveClass('animate-shake');
+        expect(screen.getByTestId('field-error')).toHaveClass('animate-shake');
     });
 
     it('should show error icon by default', () => {
@@ -61,7 +79,7 @@ describe('FieldError', () => {
             message: 'Invalid input',
             options: { className: 'custom-error' }
         });
-        expect(screen.getByRole('alert')).toHaveClass('custom-error');
+        expect(screen.getByTestId('field-error')).toHaveClass('custom-error');
     });
 
     it('should apply custom icon classes', () => {
@@ -77,9 +95,9 @@ describe('FieldError', () => {
             message: 'Invalid input',
             options: { delay: 100 }
         });
-        expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('field-error')).not.toBeInTheDocument();
         await waitFor(() => {
-            expect(screen.getByRole('alert')).toBeInTheDocument();
+            expect(screen.getByTestId('field-error')).toBeInTheDocument();
         });
     });
 
@@ -88,9 +106,9 @@ describe('FieldError', () => {
             message: 'Invalid input',
             options: { autoDismiss: true, dismissAfter: 100 }
         });
-        expect(screen.getByRole('alert')).toBeInTheDocument();
+        expect(screen.getByTestId('field-error')).toBeInTheDocument();
         await waitFor(() => {
-            expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+            expect(screen.queryByTestId('field-error')).not.toBeInTheDocument();
         });
     });
 
@@ -100,6 +118,7 @@ describe('FieldError', () => {
             return (
                 <div ref={ref}>
                     <FieldError
+                        name='test'
                         message='Invalid input'
                         options={{ position: 'tooltip' }}
                         inputRef={ref}
@@ -109,11 +128,11 @@ describe('FieldError', () => {
         };
 
         render(
-            <TooltipProvider>
+            <TestWrapper>
                 <TestComponent />
-            </TooltipProvider>
+            </TestWrapper>
         );
 
-        expect(screen.getByRole('tooltip')).toBeInTheDocument();
+        expect(screen.getByTestId('error-tooltip')).toBeInTheDocument();
     });
 });
