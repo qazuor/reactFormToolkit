@@ -4,10 +4,11 @@ import { useQRFTTranslation } from '@/hooks';
 import { defaultStyles, i18nUtils, mergeStyles } from '@/lib';
 import type { FormProviderProps, FormSchema } from '@/types/form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type JSX, useEffect, useMemo } from 'react';
+import { type JSX, useEffect, useMemo, useState } from 'react';
 import { type DefaultValues, type FieldValues, type UseFormReturn, useForm } from 'react-hook-form';
 import { I18nextProvider } from 'react-i18next';
 import type { z } from 'zod';
+import { GroupedErrors } from './GroupedErrors';
 
 /**
  * FormProvider component for managing form state and validation
@@ -47,11 +48,14 @@ export function FormProvider<
     onSubmit,
     mode = 'onBlur',
     styleOptions,
+    errorDisplayOptions,
     i18n: i18nOptions
 }: FormProviderProps<TFieldValues>): JSX.Element {
     // Get i18n instance from context or create new one
     const { i18n: contextI18n } = useQRFTTranslation({ useSuspense: false });
     const i18n = i18nOptions?.i18n || contextI18n || i18nUtils.getI18nInstance();
+
+    const [errors, setErrors] = useState<Record<string, string>>({});
 
     // Merge style options with defaults
     const mergedStyles = useMemo(() => mergeStyles(defaultStyles, styleOptions), [styleOptions]);
@@ -73,6 +77,19 @@ export function FormProvider<
         reValidateMode: 'onChange' // Re-validate on change after submission
     });
 
+    // Update grouped errors when form state changes
+    useEffect(() => {
+        if (errorDisplayOptions?.groupErrors) {
+            const newErrors: Record<string, string> = {};
+            for (const [key, error] of Object.entries(form.formState.errors)) {
+                if (error?.message) {
+                    newErrors[key] = error.message.toString();
+                }
+            }
+            setErrors(newErrors);
+        }
+    }, [form.formState.errors, errorDisplayOptions?.groupErrors]);
+
     return (
         <I18nextProvider i18n={i18n}>
             <TooltipProvider
@@ -84,6 +101,7 @@ export function FormProvider<
                     value={{
                         form: form as UseFormReturn<FieldValues>,
                         schema: schema as TSchema,
+                        errorDisplayOptions,
                         styleOptions: mergedStyles
                     }}
                 >
@@ -92,6 +110,17 @@ export function FormProvider<
                         noValidate={true}
                     >
                         {children}
+                        {errorDisplayOptions?.groupErrors && (
+                            <GroupedErrors
+                                errors={errors}
+                                maxErrors={errorDisplayOptions.maxErrors}
+                                className={errorDisplayOptions.className}
+                                animation={errorDisplayOptions.animation}
+                                delay={errorDisplayOptions.delay}
+                                autoDismiss={errorDisplayOptions.autoDismiss}
+                                dismissAfter={errorDisplayOptions.dismissAfter}
+                            />
+                        )}
                     </form>
                 </FormContext.Provider>
             </TooltipProvider>

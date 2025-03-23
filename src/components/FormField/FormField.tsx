@@ -1,8 +1,8 @@
 import { FormFieldContext, useFormContext } from '@/context';
 import { useFieldStatus } from '@/hooks';
-import { cn, formUtils, mergeStyles } from '@/lib';
+import { cn, defaultStyles, formUtils, mergeStyles } from '@/lib';
 import type { FormFieldProps } from '@/types';
-import { type ReactElement, cloneElement, isValidElement, useMemo } from 'react';
+import { type ReactElement, cloneElement, isValidElement, useMemo, useRef } from 'react';
 import { Controller, type ControllerRenderProps, type FieldValues as TFieldValues } from 'react-hook-form';
 import { FieldDescription } from './FieldDescription';
 import { FieldError } from './FieldError';
@@ -30,13 +30,24 @@ export function FormField({
     descriptionOptions,
     tooltip,
     tooltipOptions,
-    styleOptions
+    styleOptions,
+    errorDisplayOptions
 }: FormFieldProps): ReactElement {
-    const { form, schema, styleOptions: providerStyles } = useFormContext();
+    const { form, schema, styleOptions: providerStyles, errorDisplayOptions: providerErrorOptions } = useFormContext();
+    const childRef = useRef<HTMLElement>(null);
+
+    // Merge error display options
+    const mergedErrorOptions = useMemo(
+        () => ({
+            ...providerErrorOptions,
+            ...errorDisplayOptions
+        }),
+        [providerErrorOptions, errorDisplayOptions]
+    );
 
     // Merge component styles with provider styles
     const mergedStyles = useMemo(
-        () => mergeStyles(providerStyles || {}, undefined, styleOptions as Record<string, string>),
+        () => mergeStyles(defaultStyles, providerStyles || {}, styleOptions as Record<string, string>),
         [providerStyles, styleOptions]
     );
 
@@ -81,6 +92,7 @@ export function FormField({
         return cloneElement(children, {
             ...childProps,
             ...field,
+            ref: childRef,
             ...checkboxProps,
             className: cn(baseClasses, stateClasses, children.props.className),
             value: isCheckbox ? field.value : (field.value ?? ''),
@@ -118,9 +130,19 @@ export function FormField({
                 <Controller
                     control={form.control}
                     name={name}
-                    render={({ field }) => renderChildElement(field)}
+                    render={({ field }) => (
+                        <>
+                            {renderChildElement(field)}
+                            {!providerErrorOptions?.groupErrors && (
+                                <FieldError
+                                    name={name}
+                                    inputRef={childRef}
+                                    options={mergedErrorOptions}
+                                />
+                            )}
+                        </>
+                    )}
                 />
-                <FieldError message={error?.message?.toString()} />
                 {description && (!descriptionOptions?.position || descriptionOptions?.position === 'below') && (
                     <FieldDescription
                         id={descriptionOptions?.id || `${name}-description`}

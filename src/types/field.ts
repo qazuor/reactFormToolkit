@@ -2,6 +2,7 @@ import type React from 'react';
 import type { ReactNode } from 'react';
 import type { FieldValues, UseFormReturn } from 'react-hook-form';
 import type { DescriptionOptions } from './description';
+import type { ErrorDisplayOptions } from './form';
 import type { ComponentStyleOptions } from './styles';
 
 /**
@@ -49,6 +50,11 @@ export interface FieldLabelProps {
      * Optional style overrides for this field
      */
     styleOptions?: ComponentStyleOptions;
+
+    /**
+     * Optional error display configuration that overrides provider options
+     */
+    errorDisplayOptions?: Partial<ErrorDisplayOptions>;
 }
 
 /**
@@ -56,9 +62,9 @@ export interface FieldLabelProps {
  */
 export interface FieldErrorProps {
     /**
-     * Error message to display
+     * Field name for error lookup
      */
-    message?: string;
+    name: string;
 }
 
 export interface FormFieldContextValue<TFieldValues extends FieldValues = FieldValues> {
@@ -128,6 +134,11 @@ export interface FormFieldProps {
      * Optional style overrides for this field
      */
     styleOptions?: ComponentStyleOptions;
+
+    /**
+     * Optional error display configuration that overrides provider options
+     */
+    errorDisplayOptions?: Partial<ErrorDisplayOptions>;
 }
 
 export interface FormFieldComponent extends React.FC<FormFieldProps>, FormFieldComposition {}

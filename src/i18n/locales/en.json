@@ -6,7 +6,9 @@
     "form": {
         "error": "Form Error",
         "loading": "Loading",
-        "success": "Success"
+        "success": "Success",
+        "validationErrors": "Validation Errors",
+        "viewMoreErrors": "View more errors"
     },
     "zod": {
         "errors": {

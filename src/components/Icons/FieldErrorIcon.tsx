@@ -1,4 +1,5 @@
 import { useQRFTTranslation } from '@/hooks';
+import { cn } from '@/lib';
 import type { IconProps } from '@/types';
 import type { JSX } from 'react';
 
@@ -7,7 +8,7 @@ import type { JSX } from 'react';
  * @param {IconProps} props - Component props
  * @returns {JSX.Element} Field error icon component
  */
-export function FieldErrorIcon({ title }: IconProps): JSX.Element {
+export function FieldErrorIcon({ title, className }: IconProps): JSX.Element {
     const { t } = useQRFTTranslation();
     const defaultTitle = t('field.error');
     return (
@@ -15,6 +16,7 @@ export function FieldErrorIcon({ title }: IconProps): JSX.Element {
             xmlns='http://www.w3.org/2000/svg'
             width='16'
             height='16'
+            className={cn(className)}
             viewBox='0 0 24 24'
             fill='none'
             stroke='currentColor'
