@@ -4,6 +4,7 @@ import { Layout } from '@/components/Layout';
 import { BasicForm } from '@/examples/basic-form';
 import { ComplexForm } from '@/examples/complex-form';
 import { ErrorsForm } from '@/examples/errors-form';
+import { FieldArrayForm } from '@/examples/field-array';
 import { I18nForm } from '@/examples/i18n-form';
 import { StyledForm } from '@/examples/styled-form';
 import { ValidationForm } from '@/examples/validation-form';
@@ -69,6 +70,10 @@ export const router = createBrowserRouter([
             {
                 path: 'examples/styled',
                 element: <StyledForm />
+            },
+            {
+                path: 'examples/field-array',
+                element: <FieldArrayForm />
             }
         ]
     }

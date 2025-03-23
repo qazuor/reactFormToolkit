@@ -195,6 +195,11 @@ function SidebarContent() {
                         text={t('examples.tabs.styled')}
                         icon={<Code className='h-4 w-4' />}
                     />
+                    <MainNakLink
+                        path='/examples/field-array'
+                        text={t('examples.tabs.fieldArray')}
+                        icon={<Code className='h-4 w-4' />}
+                    />
                 </ul>
             </div>
         </div>

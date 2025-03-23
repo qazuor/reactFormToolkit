@@ -15,7 +15,8 @@
                 "styled": "Styled Form",
                 "api-reference": "API Reference",
                 "preview": "Preview",
-                "code": "Code"
+                "styled": "Styled Form",
+                "fieldArray": "Field Array"
             },
             "footer": {
                 "text": "Built with ❤️ by"

@@ -15,7 +15,8 @@
                 "styled": "Formulario Estilizado",
                 "api-reference": "Referencia API",
                 "preview": "Vista Previa",
-                "code": "Código"
+                "styled": "Formulario Estilizado",
+                "fieldArray": "Campo Array"
             },
             "footer": {
                 "text": "Hecho con ❤️ por"
