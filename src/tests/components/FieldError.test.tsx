@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { type ReactNode, useRef } from 'react';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import React from 'react';
@@ -15,14 +15,26 @@ const testSchema = z.object({
 const TestWrapper = ({ children }: { children: ReactNode }) => (
     <FormProvider
         schema={testSchema}
-        onSubmit={() => {}}
+        onSubmit={(data) => console.log(data)}
     >
         <TooltipProvider>{children}</TooltipProvider>
     </FormProvider>
 );
 
 describe('FieldError', () => {
-    const renderError = (props: any) => {
+    const renderError = (props: {
+        message?: string;
+        options?: {
+            position?: string;
+            animation?: string;
+            showIcon?: boolean;
+            className?: string;
+            iconClassName?: string;
+            delay?: number;
+            autoDismiss?: boolean;
+            dismissAfter?: number;
+        };
+    }) => {
         return render(
             <TestWrapper>
                 <FieldError
@@ -87,7 +99,8 @@ describe('FieldError', () => {
             message: 'Invalid input',
             options: { iconClassName: 'custom-icon' }
         });
-        expect(screen.getByTitle('Field Error')).toHaveClass('custom-icon');
+        const svg = screen.getByTitle('Field Error').parentNode;
+        expect(svg).toHaveClass('custom-icon');
     });
 
     it('should show error after delay', async () => {
@@ -112,11 +125,14 @@ describe('FieldError', () => {
         });
     });
 
-    it('should render as tooltip when position is tooltip', () => {
+    it('should render as tooltip when position is tooltip', async () => {
         const TestComponent = () => {
             const ref = useRef<HTMLDivElement>(null);
             return (
-                <div ref={ref}>
+                <div
+                    ref={ref}
+                    data-testid='tooltip-container'
+                >
                     <FieldError
                         name='test'
                         message='Invalid input'
@@ -133,6 +149,14 @@ describe('FieldError', () => {
             </TestWrapper>
         );
 
-        expect(screen.getByTestId('error-tooltip')).toBeInTheDocument();
+        const tooltipContainer = screen.getByTestId('tooltip-container');
+
+        await act(async () => {
+            fireEvent.mouseEnter(tooltipContainer);
+        });
+
+        await waitFor(() => {
+            expect(screen.getByTestId('error-tooltip')).toBeInTheDocument();
+        });
     });
 });
