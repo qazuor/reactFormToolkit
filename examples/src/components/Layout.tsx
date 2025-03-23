@@ -181,6 +181,11 @@ function SidebarContent() {
                         icon={<Code className='h-4 w-4' />}
                     />
                     <MainNakLink
+                        path='/examples/errors'
+                        text={t('examples.tabs.errors')}
+                        icon={<Code className='h-4 w-4' />}
+                    />
+                    <MainNakLink
                         path='/examples/i18n'
                         text={t('examples.tabs.i18n')}
                         icon={<Code className='h-4 w-4' />}

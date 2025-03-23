@@ -3,6 +3,7 @@ import { Home } from '@/components/Home';
 import { Layout } from '@/components/Layout';
 import { BasicForm } from '@/examples/basic-form';
 import { ComplexForm } from '@/examples/complex-form';
+import { ErrorsForm } from '@/examples/errors-form';
 import { I18nForm } from '@/examples/i18n-form';
 import { StyledForm } from '@/examples/styled-form';
 import { ValidationForm } from '@/examples/validation-form';
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
             {
                 path: 'examples/validation',
                 element: <ValidationForm />
+            },
+            {
+                path: 'examples/errors',
+                element: <ErrorsForm />
             },
             {
                 path: 'examples/i18n',
