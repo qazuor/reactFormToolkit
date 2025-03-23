@@ -107,6 +107,9 @@ export interface FormProviderProps<
     /** Form fields and other components */
     children: ReactNode;
 
+    /** Optional form instance */
+    form?: UseFormReturn<TFieldValues>;
+
     /** Mode for validation trigger (defaults to 'onBlur') */
     mode?: 'onChange' | 'onBlur' | 'onSubmit' | 'onTouched' | 'all';
 

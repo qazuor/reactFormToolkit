@@ -44,6 +44,7 @@ export function FormProvider<
 >({
     children,
     schema,
+    form: externalForm,
     defaultValues,
     onSubmit,
     mode = 'onBlur',
@@ -69,13 +70,22 @@ export function FormProvider<
         });
     }, [i18nOptions, i18n]);
 
-    const form: UseFormReturn<TFieldValues> = useForm<TFieldValues>({
+    const internalForm = useForm<TFieldValues>({
         resolver: schema ? zodResolver(schema) : undefined,
         defaultValues: defaultValues as DefaultValues<TFieldValues>,
         mode,
         criteriaMode: 'all', // Show all validation criteria
         reValidateMode: 'onChange' // Re-validate on change after submission
     });
+
+    const form = externalForm || internalForm;
+
+    // Reset form when defaultValues change
+    useEffect(() => {
+        if (defaultValues) {
+            form.reset(defaultValues as DefaultValues<TFieldValues>);
+        }
+    }, [defaultValues, form]);
 
     // Update grouped errors when form state changes
     useEffect(() => {
@@ -108,6 +118,10 @@ export function FormProvider<
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
                         noValidate={true}
+                        onReset={(e) => {
+                            e.preventDefault();
+                            form.reset(defaultValues as DefaultValues<TFieldValues>);
+                        }}
                     >
                         {children}
                         {errorDisplayOptions?.groupErrors && (
