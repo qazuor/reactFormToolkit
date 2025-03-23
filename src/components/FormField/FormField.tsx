@@ -130,18 +130,33 @@ export function FormField({
                 <Controller
                     control={form.control}
                     name={name}
-                    render={({ field }) => (
-                        <>
-                            {renderChildElement(field)}
-                            {!providerErrorOptions?.groupErrors && (
-                                <FieldError
-                                    name={name}
-                                    inputRef={childRef}
-                                    options={mergedErrorOptions}
-                                />
-                            )}
-                        </>
-                    )}
+                    render={({ field }) => {
+                        const showError = !providerErrorOptions?.groupErrors && hasError;
+                        const isAbove = mergedErrorOptions?.position === 'above';
+                        const isRight = mergedErrorOptions?.position === 'right';
+
+                        return (
+                            <div className='relative'>
+                                {showError && isAbove && (
+                                    <FieldError
+                                        name={name}
+                                        inputRef={childRef}
+                                        options={mergedErrorOptions}
+                                    />
+                                )}
+                                <div className={cn(isRight && 'flex items-center gap-2')}>
+                                    {renderChildElement(field)}
+                                    {showError && !isAbove && (
+                                        <FieldError
+                                            name={name}
+                                            inputRef={childRef}
+                                            options={mergedErrorOptions}
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                        );
+                    }}
                 />
                 {description && (!descriptionOptions?.position || descriptionOptions?.position === 'below') && (
                     <FieldDescription

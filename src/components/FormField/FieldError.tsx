@@ -16,8 +16,8 @@ const ANIMATION_CLASSES: Record<ErrorAnimation, string> = {
 
 const POSITION_CLASSES: Record<ErrorPosition, string> = {
     below: 'mt-1',
-    above: '-mb-1',
-    right: 'absolute left-full top-1/2 -translate-y-1/2 ml-2',
+    above: 'mb-1',
+    right: 'flex-shrink-0 whitespace-nowrap',
     tooltip: ''
 };
 
@@ -32,7 +32,7 @@ export function FieldError({ options, name, message: propMessage, inputRef }: Fi
     const message = propMessage || error?.message;
     const [visible, setVisible] = useState(!options?.delay);
     const [dismissed, setDismissed] = useState(false);
-    const [showTooltip, setShowTooltip] = useState(false);
+    const [showTooltip, setShowTooltip] = useState(true);
 
     // Don't show individual errors if using grouped errors
     if (providerOptions?.groupErrors) {
@@ -114,13 +114,9 @@ export function FieldError({ options, name, message: propMessage, inputRef }: Fi
     if (position === 'tooltip') {
         return (
             <div className='relative'>
-                <Tooltip
-                    open={showTooltip}
-                    delayDuration={0}
-                    data-testid='tooltip-wrapper'
-                >
+                <Tooltip open={showTooltip}>
                     <TooltipTrigger asChild={true}>
-                        <div className='absolute inset-0' />
+                        <div className='absolute inset-0 z-10' />
                     </TooltipTrigger>
                     <TooltipContent
                         side='bottom'
@@ -128,12 +124,17 @@ export function FieldError({ options, name, message: propMessage, inputRef }: Fi
                         sideOffset={0}
                         data-testid='error-tooltip'
                         className={cn(
-                            'z-50 border-red-200 bg-red-50 text-red-600',
+                            'z-50 border border-red-200 bg-red-50 px-3 py-2 text-red-600',
                             animation !== 'none' && animation === 'pulse' && 'animate-pulse',
                             options?.className
                         )}
                     >
-                        {errorContent}
+                        <div className='flex items-center gap-2'>
+                            {showIcon && (
+                                <FieldErrorIcon className={cn(options?.iconClassName || 'h-4 w-4 shrink-0')} />
+                            )}
+                            <span>{message.toString()}</span>
+                        </div>
                     </TooltipContent>
                 </Tooltip>
             </div>

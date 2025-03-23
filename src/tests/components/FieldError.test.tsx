@@ -109,7 +109,7 @@ describe('FieldError', () => {
             message: 'Invalid input',
             options: { position: 'above' }
         });
-        expect(screen.getByTestId('field-error')).toHaveClass('-mb-1');
+        expect(screen.getByTestId('field-error')).toHaveClass('mb-1');
     });
 
     it('should apply custom animation classes', () => {

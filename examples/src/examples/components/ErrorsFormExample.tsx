@@ -57,7 +57,6 @@ export function ErrorsFormExample() {
             ...prev,
             [key]: value
         }));
-        handleReset();
     };
 
     const handleClearConfig = () => {
