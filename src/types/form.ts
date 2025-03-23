@@ -8,7 +8,7 @@ import type { FormProviderStyleOptions } from './styles';
 /**
  * Animation types for error messages
  */
-export type ErrorAnimation = 'fadeIn' | 'slideIn' | 'pulse' | 'shake';
+export type ErrorAnimation = 'none' | 'fadeIn' | 'slideIn' | 'pulse' | 'shake';
 
 /**
  * Position for error display
@@ -27,7 +27,7 @@ export interface ErrorDisplayOptions {
 
     /**
      * Animation to use when showing error messages
-     * @default 'fadeIn'
+     * @default 'none'
      */
     animation?: ErrorAnimation;
 

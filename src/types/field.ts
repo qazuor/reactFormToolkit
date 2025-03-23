@@ -65,6 +65,30 @@ export interface FieldErrorProps {
      * Field name for error lookup
      */
     name: string;
+
+    /**
+     * Optional error message override
+     */
+    message?: string;
+
+    /**
+     * Optional error display configuration
+     */
+    options?: {
+        position?: string;
+        animation?: string;
+        showIcon?: boolean;
+        className?: string;
+        iconClassName?: string;
+        delay?: number;
+        autoDismiss?: boolean;
+        dismissAfter?: number;
+    };
+
+    /**
+     * Reference to the input element for tooltip positioning
+     */
+    inputRef?: React.RefObject<HTMLElement>;
 }
 
 export interface FormFieldContextValue<TFieldValues extends FieldValues = FieldValues> {

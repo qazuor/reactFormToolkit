@@ -1,13 +1,13 @@
 import { useFormContext } from '@/context';
 import { useFieldStatus } from '@/hooks';
 import { cn } from '@/lib';
-import type { ErrorAnimation, ErrorDisplayOptions, ErrorPosition, FieldErrorProps } from '@/types';
-import type React from 'react';
+import type { ErrorAnimation, ErrorPosition, FieldErrorProps } from '@/types';
 import { type JSX, useEffect, useState } from 'react';
 import { FieldErrorIcon } from '../Icons/FieldErrorIcon';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 const ANIMATION_CLASSES: Record<ErrorAnimation, string> = {
+    none: '',
     fadeIn: 'animate-fadeIn',
     slideIn: 'animate-slideIn',
     pulse: 'animate-pulse',
@@ -26,17 +26,7 @@ const POSITION_CLASSES: Record<ErrorPosition, string> = {
  * @param props - Component properties
  * @returns Form field error component
  */
-export function FieldError({
-    options,
-    name,
-    message: propMessage,
-    inputRef
-}: FieldErrorProps & {
-    options?: ErrorDisplayOptions;
-    name: string;
-    message?: string;
-    inputRef?: React.RefObject<HTMLElement>;
-}): JSX.Element | null {
+export function FieldError({ options, name, message: propMessage, inputRef }: FieldErrorProps): JSX.Element | null {
     const { errorDisplayOptions: providerOptions } = useFormContext();
     const { error } = useFieldStatus(name);
     const message = propMessage || error?.message;
@@ -49,8 +39,11 @@ export function FieldError({
         return null;
     }
 
-    const position = options?.position || 'below';
-    const animation = options?.animation || 'fadeIn';
+    const position: ErrorPosition = (options?.position as ErrorPosition) || 'below';
+    const animation: ErrorAnimation = (options?.animation as ErrorAnimation) || 'none';
+    // Don't apply animation for tooltip position
+    const shouldAnimate = position !== 'tooltip' && animation !== 'none';
+    const animationClass = shouldAnimate ? ANIMATION_CLASSES[animation as keyof typeof ANIMATION_CLASSES] : '';
     const showIcon = options?.showIcon ?? true;
 
     // Handle delay and auto-dismiss
@@ -107,7 +100,7 @@ export function FieldError({
             className={cn(
                 'flex items-center gap-1 text-red-600 text-sm',
                 POSITION_CLASSES[position],
-                ANIMATION_CLASSES[animation],
+                animationClass,
                 options?.className
             )}
             data-testid='field-error'
@@ -136,7 +129,7 @@ export function FieldError({
                         data-testid='error-tooltip'
                         className={cn(
                             'z-50 border-red-200 bg-red-50 text-red-600',
-                            animation === 'pulse' && 'animate-pulse',
+                            animation !== 'none' && animation === 'pulse' && 'animate-pulse',
                             options?.className
                         )}
                     >

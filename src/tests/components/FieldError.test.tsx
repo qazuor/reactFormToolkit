@@ -54,7 +54,54 @@ describe('FieldError', () => {
         renderError({ message: 'Invalid input' });
         const error = screen.getByTestId('field-error');
         expect(error).toHaveTextContent('Invalid input');
-        expect(error).toHaveClass('mt-1', 'animate-fadeIn');
+        expect(error).toHaveClass('mt-1');
+    });
+
+    it('should not apply animation class when animation is none', () => {
+        renderError({
+            message: 'Invalid input',
+            options: { animation: 'none' }
+        });
+        const error = screen.getByTestId('field-error');
+        expect(error).not.toHaveClass('animate-fadeIn');
+        expect(error).not.toHaveClass('animate-shake');
+        expect(error).not.toHaveClass('animate-pulse');
+        expect(error).not.toHaveClass('animate-slideIn');
+    });
+
+    it('should not apply animation when position is tooltip', () => {
+        const TestComponent = () => {
+            const ref = useRef<HTMLDivElement>(null);
+            return (
+                <div
+                    ref={ref}
+                    data-testid='tooltip-trigger'
+                >
+                    <FieldError
+                        name='test'
+                        message='Invalid input'
+                        options={{ position: 'tooltip', animation: 'fadeIn' }}
+                        inputRef={ref}
+                    />
+                </div>
+            );
+        };
+
+        render(
+            <TestWrapper>
+                <TestComponent />
+            </TestWrapper>
+        );
+
+        const trigger = screen.getByTestId('tooltip-trigger');
+
+        act(() => {
+            fireEvent.mouseEnter(trigger);
+        });
+
+        const portal = document.querySelector('[data-testid="error-tooltip"]');
+        expect(portal).toBeInTheDocument();
+        expect(portal).not.toHaveClass('animate-fadeIn');
     });
 
     it('should apply custom position classes', () => {
