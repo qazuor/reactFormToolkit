@@ -32,11 +32,13 @@
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js",
 			"require": "./dist/index.cjs"
-		}
+		},
+		"./animations.css": "./dist/animations.css"
 	},
 	"files": [
 		"dist",
-		"README.md"
+		"README.md",
+		"animations.css"
 	],
 	"scripts": {
 		"preinstall": "npx only-allow pnpm",
