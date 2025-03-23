@@ -110,7 +110,8 @@ function handleInvalidType(issue: ZodInvalidTypeIssue, _lang: SupportedLangs, i1
     }
     return i18n.t('zod.errors.invalid_type', {
         expected: i18n.t(`zod.types.${issue.expected}`, { ns: 'QRFT' }),
-        received: i18n.t(`zod.types.${issue.received}`, { ns: 'QRFT' })
+        received: i18n.t(`zod.types.${issue.received}`, { ns: 'QRFT' }),
+        ns: 'QRFT'
     });
 }
 
@@ -130,7 +131,8 @@ function handleInvalidString(issue: ZodInvalidStringIssue, _lang: SupportedLangs
         }
     }
     return i18n.t(`zod.errors.invalid_string.${issue.validation}`, {
-        validation: i18n.t(`zod.validations.${issue.validation}`, { ns: 'QRFT' })
+        validation: i18n.t(`zod.validations.${issue.validation}`, { ns: 'QRFT' }),
+        ns: 'QRFT'
     });
 }
 
