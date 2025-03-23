@@ -1,4 +1,6 @@
-# @qazuor/react-form-toolkit
+<p align="center">
+  <img src="/logo.webp" alt="Qazuor React Form Toolkit" width="800" />
+</p>
 
 A comprehensive React form management library built with React Hook Form and Zod.
 
