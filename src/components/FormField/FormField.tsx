@@ -1,8 +1,9 @@
 import { FormFieldContext, useFormContext } from '@/context';
+import { FieldArrayContext } from '@/context';
 import { useFieldStatus } from '@/hooks';
 import { cn, defaultStyles, formUtils, mergeStyles } from '@/lib';
 import type { FormFieldProps } from '@/types';
-import { type ReactElement, cloneElement, isValidElement, useMemo, useRef } from 'react';
+import { type ReactElement, cloneElement, isValidElement, useContext, useMemo, useRef } from 'react';
 import { Controller, type ControllerRenderProps, type FieldValues as TFieldValues } from 'react-hook-form';
 import { FieldDescription } from './FieldDescription';
 import { FieldError } from './FieldError';
@@ -35,6 +36,10 @@ export function FormField({
 }: FormFieldProps): ReactElement {
     const { form, schema, styleOptions: providerStyles, errorDisplayOptions: providerErrorOptions } = useFormContext();
     const childRef = useRef<HTMLElement>(null);
+    const arrayContext = useContext(FieldArrayContext);
+
+    // Construct the full field path if inside a FieldArray
+    const fieldPath = arrayContext ? `${arrayContext.name}.${arrayContext.index}.${name}` : name;
 
     // Merge error display options
     const mergedErrorOptions = useMemo(
@@ -52,18 +57,21 @@ export function FormField({
     );
 
     // Determine if field is required based on schema
-    const isRequired = useMemo(() => required ?? formUtils.isFieldRequired(name, schema), [name, required, schema]);
+    const isRequired = useMemo(
+        () => required ?? formUtils.isFieldRequired(fieldPath, schema),
+        [fieldPath, required, schema]
+    );
 
     // Determine field type and properties
     const isCheckbox = isValidElement(children) && children.props.type === 'checkbox';
-    const { hasError, error } = useFieldStatus(name);
+    const { hasError, error } = useFieldStatus(fieldPath);
 
     const contextValue = useMemo(
         () => ({
-            name,
+            name: fieldPath,
             form
         }),
-        [name, form]
+        [fieldPath, form]
     );
 
     if (!isValidElement(children)) {
@@ -96,10 +104,10 @@ export function FormField({
             ...checkboxProps,
             className: cn(baseClasses, stateClasses, children.props.className),
             value: isCheckbox ? field.value : (field.value ?? ''),
-            id: name,
-            'data-testid': name,
+            id: fieldPath,
+            'data-testid': fieldPath,
             'aria-invalid': !!error,
-            'aria-describedby': description ? descriptionOptions?.id || `${name}-description` : undefined
+            'aria-describedby': description ? descriptionOptions?.id || `${fieldPath}-description` : undefined
         });
     };
 
@@ -108,7 +116,7 @@ export function FormField({
             <FormFieldContext.Provider value={contextValue}>
                 {description && descriptionOptions?.position === 'above' && (
                     <FieldDescription
-                        id={descriptionOptions?.id || `${name}-description`}
+                        id={descriptionOptions?.id || `${fieldPath}-description`}
                         position='above'
                         className={cn(mergedStyles.field?.description, descriptionOptions?.className)}
                         role={descriptionOptions?.role}
@@ -119,7 +127,7 @@ export function FormField({
                 )}
                 {label && (
                     <FieldLabel
-                        htmlFor={name}
+                        htmlFor={fieldPath}
                         required={isRequired}
                         tooltip={tooltip}
                         tooltipOptions={tooltipOptions}
@@ -129,7 +137,7 @@ export function FormField({
                 )}
                 <Controller
                     control={form.control}
-                    name={name}
+                    name={fieldPath}
                     render={({ field }) => {
                         const showError = !providerErrorOptions?.groupErrors && hasError;
                         const isAbove = mergedErrorOptions?.position === 'above';
@@ -139,7 +147,7 @@ export function FormField({
                             <div className='relative'>
                                 {showError && isAbove && (
                                     <FieldError
-                                        name={name}
+                                        name={fieldPath}
                                         inputRef={childRef}
                                         options={mergedErrorOptions}
                                     />
@@ -148,7 +156,7 @@ export function FormField({
                                     {renderChildElement(field)}
                                     {showError && !isAbove && (
                                         <FieldError
-                                            name={name}
+                                            name={fieldPath}
                                             inputRef={childRef}
                                             options={mergedErrorOptions}
                                         />
@@ -160,7 +168,7 @@ export function FormField({
                 />
                 {description && (!descriptionOptions?.position || descriptionOptions?.position === 'below') && (
                     <FieldDescription
-                        id={descriptionOptions?.id || `${name}-description`}
+                        id={descriptionOptions?.id || `${fieldPath}-description`}
                         position='below'
                         className={descriptionOptions?.className}
                         role={descriptionOptions?.role}

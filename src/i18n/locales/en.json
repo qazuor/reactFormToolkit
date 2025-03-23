@@ -3,6 +3,11 @@
         "info": "Field Info",
         "error": "Field Error"
     },
+    "fieldArray": {
+        "item": "Item",
+        "add": "Add Item",
+        "remove": "Remove"
+    },
     "form": {
         "error": "Form Error",
         "loading": "Loading",

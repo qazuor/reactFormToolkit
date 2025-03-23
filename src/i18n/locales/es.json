@@ -3,6 +3,11 @@
         "info": "Información del Campo",
         "error": "Error del Campo"
     },
+    "fieldArray": {
+        "item": "Elemento",
+        "add": "Agregar Elemento",
+        "remove": "Eliminar"
+    },
     "form": {
         "error": "Error del Formulario",
         "loading": "Cargando",
