@@ -1,6 +1,7 @@
 import { vi } from 'vitest';
 import { QRFTTranslations } from '../../i18n/locales';
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const resources: Record<string, Record<string, any>> = {};
 
 export const getMockI18n = () => {
@@ -19,7 +20,7 @@ export const getMockI18n = () => {
         language: 'en',
         isInitialized: false,
         use: vi.fn().mockReturnThis(),
-        init: vi.fn().mockImplementation((options) => {
+        init: vi.fn().mockImplementation((options: { resources?: Record<string, Record<string, string | number>> }) => {
             for (const [lang, namespaces] of Object.entries(options.resources || {})) {
                 resources[lang] = namespaces;
             }

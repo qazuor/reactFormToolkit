@@ -16,7 +16,7 @@ describe('FormField Styling', () => {
         return render(
             <FormProvider
                 schema={schema}
-                onSubmit={() => {}}
+                onSubmit={(data) => console.log(data)}
                 styleOptions={providerStyles}
             >
                 <FormField

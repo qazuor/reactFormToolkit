@@ -5,7 +5,7 @@ import type { I18nOptions, ResourceContent } from '../../types/i18n';
 import { getMockI18n } from './i18nMock';
 
 describe('i18nUtils', () => {
-    const resources: Record<string, Record<string, any>> = {};
+    const resources: Record<string, Record<string, string>> = {};
 
     const mockI18n = getMockI18n();
 
@@ -72,7 +72,7 @@ describe('i18nUtils', () => {
         });
 
         it('should default to en', () => {
-            const lang = i18nUtils.getCurrentLanguage({ language: undefined } as any);
+            const lang = i18nUtils.getCurrentLanguage({ language: undefined, t: () => '' } as unknown as i18n);
             expect(lang).toBe('en');
         });
     });
