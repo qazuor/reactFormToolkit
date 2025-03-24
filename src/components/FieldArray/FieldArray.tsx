@@ -3,6 +3,7 @@ import { FieldArrayContext } from '@/context/FieldArrayContext';
 import { useQRFTTranslation } from '@/hooks';
 import { cn } from '@/lib';
 import type { FieldArrayProps } from '@/types';
+import { useContext } from 'react';
 import { useFieldArray } from 'react-hook-form';
 
 /**
@@ -31,9 +32,14 @@ export function FieldArray({
 }: FieldArrayProps) {
     const { t } = useQRFTTranslation();
     const { form } = useFormContext();
+    const parentContext = useContext(FieldArrayContext);
+
+    // Build the full path considering parent FieldArray contexts
+    const fullPath = parentContext ? `${parentContext.name}.${parentContext.index}.${name}` : name;
+
     const { fields, append, remove } = useFieldArray({
         control: form.control,
-        name
+        name: fullPath
     });
 
     const handleAdd = () => {
@@ -55,7 +61,7 @@ export function FieldArray({
                     key={field.id}
                     className='relative'
                 >
-                    <FieldArrayContext.Provider value={{ name, index }}>
+                    <FieldArrayContext.Provider value={{ name: fullPath, index }}>
                         <div className='mb-2 flex items-center justify-between'>
                             <span className='font-medium text-sm'>{t('fieldArray.item', { number: index + 1 })}</span>
                             {fields.length > minItems && (
