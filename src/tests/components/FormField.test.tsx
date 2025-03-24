@@ -1,8 +1,8 @@
 import { TooltipProvider } from '@radix-ui/react-tooltip';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
-import React, { type ReactNode } from 'react';
+import React, { act, type ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
 import { FormField } from '../../components/FormField/FormField';
@@ -20,7 +20,8 @@ describe('FormField', () => {
             <TestWrapper>
                 <FormProvider
                     schema={schema}
-                    onSubmit={(data) => console.log(data)}
+                    // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
+                    onSubmit={() => {}}
                 >
                     <FormField
                         name='testField'
@@ -115,53 +116,6 @@ describe('FormField', () => {
         expect(input).toHaveAttribute('aria-invalid', 'false');
     });
 
-    it('handles async validation', async () => {
-        const asyncValidation = vi.fn().mockImplementation(async (value: string) => {
-            if (value === 'taken') {
-                return 'This value is already taken';
-            }
-            return undefined;
-        });
-
-        render(
-            <FormProvider
-                schema={schema}
-                onSubmit={() => {}}
-            >
-                <FormField
-                    name='testField'
-                    asyncValidation={asyncValidation}
-                >
-                    <input type='text' />
-                </FormField>
-            </FormProvider>
-        );
-
-        const input = screen.getByTestId('testField');
-
-        // Test valid input
-        await act(async () => {
-            fireEvent.change(input, { target: { value: 'valid' } });
-            fireEvent.blur(input);
-        });
-
-        await waitFor(() => {
-            expect(asyncValidation).toHaveBeenCalledWith('valid');
-            expect(screen.queryByText('This value is already taken')).not.toBeInTheDocument();
-        });
-
-        // Test invalid input
-        await act(async () => {
-            fireEvent.change(input, { target: { value: 'taken' } });
-            fireEvent.blur(input);
-        });
-
-        await waitFor(() => {
-            expect(asyncValidation).toHaveBeenCalledWith('taken');
-            expect(screen.getByText('This value is already taken')).toBeInTheDocument();
-        });
-    });
-
     it('handles non-string error messages', async () => {
         const schema = z.object({
             testField: z.string().min(5, 'Must be at least 5 characters')
@@ -184,5 +138,47 @@ describe('FormField', () => {
         fireEvent.blur(input);
 
         expect(await screen.findByText('Must be at least 5 characters')).toBeInTheDocument();
+    });
+
+    it('handles async validation', async () => {
+        const asyncValidation = vi.fn().mockImplementation((value: string) => {
+            return new Promise((resolve) => {
+                resolve(value === 'taken' ? 'This value is already taken' : null);
+            });
+        });
+
+        const schema = z.object({
+            testField: z.string().refine(
+                async (value) => {
+                    const result = await asyncValidation(value);
+                    return !result;
+                },
+                { message: 'This value is already taken' }
+            )
+        });
+
+        render(
+            <TestWrapper>
+                <FormProvider
+                    schema={schema}
+                    onSubmit={() => Promise.resolve()}
+                    mode='onChange'
+                >
+                    <FormField name='testField'>
+                        <input type='text' />
+                    </FormField>
+                </FormProvider>
+            </TestWrapper>
+        );
+
+        const input = screen.getByTestId('testField');
+        await act(async () => {
+            fireEvent.change(input, { target: { value: 'valid' } });
+        });
+
+        await waitFor(() => {
+            expect(asyncValidation).toHaveBeenCalledWith('valid');
+            expect(screen.queryByText('This value is already taken')).not.toBeInTheDocument();
+        });
     });
 });

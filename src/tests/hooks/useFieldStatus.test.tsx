@@ -1,5 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import type { ReactNode } from 'react';
+// biome-ignore lint/correctness/noUnusedImports: <explanation>
+import React from 'react';
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
 import { FormProvider } from '../../components/FormProvider/FormProvider';
@@ -26,7 +28,7 @@ describe('useFieldStatus', () => {
     const wrapper = ({ children }: { children: ReactNode }) => (
         <FormProvider
             schema={schema}
-            onSubmit={() => {}}
+            onSubmit={(data) => console.log('Form submitted:', data)}
             defaultValues={{
                 test: '',
                 nested: { field: '' },
@@ -47,9 +49,10 @@ describe('useFieldStatus', () => {
 
         expect(result.current).toEqual({
             error: undefined,
-            isTouched: false,
+            hasError: false,
             isDirty: false,
-            hasError: false
+            isTouched: false,
+            isValidating: false
         });
     });
 
@@ -58,9 +61,10 @@ describe('useFieldStatus', () => {
 
         expect(result.current).toEqual({
             error: undefined,
-            isTouched: false,
+            hasError: false,
             isDirty: false,
-            hasError: false
+            isTouched: false,
+            isValidating: false
         });
     });
 
@@ -69,9 +73,10 @@ describe('useFieldStatus', () => {
 
         expect(result.current).toEqual({
             error: undefined,
-            isTouched: false,
+            hasError: false,
             isDirty: false,
-            hasError: false
+            isTouched: false,
+            isValidating: false
         });
     });
 
@@ -80,9 +85,10 @@ describe('useFieldStatus', () => {
 
         expect(result.current).toEqual({
             error: undefined,
-            isTouched: false,
+            hasError: false,
             isDirty: false,
-            hasError: false
+            isTouched: false,
+            isValidating: false
         });
     });
 });
