@@ -13,6 +13,7 @@
                 "i18n": "Internationalization",
                 "errors": "Error Handling",
                 "styled": "Styled Form",
+                "async": "Async Validation",
                 "api-reference": "API Reference",
                 "preview": "Preview",
                 "styled": "Styled Form",
@@ -37,6 +38,8 @@
         },
         "form": {
             "description": "Please fill out all required fields",
+            "asyncValidationTitle": "Async Validation Example",
+            "asyncValidationDescription": "A form demonstrating asynchronous validation with loading states and error handling",
             "email": "Email",
             "emailDescription": "We'll never share your email",
             "emailTooltip": "Enter your primary email address",

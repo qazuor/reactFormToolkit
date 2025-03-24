@@ -1,6 +1,7 @@
 import { DocsViewer } from '@/components/DocsViewer';
 import { Home } from '@/components/Home';
 import { Layout } from '@/components/Layout';
+import { AsyncValidation } from '@/examples/async-validation';
 import { BasicForm } from '@/examples/basic-form';
 import { ComplexForm } from '@/examples/complex-form';
 import { ErrorsForm } from '@/examples/errors-form';
@@ -58,6 +59,10 @@ export const router = createBrowserRouter([
             {
                 path: 'examples/validation',
                 element: <ValidationForm />
+            },
+            {
+                path: 'examples/async',
+                element: <AsyncValidation />
             },
             {
                 path: 'examples/errors',

@@ -13,6 +13,7 @@
                 "i18n": "Internacionalización",
                 "errors": "Manejo de Errores",
                 "styled": "Formulario Estilizado",
+                "async": "Validación Asíncrona",
                 "api-reference": "Referencia API",
                 "preview": "Vista Previa",
                 "styled": "Formulario Estilizado",
@@ -37,6 +38,8 @@
         },
         "form": {
             "description": "Por favor complete todos los campos requeridos",
+            "asyncValidationTitle": "Ejemplo de Validación Asíncrona",
+            "asyncValidationDescription": "Un formulario que demuestra la validación asíncrona con estados de carga y manejo de errores",
             "email": "Correo Electrónico",
             "emailDescription": "Nunca compartiremos tu correo",
             "emailTooltip": "Ingresa tu correo electrónico principal",
