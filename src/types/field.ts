@@ -173,6 +173,24 @@ export interface FormFieldProps {
      * Optional async validation function
      */
     asyncValidation?: AsyncValidationFn;
+
+    /**
+     * Debounce time in milliseconds for async validation
+     * @default 500
+     */
+    asyncValidationDebounce?: number;
+
+    /**
+     * Show validation status icons
+     * @default true
+     */
+    showValidationIcons?: boolean;
+
+    /**
+     * Show loading spinner during async validation
+     * @default true
+     */
+    showLoadingSpinner?: boolean;
 }
 
 export interface FormFieldComponent extends React.FC<FormFieldProps>, FormFieldComposition {}

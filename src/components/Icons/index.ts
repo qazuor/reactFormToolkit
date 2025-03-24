@@ -3,3 +3,4 @@ export * from '@/components/Icons/LoadingIcon';
 export * from '@/components/Icons/SuccessIcon';
 export * from '@/components/Icons/FieldErrorIcon';
 export * from '@/components/Icons/InfoTooltipIcon';
+export * from '@/components/Icons/ValidationStatusIcon';

@@ -37,7 +37,7 @@ export function AsyncValidationExample() {
                 className='rounded-lg bg-blue-50 p-4'
             >
                 Try these values to see validation in action:
-                <ul className='list-disc pl-5 pt-2'>
+                <ul className='list-disc pt-2 pl-5'>
                     <li>Username: admin, root, test</li>
                     <li>Email: admin@example.com, test@example.com</li>
                 </ul>
@@ -50,13 +50,19 @@ export function AsyncValidationExample() {
                     required={true}
                     tooltip='Enter a unique username'
                     description='Username will be checked for availability'
+                    asyncValidationDebounce={1000}
+                    showValidationIcons={true}
+                    showLoadingSpinner={true}
                     asyncValidation={async (value) => {
-                        if (!value) return undefined;
+                        if (!value) {
+                            return undefined;
+                        }
                         const isAvailable = await checkUsername(value);
                         return isAvailable ? undefined : 'Username is already taken';
                     }}
                 >
                     <input
+                        autoComplete='off'
                         type='text'
                         className='w-full rounded-md border px-3 py-2'
                         placeholder='Choose a username'
@@ -69,13 +75,19 @@ export function AsyncValidationExample() {
                     required={true}
                     tooltip='Enter your email address'
                     description='Email will be checked for availability'
+                    asyncValidationDebounce={1000}
+                    showValidationIcons={true}
+                    showLoadingSpinner={true}
                     asyncValidation={async (value) => {
-                        if (!value) return undefined;
+                        if (!value) {
+                            return undefined;
+                        }
                         const isAvailable = await checkEmail(value);
                         return isAvailable ? undefined : 'Email is already registered';
                     }}
                 >
                     <input
+                        autoComplete='off'
                         type='email'
                         className='w-full rounded-md border px-3 py-2'
                         placeholder='Enter your email'
