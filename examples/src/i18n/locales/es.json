@@ -41,6 +41,8 @@
             "emailDescription": "Nunca compartiremos tu correo",
             "emailTooltip": "Ingresa tu correo electrónico principal",
             "emailPlaceholder": "Ingresa tu correo",
+            "name": "Nombre",
+            "namePlaceholder": "Ingrese nombre",
             "password": "Contraseña",
             "passwordTooltip": "Debe tener al menos 8 caracteres",
             "passwordPlaceholder": "Ingresa tu contraseña",

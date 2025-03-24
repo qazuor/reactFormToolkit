@@ -41,6 +41,8 @@
             "emailDescription": "We'll never share your email",
             "emailTooltip": "Enter your primary email address",
             "emailPlaceholder": "Enter your email",
+            "name": "Name",
+            "namePlaceholder": "Enter name",
             "password": "Password",
             "passwordTooltip": "Must be at least 8 characters",
             "passwordPlaceholder": "Enter your password",
