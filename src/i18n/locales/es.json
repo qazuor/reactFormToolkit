@@ -4,9 +4,12 @@
         "error": "Error del Campo"
     },
     "fieldArray": {
-        "item": "Elemento",
-        "add": "Agregar Elemento",
-        "remove": "Eliminar"
+        "item": "Elemento {{number}}",
+        "add": "Agregar Nuevo Elemento",
+        "remove": "Eliminar Elemento",
+        "minError": "Se requieren al menos {{min}} elementos",
+        "maxError": "Máximo {{max}} elementos permitidos",
+        "noItems": "No hay elementos agregados aún"
     },
     "form": {
         "error": "Error del Formulario",

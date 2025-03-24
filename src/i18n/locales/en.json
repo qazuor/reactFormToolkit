@@ -4,9 +4,12 @@
         "error": "Field Error"
     },
     "fieldArray": {
-        "item": "Item",
-        "add": "Add Item",
-        "remove": "Remove"
+        "item": "Item {{number}}",
+        "add": "Add New Item",
+        "remove": "Remove Item",
+        "minError": "At least {{min}} items required",
+        "maxError": "Maximum {{max}} items allowed",
+        "noItems": "No items added yet"
     },
     "form": {
         "error": "Form Error",

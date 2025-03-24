@@ -1,5 +1,5 @@
 import { useFormContext } from '@/context';
-import { FieldArrayContext } from '@/context';
+import { FieldArrayContext } from '@/context/FieldArrayContext';
 import { useQRFTTranslation } from '@/hooks';
 import { cn } from '@/lib';
 import type { FieldArrayProps } from '@/types';
@@ -57,9 +57,7 @@ export function FieldArray({
                 >
                     <FieldArrayContext.Provider value={{ name, index }}>
                         <div className='mb-2 flex items-center justify-between'>
-                            <span className='font-medium text-sm'>
-                                {t('fieldArray.item')} {index + 1}
-                            </span>
+                            <span className='font-medium text-sm'>{t('fieldArray.item', { number: index + 1 })}</span>
                             {fields.length > minItems && (
                                 <button
                                     type='button'
@@ -77,6 +75,8 @@ export function FieldArray({
                     </FieldArrayContext.Provider>
                 </div>
             ))}
+
+            {fields.length === 0 && <p className='text-center text-gray-500 text-sm'>{t('fieldArray.noItems')}</p>}
 
             {(!maxItems || fields.length < maxItems) && (
                 <button
