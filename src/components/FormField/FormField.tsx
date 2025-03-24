@@ -1,20 +1,12 @@
-import { ValidationStatusIcon } from '@/components/Icons/';
 import { FormFieldContext, useFormContext } from '@/context';
 import { FieldArrayContext } from '@/context';
-import { useFieldStatus, useQRFTTranslation } from '@/hooks';
+import { useFieldStatus } from '@/hooks';
+import { useFieldValidation } from '@/hooks/useFieldValidation';
 import { cn, defaultStyles, formUtils, mergeStyles } from '@/lib';
 import type { FormFieldProps } from '@/types';
-import {
-    type ReactElement,
-    cloneElement,
-    isValidElement,
-    useContext,
-    useEffect,
-    useMemo,
-    useRef,
-    useState
-} from 'react';
+import { type ReactElement, cloneElement, isValidElement, useContext, useMemo, useRef } from 'react';
 import { Controller, type ControllerRenderProps, type FieldValues as TFieldValues } from 'react-hook-form';
+import { ValidationStatusIcon } from '../Icons';
 import { FieldDescription } from './FieldDescription';
 import { FieldError } from './FieldError';
 import { FieldLabel } from './FieldLabel';
@@ -23,7 +15,7 @@ import { FieldLabel } from './FieldLabel';
  * FormField component for rendering form inputs with validation
  *
  * @param {FormFieldProps} props - Component props
- * @returns {ReactElement} Form field component
+ * @returns {ReactElement} Form f`ield component
  *
  * @example
  * ```tsx
@@ -36,31 +28,24 @@ export function FormField({
     name,
     label,
     required,
+    asyncValidation,
+    asyncValidationDebounce = 500,
+    showValidationIcons = true,
+    showLoadingSpinner = true,
     children,
     description,
     descriptionOptions,
     tooltip,
     tooltipOptions,
     styleOptions,
-    errorDisplayOptions,
-    asyncValidation,
-    asyncValidationDebounce = 500,
-    showValidationIcons = true,
-    showLoadingSpinner = true
+    errorDisplayOptions
 }: FormFieldProps): ReactElement {
     const { form, schema, styleOptions: providerStyles, errorDisplayOptions: providerErrorOptions } = useFormContext();
-    const { t } = useQRFTTranslation();
     const childRef = useRef<HTMLElement>(null);
     const arrayContext = useContext(FieldArrayContext);
-    const [isValidating, setIsValidating] = useState(false);
-    const [asyncError, setAsyncError] = useState<string>();
-    const debounceTimeout = useRef<NodeJS.Timeout>();
-    const [hasStartedValidating, setHasStartedValidating] = useState(false);
 
-    // Construct the full field path if inside a FieldArray
     const fieldPath = arrayContext ? `${arrayContext.name}.${arrayContext.index}.${name}` : name;
 
-    // Merge error display options
     const mergedErrorOptions = useMemo(
         () => ({
             ...providerErrorOptions,
@@ -69,82 +54,29 @@ export function FormField({
         [providerErrorOptions, errorDisplayOptions]
     );
 
-    // Merge component styles with provider styles
     const mergedStyles = useMemo(
         () => mergeStyles(defaultStyles, providerStyles || {}, styleOptions as Record<string, string>),
         [providerStyles, styleOptions]
     );
 
-    // Determine if field is required based on schema
     const isRequired = useMemo(
         () => required ?? formUtils.isFieldRequired(fieldPath, schema),
         [fieldPath, required, schema]
     );
 
-    // Determine field type and properties
     const isCheckbox = isValidElement(children) && children.props.type === 'checkbox';
+    const { hasError, error } = useFieldStatus(fieldPath);
 
-    const { error, hasError } = useFieldStatus(fieldPath);
+    const { className, ariaInvalid, ariaDescribedBy, asyncError, hasAsyncError, asyncValidating } = useFieldValidation({
+        fieldPath,
+        isCheckbox,
+        mergedStyles,
+        asyncValidation,
+        asyncValidationDebounce,
+        schema
+    });
+
     const displayError = asyncError || error?.message;
-
-    // Handle async validation
-    useEffect(() => {
-        if (!asyncValidation) {
-            return;
-        }
-
-        const subscription = form.watch((value, { name: changedField }) => {
-            if (changedField === fieldPath) {
-                const fieldValue = value[fieldPath as keyof typeof value];
-
-                if (debounceTimeout.current) {
-                    // Clear any existing timeout
-                    clearTimeout(debounceTimeout.current);
-                }
-
-                // Check Zod validation first
-                const result = schema?.safeParse({ [fieldPath]: fieldValue });
-                const hasFieldError =
-                    !result || result.success
-                        ? false
-                        : result.error.issues.some((issue) => issue.path[0] === fieldPath);
-
-                if (!(hasStartedValidating || hasFieldError)) {
-                    // Mark that validation has started
-                    setHasStartedValidating(true);
-                }
-
-                if (hasFieldError) {
-                    setIsValidating(false);
-                    setAsyncError(undefined);
-                    setHasStartedValidating(false);
-                } else {
-                    setIsValidating(true);
-                    setAsyncError(undefined);
-
-                    // Set new timeout for debounced validation
-                    debounceTimeout.current = setTimeout(async () => {
-                        try {
-                            const validationError = await asyncValidation(fieldValue);
-                            setAsyncError(validationError);
-                        } catch (error) {
-                            setAsyncError(t('field.asyncValidationError'));
-                            console.error('AsyncValidation error', error);
-                        } finally {
-                            setIsValidating(false);
-                        }
-                    }, asyncValidationDebounce);
-                }
-            }
-        });
-
-        return () => {
-            subscription.unsubscribe();
-            if (debounceTimeout.current) {
-                clearTimeout(debounceTimeout.current);
-            }
-        };
-    }, [asyncValidation, fieldPath, form, t, schema, asyncValidationDebounce]);
 
     const contextValue = useMemo(
         () => ({
@@ -158,37 +90,25 @@ export function FormField({
         return <></>;
     }
 
-    /**
-     * Renders the child element with the field properties
-     */
     const renderChildElement = (field: ControllerRenderProps<TFieldValues, string>): ReactElement => {
-        // Properties specific to checkboxes
-        const checkboxProps = isCheckbox ? { checked: !!field.value } : {};
-
-        const inputType = isCheckbox ? 'checkbox' : 'input';
-        const baseClasses = mergedStyles.field?.[inputType];
-
-        const stateClasses = cn({
-            [(mergedStyles.field?.isInvalid as string) || '']: hasError,
-            [(mergedStyles.field?.isValid as string) || '']: !hasError,
-            [(mergedStyles.field?.isLoading as string) || '']: field.disabled || isValidating,
-            [(mergedStyles.field?.isValidating as string) || '']: isValidating
-        });
-
-        // Filter out non-DOM props to avoid React warnings
+        // Filter out non-DOM props
         const { tooltipPosition, errorDisplay, ...childProps } = children.props;
 
-        return cloneElement(children, {
+        const fieldProps = {
             ...childProps,
             ...field,
-            ref: childRef,
-            ...checkboxProps,
-            className: cn(baseClasses, stateClasses, children.props.className),
+            ...(isCheckbox ? { checked: !!field.value } : {}),
+            className,
             value: isCheckbox ? field.value : (field.value ?? ''),
             id: fieldPath,
             'data-testid': fieldPath,
-            'aria-invalid': !!(error || asyncError),
-            'aria-describedby': description ? descriptionOptions?.id || `${fieldPath}-description` : undefined
+            'aria-invalid': ariaInvalid,
+            'aria-describedby': description ? ariaDescribedBy : undefined
+        };
+
+        return cloneElement(children as ReactElement, {
+            ...fieldProps,
+            ref: childRef
         });
     };
 
@@ -229,6 +149,7 @@ export function FormField({
                                 {showError && isAbove && (
                                     <FieldError
                                         name={fieldPath}
+                                        message={displayError}
                                         inputRef={childRef}
                                         options={mergedErrorOptions}
                                     />
@@ -237,11 +158,13 @@ export function FormField({
                                     {renderChildElement(field)}
                                     {showValidationIcons && asyncValidation && (
                                         <div className='items-top pointer-events-none absolute inset-y-0 right-0 flex pt-3 pr-3'>
-                                            {hasStartedValidating && isValidating && showLoadingSpinner && (
+                                            {asyncValidating && showLoadingSpinner && (
                                                 <ValidationStatusIcon status='loading' />
                                             )}
-                                            {!isValidating && !!asyncError && <ValidationStatusIcon status='error' />}
-                                            {hasStartedValidating && !(isValidating || asyncError) && field.value && (
+                                            {!asyncValidating && hasAsyncError && (
+                                                <ValidationStatusIcon status='error' />
+                                            )}
+                                            {!(asyncValidating || asyncError) && (
                                                 <ValidationStatusIcon status='success' />
                                             )}
                                         </div>

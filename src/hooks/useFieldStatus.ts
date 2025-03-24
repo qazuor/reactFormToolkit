@@ -1,5 +1,6 @@
 import { useFormContext } from '@/context/FormContext';
 import { get } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
 /**
  * Hook to manage field status including validation state for both regular and array fields
@@ -9,8 +10,14 @@ import { get } from '@/lib/utils';
 export function useFieldStatus(fieldName: string) {
     const { form } = useFormContext();
     const {
-        formState: { errors, touchedFields, dirtyFields }
+        formState: { errors, touchedFields, dirtyFields, isValidating: formIsValidating }
     } = form;
+
+    const [isValidating, setIsValidating] = useState(false);
+
+    useEffect(() => {
+        setIsValidating(formIsValidating);
+    }, [formIsValidating]);
 
     // Get the error using the full path
     const error = get(errors, fieldName);
@@ -21,6 +28,7 @@ export function useFieldStatus(fieldName: string) {
         error,
         isTouched,
         isDirty,
-        hasError: !!error
+        hasError: !!error,
+        isValidating
     };
 }

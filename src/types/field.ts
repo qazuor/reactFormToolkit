@@ -6,6 +6,11 @@ import type { ErrorDisplayOptions } from './form';
 import type { ComponentStyleOptions } from './styles';
 
 /**
+ * Async validator function type
+ */
+export type AsyncValidationFn = (value: unknown) => Promise<boolean | string>;
+
+/**
  * Tooltip configuration options
  */
 export type TooltipOptions = {
@@ -95,11 +100,6 @@ export interface FormFieldContextValue<TFieldValues extends FieldValues = FieldV
     name: keyof TFieldValues & string;
     form: UseFormReturn<TFieldValues>;
 }
-
-/**
- * Async validation function type
- */
-export type AsyncValidationFn = (value: any) => Promise<string | undefined>;
 
 export interface FormFieldDescriptionProps {
     /**
