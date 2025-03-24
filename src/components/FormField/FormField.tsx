@@ -1,9 +1,18 @@
 import { FormFieldContext, useFormContext } from '@/context';
 import { FieldArrayContext } from '@/context';
-import { useFieldStatus } from '@/hooks';
+import { useFieldStatus, useQRFTTranslation } from '@/hooks';
 import { cn, defaultStyles, formUtils, mergeStyles } from '@/lib';
 import type { FormFieldProps } from '@/types';
-import { type ReactElement, cloneElement, isValidElement, useContext, useMemo, useRef } from 'react';
+import {
+    type ReactElement,
+    cloneElement,
+    isValidElement,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+    useState
+} from 'react';
 import { Controller, type ControllerRenderProps, type FieldValues as TFieldValues } from 'react-hook-form';
 import { FieldDescription } from './FieldDescription';
 import { FieldError } from './FieldError';
@@ -32,11 +41,15 @@ export function FormField({
     tooltip,
     tooltipOptions,
     styleOptions,
-    errorDisplayOptions
+    errorDisplayOptions,
+    asyncValidation
 }: FormFieldProps): ReactElement {
     const { form, schema, styleOptions: providerStyles, errorDisplayOptions: providerErrorOptions } = useFormContext();
+    const { t } = useQRFTTranslation();
     const childRef = useRef<HTMLElement>(null);
     const arrayContext = useContext(FieldArrayContext);
+    const [isValidating, setIsValidating] = useState(false);
+    const [asyncError, setAsyncError] = useState<string>();
 
     // Construct the full field path if inside a FieldArray
     const fieldPath = arrayContext ? `${arrayContext.name}.${arrayContext.index}.${name}` : name;
@@ -65,6 +78,33 @@ export function FormField({
     // Determine field type and properties
     const isCheckbox = isValidElement(children) && children.props.type === 'checkbox';
     const { hasError, error } = useFieldStatus(fieldPath);
+    const displayError = asyncError || error?.message;
+
+    // Handle async validation
+    useEffect(() => {
+        if (!asyncValidation) {
+            return;
+        }
+
+        const subscription = form.watch((value, { name: changedField }) => {
+            if (changedField === fieldPath) {
+                const fieldValue = value[fieldPath as keyof typeof value];
+                setIsValidating(true);
+                asyncValidation(fieldValue)
+                    .then((validationError) => {
+                        setAsyncError(validationError);
+                    })
+                    .catch(() => {
+                        setAsyncError(t('field.asyncValidationError'));
+                    })
+                    .finally(() => {
+                        setIsValidating(false);
+                    });
+            }
+        });
+
+        return () => subscription.unsubscribe();
+    }, [asyncValidation, fieldPath, form, t]);
 
     const contextValue = useMemo(
         () => ({
@@ -91,7 +131,8 @@ export function FormField({
         const stateClasses = cn({
             [(mergedStyles.field?.isInvalid as string) || '']: hasError,
             [(mergedStyles.field?.isValid as string) || '']: !hasError,
-            [(mergedStyles.field?.isLoading as string) || '']: field.disabled
+            [(mergedStyles.field?.isLoading as string) || '']: field.disabled || isValidating,
+            [(mergedStyles.field?.isValidating as string) || '']: isValidating
         });
 
         // Filter out non-DOM props to avoid React warnings
@@ -106,7 +147,7 @@ export function FormField({
             value: isCheckbox ? field.value : (field.value ?? ''),
             id: fieldPath,
             'data-testid': fieldPath,
-            'aria-invalid': !!error,
+            'aria-invalid': !!(error || asyncError),
             'aria-describedby': description ? descriptionOptions?.id || `${fieldPath}-description` : undefined
         });
     };
@@ -139,7 +180,7 @@ export function FormField({
                     control={form.control}
                     name={fieldPath}
                     render={({ field }) => {
-                        const showError = !providerErrorOptions?.groupErrors && hasError;
+                        const showError = !providerErrorOptions?.groupErrors && (hasError || !!asyncError);
                         const isAbove = mergedErrorOptions?.position === 'above';
                         const isRight = mergedErrorOptions?.position === 'right';
 
@@ -157,6 +198,7 @@ export function FormField({
                                     {showError && !isAbove && (
                                         <FieldError
                                             name={fieldPath}
+                                            message={displayError}
                                             inputRef={childRef}
                                             options={mergedErrorOptions}
                                         />

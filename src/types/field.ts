@@ -96,6 +96,11 @@ export interface FormFieldContextValue<TFieldValues extends FieldValues = FieldV
     form: UseFormReturn<TFieldValues>;
 }
 
+/**
+ * Async validation function type
+ */
+export type AsyncValidationFn = (value: any) => Promise<string | undefined>;
+
 export interface FormFieldDescriptionProps {
     /**
      * Description text content
@@ -163,6 +168,11 @@ export interface FormFieldProps {
      * Optional error display configuration that overrides provider options
      */
     errorDisplayOptions?: Partial<ErrorDisplayOptions>;
+
+    /**
+     * Optional async validation function
+     */
+    asyncValidation?: AsyncValidationFn;
 }
 
 export interface FormFieldComponent extends React.FC<FormFieldProps>, FormFieldComposition {}

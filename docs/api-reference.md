@@ -57,6 +57,46 @@ Component for rendering form fields with validation.
 | `children` | `ReactNode` | Input element |
 | `descriptionOptions` | `DescriptionOptions` | Description configuration |
 | `tooltipOptions` | `TooltipOptions` | Tooltip configuration |
+| `styleOptions` | `ComponentStyleOptions` | Style overrides |
+| `errorDisplayOptions` | `ErrorDisplayOptions` | Error display configuration |
+| `asyncValidation` | `(value: any) => Promise<string \| undefined>` | Async validation function |
+
+### Example
+
+```tsx
+<FormField
+    name="email"
+    label="Email Address"
+    required
+    description="Enter your primary email"
+    tooltip="Must be a valid email address"
+>
+    <input type="email" />
+</FormField>
+```
+
+### Async Validation Example
+
+```tsx
+<FormField
+    name="username"
+    label="Username"
+    asyncValidation={async (value) => {
+        const response = await checkUsernameAvailability(value);
+        return response.available ? undefined : 'Username already taken';
+    }}
+>
+    <input type="text" />
+</FormField>
+```
+
+The async validation function:
+- Receives the current field value
+- Returns a Promise that resolves to:
+  - `undefined` if validation passes
+  - An error message string if validation fails
+- Shows loading state during validation
+- Displays error message on validation failure
 
 ### FieldArray
 

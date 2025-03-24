@@ -1,7 +1,8 @@
 {
     "field": {
         "info": "Información del Campo",
-        "error": "Error del Campo"
+        "error": "Error del Campo",
+        "asyncValidationError": "La validación falló. Por favor, inténtelo de nuevo."
     },
     "fieldArray": {
         "item": "Elemento {{number}}",
