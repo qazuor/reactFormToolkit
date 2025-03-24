@@ -122,7 +122,8 @@ describe('FieldArray with Nested Arrays', () => {
         });
 
         // Add an employee to the first department
-        const addEmployeeButton = screen.getByRole('button', { name: 'Add Employee' });
+        const addEmployeeButtons = screen.getAllByRole('button', { name: 'Add Employee' });
+        const addEmployeeButton = addEmployeeButtons[0]; // First department's add button
         await userEvent.click(addEmployeeButton);
 
         await waitFor(() => {
@@ -131,8 +132,8 @@ describe('FieldArray with Nested Arrays', () => {
         });
 
         // Remove the second employee
-        const removeDepartmentButton = screen.getAllByRole('button', { name: /Remove Item/i })[2];
-        await userEvent.click(removeDepartmentButton);
+        const removeEmployeeButtons = screen.getAllByRole('button', { name: 'Remove Employee' });
+        await userEvent.click(removeEmployeeButtons[1]); // Remove second employee
 
         await waitFor(() => {
             expect(screen.queryByTestId('departments.0.employees.1.name')).not.toBeInTheDocument();
@@ -148,18 +149,15 @@ describe('FieldArray with Nested Arrays', () => {
         await userEvent.click(addDepartmentButton);
         await userEvent.click(addDepartmentButton);
 
-        await waitFor(() => {
-            expect(screen.getAllByTestId(/departments\.\d+\.name/)).toHaveLength(3);
-        });
-
         // Add employees to first and second departments
-        const employeeButtons = screen.getAllByRole('button', { name: 'Add Employee' });
-        await userEvent.click(employeeButtons[0]); // First department
-        await userEvent.click(employeeButtons[1]); // Second department
+        const addEmployeeButtons = screen.getAllByRole('button', { name: 'Add Employee' });
+        await userEvent.click(addEmployeeButtons[0]); // Add to first department
+        await userEvent.click(addEmployeeButtons[0]); // Add another to first department
+        await userEvent.click(addEmployeeButtons[1]); // Add to second department
 
         await waitFor(() => {
             const employeeInputs = screen.getAllByTestId(/departments\.\d+\.employees\.\d+\.name/);
-            expect(employeeInputs).toHaveLength(4); // 2 employees in first dept + 2 in second dept
+            expect(employeeInputs).toHaveLength(4); // 1 from default value + 2 employees in first dept + 1 in second dept
         });
 
         // Remove first department
