@@ -58,6 +58,36 @@ Component for rendering form fields with validation.
 | `descriptionOptions` | `DescriptionOptions` | Description configuration |
 | `tooltipOptions` | `TooltipOptions` | Tooltip configuration |
 
+### FieldArray
+
+Component for managing dynamic form arrays with validation.
+
+```tsx
+<FieldArray
+    name="items"
+    minItems={1}
+    maxItems={5}
+>
+    <FormField name="name">
+        <input type="text" />
+    </FormField>
+</FieldArray>
+```
+
+#### Props
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `string` | Array field name matching schema |
+| `children` | `ReactNode` | Form fields to repeat |
+| `minItems` | `number` | Minimum items required |
+| `maxItems` | `number` | Maximum items allowed |
+| `addButtonText` | `string` | Custom add button text |
+| `removeButtonText` | `string` | Custom remove button text |
+| `className` | `string` | Container CSS classes |
+| `buttonClassName` | `string` | Button CSS classes |
+
+
 ### FormDescription
 
 Component for form-level descriptions.

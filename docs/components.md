@@ -125,6 +125,53 @@ Renders a form field label with optional required indicator and tooltip.
 </FieldLabel>
 ```
 
+## FieldArray
+
+The `FieldArray` component enables dynamic form arrays with validation support.
+
+### Props
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `string` | Name of the array field |
+| `children` | `ReactNode` | Form fields to repeat |
+| `minItems` | `number` | Minimum number of items |
+| `maxItems` | `number` | Maximum number of items |
+| `addButtonText` | `string` | Custom add button text |
+| `removeButtonText` | `string` | Custom remove button text |
+| `className` | `string` | Container CSS classes |
+| `buttonClassName` | `string` | Button CSS classes |
+
+### Example
+
+```tsx
+const schema = z.object({
+  items: z.array(z.object({
+    name: z.string(),
+    email: z.string().email()
+  })).min(1)
+});
+
+function MyForm() {
+  return (
+    <FormProvider schema={schema}>
+      <FieldArray
+        name="items"
+        minItems={1}
+        maxItems={5}
+      >
+        <FormField name="name">
+          <input type="text" />
+        </FormField>
+        <FormField name="email">
+          <input type="email" />
+        </FormField>
+      </FieldArray>
+    </FormProvider>
+  );
+}
+```
+
 ## FieldDescription
 
 Renders a description for form fields with positioning support.
