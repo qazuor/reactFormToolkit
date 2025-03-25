@@ -4,12 +4,12 @@ import { useFieldStatus } from '@/hooks';
 import { useFieldValidation } from '@/hooks/useFieldValidation';
 import { cn, defaultStyles, formUtils, mergeStyles } from '@/lib';
 import type { FormFieldProps } from '@/types';
-import { type ReactElement, cloneElement, isValidElement, useContext, useMemo, useRef } from 'react';
+import { type ReactElement, cloneElement, isValidElement, useContext, useEffect, useMemo, useRef } from 'react';
 import { Controller, type ControllerRenderProps, type FieldValues as TFieldValues } from 'react-hook-form';
-import { ValidationStatusIcon } from '../Icons';
 import { FieldDescription } from './FieldDescription';
 import { FieldError } from './FieldError';
 import { FieldLabel } from './FieldLabel';
+import { FormFieldAsyncValidationIndicator } from './FormFieldAsyncValidationIndicator';
 
 /**
  * FormField component for rendering form inputs with validation
@@ -29,9 +29,6 @@ export function FormField({
     label,
     required,
     asyncValidation,
-    asyncValidationDebounce = 500,
-    showValidationIcons = true,
-    showLoadingSpinner = true,
     children,
     description,
     descriptionOptions,
@@ -65,14 +62,25 @@ export function FormField({
     );
 
     const isCheckbox = isValidElement(children) && children.props.type === 'checkbox';
-    const { hasError, error } = useFieldStatus(fieldPath);
+    const { hasError, error, isTouched } = useFieldStatus(fieldPath);
 
-    const { className, ariaInvalid, ariaDescribedBy, asyncError, hasAsyncError, asyncValidating } = useFieldValidation({
+    const {
+        className,
+        ariaInvalid,
+        ariaDescribedBy,
+        asyncError,
+        hasAsyncError,
+        asyncValidating,
+        asyncValidatingStarted,
+        showValidationIcons,
+        showLoadingSpinner,
+        textWhenValidating,
+        textWhenBeforeStartValidating
+    } = useFieldValidation({
         fieldPath,
         isCheckbox,
         mergedStyles,
         asyncValidation,
-        asyncValidationDebounce,
         schema
     });
 
@@ -85,6 +93,18 @@ export function FormField({
         }),
         [fieldPath, form]
     );
+
+    // Effect to force revalidation when the value changes
+    useEffect(() => {
+        const subscription = form.watch((_value, { name: fieldName }) => {
+            if (fieldName === name && isTouched) {
+                // Force revalidation when the field changes and has been touched
+                form.trigger(name).catch(console.error);
+            }
+        });
+
+        return () => subscription.unsubscribe();
+    }, [form, name, isTouched]);
 
     if (!isValidElement(children)) {
         return <></>;
@@ -156,19 +176,16 @@ export function FormField({
                                 )}
                                 <div className={cn(isRight && 'flex items-center gap-2')}>
                                     {renderChildElement(field)}
-                                    {showValidationIcons && asyncValidation && (
-                                        <div className='items-top pointer-events-none absolute inset-y-0 right-0 flex pt-3 pr-3'>
-                                            {asyncValidating && showLoadingSpinner && (
-                                                <ValidationStatusIcon status='loading' />
-                                            )}
-                                            {!asyncValidating && hasAsyncError && (
-                                                <ValidationStatusIcon status='error' />
-                                            )}
-                                            {!(asyncValidating || asyncError) && (
-                                                <ValidationStatusIcon status='success' />
-                                            )}
-                                        </div>
-                                    )}
+                                    <FormFieldAsyncValidationIndicator
+                                        showValidationIcons={showValidationIcons}
+                                        isValidating={asyncValidating}
+                                        showLoadingSpinner={showLoadingSpinner}
+                                        asyncValidatingStarted={asyncValidatingStarted}
+                                        hasError={hasAsyncError}
+                                        error={asyncError}
+                                        textWhenValidating={textWhenValidating}
+                                        textWhenBeforeStartValidating={textWhenBeforeStartValidating}
+                                    />
                                     {showError && !isAbove && (
                                         <FieldError
                                             name={fieldPath}

@@ -1,33 +1,10 @@
 import { useFormContext } from '@/context';
-import { useFieldStatus } from '@/hooks';
 import { cn } from '@/lib';
-import type { AsyncValidationFn, FormProviderStyleOptions, FormSchema } from '@/types';
+import type { UseFieldValidationProps, UseValidationReturn } from '@/types';
 import { t } from 'i18next';
 import { useEffect, useRef, useState } from 'react';
 import type { FieldValues } from 'react-hook-form';
-import type { ZodType, ZodTypeDef, z } from 'zod';
-
-interface UseFieldValidationProps<
-    TFieldValues extends FieldValues = FieldValues,
-    TSchema extends FormSchema<z.ZodType<TFieldValues>> = FormSchema<z.ZodType<TFieldValues>>
-> {
-    fieldPath: string;
-    isCheckbox?: boolean;
-    mergedStyles: FormProviderStyleOptions;
-    asyncValidation?: AsyncValidationFn;
-    asyncValidationDebounce?: number;
-    schema?: TSchema;
-}
-
-interface ValidationState {
-    className: string;
-    ariaInvalid: boolean;
-    ariaDescribedBy?: string;
-    isValidating: boolean;
-    hasAsyncError: boolean;
-    asyncValidating: boolean;
-    asyncError: string | undefined;
-}
+import type { ZodType, ZodTypeDef } from 'zod';
 
 const fieldHasError = <T>(
     schema: ZodType<FieldValues, ZodTypeDef, FieldValues> | undefined,
@@ -48,19 +25,25 @@ export function useFieldValidation({
     isCheckbox,
     mergedStyles,
     asyncValidation,
-    asyncValidationDebounce,
     schema
-}: UseFieldValidationProps): ValidationState {
+}: UseFieldValidationProps): UseValidationReturn {
     const { form } = useFormContext();
-    const { hasError, isValidating } = useFieldStatus(fieldPath);
     const [hasAsyncError, setHasAsyncError] = useState(false);
     const [asyncError, setAsyncError] = useState<string | undefined>(undefined);
     const [asyncValidating, setIsAsyncValidating] = useState(false);
+    const [asyncValidatingStarted, setAsyncValidatingStarted] = useState(false);
     const debounceTimeout = useRef<NodeJS.Timeout>();
+
+    const asyncValidationFn = asyncValidation?.asyncValidationFn;
+    const asyncValidationDebounce = asyncValidation?.asyncValidationDebounce || 500;
+    const showValidationIcons = !!asyncValidation?.showValidationIcons;
+    const showLoadingSpinner = !!asyncValidation?.showLoadingSpinner;
+    const textWhenValidating = asyncValidation?.textWhenValidating || undefined;
+    const textWhenBeforeStartValidating = asyncValidation?.textWhenBeforeStartValidating || undefined;
 
     // Handle async validation
     useEffect(() => {
-        if (!asyncValidation) {
+        if (!asyncValidationFn) {
             return;
         }
 
@@ -81,10 +64,11 @@ export function useFieldValidation({
 
                 if (!hasFieldError) {
                     setIsAsyncValidating(true);
+                    setAsyncValidatingStarted(true);
                     // Set new timeout for debounced validation
                     debounceTimeout.current = setTimeout(async () => {
                         try {
-                            const validationError = await asyncValidation(fieldValue);
+                            const validationError = await asyncValidationFn(fieldValue);
                             setAsyncError(typeof validationError === 'string' ? validationError : undefined);
                             setHasAsyncError(typeof validationError === 'string');
                         } catch (error) {
@@ -105,7 +89,7 @@ export function useFieldValidation({
                 clearTimeout(debounceTimeout.current);
             }
         };
-    }, [asyncValidation, fieldPath, form, t, schema, asyncValidationDebounce]);
+    }, [asyncValidationFn, fieldPath, form, schema, asyncValidationDebounce]);
 
     //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -115,9 +99,9 @@ export function useFieldValidation({
 
     // Build state classes based on validation state
     const stateClasses = cn({
-        [(mergedStyles.field?.isInvalid as string) || '']: hasError,
-        [(mergedStyles.field?.isValid as string) || '']: !hasError,
-        [(mergedStyles.field?.isLoading as string) || '']: isValidating
+        [(mergedStyles.field?.isInvalid as string) || '']: hasAsyncError,
+        [(mergedStyles.field?.isValid as string) || '']: !hasAsyncError,
+        [(mergedStyles.field?.isLoading as string) || '']: asyncValidating
     });
 
     // Set aria-describedby if description exists
@@ -125,11 +109,15 @@ export function useFieldValidation({
 
     return {
         className: cn(baseClasses, stateClasses),
-        ariaInvalid: hasError,
+        ariaInvalid: hasAsyncError,
         ariaDescribedBy,
-        isValidating,
         asyncError,
         hasAsyncError,
-        asyncValidating
+        asyncValidating,
+        asyncValidatingStarted,
+        showValidationIcons,
+        showLoadingSpinner,
+        textWhenValidating,
+        textWhenBeforeStartValidating
     };
 }

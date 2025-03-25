@@ -5,3 +5,4 @@ export * from '@/types/description';
 export * from '@/types/i18n';
 export * from '@/types/styles';
 export * from '@/types/fieldArray';
+export * from '@/types/asyncValidation';

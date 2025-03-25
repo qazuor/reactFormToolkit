@@ -1,4 +1,4 @@
-import { FormDescription, FormField, FormProvider } from '@qazuor/react-form-toolkit';
+import { type AsyncValidationProps, FormDescription, FormField, FormProvider } from '@qazuor/react-form-toolkit';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
@@ -11,12 +11,12 @@ type FormData = z.infer<typeof schema>;
 
 // Simulated API calls
 const checkUsername = async (username: string): Promise<boolean> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     return !['admin', 'root', 'test'].includes(username);
 };
 
 const checkEmail = async (email: string): Promise<boolean> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     return !['admin@example.com', 'test@example.com'].includes(email);
 };
 
@@ -25,6 +25,21 @@ export function AsyncValidationExample() {
 
     const handleSubmit = async (data: FormData) => {
         console.info('Form submitted:', data);
+    };
+
+    const userNameAsyncValidationOptions: AsyncValidationProps = {
+        asyncValidationDebounce: 1000,
+        showValidationIcons: true,
+        showLoadingSpinner: true,
+        textWhenValidating: 'Checking username...',
+        textWhenBeforeStartValidating: 'Username will be checked for availability',
+        asyncValidationFn: async (value: string) => {
+            if (!value) {
+                return undefined;
+            }
+            const isAvailable = await checkUsername(value);
+            return isAvailable ? true : 'Username is already taken';
+        }
     };
 
     return (
@@ -49,17 +64,7 @@ export function AsyncValidationExample() {
                     label='Username'
                     required={true}
                     tooltip='Enter a unique username'
-                    description='Username will be checked for availability'
-                    asyncValidationDebounce={1000}
-                    showValidationIcons={true}
-                    showLoadingSpinner={true}
-                    asyncValidation={async (value) => {
-                        if (!value) {
-                            return undefined;
-                        }
-                        const isAvailable = await checkUsername(value);
-                        return isAvailable ? undefined : 'Username is already taken';
-                    }}
+                    asyncValidation={userNameAsyncValidationOptions}
                 >
                     <input
                         autoComplete='off'
@@ -75,15 +80,19 @@ export function AsyncValidationExample() {
                     required={true}
                     tooltip='Enter your email address'
                     description='Email will be checked for availability'
-                    asyncValidationDebounce={1000}
-                    showValidationIcons={true}
-                    showLoadingSpinner={true}
-                    asyncValidation={async (value) => {
-                        if (!value) {
-                            return undefined;
+                    asyncValidation={{
+                        asyncValidationDebounce: 1000,
+                        showValidationIcons: true,
+                        showLoadingSpinner: true,
+                        textWhenValidating: 'Checking email...',
+                        textWhenBeforeStartValidating: 'Username will be checked for availability',
+                        asyncValidationFn: async (value: string) => {
+                            if (!value) {
+                                return undefined;
+                            }
+                            const isAvailable = await checkEmail(value);
+                            return isAvailable ? true : 'Email is already registered';
                         }
-                        const isAvailable = await checkEmail(value);
-                        return isAvailable ? undefined : 'Email is already registered';
                     }}
                 >
                     <input

@@ -21,8 +21,8 @@ export function useFieldStatus(fieldName: string) {
 
     // Get the error using the full path
     const error = get(errors, fieldName);
-    const isTouched = get(touchedFields, fieldName) || false;
-    const isDirty = get(dirtyFields, fieldName) || false;
+    const isTouched = !!get(touchedFields, fieldName);
+    const isDirty = !!get(dirtyFields, fieldName);
 
     return {
         error,

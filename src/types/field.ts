@@ -1,14 +1,10 @@
+import type { AsyncValidationProps } from '@/types/asyncValidation';
 import type React from 'react';
 import type { ReactNode } from 'react';
 import type { FieldValues, UseFormReturn } from 'react-hook-form';
 import type { DescriptionOptions } from './description';
 import type { ErrorDisplayOptions } from './form';
 import type { ComponentStyleOptions } from './styles';
-
-/**
- * Async validator function type
- */
-export type AsyncValidationFn = (value: unknown) => Promise<boolean | string>;
 
 /**
  * Tooltip configuration options
@@ -170,27 +166,9 @@ export interface FormFieldProps {
     errorDisplayOptions?: Partial<ErrorDisplayOptions>;
 
     /**
-     * Optional async validation function
+     * Optional async validation props
      */
-    asyncValidation?: AsyncValidationFn;
-
-    /**
-     * Debounce time in milliseconds for async validation
-     * @default 500
-     */
-    asyncValidationDebounce?: number;
-
-    /**
-     * Show validation status icons
-     * @default true
-     */
-    showValidationIcons?: boolean;
-
-    /**
-     * Show loading spinner during async validation
-     * @default true
-     */
-    showLoadingSpinner?: boolean;
+    asyncValidation?: AsyncValidationProps;
 }
 
 export interface FormFieldComponent extends React.FC<FormFieldProps>, FormFieldComposition {}
