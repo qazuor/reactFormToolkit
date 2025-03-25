@@ -79,13 +79,12 @@ export function AsyncValidationExample() {
                     label='Email'
                     required={true}
                     tooltip='Enter your email address'
-                    description='Email will be checked for availability'
                     asyncValidation={{
                         asyncValidationDebounce: 1000,
                         showValidationIcons: true,
                         showLoadingSpinner: true,
                         textWhenValidating: 'Checking email...',
-                        textWhenBeforeStartValidating: 'Username will be checked for availability',
+                        textWhenBeforeStartValidating: 'Email will be checked for availability',
                         asyncValidationFn: async (value: string) => {
                             if (!value) {
                                 return undefined;

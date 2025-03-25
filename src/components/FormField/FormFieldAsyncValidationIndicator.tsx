@@ -39,8 +39,8 @@ export function FormFieldAsyncValidationIndicator({
                 aria-hidden='true'
                 data-testid='invalid-indicator-validating'
             >
+                {textWhenValidating && <span className='mr-2 text-blue-400 text-xs'>{textWhenValidating}</span>}
                 {showLoadingSpinner && <ValidationStatusIcon status='loading' />}
-                {textWhenValidating && <span className='-mt-1 ml-2 text-gray-500 text-sm'>{textWhenValidating}</span>}
             </div>
         );
     }
@@ -62,8 +62,8 @@ export function FormFieldAsyncValidationIndicator({
                 aria-hidden='true'
                 data-testid='invalid-indicator-invalid'
             >
+                {!isValidating && hasError && <span className='mr-2 text-red-500 text-xs'>{error}</span>}
                 {showValidationIcons && <ValidationStatusIcon status='error' />}
-                {!isValidating && hasError && <span className='teerrorxt-gray-500 -mt-1 ml-2 text-sm'>{error}</span>}
             </div>
         );
     }
@@ -75,7 +75,7 @@ export function FormFieldAsyncValidationIndicator({
             data-testid='invalid-indicator-idle'
         >
             {textWhenBeforeStartValidating && !hasError && (
-                <span className='-mt-1 ml-2 text-gray-500 text-sm'>{textWhenBeforeStartValidating}</span>
+                <span className='mr-2 text-gray-400 text-xs'>{textWhenBeforeStartValidating}</span>
             )}
         </div>
     );
