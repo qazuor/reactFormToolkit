@@ -25,7 +25,7 @@ interface FieldInputProps {
     description?: string;
 
     /* Validation function */
-    validate?: () => void;
+    validate?: (value: unknown) => Promise<void>;
 
     /* Sets the field as touched */
     setTouched?: (touched: boolean) => void;
@@ -61,20 +61,22 @@ export function FieldInput<TName extends string>({
     /**
      * Handles the onChange event for the field
      */
-    const handleChange = (
+    const handleChange = async (
         e: React.ChangeEvent<HTMLInputElement>,
         onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-    ): void => {
+    ): Promise<void> => {
+        const value = isCheckbox ? e.target.checked : e.target.value;
+
         // For checkboxes, use the checked value instead of the value
         if (isCheckbox) {
-            form.setValue(name, e.target.checked as PathValue<TFieldValues, TName>);
+            form.setValue(name, value as PathValue<TFieldValues, TName>);
         } else {
-            form.setValue(name, e.target.value as PathValue<TFieldValues, TName>);
+            form.setValue(name, value as PathValue<TFieldValues, TName>);
         }
 
         // Trigger validation
         if (validate) {
-            validate();
+            await validate(value);
         }
 
         if (onChange) {
@@ -107,24 +109,6 @@ export function FieldInput<TName extends string>({
      * Renders the child element with the field properties
      */
     const renderChildElement = (field: ControllerRenderProps<TFieldValues, TName>): ReactElement => {
-        // const baseStyle = getFieldStyle(fieldType, styles, isCheckbox);
-        // const customClass = children.props.className || '';
-
-        // // Filter out non-DOM props to avoid React warnings
-        // const { tooltipPosition, errorDisplay, ...childProps } = children.props;
-        // return cloneElement(children, {
-        //     ...childProps,
-        //     ...field,
-        //     ...checkboxProps,
-        //     value: isCheckbox ? field.value : (field.value ?? ''),
-        //     id: name,
-        //     onChange: (e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, children.props.onChange),
-        //     onBlur: (e: React.FocusEvent<HTMLInputElement>) => handleBlur(e, children.props.onBlur),
-        //     'aria-invalid': !!error,
-        //     'aria-describedby': description ? `${name}-description` : undefined,
-        //     className: buildClassName(baseStyle, customClass)
-        // });
-
         // Properties specific to checkboxes
         const checkboxProps = isCheckbox ? { checked: !!field.value } : {};
 

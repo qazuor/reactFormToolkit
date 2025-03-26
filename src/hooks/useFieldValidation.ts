@@ -1,9 +1,7 @@
-import { useFormContext } from '@/context';
 import { cn } from '@/lib';
 import type { UseFieldValidationProps, UseValidationReturn, ValidationState } from '@/types';
 import { t } from 'i18next';
-import { useEffect, useRef } from 'react';
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import type { FieldValues } from 'react-hook-form';
 import type { ZodType, ZodTypeDef } from 'zod';
 
@@ -39,7 +37,6 @@ export function useFieldValidation({
     schema,
     hasError: fieldHasError
 }: UseFieldValidationProps): UseValidationReturn {
-    const { form } = useFormContext();
     const [validationState, setValidationState] = useState<ValidationState>({
         hasError: false,
         isValidating: false,
@@ -56,23 +53,18 @@ export function useFieldValidation({
     const textWhenValidating = asyncValidation?.textWhenValidating;
     const textWhenBeforeStartValidating = asyncValidation?.textWhenBeforeStartValidating;
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-    useEffect(() => {
-        if (!asyncValidationFn) {
-            return;
-        }
-
-        const subscription = form.watch((value, { name: changedField }) => {
-            const fieldValue = value[fieldPath as keyof typeof value];
-            if (changedField !== fieldPath || !fieldValue) {
+    const validate = useCallback(
+        async (value: unknown) => {
+            if (!(asyncValidationFn && value)) {
                 return;
             }
+
             if (debounceTimeout.current) {
                 clearTimeout(debounceTimeout.current);
             }
 
             // Check Zod validation first
-            const hasFieldError = fieldHasError || !schema || fieldHasErrorFn(schema, fieldPath, fieldValue);
+            const hasFieldError = fieldHasError || !schema || fieldHasErrorFn(schema, fieldPath, value);
             if (!hasFieldError) {
                 setValidationState({
                     ...validationState,
@@ -81,9 +73,10 @@ export function useFieldValidation({
                     hasError: false,
                     error: undefined
                 });
+
                 debounceTimeout.current = setTimeout(async () => {
                     try {
-                        const validationResult = await asyncValidationFn(fieldValue);
+                        const validationResult = await asyncValidationFn(value);
                         setValidationState({
                             error: typeof validationResult === 'string' ? validationResult : undefined,
                             hasError: typeof validationResult === 'string',
@@ -101,15 +94,9 @@ export function useFieldValidation({
                     }
                 }, asyncValidationDebounce);
             }
-        });
-
-        return () => {
-            subscription.unsubscribe();
-            if (debounceTimeout.current) {
-                clearTimeout(debounceTimeout.current);
-            }
-        };
-    }, [asyncValidationFn, fieldPath, schema, asyncValidationDebounce, fieldHasError]);
+        },
+        [asyncValidationFn, asyncValidationDebounce, fieldPath, schema, fieldHasError, validationState]
+    );
 
     // Determine input type and base classes
     const inputType = isCheckbox ? 'checkbox' : 'input';
@@ -130,9 +117,10 @@ export function useFieldValidation({
         asyncValidating: validationState.isValidating,
         asyncValidatingStarted: validationState.validatingStarted,
         asyncError: validationState.error,
+        textWhenValidating,
+        textWhenBeforeStartValidating,
         showValidationIcons,
         showLoadingSpinner,
-        textWhenValidating,
-        textWhenBeforeStartValidating
+        validate
     };
 }

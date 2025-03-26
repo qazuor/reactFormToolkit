@@ -6,7 +6,7 @@ import type { FormProviderStyleOptions } from './styles';
 /**
  * Async validator function type
  */
-export type AsyncValidationFn = (value: string) => Promise<boolean | string | undefined>;
+export type AsyncValidationFn = (value: unknown) => Promise<boolean | string | undefined>;
 
 /**
  * Props for the FormField component
@@ -111,4 +111,5 @@ export interface UseValidationReturn {
     showLoadingSpinner: boolean;
     textWhenValidating: string | undefined;
     textWhenBeforeStartValidating: string | undefined;
+    validate: (value: unknown) => Promise<void>;
 }

@@ -74,7 +74,8 @@ export function FormField({
         showValidationIcons,
         showLoadingSpinner,
         textWhenValidating,
-        textWhenBeforeStartValidating
+        textWhenBeforeStartValidating,
+        validate
     } = useFieldValidation({
         fieldPath,
         isCheckbox,
@@ -176,6 +177,7 @@ export function FormField({
                             childRef={childRef}
                             fieldPath={fieldPath}
                             name={name}
+                            validate={validate}
                             children={children}
                             form={form}
                             // setTouched={setTouched}
