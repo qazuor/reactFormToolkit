@@ -1,5 +1,5 @@
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { FormContext } from '@/context/FormContext';
+import { FormContext, useAsyncValidationState } from '@/context/FormContext';
 import { useQRFTTranslation } from '@/hooks';
 import { defaultStyles, i18nUtils, mergeStyles } from '@/lib';
 import type { FormProviderProps, FormSchema } from '@/types/form';
@@ -57,8 +57,7 @@ export function FormProvider<
     const i18n = i18nOptions?.i18n || contextI18n || i18nUtils.getI18nInstance();
 
     const [errors, setErrors] = useState<Record<string, string>>({});
-    const [asyncValidations, setAsyncValidations] = useState<Record<string, boolean>>({});
-    const [asyncErrors, setAsyncErrors] = useState<Record<string, boolean>>({});
+    const { asyncValidations, asyncErrors, registerAsyncValidation, registerAsyncError } = useAsyncValidationState();
 
     // Merge style options with defaults
     const mergedStyles = useMemo(() => mergeStyles(defaultStyles, styleOptions), [styleOptions]);
@@ -102,20 +101,6 @@ export function FormProvider<
         }
     }, [form.formState.errors, errorDisplayOptions?.groupErrors]);
 
-    const registerAsyncValidation = useCallback((fieldName: string, isValidating: boolean) => {
-        setAsyncValidations((prev) => ({
-            ...prev,
-            [fieldName]: isValidating
-        }));
-    }, []);
-
-    const registerAsyncError = useCallback((fieldName: string, hasError: boolean) => {
-        setAsyncErrors((prev) => ({
-            ...prev,
-            [fieldName]: hasError
-        }));
-    }, []);
-
     const handleSubmit = useCallback(
         async (data: TFieldValues) => {
             // Check if any async validations are pending
@@ -145,6 +130,8 @@ export function FormProvider<
                         schema: schema as TSchema,
                         errorDisplayOptions,
                         styleOptions: mergedStyles,
+                        asyncValidations,
+                        asyncErrors,
                         registerAsyncValidation,
                         registerAsyncError
                     }}

@@ -1,4 +1,4 @@
-import { FieldArray, FormDescription, FormField, FormProvider } from '@qazuor/react-form-toolkit';
+import { FieldArray, FormDescription, FormField, FormProvider, SubmitButton } from '@qazuor/react-form-toolkit';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
@@ -195,12 +195,7 @@ export function FieldArrayExample() {
                     </div>
                 </FieldArray>
 
-                <button
-                    type='submit'
-                    className='w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700'
-                >
-                    {t('form.submit')}
-                </button>
+                <SubmitButton>{t('form.submit')}</SubmitButton>
             </div>
         </FormProvider>
     );

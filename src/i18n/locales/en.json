@@ -17,6 +17,9 @@
         "loading": "Loading",
         "success": "Success",
         "validationErrors": "Validation Errors",
+        "submitDisabledTooltip": "Form has validation errors and cannot be submitted",
+        "submitDisabledPendingValidations": "Please wait for all validations to complete",
+        "submitDisabledAsyncErrors": "Please fix all validation errors before submitting",
         "viewMoreErrors": "View more errors",
         "remainingErrors": "and {{count}} more error",
         "remainingErrors_plural": "and {{count}} more errors"

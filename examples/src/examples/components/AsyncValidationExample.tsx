@@ -1,4 +1,10 @@
-import { type AsyncValidationProps, FormDescription, FormField, FormProvider } from '@qazuor/react-form-toolkit';
+import {
+    type AsyncValidationProps,
+    FormDescription,
+    FormField,
+    FormProvider,
+    SubmitButton
+} from '@qazuor/react-form-toolkit';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
@@ -33,11 +39,11 @@ export function AsyncValidationExample() {
         showLoadingSpinner: true,
         textWhenValidating: 'Checking username...',
         textWhenBeforeStartValidating: 'Username will be checked for availability',
-        asyncValidationFn: async (value: string) => {
+        asyncValidationFn: async (value) => {
             if (!value) {
                 return undefined;
             }
-            const isAvailable = await checkUsername(value);
+            const isAvailable = await checkUsername(value as string);
             return isAvailable ? true : 'Username is already taken';
         }
     };
@@ -85,11 +91,11 @@ export function AsyncValidationExample() {
                         showLoadingSpinner: true,
                         textWhenValidating: 'Checking email...',
                         textWhenBeforeStartValidating: 'Email will be checked for availability',
-                        asyncValidationFn: async (value: string) => {
+                        asyncValidationFn: async (value) => {
                             if (!value) {
                                 return undefined;
                             }
-                            const isAvailable = await checkEmail(value);
+                            const isAvailable = await checkEmail(value as string);
                             return isAvailable ? true : 'Email is already registered';
                         }
                     }}
@@ -102,12 +108,7 @@ export function AsyncValidationExample() {
                     />
                 </FormField>
 
-                <button
-                    type='submit'
-                    className='w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700'
-                >
-                    {t('form.submit')}
-                </button>
+                <SubmitButton>{t('form.submit')}</SubmitButton>
             </div>
         </FormProvider>
     );

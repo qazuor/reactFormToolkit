@@ -151,6 +151,16 @@ export type FormContextValue<
     errorDisplayOptions?: ErrorDisplayOptions;
 
     /**
+     * Record of async validation states by field name
+     */
+    asyncValidations?: Record<string, boolean>;
+
+    /**
+     * Record of async error states by field name
+     */
+    asyncErrors?: Record<string, boolean>;
+
+    /**
      * Register async validation state for a field
      */
     registerAsyncValidation: (fieldName: string, isValidating: boolean) => void;

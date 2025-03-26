@@ -1,7 +1,40 @@
 import type { FormContextValue, FormSchema } from '@/types';
-import { createContext, useContext } from 'react';
+import { createContext, useCallback, useContext, useState } from 'react';
 import type { FieldValues } from 'react-hook-form';
 import type { z } from 'zod';
+
+interface AsyncValidationState {
+    asyncValidations: Record<string, boolean>;
+    asyncErrors: Record<string, boolean>;
+    registerAsyncValidation: (fieldName: string, isValidating: boolean) => void;
+    registerAsyncError: (fieldName: string, hasError: boolean) => void;
+}
+
+export function useAsyncValidationState(): AsyncValidationState {
+    const [asyncValidations, setAsyncValidations] = useState<Record<string, boolean>>({});
+    const [asyncErrors, setAsyncErrors] = useState<Record<string, boolean>>({});
+
+    const registerAsyncValidation = useCallback((fieldName: string, isValidating: boolean) => {
+        setAsyncValidations((prev) => ({
+            ...prev,
+            [fieldName]: isValidating
+        }));
+    }, []);
+
+    const registerAsyncError = useCallback((fieldName: string, hasError: boolean) => {
+        setAsyncErrors((prev) => ({
+            ...prev,
+            [fieldName]: hasError
+        }));
+    }, []);
+
+    return {
+        asyncValidations,
+        asyncErrors,
+        registerAsyncValidation,
+        registerAsyncError
+    };
+}
 
 /**
  * Context for sharing form state and methods

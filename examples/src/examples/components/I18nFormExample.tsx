@@ -1,4 +1,4 @@
-import { FormDescription, FormField, FormProvider } from '@qazuor/react-form-toolkit';
+import { FormDescription, FormField, FormProvider, SubmitButton } from '@qazuor/react-form-toolkit';
 import i18n from 'i18next';
 import { useCallback, useState } from 'react';
 import { z } from 'zod';
@@ -143,12 +143,7 @@ export function I18nFormExample() {
                         />
                     </FormField>
 
-                    <button
-                        type='submit'
-                        className='w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700'
-                    >
-                        {customTranslations[language].form.submit}
-                    </button>
+                    <SubmitButton>{customTranslations[language].form.submit}</SubmitButton>
                 </div>
             </FormProvider>
         </div>

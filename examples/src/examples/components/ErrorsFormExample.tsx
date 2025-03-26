@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormField, FormProvider } from '@qazuor/react-form-toolkit';
+import { FormField, FormProvider, SubmitButton } from '@qazuor/react-form-toolkit';
 import type { ErrorAnimation, ErrorDisplayOptions, ErrorPosition } from '@qazuor/react-form-toolkit';
 import { useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
@@ -257,12 +257,7 @@ export function ErrorsFormExample() {
                         </FormField>
 
                         <div className='flex gap-4'>
-                            <button
-                                type='submit'
-                                className='rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700'
-                            >
-                                {t('form.exampleForm.submit')}
-                            </button>
+                            <SubmitButton>{t('form.submit')}</SubmitButton>
                             <button
                                 type='button'
                                 onClick={handleReset}
