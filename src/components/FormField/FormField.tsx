@@ -1,6 +1,6 @@
 import { FormFieldContext, useFormContext } from '@/context';
 import { FieldArrayContext } from '@/context';
-import { useFieldStatus } from '@/hooks';
+import { useFieldState, useFieldValidation } from '@/hooks';
 import { useFieldValidation } from '@/hooks/useFieldValidation';
 import { cn, defaultStyles, formUtils, mergeStyles } from '@/lib';
 import type { FormFieldProps } from '@/types';
@@ -62,7 +62,7 @@ export function FormField({
     );
 
     const isCheckbox = isValidElement(children) && children.props.type === 'checkbox';
-    const { hasError, error, isTouched } = useFieldStatus(fieldPath);
+    const { error, isTouched, hasError } = useFieldState(fieldPath);
 
     const {
         className,

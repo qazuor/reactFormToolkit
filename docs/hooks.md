@@ -31,7 +31,7 @@ function CustomField({ styleOptions }) {
 }
 ```
 
-## useFieldStatus
+## useFieldState
 
 Custom hook for managing form field status including validation state.
 
@@ -54,7 +54,7 @@ Custom hook for managing form field status including validation state.
 
 ```tsx
 function CustomField({ name }: { name: string }) {
-    const { hasError, error } = useFieldStatus(name);
+    const { hasError, error } = useFieldState(name);
 
     return (
         <div className={hasError ? 'error' : ''}>

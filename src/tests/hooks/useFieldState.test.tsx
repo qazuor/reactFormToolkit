@@ -5,9 +5,9 @@ import React from 'react';
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
 import { FormProvider } from '../../components/FormProvider/FormProvider';
-import { useFieldStatus } from '../../hooks/useFieldStatus';
+import { useFieldState } from '../../hooks/useFieldState';
 
-describe('useFieldStatus', () => {
+describe('useFieldState', () => {
     const schema = z.object({
         test: z.string(),
         nested: z.object({
@@ -45,7 +45,7 @@ describe('useFieldStatus', () => {
     );
 
     it('returns initial field status', () => {
-        const { result } = renderHook(() => useFieldStatus('test'), { wrapper });
+        const { result } = renderHook(() => useFieldState('test'), { wrapper });
 
         expect(result.current).toEqual({
             error: undefined,
@@ -57,7 +57,7 @@ describe('useFieldStatus', () => {
     });
 
     it('handles nested object fields', () => {
-        const { result } = renderHook(() => useFieldStatus('nested.field'), { wrapper });
+        const { result } = renderHook(() => useFieldState('nested.field'), { wrapper });
 
         expect(result.current).toEqual({
             error: undefined,
@@ -69,7 +69,7 @@ describe('useFieldStatus', () => {
     });
 
     it('handles array fields', () => {
-        const { result } = renderHook(() => useFieldStatus('array.0.name'), { wrapper });
+        const { result } = renderHook(() => useFieldState('array.0.name'), { wrapper });
 
         expect(result.current).toEqual({
             error: undefined,
@@ -81,7 +81,7 @@ describe('useFieldStatus', () => {
     });
 
     it('handles nested array fields', () => {
-        const { result } = renderHook(() => useFieldStatus('array.0.subArray.0.value'), { wrapper });
+        const { result } = renderHook(() => useFieldState('array.0.subArray.0.value'), { wrapper });
 
         expect(result.current).toEqual({
             error: undefined,

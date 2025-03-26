@@ -1,6 +1,6 @@
 import { useFormContext } from '@/context';
 import { cn } from '@/lib';
-import type { UseFieldValidationProps, UseValidationReturn } from '@/types';
+import type { UseFieldValidationProps, UseValidationReturn, ValidationState } from '@/types';
 import { t } from 'i18next';
 import { useEffect, useRef, useState } from 'react';
 import type { FieldValues } from 'react-hook-form';

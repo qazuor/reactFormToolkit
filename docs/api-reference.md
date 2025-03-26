@@ -148,12 +148,12 @@ Component for form-level descriptions.
 
 ## Hooks
 
-### useFieldStatus
+### useFieldState
 
 Hook for accessing field validation state.
 
 ```tsx
-const { error, isTouched, isDirty, hasError } = useFieldStatus('email');
+const { error, isTouched, isDirty, hasError } = useFieldState('email');
 ```
 
 #### Returns

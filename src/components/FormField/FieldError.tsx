@@ -1,5 +1,5 @@
 import { useFormContext } from '@/context';
-import { useFieldStatus } from '@/hooks';
+import { useFieldState } from '@/hooks';
 import { cn } from '@/lib';
 import type { ErrorAnimation, ErrorPosition, FieldErrorProps } from '@/types';
 import { type JSX, useEffect, useState } from 'react';
@@ -28,7 +28,7 @@ const POSITION_CLASSES: Record<ErrorPosition, string> = {
  */
 export function FieldError({ options, name, message: propMessage, inputRef }: FieldErrorProps): JSX.Element | null {
     const { errorDisplayOptions: providerOptions } = useFormContext();
-    const { error } = useFieldStatus(name);
+    const { error } = useFieldState(name);
     const message = propMessage || error?.message;
     const [visible, setVisible] = useState(!options?.delay);
     const [dismissed, setDismissed] = useState(false);
