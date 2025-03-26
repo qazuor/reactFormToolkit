@@ -1,7 +1,8 @@
+import { useFormContext } from '@/context';
 import { cn } from '@/lib';
 import type { UseFieldValidationProps, UseValidationReturn, ValidationState } from '@/types';
 import { t } from 'i18next';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { FieldValues } from 'react-hook-form';
 import type { ZodType, ZodTypeDef } from 'zod';
 
@@ -37,8 +38,9 @@ export function useFieldValidation({
     schema,
     hasError: fieldHasError
 }: UseFieldValidationProps): UseValidationReturn {
+    const { registerAsyncValidation, registerAsyncError } = useFormContext();
     const [validationState, setValidationState] = useState<ValidationState>({
-        hasError: false,
+        hasError: fieldHasError as boolean,
         isValidating: false,
         error: undefined,
         validatingStarted: false
@@ -53,9 +55,27 @@ export function useFieldValidation({
     const textWhenValidating = asyncValidation?.textWhenValidating;
     const textWhenBeforeStartValidating = asyncValidation?.textWhenBeforeStartValidating;
 
+    // Update form context when validation state changes
+    useEffect(() => {
+        registerAsyncValidation(fieldPath, validationState.isValidating);
+        registerAsyncError(fieldPath, validationState.hasError);
+    }, [
+        fieldPath,
+        validationState.isValidating,
+        validationState.hasError,
+        registerAsyncValidation,
+        registerAsyncError
+    ]);
+
     const validate = useCallback(
         async (value: unknown) => {
-            if (!(asyncValidationFn && value)) {
+            if (!(asyncValidationFn && value && schema)) {
+                return;
+            }
+
+            // Check Zod validation first
+            const fieldHasError = fieldHasErrorFn(schema, fieldPath, value);
+            if (fieldHasError) {
                 return;
             }
 
@@ -63,39 +83,35 @@ export function useFieldValidation({
                 clearTimeout(debounceTimeout.current);
             }
 
-            // Check Zod validation first
-            const hasFieldError = fieldHasError || !schema || fieldHasErrorFn(schema, fieldPath, value);
-            if (!hasFieldError) {
-                setValidationState({
-                    ...validationState,
-                    isValidating: true,
-                    validatingStarted: true,
-                    hasError: false,
-                    error: undefined
-                });
+            setValidationState({
+                ...validationState,
+                isValidating: true,
+                validatingStarted: true,
+                hasError: false,
+                error: undefined
+            });
 
-                debounceTimeout.current = setTimeout(async () => {
-                    try {
-                        const validationResult = await asyncValidationFn(value);
-                        setValidationState({
-                            error: typeof validationResult === 'string' ? validationResult : undefined,
-                            hasError: typeof validationResult === 'string',
-                            isValidating: false,
-                            validatingStarted: true
-                        });
-                    } catch (error) {
-                        setValidationState({
-                            error: t('field.asyncValidationError'),
-                            hasError: true,
-                            isValidating: false,
-                            validatingStarted: true
-                        });
-                        console.error('AsyncValidation error', error);
-                    }
-                }, asyncValidationDebounce);
-            }
+            debounceTimeout.current = setTimeout(async () => {
+                try {
+                    const validationResult = await asyncValidationFn(value);
+                    setValidationState({
+                        error: typeof validationResult === 'string' ? validationResult : undefined,
+                        hasError: typeof validationResult === 'string',
+                        isValidating: false,
+                        validatingStarted: true
+                    });
+                } catch (error) {
+                    setValidationState({
+                        error: t('field.asyncValidationError'),
+                        hasError: true,
+                        isValidating: false,
+                        validatingStarted: true
+                    });
+                    console.error('AsyncValidation error', error);
+                }
+            }, asyncValidationDebounce);
         },
-        [asyncValidationFn, asyncValidationDebounce, fieldPath, schema, fieldHasError, validationState]
+        [asyncValidationFn, asyncValidationDebounce, validationState, schema, fieldPath]
     );
 
     // Determine input type and base classes

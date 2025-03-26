@@ -4,7 +4,7 @@ import { useQRFTTranslation } from '@/hooks';
 import { defaultStyles, i18nUtils, mergeStyles } from '@/lib';
 import type { FormProviderProps, FormSchema } from '@/types/form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type JSX, useEffect, useMemo, useState } from 'react';
+import { type JSX, useCallback, useEffect, useMemo, useState } from 'react';
 import { type DefaultValues, type FieldValues, type UseFormReturn, useForm } from 'react-hook-form';
 import { I18nextProvider } from 'react-i18next';
 import type { z } from 'zod';
@@ -57,6 +57,8 @@ export function FormProvider<
     const i18n = i18nOptions?.i18n || contextI18n || i18nUtils.getI18nInstance();
 
     const [errors, setErrors] = useState<Record<string, string>>({});
+    const [asyncValidations, setAsyncValidations] = useState<Record<string, boolean>>({});
+    const [asyncErrors, setAsyncErrors] = useState<Record<string, boolean>>({});
 
     // Merge style options with defaults
     const mergedStyles = useMemo(() => mergeStyles(defaultStyles, styleOptions), [styleOptions]);
@@ -100,6 +102,36 @@ export function FormProvider<
         }
     }, [form.formState.errors, errorDisplayOptions?.groupErrors]);
 
+    const registerAsyncValidation = useCallback((fieldName: string, isValidating: boolean) => {
+        setAsyncValidations((prev) => ({
+            ...prev,
+            [fieldName]: isValidating
+        }));
+    }, []);
+
+    const registerAsyncError = useCallback((fieldName: string, hasError: boolean) => {
+        setAsyncErrors((prev) => ({
+            ...prev,
+            [fieldName]: hasError
+        }));
+    }, []);
+
+    const handleSubmit = useCallback(
+        async (data: TFieldValues) => {
+            // Check if any async validations are pending
+            const hasPendingValidations = Object.values(asyncValidations).some(Boolean);
+            // Check if any async validations have errors
+            const hasAsyncErrors = Object.values(asyncErrors).some(Boolean);
+
+            if (hasPendingValidations || hasAsyncErrors) {
+                return;
+            }
+
+            await onSubmit(data);
+        },
+        [onSubmit, asyncValidations, asyncErrors]
+    );
+
     return (
         <I18nextProvider i18n={i18n}>
             <TooltipProvider
@@ -112,11 +144,13 @@ export function FormProvider<
                         form: form as UseFormReturn<FieldValues>,
                         schema: schema as TSchema,
                         errorDisplayOptions,
-                        styleOptions: mergedStyles
+                        styleOptions: mergedStyles,
+                        registerAsyncValidation,
+                        registerAsyncError
                     }}
                 >
                     <form
-                        onSubmit={form.handleSubmit(onSubmit)}
+                        onSubmit={form.handleSubmit(handleSubmit)}
                         noValidate={true}
                         onReset={(e) => {
                             e.preventDefault();

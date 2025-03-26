@@ -149,4 +149,14 @@ export type FormContextValue<
      * Error display configuration
      */
     errorDisplayOptions?: ErrorDisplayOptions;
+
+    /**
+     * Register async validation state for a field
+     */
+    registerAsyncValidation: (fieldName: string, isValidating: boolean) => void;
+
+    /**
+     * Register async error state for a field
+     */
+    registerAsyncError: (fieldName: string, hasError: boolean) => void;
 };
