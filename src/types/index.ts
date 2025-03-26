@@ -6,3 +6,5 @@ export * from '@/types/i18n';
 export * from '@/types/styles';
 export * from '@/types/fieldArray';
 export * from '@/types/asyncValidation';
+export * from '@/types/validation';
+export * from '@/types/buttons';

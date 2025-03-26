@@ -1,14 +1,8 @@
 import { XIcon } from '@/components/Icons';
 import { useQRFTTranslation } from '@/hooks';
 import { cn } from '@/lib';
+import type { CancelButtonProps } from '@/types';
 import type React from 'react';
-import type { ButtonHTMLAttributes } from 'react';
-
-interface CancelButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    children?: string;
-    className?: string;
-    onCancel?: () => void;
-}
 
 export function CancelButton({ children, className, onCancel, ...props }: CancelButtonProps) {
     const { t } = useQRFTTranslation();

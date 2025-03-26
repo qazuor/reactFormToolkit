@@ -2,12 +2,7 @@ import { FormErrorIcon, LoadingIcon } from '@/components/Icons';
 import { useFormContext } from '@/context';
 import { useQRFTTranslation } from '@/hooks';
 import { cn } from '@/lib';
-import type { ButtonHTMLAttributes } from 'react';
-
-interface SubmitButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    children: string;
-    className?: string;
-}
+import type { SubmitButtonProps } from '@/types';
 
 export function SubmitButton({ children, className, ...props }: SubmitButtonProps) {
     const { t } = useQRFTTranslation();

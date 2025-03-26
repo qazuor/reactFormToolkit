@@ -1,49 +1,19 @@
+import type { FieldInputProps } from '@/types';
 import type React from 'react';
 import { type ReactElement, cloneElement, isValidElement } from 'react';
 import {
+    type ArrayPath,
     Controller,
     type ControllerRenderProps,
-    type PathValue,
-    type FieldValues as TFieldValues,
-    type UseFormReturn
+    type FieldValues,
+    type Path,
+    type PathValue
 } from 'react-hook-form';
 
-interface FieldInputProps {
-    /* Field path in the form data */
-    fieldPath: string;
-
-    /* Field name */
-    name: string;
-
-    /* Child components */
-    children: ReactElement;
-
-    /* Form instance */
-    form: UseFormReturn<TFieldValues>;
-
-    /* Field description */
-    description?: string;
-
-    /* Validation function */
-    validate?: (value: unknown) => Promise<void>;
-
-    /* Sets the field as touched */
-    setTouched?: (touched: boolean) => void;
-
-    /* Ref for the child element */
-    childRef?: React.RefObject<HTMLInputElement>;
-
-    /* Custom CSS class */
-    className?: string;
-
-    /* Aria invalid attribute */
-    ariaInvalid?: boolean;
-
-    /* Aria described by attribute */
-    ariaDescribedBy?: string;
-}
-
-export function FieldInput<TName extends string>({
+export function FieldInput<
+    TFieldValues extends FieldValues,
+    TName extends Path<TFieldValues> | ArrayPath<TFieldValues>
+>({
     fieldPath,
     name,
     children,
@@ -140,8 +110,8 @@ export function FieldInput<TName extends string>({
         <div className='relative'>
             <Controller
                 control={form.control}
-                name={fieldPath}
-                render={({ field }) => renderChildElement(field as ControllerRenderProps<TFieldValues, TName>)}
+                name={fieldPath as TName}
+                render={({ field }) => renderChildElement(field)}
             />
         </div>
     );

@@ -1,6 +1,6 @@
 import { useQRFTTranslation } from '@/hooks';
 import { cn } from '@/lib';
-import type { FormButtonsBarProps } from '@/types/buttons';
+import type { FormButtonsBarProps } from '@/types';
 import { CancelButton } from './CancelButton';
 import { ResetButton } from './ResetButton';
 import { SubmitButton } from './SubmitButton';

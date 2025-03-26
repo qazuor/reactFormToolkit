@@ -1,8 +1,3 @@
-import type { FieldValues } from 'react-hook-form';
-import type { z } from 'zod';
-import type { FormSchema } from './form';
-import type { FormProviderStyleOptions } from './styles';
-
 /**
  * Async validator function type
  */
@@ -48,13 +43,6 @@ export type AsyncValidationProps = {
     textWhenBeforeStartValidating?: string;
 };
 
-export interface ValidationState {
-    hasError: boolean;
-    isValidating: boolean;
-    error?: string;
-    validatingStarted: boolean;
-}
-
 export interface FieldAsyncValidationProps {
     isValidating: boolean;
 
@@ -85,31 +73,4 @@ export interface FieldAsyncValidationProps {
      * @default null
      */
     textWhenBeforeStartValidating?: string;
-}
-
-export interface UseFieldValidationProps<
-    TFieldValues extends FieldValues = FieldValues,
-    TSchema extends FormSchema<z.ZodType<TFieldValues>> = FormSchema<z.ZodType<TFieldValues>>
-> {
-    fieldPath: string;
-    isCheckbox?: boolean;
-    mergedStyles: FormProviderStyleOptions;
-    asyncValidation?: AsyncValidationProps;
-    schema?: TSchema;
-    hasError?: boolean;
-}
-
-export interface UseValidationReturn {
-    className: string;
-    ariaInvalid: boolean;
-    ariaDescribedBy?: string;
-    hasAsyncError: boolean;
-    asyncValidating: boolean;
-    asyncValidatingStarted: boolean;
-    asyncError: string | undefined;
-    showValidationIcons: boolean;
-    showLoadingSpinner: boolean;
-    textWhenValidating: string | undefined;
-    textWhenBeforeStartValidating: string | undefined;
-    validate: (value: unknown) => Promise<void>;
 }

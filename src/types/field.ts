@@ -1,10 +1,49 @@
 import type { AsyncValidationProps } from '@/types/asyncValidation';
 import type React from 'react';
 import type { ReactNode } from 'react';
+import type { ReactElement, RefObject } from 'react';
 import type { FieldValues, UseFormReturn } from 'react-hook-form';
 import type { DescriptionOptions } from './description';
 import type { ErrorDisplayOptions } from './form';
 import type { ComponentStyleOptions } from './styles';
+
+/**
+ * Props for the FieldInput component
+ */
+export interface FieldInputProps<TFieldValues extends FieldValues = FieldValues> {
+    /* Field path in the form data */
+    fieldPath: string;
+
+    /* Field name */
+    name: string;
+
+    /* Child components */
+    children: ReactElement;
+
+    /* Form instance */
+    form: UseFormReturn<TFieldValues>;
+
+    /* Field description */
+    description?: string;
+
+    /* Validation function */
+    validate?: (value: unknown) => Promise<void>;
+
+    /* Sets the field as touched */
+    setTouched?: (touched: boolean) => void;
+
+    /* Ref for the child element */
+    childRef?: RefObject<HTMLInputElement>;
+
+    /* Custom CSS class */
+    className?: string;
+
+    /* Aria invalid attribute */
+    ariaInvalid?: boolean;
+
+    /* Aria described by attribute */
+    ariaDescribedBy?: string;
+}
 
 /**
  * Tooltip configuration options

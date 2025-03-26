@@ -2,12 +2,8 @@ import { ResetIcon } from '@/components/Icons';
 import { useFormContext } from '@/context';
 import { useQRFTTranslation } from '@/hooks';
 import { cn } from '@/lib';
-import { type ButtonHTMLAttributes, useEffect, useRef, useState } from 'react';
-
-interface ResetButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    children?: string;
-    className?: string;
-}
+import type { ResetButtonProps } from '@/types';
+import { useEffect, useRef, useState } from 'react';
 
 export function ResetButton({ children, className, ...props }: ResetButtonProps) {
     const { t } = useQRFTTranslation();

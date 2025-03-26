@@ -1,11 +1,9 @@
-import type { ReactNode } from 'react';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { ButtonStyleOptions } from './styles';
 
-export interface ButtonStyleOptions {
-    submit?: string;
-    reset?: string;
-    cancel?: string;
-}
-
+/**
+ * Props for the FormButtonsBar component
+ */
 export interface FormButtonsBarProps {
     /**
      * Direction of the buttons layout
@@ -71,4 +69,29 @@ export interface FormButtonsBarProps {
      * Additional buttons to render
      */
     children?: ReactNode;
+}
+
+/**
+ * Props for the SubmitButton component
+ */
+export interface SubmitButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    children: string;
+    className?: string;
+}
+
+/**
+ * Props for the ResetButton component
+ */
+export interface ResetButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    children?: string;
+    className?: string;
+}
+
+/**
+ * Props for the CancelButton component
+ */
+export interface CancelButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    children?: string;
+    className?: string;
+    onCancel?: () => void;
 }
