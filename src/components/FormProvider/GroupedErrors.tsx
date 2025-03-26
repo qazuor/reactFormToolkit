@@ -61,6 +61,7 @@ export function GroupedErrors({
             className={cn(`mt-4 rounded-lg border border-red-200 bg-red-50 p-4 animate-${animation}`, className)}
             data-testid='grouped-errors'
             aria-live='polite'
+            role='alert'
         >
             <h3 className='mb-2 font-medium text-red-800'>{t('form.validationErrors')}</h3>
             <ul

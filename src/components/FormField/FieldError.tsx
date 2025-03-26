@@ -105,6 +105,7 @@ export function FieldError({ options, name, message: propMessage, inputRef }: Fi
             )}
             data-testid='field-error'
             aria-live='polite'
+            role='alert'
         >
             {showIcon && <FieldErrorIcon className={cn(options?.iconClassName || 'h-4 w-4 shrink-0')} />}
             <span>{message.toString()}</span>

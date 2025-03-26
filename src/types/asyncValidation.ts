@@ -48,6 +48,13 @@ export type AsyncValidationProps = {
     textWhenBeforeStartValidating?: string;
 };
 
+export interface ValidationState {
+    hasError: boolean;
+    isValidating: boolean;
+    error?: string;
+    validatingStarted: boolean;
+}
+
 export interface FieldAsyncValidationProps {
     isValidating: boolean;
 
@@ -89,6 +96,7 @@ export interface UseFieldValidationProps<
     mergedStyles: FormProviderStyleOptions;
     asyncValidation?: AsyncValidationProps;
     schema?: TSchema;
+    hasError?: boolean;
 }
 
 export interface UseValidationReturn {

@@ -1,7 +1,6 @@
 import { FormFieldContext, useFormContext } from '@/context';
 import { FieldArrayContext } from '@/context';
 import { useFieldState, useFieldValidation } from '@/hooks';
-import { useFieldValidation } from '@/hooks/useFieldValidation';
 import { cn, defaultStyles, formUtils, mergeStyles } from '@/lib';
 import type { FormFieldProps } from '@/types';
 import { type ReactElement, isValidElement, useContext, useEffect, useMemo, useRef } from 'react';
@@ -69,9 +68,9 @@ export function FormField({
         ariaInvalid,
         ariaDescribedBy,
         asyncError,
-        hasAsyncError,
         asyncValidating,
         asyncValidatingStarted,
+        hasAsyncError,
         showValidationIcons,
         showLoadingSpinner,
         textWhenValidating,
@@ -81,7 +80,8 @@ export function FormField({
         isCheckbox,
         mergedStyles,
         asyncValidation,
-        schema
+        schema,
+        hasError
     });
 
     const displayError = asyncError || error?.message;
@@ -131,7 +131,7 @@ export function FormField({
     //         ref: childRef
     //     });
     // };
-    const showError = !providerErrorOptions?.groupErrors && (hasError || !!asyncError);
+    const showError = !providerErrorOptions?.groupErrors && (!!error || !!asyncError);
     const isAbove = mergedErrorOptions?.position === 'above';
     const isRight = mergedErrorOptions?.position === 'right';
 

@@ -2,11 +2,12 @@ import { useFormContext } from '@/context';
 import { cn } from '@/lib';
 import type { UseFieldValidationProps, UseValidationReturn, ValidationState } from '@/types';
 import { t } from 'i18next';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
+import { useState } from 'react';
 import type { FieldValues } from 'react-hook-form';
 import type { ZodType, ZodTypeDef } from 'zod';
 
-const fieldHasError = <T>(
+const fieldHasErrorFn = <T>(
     schema: ZodType<FieldValues, ZodTypeDef, FieldValues> | undefined,
     fieldPath: string,
     fieldValue: T
@@ -17,69 +18,88 @@ const fieldHasError = <T>(
 
 /**
  * Hook for handling field validation state and styling
- * @param props Configuration options
- * @returns Validation state and attributes
+ * @param props - Configuration options for field validation
+ * @returns Validation state and error information
+ *
+ * @example
+ * ```tsx
+ * const { asyncError, hasAsyncError, asyncValidating } = useFieldValidation({
+ *   fieldPath: 'email',
+ *   asyncValidation: {
+ *     asyncValidationFn: checkEmailAvailability
+ *   }
+ * });
+ * ```
  */
 export function useFieldValidation({
     fieldPath,
     isCheckbox,
     mergedStyles,
     asyncValidation,
-    schema
+    schema,
+    hasError: fieldHasError
 }: UseFieldValidationProps): UseValidationReturn {
     const { form } = useFormContext();
-    const [hasAsyncError, setHasAsyncError] = useState(false);
-    const [asyncError, setAsyncError] = useState<string | undefined>(undefined);
-    const [asyncValidating, setIsAsyncValidating] = useState(false);
-    const [asyncValidatingStarted, setAsyncValidatingStarted] = useState(false);
+    const [validationState, setValidationState] = useState<ValidationState>({
+        hasError: false,
+        isValidating: false,
+        error: undefined,
+        validatingStarted: false
+    });
     const debounceTimeout = useRef<NodeJS.Timeout>();
 
     const asyncValidationFn = asyncValidation?.asyncValidationFn;
-    const asyncValidationDebounce = asyncValidation?.asyncValidationDebounce || 500;
+    const asyncValidationDebounce =
+        typeof asyncValidation?.asyncValidationDebounce === 'number' ? asyncValidation?.asyncValidationDebounce : 500;
     const showValidationIcons = !!asyncValidation?.showValidationIcons;
     const showLoadingSpinner = !!asyncValidation?.showLoadingSpinner;
-    const textWhenValidating = asyncValidation?.textWhenValidating || undefined;
-    const textWhenBeforeStartValidating = asyncValidation?.textWhenBeforeStartValidating || undefined;
+    const textWhenValidating = asyncValidation?.textWhenValidating;
+    const textWhenBeforeStartValidating = asyncValidation?.textWhenBeforeStartValidating;
 
-    // Handle async validation
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
         if (!asyncValidationFn) {
             return;
         }
 
         const subscription = form.watch((value, { name: changedField }) => {
-            if (changedField === fieldPath) {
-                const fieldValue = value[fieldPath as keyof typeof value];
+            const fieldValue = value[fieldPath as keyof typeof value];
+            if (changedField !== fieldPath || !fieldValue) {
+                return;
+            }
+            if (debounceTimeout.current) {
+                clearTimeout(debounceTimeout.current);
+            }
 
-                if (debounceTimeout.current) {
-                    // Clear any existing timeout
-                    clearTimeout(debounceTimeout.current);
-                }
-
-                // Check Zod validation first
-                const hasFieldError = !schema || fieldHasError(schema, fieldPath, fieldValue);
-                setHasAsyncError(false);
-                setIsAsyncValidating(false);
-                setAsyncError(undefined);
-
-                if (!hasFieldError) {
-                    setIsAsyncValidating(true);
-                    setAsyncValidatingStarted(true);
-                    // Set new timeout for debounced validation
-                    debounceTimeout.current = setTimeout(async () => {
-                        try {
-                            const validationError = await asyncValidationFn(fieldValue);
-                            setAsyncError(typeof validationError === 'string' ? validationError : undefined);
-                            setHasAsyncError(typeof validationError === 'string');
-                        } catch (error) {
-                            setAsyncError(t('field.asyncValidationError'));
-                            console.error('AsyncValidation error', error);
-                            setHasAsyncError(true);
-                        } finally {
-                            setIsAsyncValidating(false);
-                        }
-                    }, asyncValidationDebounce);
-                }
+            // Check Zod validation first
+            const hasFieldError = fieldHasError || !schema || fieldHasErrorFn(schema, fieldPath, fieldValue);
+            if (!hasFieldError) {
+                setValidationState({
+                    ...validationState,
+                    isValidating: true,
+                    validatingStarted: true,
+                    hasError: false,
+                    error: undefined
+                });
+                debounceTimeout.current = setTimeout(async () => {
+                    try {
+                        const validationResult = await asyncValidationFn(fieldValue);
+                        setValidationState({
+                            error: typeof validationResult === 'string' ? validationResult : undefined,
+                            hasError: typeof validationResult === 'string',
+                            isValidating: false,
+                            validatingStarted: true
+                        });
+                    } catch (error) {
+                        setValidationState({
+                            error: t('field.asyncValidationError'),
+                            hasError: true,
+                            isValidating: false,
+                            validatingStarted: true
+                        });
+                        console.error('AsyncValidation error', error);
+                    }
+                }, asyncValidationDebounce);
             }
         });
 
@@ -89,9 +109,7 @@ export function useFieldValidation({
                 clearTimeout(debounceTimeout.current);
             }
         };
-    }, [asyncValidationFn, fieldPath, form, schema, asyncValidationDebounce]);
-
-    //////////////////////////////////////////////////////////////////////////////////////////
+    }, [asyncValidationFn, fieldPath, schema, asyncValidationDebounce, fieldHasError]);
 
     // Determine input type and base classes
     const inputType = isCheckbox ? 'checkbox' : 'input';
@@ -99,22 +117,19 @@ export function useFieldValidation({
 
     // Build state classes based on validation state
     const stateClasses = cn({
-        [(mergedStyles.field?.isInvalid as string) || '']: hasAsyncError,
-        [(mergedStyles.field?.isValid as string) || '']: !hasAsyncError,
-        [(mergedStyles.field?.isLoading as string) || '']: asyncValidating
+        [(mergedStyles.field?.isInvalid as string) || '']: validationState.hasError,
+        [(mergedStyles.field?.isValid as string) || '']: !validationState.hasError,
+        [(mergedStyles.field?.isLoading as string) || '']: validationState.isValidating
     });
-
-    // Set aria-describedby if description exists
-    const ariaDescribedBy = `${fieldPath}-description`;
 
     return {
         className: cn(baseClasses, stateClasses),
-        ariaInvalid: hasAsyncError,
-        ariaDescribedBy,
-        asyncError,
-        hasAsyncError,
-        asyncValidating,
-        asyncValidatingStarted,
+        ariaInvalid: validationState.hasError,
+        ariaDescribedBy: `${fieldPath}-description`,
+        hasAsyncError: validationState.hasError,
+        asyncValidating: validationState.isValidating,
+        asyncValidatingStarted: validationState.validatingStarted,
+        asyncError: validationState.error,
         showValidationIcons,
         showLoadingSpinner,
         textWhenValidating,
