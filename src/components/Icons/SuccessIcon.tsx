@@ -7,7 +7,7 @@ import type { JSX } from 'react';
  * @param {IconProps} props - Component props
  * @returns {JSX.Element} Success icon component
  */
-export function SuccessIcon({ title }: IconProps): JSX.Element {
+export function SuccessIcon({ title, className }: IconProps): JSX.Element {
     const { t } = useQRFTTranslation();
     const defaultTitle = t('form.success');
 
@@ -22,6 +22,7 @@ export function SuccessIcon({ title }: IconProps): JSX.Element {
             strokeWidth='2'
             strokeLinecap='round'
             strokeLinejoin='round'
+            className={className}
         >
             <title>{title || defaultTitle}</title>
             <circle

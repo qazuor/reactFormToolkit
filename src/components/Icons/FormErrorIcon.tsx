@@ -7,7 +7,7 @@ import type { JSX } from 'react';
  * @param {IconProps} props - Component props
  * @returns {JSX.Element} Form error icon component
  */
-export function FormErrorIcon({ title }: IconProps): JSX.Element {
+export function FormErrorIcon({ title, className }: IconProps): JSX.Element {
     const { t } = useQRFTTranslation();
     const defaultTitle = t('form.error');
 
@@ -22,6 +22,7 @@ export function FormErrorIcon({ title }: IconProps): JSX.Element {
             strokeWidth='2'
             strokeLinecap='round'
             strokeLinejoin='round'
+            className={className}
         >
             <title>{title || defaultTitle}</title>
             <circle

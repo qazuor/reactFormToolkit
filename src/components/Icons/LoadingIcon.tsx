@@ -7,7 +7,7 @@ import type { JSX } from 'react';
  * @param {IconProps} props - Component props
  * @returns {JSX.Element} Loading icon component
  */
-export function LoadingIcon({ title }: IconProps): JSX.Element {
+export function LoadingIcon({ title, className }: IconProps): JSX.Element {
     const { t } = useQRFTTranslation();
     const defaultTitle = t('form.loading');
 
@@ -22,7 +22,7 @@ export function LoadingIcon({ title }: IconProps): JSX.Element {
             strokeWidth='2'
             strokeLinecap='round'
             strokeLinejoin='round'
-            className='animate-spin'
+            className={`animate-spin ${className || ''}`}
         >
             <title>{title || defaultTitle}</title>
             <line

@@ -7,7 +7,7 @@ import type { JSX } from 'react';
  * @param {IconProps} props - Component props
  * @returns {JSX.Element} Info tooltip icon component
  */
-export function InfoTooltipIcon({ title }: IconProps): JSX.Element {
+export function InfoTooltipIcon({ title, className }: IconProps): JSX.Element {
     const { t } = useQRFTTranslation();
     const defaultTitle = t('field.info');
 
@@ -22,6 +22,7 @@ export function InfoTooltipIcon({ title }: IconProps): JSX.Element {
             strokeWidth='2'
             strokeLinecap='round'
             strokeLinejoin='round'
+            className={className}
         >
             <title aria-label={title || defaultTitle}> </title>
             <circle
