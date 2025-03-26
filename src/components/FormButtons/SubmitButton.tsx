@@ -14,9 +14,17 @@ export function SubmitButton({ children, className, ...props }: SubmitButtonProp
     const { form, asyncValidations, asyncErrors } = useFormContext();
     const { isSubmitting, isValid } = form.formState;
 
-    // Check if any async validations are pending or have errors
-    const hasPendingValidations = Object.values(asyncValidations || {}).some(Boolean);
-    const hasAsyncErrors = Object.values(asyncErrors || {}).some(Boolean);
+    // Check if any async validations are pending
+    const hasPendingValidations = Object.entries(asyncValidations || {}).some(([_fieldName, isValidating]) => {
+        // Only count fields that are actually validating
+        return isValidating;
+    });
+
+    // Check if any async validations have errors
+    const hasAsyncErrors = Object.entries(asyncErrors || {}).some(([_fieldName, hasError]) => {
+        // Only count fields that has errors
+        return hasError;
+    });
 
     const isFormValid = isValid && !hasPendingValidations && !hasAsyncErrors;
     const isDisabled = !isFormValid || isSubmitting;
