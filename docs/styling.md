@@ -1,147 +1,152 @@
-# Style System Documentation
+# Styling
 
-## Overview
+React Form Toolkit provides a flexible styling system that works with Tailwind CSS.
 
-The React Form Toolkit provides a comprehensive style system that allows you to customize the appearance of all form components. The system uses Tailwind CSS classes and supports multiple levels of style customization:
+## Style System
+
+Styles can be applied at multiple levels:
 
 1. Default styles (built-in)
-2. Provider-level styles (applied to all form components)
-3. Component-level styles (applied to specific components)
+2. Provider-level styles (all components)
+3. Component-level styles (specific components)
 
-## Style Options Structure
-
-```typescript
-interface FormProviderStyleOptions {
-    field?: {
-        wrapper?: string;
-        label?: string;
-        description?: string;
-        error?: string;
-        requiredMark?: string;
-        input?: string;
-        select?: string;
-        textarea?: string;
-        checkbox?: string;
-        isValid?: string;
-        isInvalid?: string;
-        isValidating?: string;
-        isLoading?: string;
-    };
-    form?: {
-        wrapper?: string;
-    };
-    buttons?: {
-        submit?: string;
-        cancel?: string;
-        reset?: string;
-    };
-    tooltip?: {
-        icon?: string;
-        content?: string;
-    };
-}
-```
-
-## Usage Examples
-
-### Provider-Level Styling
-
-Apply styles to all form components:
+## Basic Usage
 
 ```tsx
-const customStyles = {
+// Provider-level styles
+<FormProvider
+  styleOptions={{
     field: {
-        input: 'border-2 rounded-lg p-2',
-        label: 'text-lg font-bold',
-        isValid: 'border-green-500',
-        isInvalid: 'border-red-500'
-    },
-    buttons: {
-        submit: 'bg-blue-600 text-white px-4 py-2 rounded'
+      input: 'custom-input-class',
+      label: 'custom-label-class'
     }
-};
-
-function MyForm() {
-    return (
-        <FormProvider
-            schema={schema}
-            onSubmit={handleSubmit}
-            styleOptions={customStyles}
-        >
-            {/* Form fields */}
-        </FormProvider>
-    );
-}
-```
-
-### Component-Level Styling
-
-Override styles for specific components:
-
-```tsx
-<FormField
-    name="email"
-    label="Email"
-    styleOptions={{
-        input: 'border-blue-500 rounded-full',
-        label: 'text-blue-600 uppercase'
-    }}
+  }}
 >
-    <input type="email" />
+  {/* Form fields */}
+</FormProvider>
+
+// Component-level styles
+<FormField
+  styleOptions={{
+    input: 'specific-input-class'
+  }}
+>
+  <input type="text" />
 </FormField>
 ```
 
-## Style Precedence
+## Style Options
 
-Styles are merged in the following order (later styles override earlier ones):
+### Field Styles
 
-1. Default styles (lowest priority)
-2. Provider styles (overrides defaults)
-3. Component styles (highest priority)
+```tsx
+interface FieldStyleOptions {
+  wrapper?: string;
+  label?: string;
+  description?: string;
+  error?: string;
+  requiredMark?: string;
+  input?: string;
+  select?: string;
+  textarea?: string;
+  checkbox?: string;
+  isValid?: string;
+  isInvalid?: string;
+  isValidating?: string;
+  isLoading?: string;
+}
+```
 
-## State-Based Styling
+### Button Styles
 
-The system supports different states for form elements:
+```tsx
+interface ButtonStyleOptions {
+  submit?: string;
+  reset?: string;
+  cancel?: string;
+}
+```
 
-- `isValid`: Applied when field validation passes
-- `isInvalid`: Applied when field has validation errors
-- `isValidating`: Applied during async validation
-- `isLoading`: Applied when field is in a loading state
+### Form Styles
+
+```tsx
+interface FormStyleOptions {
+  wrapper?: string;
+}
+```
+
+### Tooltip Styles
+
+```tsx
+interface TooltipStyleOptions {
+  icon?: string;
+  content?: string;
+}
+```
+
+## Examples
+
+### Custom Field Styles
+
+```tsx
+<FormField
+  styleOptions={{
+    wrapper: 'space-y-2',
+    label: 'font-bold text-gray-700',
+    input: 'border-2 rounded-lg p-2 focus:ring-2',
+    description: 'text-sm text-gray-500',
+    error: 'text-red-500 text-sm',
+    isValid: 'border-green-500',
+    isInvalid: 'border-red-500'
+  }}
+>
+  <input type="text" />
+</FormField>
+```
+
+### Custom Button Styles
+
+```tsx
+<FormButtonsBar
+  buttonStyles={{
+    submit: 'bg-green-600 hover:bg-green-700 text-white',
+    reset: 'bg-gray-200 hover:bg-gray-300',
+    cancel: 'bg-red-100 hover:bg-red-200'
+  }}
+/>
+```
+
+### Validation States
 
 ```tsx
 const styles = {
-    field: {
-        isValid: 'border-green-500 bg-green-50',
-        isInvalid: 'border-red-500 bg-red-50',
-        isLoading: 'opacity-50 cursor-wait'
-    }
+  field: {
+    isValid: 'border-green-500 bg-green-50',
+    isInvalid: 'border-red-500 bg-red-50',
+    isValidating: 'border-yellow-500 bg-yellow-50',
+    isLoading: 'opacity-50 cursor-wait'
+  }
 };
 ```
 
-## Best Practices
+### Responsive Styles
 
-1. **Consistent Theme**: Maintain consistent colors and spacing across your form styles
+```tsx
+const styles = {
+  field: {
+    wrapper: 'space-y-2 md:space-y-4',
+    input: 'w-full md:w-auto p-2 md:p-4'
+  }
+};
+```
 
-2. **Responsive Design**: Include responsive classes when needed:
-   ```tsx
-   input: 'w-full md:w-auto p-2 md:p-4'
-   ```
+### Dark Mode
 
-3. **State Handling**: Always provide styles for different states:
-   - Valid/Invalid states
-   - Loading states
-   - Focus states
-
-4. **Accessibility**: Ensure sufficient contrast and focus indicators:
-   ```tsx
-   input: 'focus:ring-2 focus:ring-blue-500 focus:outline-none'
-   ```
-
-5. **Component Organization**: Group related styles together:
-   ```tsx
-   const fieldStyles = {
-       wrapper: 'space-y-2',
-       label: 'font-bold',
-       input: 'border rounded'
-   };
-   ```
+```tsx
+const styles = {
+  field: {
+    input: 'dark:bg-gray-800 dark:text-white',
+    label: 'dark:text-gray-200'
+  }
+};
+```

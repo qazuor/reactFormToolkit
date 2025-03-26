@@ -1,222 +1,177 @@
 # API Reference
 
-## Components
+## FormProvider
 
-### FormProvider
-
-Main component for form state management and validation.
+Root component that manages form state and validation.
 
 ```tsx
-<FormProvider<FormData>
-    schema={zodSchema}
-    onSubmit={handleSubmit}
-    defaultValues={initialValues}
-    mode="onBlur"
-    i18n={i18nOptions}
->
-    {children}
+<FormProvider schema={schema} onSubmit={handleSubmit}>
+  <FormField name="email">
+    <input type="email" />
+  </FormField>
 </FormProvider>
 ```
 
-#### Props
+Provides form context and handles form state management, validation, and submission.
 
-| Name | Type | Description |
-|------|------|-------------|
-| `schema` | `z.ZodType` | Zod schema for form validation |
-| `onSubmit` | `(data: T) => void \| Promise<void>` | Form submission handler |
-| `defaultValues` | `DefaultValues<T>` | Initial form values |
-| `mode` | `'onBlur' \| 'onChange' \| 'onSubmit' \| 'onTouched' \| 'all'` | Validation trigger mode |
-| `i18n` | `I18nOptions` | Internationalization options |
-| `children` | `ReactNode` | Form content |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `schema` | `z.ZodType` | - | Zod schema for form validation |
+| `onSubmit` | `(data: T) => void \| Promise<void>` | - | Form submission handler |
+| `defaultValues` | `DefaultValues<T>` | `{}` | Initial form values |
+| `mode` | `'onBlur' \| 'onChange' \| 'onSubmit' \| 'onTouched' \| 'all'` | `'onBlur'` | Validation trigger mode |
+| `i18n` | `I18nOptions` | - | Internationalization options |
+| `styleOptions` | `FormProviderStyleOptions` | - | Style customization |
+| `errorDisplayOptions` | `ErrorDisplayOptions` | - | Error display configuration |
+| `form` | `UseFormReturn<T>` | - | External form instance |
 
-### FormField
+## FormField
 
-Component for rendering form fields with validation.
+Component for rendering form inputs with validation.
 
 ```tsx
 <FormField
-    name="email"
-    label="Email Address"
-    required
-    description="Enter your primary email"
-    tooltip="Must be a valid email address"
+  name="email"
+  label="Email"
+  required
+  tooltip="Enter your email"
 >
-    <input type="email" />
+  <input type="email" />
 </FormField>
 ```
 
-#### Props
+Handles field rendering, validation, and error display.
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `string` | Field name matching schema |
-| `label` | `string` | Field label text |
-| `required` | `boolean` | Whether field is required |
-| `description` | `string \| ReactNode` | Field description |
-| `tooltip` | `string` | Tooltip content |
-| `children` | `ReactNode` | Input element |
-| `descriptionOptions` | `DescriptionOptions` | Description configuration |
-| `tooltipOptions` | `TooltipOptions` | Tooltip configuration |
-| `styleOptions` | `ComponentStyleOptions` | Style overrides |
-| `errorDisplayOptions` | `ErrorDisplayOptions` | Error display configuration |
-| `asyncValidation` | `(value: any) => Promise<string \| undefined>` | Async validation function |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `string` | - | Field name matching schema |
+| `label` | `string` | - | Field label text |
+| `required` | `boolean` | `false` | Whether field is required |
+| `description` | `string \| ReactNode` | - | Field description |
+| `tooltip` | `string` | - | Tooltip content |
+| `children` | `ReactNode` | - | Input element |
+| `descriptionOptions` | `DescriptionOptions` | - | Description configuration |
+| `tooltipOptions` | `TooltipOptions` | - | Tooltip configuration |
+| `styleOptions` | `ComponentStyleOptions` | - | Style overrides |
+| `errorDisplayOptions` | `ErrorDisplayOptions` | - | Error display configuration |
+| `asyncValidation` | `AsyncValidationProps` | - | Async validation configuration |
 
-### Example
+## FormButtonsBar
+
+Component for rendering form action buttons.
 
 ```tsx
-<FormField
-    name="email"
-    label="Email Address"
-    required
-    description="Enter your primary email"
-    tooltip="Must be a valid email address"
->
-    <input type="email" />
-</FormField>
+<FormButtonsBar
+  direction="horizontal"
+  fullWidth={false}
+  onCancel={() => console.log('cancelled')}
+/>
 ```
 
-### Async Validation Example
+Provides submit, reset, and cancel buttons with consistent styling and behavior.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `direction` | `'horizontal' \| 'vertical'` | `'horizontal'` | Button layout direction |
+| `fullWidth` | `boolean` | `false` | Make buttons take full width |
+| `className` | `string` | - | Container CSS class |
+| `buttonStyles` | `ButtonStyleOptions` | - | Custom button styles |
+| `showSubmit` | `boolean` | `true` | Show submit button |
+| `showReset` | `boolean` | `true` | Show reset button |
+| `showCancel` | `boolean` | `true` | Show cancel button |
+| `submitText` | `string` | `'Submit'` | Custom submit button text |
+| `resetText` | `string` | `'Reset'` | Custom reset button text |
+| `cancelText` | `string` | `'Cancel'` | Custom cancel button text |
+| `onCancel` | `() => void` | - | Cancel handler |
+| `children` | `ReactNode` | - | Additional buttons |
+
+## FieldArray
+
+Component for managing dynamic form arrays.
 
 ```tsx
-<FormField
-    name="username"
-    label="Username"
-    asyncValidation={async (value) => {
-        const response = await checkUsernameAvailability(value);
-        return response.available ? undefined : 'Username already taken';
-    }}
->
+<FieldArray name="contacts" minItems={1} maxItems={5}>
+  <FormField name="name">
     <input type="text" />
-</FormField>
-```
-
-The async validation function:
-- Receives the current field value
-- Returns a Promise that resolves to:
-  - `undefined` if validation passes
-  - An error message string if validation fails
-- Shows loading state during validation
-- Displays error message on validation failure
-
-### FieldArray
-
-Component for managing dynamic form arrays with validation.
-
-```tsx
-<FieldArray
-    name="items"
-    minItems={1}
-    maxItems={5}
->
-    <FormField name="name">
-        <input type="text" />
-    </FormField>
+  </FormField>
 </FieldArray>
 ```
 
-#### Props
+Enables dynamic form arrays with validation support.
 
-| Name | Type | Description |
-|------|------|-------------|
-| `name` | `string` | Array field name matching schema |
-| `children` | `ReactNode` | Form fields to repeat |
-| `minItems` | `number` | Minimum items required |
-| `maxItems` | `number` | Maximum items allowed |
-| `addButtonText` | `string` | Custom add button text |
-| `removeButtonText` | `string` | Custom remove button text |
-| `className` | `string` | Container CSS classes |
-| `buttonClassName` | `string` | Button CSS classes |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `string` | - | Array field name |
+| `children` | `ReactNode` | - | Form fields to repeat |
+| `minItems` | `number` | `0` | Minimum items required |
+| `maxItems` | `number` | - | Maximum items allowed |
+| `addButtonText` | `string` | `'Add'` | Custom add button text |
+| `removeButtonText` | `string` | `'Remove'` | Custom remove button text |
+| `className` | `string` | - | Container CSS classes |
+| `buttonClassName` | `string` | - | Button CSS classes |
 
-
-### FormDescription
+## FormDescription
 
 Component for form-level descriptions.
 
 ```tsx
 <FormDescription position="above">
-    Please fill out all required fields
+  Please fill out all required fields
 </FormDescription>
 ```
 
-#### Props
+Renders form-level description text with positioning support.
 
-| Name | Type | Description |
-|------|------|-------------|
-| `children` | `ReactNode` | Description content |
-| `position` | `'above' \| 'below'` | Position relative to form |
-| `className` | `string` | Custom CSS classes |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | - | Description content |
+| `position` | `'above' \| 'below'` | `'above'` | Position relative to form |
+| `className` | `string` | - | Custom CSS classes |
+| `id` | `string` | - | Custom element ID |
 
-## Hooks
+## ErrorDisplayOptions
 
-### useFieldState
-
-Hook for accessing field validation state.
-
-```tsx
-const { error, isTouched, isDirty, hasError } = useFieldState('email');
-```
-
-#### Returns
-
-| Name | Type | Description |
-|------|------|-------------|
-| `error` | `FieldError` | Current validation error |
-| `isTouched` | `boolean` | Whether field was focused |
-| `isDirty` | `boolean` | Whether value changed |
-| `hasError` | `boolean` | Whether field has error |
-
-### useQRFTTranslation
-
-Hook for accessing translations.
+Configuration options for error message display.
 
 ```tsx
-const { t, i18n } = useQRFTTranslation(options);
+const options: ErrorDisplayOptions = {
+  position: 'below',
+  animation: 'fadeIn',
+  showIcon: true
+};
 ```
 
-#### Parameters
+Controls how validation errors are displayed.
 
-| Name | Type | Description |
-|------|------|-------------|
-| `options` | `UseTranslationOptions` | i18next options |
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `position` | `'below' \| 'above' \| 'right' \| 'tooltip'` | `'below'` | Error message position |
+| `animation` | `'none' \| 'fadeIn' \| 'slideIn' \| 'pulse' \| 'shake'` | `'none'` | Error animation type |
+| `showIcon` | `boolean` | `true` | Show error icon |
+| `groupErrors` | `boolean` | `false` | Group all errors together |
+| `maxErrors` | `number` | - | Maximum errors to show when grouped |
+| `delay` | `number` | `0` | Delay before showing error |
+| `autoDismiss` | `boolean` | `false` | Auto dismiss errors |
+| `dismissAfter` | `number` | `5000` | Time before auto dismissal |
 
-#### Returns
+## AsyncValidationProps
 
-| Name | Type | Description |
-|------|------|-------------|
-| `t` | `TFunction` | Translation function |
-| `i18n` | `i18n` | i18next instance |
-
-## Utilities
-
-### formUtils
-
-Utility functions for form handling.
+Configuration for asynchronous field validation.
 
 ```tsx
-const isRequired = formUtils.isFieldRequired('email', schema);
-const validation = formUtils.getFieldValidation('email', schema);
+const asyncValidation: AsyncValidationProps = {
+  asyncValidationFn: checkEmail,
+  asyncValidationDebounce: 500
+};
 ```
 
-#### Methods
+Controls asynchronous validation behavior.
 
-| Name | Parameters | Returns | Description |
-|------|------------|---------|-------------|
-| `isFieldRequired` | `fieldName: string, schema?: ZodType` | `boolean` | Checks if field is required |
-| `getFieldValidation` | `fieldName: string, schema?: ZodType` | `object` | Gets field validation rules |
-
-### i18nUtils
-
-Utilities for i18n handling.
-
-```tsx
-const i18n = i18nUtils.initializeI18n(options);
-const lang = i18nUtils.getCurrentLanguage(i18n);
-```
-
-#### Methods
-
-| Name | Parameters | Returns | Description |
-|------|------------|---------|-------------|
-| `initializeI18n` | `options?: I18nOptions` | `i18n` | Initialize i18n instance |
-| `getTranslation` | `i18n: i18n, path: string, params?: object` | `string` | Get translation |
-| `getCurrentLanguage` | `i18n: i18n` | `string` | Get current language |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `asyncValidationFn` | `(value: unknown) => Promise<boolean \| string>` | - | Validation function |
+| `asyncValidationDebounce` | `number` | `500` | Debounce delay in ms |
+| `showValidationIcons` | `boolean` | `true` | Show validation status icons |
+| `showLoadingSpinner` | `boolean` | `true` | Show loading spinner |
+| `textWhenValidating` | `string` | - | Text during validation |
+| `textWhenBeforeStartValidating` | `string` | - | Text before validation |
