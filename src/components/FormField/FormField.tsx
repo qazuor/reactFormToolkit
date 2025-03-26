@@ -4,10 +4,10 @@ import { useFieldStatus } from '@/hooks';
 import { useFieldValidation } from '@/hooks/useFieldValidation';
 import { cn, defaultStyles, formUtils, mergeStyles } from '@/lib';
 import type { FormFieldProps } from '@/types';
-import { type ReactElement, cloneElement, isValidElement, useContext, useEffect, useMemo, useRef } from 'react';
-import { Controller, type ControllerRenderProps, type FieldValues as TFieldValues } from 'react-hook-form';
+import { type ReactElement, isValidElement, useContext, useEffect, useMemo, useRef } from 'react';
 import { FieldDescription } from './FieldDescription';
 import { FieldError } from './FieldError';
+import { FieldInput } from './FieldInput';
 import { FieldLabel } from './FieldLabel';
 import { FormFieldAsyncValidationIndicator } from './FormFieldAsyncValidationIndicator';
 
@@ -38,7 +38,7 @@ export function FormField({
     errorDisplayOptions
 }: FormFieldProps): ReactElement {
     const { form, schema, styleOptions: providerStyles, errorDisplayOptions: providerErrorOptions } = useFormContext();
-    const childRef = useRef<HTMLElement>(null);
+    const childRef = useRef<HTMLInputElement>(null);
     const arrayContext = useContext(FieldArrayContext);
 
     const fieldPath = arrayContext ? `${arrayContext.name}.${arrayContext.index}.${name}` : name;
@@ -110,27 +110,30 @@ export function FormField({
         return <></>;
     }
 
-    const renderChildElement = (field: ControllerRenderProps<TFieldValues, string>): ReactElement => {
-        // Filter out non-DOM props
-        const { tooltipPosition, errorDisplay, ...childProps } = children.props;
+    // const renderChildElement = (field: ControllerRenderProps<TFieldValues, string>): ReactElement => {
+    //     // Filter out non-DOM props
+    //     const { tooltipPosition, errorDisplay, ...childProps } = children.props;
 
-        const fieldProps = {
-            ...childProps,
-            ...field,
-            ...(isCheckbox ? { checked: !!field.value } : {}),
-            className,
-            value: isCheckbox ? field.value : (field.value ?? ''),
-            id: fieldPath,
-            'data-testid': fieldPath,
-            'aria-invalid': ariaInvalid,
-            'aria-describedby': description ? ariaDescribedBy : undefined
-        };
+    //     const fieldProps = {
+    //         ...childProps,
+    //         ...field,
+    //         ...(isCheckbox ? { checked: !!field.value } : {}),
+    //         className,
+    //         value: isCheckbox ? field.value : (field.value ?? ''),
+    //         id: fieldPath,
+    //         'data-testid': fieldPath,
+    //         'aria-invalid': ariaInvalid,
+    //         'aria-describedby': description ? ariaDescribedBy : undefined
+    //     };
 
-        return cloneElement(children as ReactElement, {
-            ...fieldProps,
-            ref: childRef
-        });
-    };
+    //     return cloneElement(children as ReactElement, {
+    //         ...fieldProps,
+    //         ref: childRef
+    //     });
+    // };
+    const showError = !providerErrorOptions?.groupErrors && (hasError || !!asyncError);
+    const isAbove = mergedErrorOptions?.position === 'above';
+    const isRight = mergedErrorOptions?.position === 'right';
 
     return (
         <div className={cn(mergedStyles.field?.wrapper)}>
@@ -156,49 +159,48 @@ export function FormField({
                         {label}
                     </FieldLabel>
                 )}
-                <Controller
-                    control={form.control}
-                    name={fieldPath}
-                    render={({ field }) => {
-                        const showError = !providerErrorOptions?.groupErrors && (hasError || !!asyncError);
-                        const isAbove = mergedErrorOptions?.position === 'above';
-                        const isRight = mergedErrorOptions?.position === 'right';
-
-                        return (
-                            <div className='relative'>
-                                {showError && isAbove && (
-                                    <FieldError
-                                        name={fieldPath}
-                                        message={displayError}
-                                        inputRef={childRef}
-                                        options={mergedErrorOptions}
-                                    />
-                                )}
-                                <div className={cn(isRight && 'flex items-center gap-2')}>
-                                    {renderChildElement(field)}
-                                    <FormFieldAsyncValidationIndicator
-                                        showValidationIcons={showValidationIcons}
-                                        isValidating={asyncValidating}
-                                        showLoadingSpinner={showLoadingSpinner}
-                                        asyncValidatingStarted={asyncValidatingStarted}
-                                        hasError={hasAsyncError}
-                                        error={asyncError}
-                                        textWhenValidating={textWhenValidating}
-                                        textWhenBeforeStartValidating={textWhenBeforeStartValidating}
-                                    />
-                                    {showError && !isAbove && (
-                                        <FieldError
-                                            name={fieldPath}
-                                            message={displayError}
-                                            inputRef={childRef}
-                                            options={mergedErrorOptions}
-                                        />
-                                    )}
-                                </div>
-                            </div>
-                        );
-                    }}
-                />
+                <div className='relative'>
+                    {showError && isAbove && (
+                        <FieldError
+                            name={fieldPath}
+                            message={displayError}
+                            inputRef={childRef}
+                            options={mergedErrorOptions}
+                        />
+                    )}
+                    <div className={cn(isRight && 'flex items-center gap-2')}>
+                        <FieldInput
+                            className={cn(mergedStyles.field?.input, className)}
+                            ariaInvalid={ariaInvalid}
+                            ariaDescribedBy={ariaDescribedBy}
+                            childRef={childRef}
+                            fieldPath={fieldPath}
+                            name={name}
+                            children={children}
+                            form={form}
+                            // setTouched={setTouched}
+                            // validate={asyncValidate}
+                        />
+                        <FormFieldAsyncValidationIndicator
+                            showValidationIcons={showValidationIcons}
+                            isValidating={asyncValidating}
+                            showLoadingSpinner={showLoadingSpinner}
+                            asyncValidatingStarted={asyncValidatingStarted}
+                            hasError={hasAsyncError}
+                            error={asyncError}
+                            textWhenValidating={textWhenValidating}
+                            textWhenBeforeStartValidating={textWhenBeforeStartValidating}
+                        />
+                        {showError && !isAbove && (
+                            <FieldError
+                                name={fieldPath}
+                                message={displayError}
+                                inputRef={childRef}
+                                options={mergedErrorOptions}
+                            />
+                        )}
+                    </div>
+                </div>
                 {description && (!descriptionOptions?.position || descriptionOptions?.position === 'below') && (
                     <FieldDescription
                         id={descriptionOptions?.id || `${fieldPath}-description`}
