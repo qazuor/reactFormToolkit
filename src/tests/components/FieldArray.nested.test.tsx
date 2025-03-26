@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import React from 'react';
 import { describe, expect, it } from 'vitest';
@@ -74,6 +75,7 @@ describe('FieldArray with Nested Arrays', () => {
                             </FormField>
                         </FieldArray>
                     </FieldArray>
+                    <button type='submit'>Submit</button>
                 </FormProvider>
             </TooltipProvider>
         );
@@ -91,7 +93,6 @@ describe('FieldArray with Nested Arrays', () => {
     it('validates nested fields correctly', async () => {
         renderNestedFieldArray();
 
-        // Enter invalid values and trigger validation
         const inputs = [
             screen.getByTestId('companyName'),
             screen.getByTestId('departments.0.name'),
@@ -99,15 +100,26 @@ describe('FieldArray with Nested Arrays', () => {
             screen.getByTestId('departments.0.employees.0.role')
         ];
 
-        for (const input of inputs) {
-            await userEvent.type(input, 'a');
-            fireEvent.blur(input);
-        }
+        const submitButton = screen.getByText('Submit');
 
-        await waitFor(() => {
-            const errors = screen.getAllByText(/must be at least 2 characters/);
-            expect(errors).toHaveLength(4);
+        await act(async () => {
+            for (const input of inputs) {
+                fireEvent.change(input, { target: { value: 'a' } });
+                fireEvent.blur(input);
+            }
         });
+
+        await act(async () => {
+            fireEvent.click(submitButton);
+        });
+
+        await waitFor(
+            () => {
+                const errors = screen.getAllByRole('alert');
+                expect(errors).toHaveLength(4);
+            },
+            { timeout: 1000 }
+        );
     });
 
     it('adds and removes nested items correctly', async () => {

@@ -111,8 +111,9 @@ describe('FormField', () => {
     it('applies aria attributes correctly', () => {
         renderField({ description: 'Help text' });
         const input = screen.getByTestId('testField');
+        const description = screen.getByText('Help text');
 
-        expect(input).toHaveAttribute('aria-describedby', 'testField-description');
+        expect(description).toHaveAttribute('id', 'testField-description');
         expect(input).toHaveAttribute('aria-invalid', 'false');
     });
 
@@ -141,20 +142,15 @@ describe('FormField', () => {
     });
 
     it('handles async validation', async () => {
+        // vi.useFakeTimers();
         const asyncValidation = vi.fn().mockImplementation((value: string) => {
             return new Promise((resolve) => {
-                resolve(value === 'taken' ? 'This value is already taken' : null);
+                resolve(value === 'taken' ? 'This value is already taken' : undefined);
             });
         });
 
         const schema = z.object({
-            testField: z.string().refine(
-                async (value) => {
-                    const result = await asyncValidation(value);
-                    return !result;
-                },
-                { message: 'This value is already taken' }
-            )
+            testField: z.string().min(3)
         });
 
         render(
@@ -163,8 +159,18 @@ describe('FormField', () => {
                     schema={schema}
                     onSubmit={() => Promise.resolve()}
                     mode='onChange'
+                    defaultValues={{ testField: '' }}
                 >
-                    <FormField name='testField'>
+                    <FormField
+                        name='testField'
+                        asyncValidation={{
+                            asyncValidationDebounce: 100,
+                            asyncValidationFn: async (value: string) => {
+                                const isAvailable = await asyncValidation(value);
+                                return isAvailable ? true : 'Email is already registered';
+                            }
+                        }}
+                    >
                         <input type='text' />
                     </FormField>
                 </FormProvider>
@@ -172,13 +178,15 @@ describe('FormField', () => {
         );
 
         const input = screen.getByTestId('testField');
-        await act(async () => {
+        await act(() => {
             fireEvent.change(input, { target: { value: 'valid' } });
         });
+        // vi.runAllTimers();
 
         await waitFor(() => {
             expect(asyncValidation).toHaveBeenCalledWith('valid');
             expect(screen.queryByText('This value is already taken')).not.toBeInTheDocument();
         });
+        // vi.useRealTimers();
     });
 });

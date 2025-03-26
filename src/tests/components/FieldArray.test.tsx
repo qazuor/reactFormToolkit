@@ -1,5 +1,8 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react';
+// biome-ignore lint/correctness/noUnusedImports: <explanation>
+import React from 'react';
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
 import { FieldArray } from '../../components/FieldArray/FieldArray';
@@ -24,7 +27,7 @@ describe('FieldArray', () => {
             <TooltipProvider>
                 <FormProvider
                     schema={schema}
-                    onSubmit={() => {}}
+                    onSubmit={(data) => console.log('Form submitted:', data)}
                     defaultValues={{
                         items: [{ name: '', email: '' }]
                     }}
@@ -40,6 +43,7 @@ describe('FieldArray', () => {
                             <input type='email' />
                         </FormField>
                     </FieldArray>
+                    <button type='submit'>Submit</button>
                 </FormProvider>
             </TooltipProvider>
         );
@@ -99,23 +103,35 @@ describe('FieldArray', () => {
     });
 
     it('validates nested fields correctly', async () => {
-        const { container } = renderFieldArray();
+        renderFieldArray();
 
         const nameInput = screen.getByTestId('items.0.name');
         const emailInput = screen.getByTestId('items.0.email');
+        const submitButton = screen.getByText('Submit');
 
-        // Enter invalid values
-        await userEvent.type(nameInput, 'a');
-        await userEvent.type(emailInput, 'invalid-email');
-
-        // Trigger validation
-        fireEvent.blur(nameInput);
-        fireEvent.blur(emailInput);
-
-        await waitFor(() => {
-            expect(screen.getByText('Name must be at least 2 characters')).toBeInTheDocument();
-            expect(screen.getByText('Invalid email address')).toBeInTheDocument();
+        await act(async () => {
+            fireEvent.change(nameInput, { target: { value: 'a' } });
+            fireEvent.blur(nameInput);
         });
+
+        await act(async () => {
+            fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
+            fireEvent.blur(emailInput);
+        });
+
+        await act(async () => {
+            fireEvent.click(submitButton);
+        });
+
+        await waitFor(
+            () => {
+                const errors = screen.getAllByRole('alert');
+                expect(errors).toHaveLength(2);
+                expect(errors[0]).toHaveTextContent('Name must be at least 2 characters');
+                expect(errors[1]).toHaveTextContent('Invalid email address');
+            },
+            { timeout: 1000 }
+        );
     });
 
     it('supports custom button text', () => {
