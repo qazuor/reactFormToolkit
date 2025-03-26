@@ -71,7 +71,7 @@ describe('FormProvider', () => {
         fireEvent.click(submitButton);
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith(expectedData, expect.anything());
+            expect(onSubmit).toHaveBeenCalledWith(expectedData);
             expect(onSubmit).toHaveBeenCalledTimes(1);
         });
     });
