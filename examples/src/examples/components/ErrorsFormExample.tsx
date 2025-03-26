@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormField, FormProvider, SubmitButton } from '@qazuor/react-form-toolkit';
+import { CancelButton, FormField, FormProvider, ResetButton, SubmitButton } from '@qazuor/react-form-toolkit';
 import type { ErrorAnimation, ErrorDisplayOptions, ErrorPosition } from '@qazuor/react-form-toolkit';
 import { useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
@@ -258,13 +258,8 @@ export function ErrorsFormExample() {
 
                         <div className='flex gap-4'>
                             <SubmitButton>{t('form.submit')}</SubmitButton>
-                            <button
-                                type='button'
-                                onClick={handleReset}
-                                className='rounded bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300'
-                            >
-                                {t('form.exampleForm.reset')}
-                            </button>
+                            <ResetButton onClick={handleReset}>{t('form.exampleForm.reset')}</ResetButton>
+                            <CancelButton onCancel={() => console.log('Cancelled')} />
                         </div>
                     </div>
                 </FormProvider>

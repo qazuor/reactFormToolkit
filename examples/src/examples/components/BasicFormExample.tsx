@@ -1,4 +1,4 @@
-import { FormDescription, FormField, FormProvider, SubmitButton } from '@qazuor/react-form-toolkit';
+import { FormButtonsBar, FormDescription, FormField, FormProvider } from '@qazuor/react-form-toolkit';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
@@ -70,8 +70,11 @@ export function BasicFormExample() {
                         placeholder={t('form.passwordPlaceholder')}
                     />
                 </FormField>
-
-                <SubmitButton>{t('form.submit')}</SubmitButton>
+                <FormButtonsBar
+                    direction='horizontal'
+                    fullWidth={false}
+                    onCancel={() => console.log('Cancelled')}
+                />
             </div>
         </FormProvider>
     );

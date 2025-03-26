@@ -1,4 +1,12 @@
-import { FieldArray, FormDescription, FormField, FormProvider, SubmitButton } from '@qazuor/react-form-toolkit';
+import {
+    CancelButton,
+    FieldArray,
+    FormDescription,
+    FormField,
+    FormProvider,
+    ResetButton,
+    SubmitButton
+} from '@qazuor/react-form-toolkit';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
@@ -196,6 +204,8 @@ export function FieldArrayExample() {
                 </FieldArray>
 
                 <SubmitButton>{t('form.submit')}</SubmitButton>
+                <ResetButton />
+                <CancelButton onCancel={() => console.log('Cancelled')} />
             </div>
         </FormProvider>
     );

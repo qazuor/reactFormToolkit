@@ -1,4 +1,11 @@
-import { FormDescription, FormField, FormProvider, SubmitButton } from '@qazuor/react-form-toolkit';
+import {
+    CancelButton,
+    FormDescription,
+    FormField,
+    FormProvider,
+    ResetButton,
+    SubmitButton
+} from '@qazuor/react-form-toolkit';
 import i18n from 'i18next';
 import { useCallback, useState } from 'react';
 import { z } from 'zod';
@@ -144,6 +151,8 @@ export function I18nFormExample() {
                     </FormField>
 
                     <SubmitButton>{customTranslations[language].form.submit}</SubmitButton>
+                    <ResetButton />
+                    <CancelButton onCancel={() => console.log('Cancelled')} />
                 </div>
             </FormProvider>
         </div>

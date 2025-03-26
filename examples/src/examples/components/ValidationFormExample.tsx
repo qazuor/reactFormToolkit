@@ -1,4 +1,11 @@
-import { FormDescription, FormField, FormProvider } from '@qazuor/react-form-toolkit';
+import {
+    CancelButton,
+    FormDescription,
+    FormField,
+    FormProvider,
+    ResetButton,
+    SubmitButton
+} from '@qazuor/react-form-toolkit';
 import { formUtils } from '@qazuor/react-form-toolkit';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -132,12 +139,9 @@ export function ValidationFormExample() {
                     />
                 </FormField>
 
-                <button
-                    type='submit'
-                    className='w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700'
-                >
-                    {t('form.submit')}
-                </button>
+                <SubmitButton>{t('form.submit')}</SubmitButton>
+                <ResetButton />
+                <CancelButton onCancel={() => console.log('Cancelled')} />
             </div>
         </FormProvider>
     );
