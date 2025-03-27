@@ -180,8 +180,6 @@ export function FormField({
                             validate={validate}
                             children={children}
                             form={form}
-                            // setTouched={setTouched}
-                            // validate={asyncValidate}
                         />
                         <FormFieldAsyncValidationIndicator
                             showValidationIcons={showValidationIcons}
