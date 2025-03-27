@@ -14,6 +14,11 @@ const schema = z.object({
     test: z.string()
 });
 
+const schemaForSubmition = z.object({
+    email: z.string(),
+    password: z.string()
+});
+
 const TestWrapper = ({
     children,
     onSubmit,
@@ -40,7 +45,7 @@ const renderFormForSubmition = (onSubmit: (data: TestFormData) => void) => {
     return render(
         <TooltipProvider>
             <FormProvider
-                schema={schema}
+                schema={schemaForSubmition}
                 onSubmit={onSubmit}
             >
                 <FormField
@@ -67,7 +72,6 @@ describe('FormProvider with Global Errors', () => {
     it('displays global error when submission fails', async () => {
         const error = new Error('API Error');
         const onSubmit = vi.fn().mockRejectedValue(error);
-
         render(
             <TestWrapper onSubmit={onSubmit}>
                 <FormField name='test'>
@@ -76,17 +80,13 @@ describe('FormProvider with Global Errors', () => {
                 <FormButtonsBar />
             </TestWrapper>
         );
-
         await userEvent.click(screen.getByTestId('submit-button'));
-
         await waitFor(() => {
             expect(screen.getByRole('alert')).toHaveTextContent(error.message);
         });
     });
-
     it('applies global error options', async () => {
         const onSubmit = vi.fn().mockRejectedValue(new Error('Error'));
-
         render(
             <TestWrapper
                 onSubmit={onSubmit}
@@ -102,18 +102,14 @@ describe('FormProvider with Global Errors', () => {
                 <FormButtonsBar />
             </TestWrapper>
         );
-
         await userEvent.click(screen.getByTestId('submit-button'));
-
         await waitFor(() => {
             const error = screen.getByRole('alert');
             expect(error).toHaveClass('mt-6', 'animate-fadeIn', 'custom-error');
         });
     });
-
     it('clears global error on form reset', async () => {
-        const onSubmit = vi.fn().mockRejectedValue(new Error('Error'));
-
+        const onSubmit = vi.fn().mockRejectedValue(new Error('Error de test'));
         render(
             <TestWrapper onSubmit={onSubmit}>
                 <FormField name='test'>
@@ -122,15 +118,17 @@ describe('FormProvider with Global Errors', () => {
                 <FormButtonsBar />
             </TestWrapper>
         );
-
+        const testInput = screen.getByTestId('test');
         await act(async () => {
             fireEvent.click(screen.getByTestId('submit-button'));
         });
-
+        await act(async () => {
+            fireEvent.change(testInput, { target: { value: 'texto de prueba' } });
+            fireEvent.blur(testInput);
+        });
         await waitFor(() => {
             expect(screen.getByRole('alert')).toBeInTheDocument();
         });
-
         await act(async () => {
             fireEvent.click(screen.getByTestId('reset-button'));
         });
@@ -157,15 +155,12 @@ describe('FormProvider with Global Errors', () => {
                 <FormButtonsBar />
             </TestWrapper>
         );
-
         await act(async () => {
             fireEvent.click(screen.getByTestId('submit-button'));
         });
-
         await waitFor(() => {
             expect(screen.getByRole('alert')).toBeInTheDocument();
         });
-
         await waitFor(
             () => {
                 expect(screen.queryByRole('alert')).not.toBeInTheDocument();
@@ -183,24 +178,29 @@ describe('FormProvider', () => {
         };
 
         const onSubmit = vi.fn();
+
         renderFormForSubmition(onSubmit);
 
         const emailInput = screen.getByTestId('email');
         const passwordInput = screen.getByTestId('password');
         const submitButton = screen.getByTestId('submit-button');
 
-        fireEvent.change(emailInput, {
-            target: { value: expectedData.email }
+        await act(async () => {
+            fireEvent.change(emailInput, {
+                target: { value: expectedData.email }
+            });
+            fireEvent.blur(emailInput);
         });
-        fireEvent.blur(emailInput);
-
-        fireEvent.change(passwordInput, {
-            target: { value: expectedData.password }
-        });
-        fireEvent.blur(passwordInput);
 
         await act(async () => {
-            fireEvent.click(submitButton);
+            fireEvent.change(passwordInput, {
+                target: { value: expectedData.password }
+            });
+            fireEvent.blur(passwordInput);
+        });
+
+        await act(async () => {
+            await fireEvent.click(submitButton);
         });
 
         await waitFor(() => {
@@ -217,17 +217,21 @@ describe('FormProvider', () => {
         const passwordInput = screen.getByTestId('password');
         const submitButton = screen.getByTestId('submit-button');
 
-        fireEvent.change(emailInput, {
-            target: { value: 'invalid-email' }
+        await act(async () => {
+            fireEvent.change(emailInput, {
+                target: { value: 'invalid-email' }
+            });
+            fireEvent.blur(emailInput);
         });
-        fireEvent.blur(emailInput);
-
-        fireEvent.change(passwordInput, {
-            target: { value: '123' }
+        await act(async () => {
+            fireEvent.change(passwordInput, {
+                target: { value: '123' }
+            });
+            fireEvent.blur(passwordInput);
         });
-        fireEvent.blur(passwordInput);
-
-        fireEvent.click(submitButton);
+        await act(async () => {
+            fireEvent.click(submitButton);
+        });
 
         await waitFor(() => {
             expect(onSubmit).not.toHaveBeenCalled();
