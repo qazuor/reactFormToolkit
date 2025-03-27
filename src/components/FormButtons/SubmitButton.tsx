@@ -41,6 +41,7 @@ export function SubmitButton({ children, className, ...props }: SubmitButtonProp
         <button
             type='submit'
             disabled={isDisabled}
+            data-testid='submit-button'
             className={cn(
                 'relative flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50',
                 className

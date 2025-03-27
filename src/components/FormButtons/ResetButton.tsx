@@ -38,6 +38,7 @@ export function ResetButton({ children, className, ...props }: ResetButtonProps)
         <button
             type='reset'
             disabled={!isEnabled}
+            data-testid='reset-button'
             className={cn(
                 'relative flex items-center justify-center gap-2 rounded-md bg-gray-200 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50',
                 className
