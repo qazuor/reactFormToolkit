@@ -12,12 +12,13 @@
                 "validation": "Validation",
                 "i18n": "Internationalization",
                 "errors": "Error Handling",
-                "styled": "Styled Form",
+                "globalErrors": "Global Errors",
                 "async": "Async Validation",
                 "api-reference": "API Reference",
                 "preview": "Preview",
                 "styled": "Styled Form",
-                "fieldArray": "Field Array"
+                "fieldArray": "Field Array",
+                "code": "Code Example"
             },
             "footer": {
                 "text": "Built with ❤️ by"
@@ -33,7 +34,13 @@
                 "i18n": "Internationalization",
                 "api-reference": "API Reference",
                 "docs": "Documentation",
-                "styling": "Styling"
+                "styling": "Styling",
+                "formProvider": "Form Provider",
+                "introduction": "Introduction",
+                "fieldArray": "Field Array",
+                "formField": "Form Field",
+                "formButtons": "Form Buttons",
+                "utilities": "Utilities"
             }
         },
         "form": {
@@ -68,6 +75,8 @@
             "errorsTitle": "Error Handling Examples",
             "errorsDescription": "Different ways to display and manage form validation errors",
             "validationDescription": "Fill out the form with validation",
+            "globalErrorsTitle": "Global Error Examples",
+            "globalErrorsDescription": "Examples of handling form-level errors with global error messages",
             "username": "Username",
             "usernameTooltip": "Choose a unique username",
             "usernameDescription": "3-20 characters long",

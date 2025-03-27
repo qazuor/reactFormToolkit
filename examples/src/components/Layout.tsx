@@ -131,13 +131,28 @@ function SidebarContent() {
                         icon={<Book className='h-4 w-4' />}
                     />
                     <MainNakLink
-                        path='/docs/components'
-                        text={t('docs.tabs.components')}
+                        path='/docs/introduction'
+                        text={t('docs.tabs.introduction')}
                         icon={<Book className='h-4 w-4' />}
                     />
                     <MainNakLink
-                        path='/docs/deployment'
-                        text={t('docs.tabs.deployment')}
+                        path='/docs/form-provider'
+                        text={t('docs.tabs.formProvider')}
+                        icon={<Book className='h-4 w-4' />}
+                    />
+                    <MainNakLink
+                        path='/docs/form-field'
+                        text={t('docs.tabs.formField')}
+                        icon={<Book className='h-4 w-4' />}
+                    />
+                    <MainNakLink
+                        path='/docs/form-buttons'
+                        text={t('docs.tabs.formButtons')}
+                        icon={<Book className='h-4 w-4' />}
+                    />
+                    <MainNakLink
+                        path='/docs/field-array'
+                        text={t('docs.tabs.fieldArray')}
                         icon={<Book className='h-4 w-4' />}
                     />
                     <MainNakLink
@@ -156,8 +171,18 @@ function SidebarContent() {
                         icon={<Book className='h-4 w-4' />}
                     />
                     <MainNakLink
+                        path='/docs/utilities'
+                        text={t('docs.tabs.utilities')}
+                        icon={<Book className='h-4 w-4' />}
+                    />
+                    <MainNakLink
                         path='/docs/api-reference'
                         text={t('docs.tabs.api-reference')}
+                        icon={<Book className='h-4 w-4' />}
+                    />
+                    <MainNakLink
+                        path='/docs/deployment'
+                        text={t('docs.tabs.deployment')}
                         icon={<Book className='h-4 w-4' />}
                     />
                 </ul>
@@ -203,6 +228,11 @@ function SidebarContent() {
                     <MainNakLink
                         path='/examples/field-array'
                         text={t('examples.tabs.fieldArray')}
+                        icon={<Code className='h-4 w-4' />}
+                    />
+                    <MainNakLink
+                        path='/examples/global-errors'
+                        text={t('examples.tabs.globalErrors')}
                         icon={<Code className='h-4 w-4' />}
                     />
                 </ul>

@@ -12,12 +12,13 @@
                 "validation": "Validación",
                 "i18n": "Internacionalización",
                 "errors": "Manejo de Errores",
-                "styled": "Formulario Estilizado",
+                "globalErrors": "Errores Globales",
                 "async": "Validación Asíncrona",
                 "api-reference": "Referencia API",
                 "preview": "Vista Previa",
                 "styled": "Formulario Estilizado",
-                "fieldArray": "Campo Array"
+                "fieldArray": "Campo Array",
+                "code": "Ejemplo de Código"
             },
             "footer": {
                 "text": "Hecho con ❤️ por"
@@ -33,7 +34,13 @@
                 "i18n": "Internacionalización",
                 "api-reference": "Referencia API",
                 "docs": "Documentación",
-                "styling": "Estilos"
+                "styling": "Estilos",
+                "formProvider": "Proveedor de Formulario",
+                "introduction": "Introducción",
+                "fieldArray": "Campo Array",
+                "formField": "Campo de Formulario",
+                "formButtons": "Botones de Formulario",
+                "utilities": "Utilidades"
             }
         },
         "form": {
@@ -68,6 +75,8 @@
             "errorsTitle": "Ejemplos de Manejo de Errores",
             "errorsDescription": "Diferentes formas de mostrar y manejar errores de validación",
             "validationDescription": "Completa el formulario con validación",
+            "globalErrorsTitle": "Ejemplos de Errores Globales",
+            "globalErrorsDescription": "Ejemplos de manejo de errores a nivel de formulario con mensajes de error globales",
             "username": "Usuario",
             "usernameTooltip": "Elige un nombre de usuario único",
             "usernameDescription": "3-20 caracteres",

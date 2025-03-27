@@ -6,6 +6,7 @@ import { BasicForm } from '@/examples/basic-form';
 import { ComplexForm } from '@/examples/complex-form';
 import { ErrorsForm } from '@/examples/errors-form';
 import { FieldArrayForm } from '@/examples/field-array';
+import { GlobalErrors } from '@/examples/global-errors';
 import { I18nForm } from '@/examples/i18n-form';
 import { StyledForm } from '@/examples/styled-form';
 import { ValidationForm } from '@/examples/validation-form';
@@ -25,12 +26,28 @@ export const router = createBrowserRouter([
                 element: <DocsViewer path='README.md' />
             },
             {
-                path: '/docs/components',
-                element: <DocsViewer path='components.md' />
+                path: '/docs/api-reference',
+                element: <DocsViewer path='api-reference.md' />
             },
             {
                 path: '/docs/deployment',
                 element: <DocsViewer path='deployment.md' />
+            },
+            {
+                path: '/docs/field-array',
+                element: <DocsViewer path='field-array.md' />
+            },
+            {
+                path: '/docs/form-buttons',
+                element: <DocsViewer path='form-buttons.md' />
+            },
+            {
+                path: '/docs/form-field',
+                element: <DocsViewer path='form-field.md' />
+            },
+            {
+                path: '/docs/form-provider',
+                element: <DocsViewer path='form-provider.md' />
             },
             {
                 path: '/docs/hooks',
@@ -41,12 +58,16 @@ export const router = createBrowserRouter([
                 element: <DocsViewer path='i18n.md' />
             },
             {
+                path: '/docs/introduction',
+                element: <DocsViewer path='introduction.md' />
+            },
+            {
                 path: '/docs/styling',
                 element: <DocsViewer path='styling.md' />
             },
             {
-                path: '/docs/api-reference',
-                element: <DocsViewer path='api-reference.md' />
+                path: '/docs/utilities',
+                element: <DocsViewer path='utilities.md' />
             },
             {
                 path: 'examples/basic',
@@ -79,6 +100,10 @@ export const router = createBrowserRouter([
             {
                 path: 'examples/field-array',
                 element: <FieldArrayForm />
+            },
+            {
+                path: 'examples/global-errors',
+                element: <GlobalErrors />
             }
         ]
     }
