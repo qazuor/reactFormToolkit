@@ -9,7 +9,7 @@ import type { JSX } from 'react';
  */
 export function ResetIcon({ title, className }: IconProps): JSX.Element {
     const { t } = useQRFTTranslation();
-    const defaultTitle = t('field.reset');
+    const defaultTitle = t('form.reset');
 
     return (
         <svg

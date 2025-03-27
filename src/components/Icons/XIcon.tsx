@@ -9,7 +9,7 @@ import type { JSX } from 'react';
  */
 export function XIcon({ title, className }: IconProps): JSX.Element {
     const { t } = useQRFTTranslation();
-    const defaultTitle = t('field.cancel');
+    const defaultTitle = t('form.cancel');
     return (
         <svg
             xmlns='http://www.w3.org/2000/svg'
