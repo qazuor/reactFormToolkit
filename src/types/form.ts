@@ -119,8 +119,45 @@ export interface FormProviderProps<
     /** Error display configuration */
     errorDisplayOptions?: ErrorDisplayOptions;
 
+    /** Global error configuration */
+    globalErrorOptions?: GlobalErrorOptions;
+
     /** Internationalization options */
     i18n?: I18nOptions;
+}
+
+/**
+ * Global error configuration
+ */
+export interface GlobalErrorOptions {
+    /**
+     * Position of the error message
+     * @default 'top'
+     */
+    position?: 'top' | 'bottom';
+
+    /**
+     * Animation to use when showing error messages
+     * @default 'fadeIn'
+     */
+    animation?: ErrorAnimation;
+
+    /**
+     * Whether to auto dismiss the error after a period
+     * @default false
+     */
+    autoDismiss?: boolean;
+
+    /**
+     * Time in milliseconds after which to dismiss the error
+     * @default 5000
+     */
+    dismissAfter?: number;
+
+    /**
+     * Custom CSS class for the error message container
+     */
+    className?: string;
 }
 
 /**
@@ -141,6 +178,15 @@ export type FormContextValue<
     schema?: TSchema;
 
     /**
+     * Form state
+     */
+    formState: {
+        isDirty: boolean;
+        isSubmitting: boolean;
+        isValid: boolean;
+    };
+
+    /**
      * Style options for form components
      */
     styleOptions?: FormProviderStyleOptions;
@@ -149,6 +195,21 @@ export type FormContextValue<
      * Error display configuration
      */
     errorDisplayOptions?: ErrorDisplayOptions;
+
+    /**
+     * Global error configuration
+     */
+    globalErrorOptions?: GlobalErrorOptions;
+
+    /**
+     * Global form error
+     */
+    globalError?: string;
+
+    /**
+     * Set global form error
+     */
+    setGlobalError: (error: string | undefined) => void;
 
     /**
      * Record of async validation states by field name

@@ -6,8 +6,8 @@ import type { SubmitButtonProps } from '@/types';
 
 export function SubmitButton({ children, className, ...props }: SubmitButtonProps) {
     const { t } = useQRFTTranslation();
-    const { form, asyncValidations, asyncErrors } = useFormContext();
-    const { isSubmitting, isValid } = form.formState;
+    const { formState, asyncValidations, asyncErrors } = useFormContext();
+    const { isSubmitting, isValid } = formState;
 
     // Check if any async validations are pending
     const hasPendingValidations = Object.entries(asyncValidations || {}).some(([_fieldName, isValidating]) => {
@@ -25,14 +25,14 @@ export function SubmitButton({ children, className, ...props }: SubmitButtonProp
     const isDisabled = !isFormValid || isSubmitting;
 
     const getTooltipText = () => {
-        if (!isValid) {
-            return t('form.submitDisabledTooltip');
-        }
         if (hasPendingValidations) {
             return t('form.submitDisabledPendingValidations');
         }
         if (hasAsyncErrors) {
             return t('form.submitDisabledAsyncErrors');
+        }
+        if (!isValid) {
+            return t('form.submitDisabledTooltip');
         }
         return undefined;
     };

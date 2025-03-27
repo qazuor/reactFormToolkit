@@ -16,6 +16,7 @@
         "error": "Form Error",
         "loading": "Loading",
         "success": "Success",
+        "submitError": "An error occurred while submitting the form. Please try again.",
         "submit": "Submit",
         "reset": "Reset Form",
         "cancel": "Cancel",

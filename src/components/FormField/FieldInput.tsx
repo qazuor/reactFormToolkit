@@ -35,22 +35,23 @@ export function FieldInput<
         e: React.ChangeEvent<HTMLInputElement>,
         onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
     ): Promise<void> => {
+        // Call original onChange first to update the field value
+        if (onChange) {
+            onChange(e);
+        }
+
         const value = isCheckbox ? e.target.checked : e.target.value;
 
         // For checkboxes, use the checked value instead of the value
-        if (isCheckbox) {
-            form.setValue(name, value as PathValue<TFieldValues, TName>);
-        } else {
-            form.setValue(name, value as PathValue<TFieldValues, TName>);
-        }
+        form.setValue(name, value as PathValue<TFieldValues, TName>, {
+            shouldDirty: true,
+            shouldTouch: true,
+            shouldValidate: true
+        });
 
         // Trigger validation
         if (validate) {
             await validate(value);
-        }
-
-        if (onChange) {
-            onChange(e);
         }
     };
 
@@ -61,14 +62,15 @@ export function FieldInput<
         e: React.FocusEvent<HTMLInputElement>,
         onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
     ): void => {
+        // Call original onBlur first
+        if (onBlur) {
+            onBlur(e);
+        }
+
         if (setTouched) {
             setTouched(true);
         }
         form.trigger(name);
-
-        if (onBlur) {
-            onBlur(e);
-        }
     };
 
     if (!isValidElement(children)) {
@@ -110,8 +112,8 @@ export function FieldInput<
         <div className='relative'>
             <Controller
                 control={form.control}
-                name={fieldPath as TName}
-                render={({ field }) => renderChildElement(field)}
+                name={fieldPath}
+                render={({ field }) => renderChildElement(field as ControllerRenderProps<TFieldValues, TName>)}
             />
         </div>
     );

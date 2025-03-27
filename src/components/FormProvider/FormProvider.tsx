@@ -4,10 +4,12 @@ import { useQRFTTranslation } from '@/hooks';
 import { defaultStyles, i18nUtils, mergeStyles } from '@/lib';
 import type { FormProviderProps, FormSchema } from '@/types/form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { t } from 'i18next';
 import { type JSX, useCallback, useEffect, useMemo, useState } from 'react';
 import { type DefaultValues, type FieldValues, type UseFormReturn, useForm } from 'react-hook-form';
 import { I18nextProvider } from 'react-i18next';
 import type { z } from 'zod';
+import { GlobalError } from './GlobalError';
 import { GroupedErrors } from './GroupedErrors';
 
 /**
@@ -50,13 +52,20 @@ export function FormProvider<
     mode = 'onBlur',
     styleOptions,
     errorDisplayOptions,
+    globalErrorOptions,
     i18n: i18nOptions
 }: FormProviderProps<TFieldValues>): JSX.Element {
     // Get i18n instance from context or create new one
     const { i18n: contextI18n } = useQRFTTranslation({ useSuspense: false });
     const i18n = i18nOptions?.i18n || contextI18n || i18nUtils.getI18nInstance();
 
+    const [formState, setFormState] = useState({
+        isDirty: false,
+        isSubmitting: false,
+        isValid: false
+    });
     const [errors, setErrors] = useState<Record<string, string>>({});
+    const [globalError, setGlobalError] = useState<string>();
     const { asyncValidations, asyncErrors, registerAsyncValidation, registerAsyncError } = useAsyncValidationState();
 
     // Merge style options with defaults
@@ -76,7 +85,8 @@ export function FormProvider<
         defaultValues: defaultValues as DefaultValues<TFieldValues>,
         mode,
         criteriaMode: 'all', // Show all validation criteria
-        reValidateMode: 'onChange' // Re-validate on change after submission
+        reValidateMode: 'onChange', // Re-validate on change after submission
+        shouldUnregister: false // Keep field values in form state when unmounted
     });
 
     const form = externalForm || internalForm;
@@ -85,8 +95,26 @@ export function FormProvider<
     useEffect(() => {
         if (defaultValues) {
             form.reset(defaultValues as DefaultValues<TFieldValues>);
+            setFormState({
+                isDirty: false,
+                isSubmitting: false,
+                isValid: true
+            });
         }
     }, [defaultValues, form]);
+
+    // Subscribe to form state changes
+    useEffect(() => {
+        const subscription = form.watch(() => {
+            setFormState({
+                isDirty: form.formState.isDirty,
+                isSubmitting: form.formState.isSubmitting,
+                isValid: form.formState.isValid
+            });
+        });
+
+        return () => subscription.unsubscribe();
+    }, [form]);
 
     // Update grouped errors when form state changes
     useEffect(() => {
@@ -104,15 +132,31 @@ export function FormProvider<
     const handleSubmit = useCallback(
         async (data: TFieldValues) => {
             // Check if any async validations are pending
-            const hasPendingValidations = Object.values(asyncValidations).some(Boolean);
+            const hasPendingValidations = Object.entries(asyncValidations || {}).some(([_fieldName, isValidating]) => {
+                // Only count fields that are actually validating
+                return isValidating;
+            });
+
             // Check if any async validations have errors
-            const hasAsyncErrors = Object.values(asyncErrors).some(Boolean);
+            const hasAsyncErrors = Object.entries(asyncErrors || {}).some(([_fieldName, hasError]) => {
+                // Only count fields that has errors
+                return hasError;
+            });
 
             if (hasPendingValidations || hasAsyncErrors) {
                 return;
             }
 
-            await onSubmit(data);
+            try {
+                setGlobalError(undefined);
+                const result = await onSubmit(data);
+                if (result instanceof Error) {
+                    setGlobalError(result.message);
+                }
+                return result;
+            } catch (error) {
+                setGlobalError(error instanceof Error ? error.message : t('form.submitError'));
+            }
         },
         [onSubmit, asyncValidations, asyncErrors]
     );
@@ -130,6 +174,10 @@ export function FormProvider<
                         schema: schema as TSchema,
                         errorDisplayOptions,
                         styleOptions: mergedStyles,
+                        formState,
+                        globalErrorOptions,
+                        globalError,
+                        setGlobalError,
                         asyncValidations,
                         asyncErrors,
                         registerAsyncValidation,
@@ -142,8 +190,15 @@ export function FormProvider<
                         onReset={(e) => {
                             e.preventDefault();
                             form.reset(defaultValues as DefaultValues<TFieldValues>);
+                            setGlobalError(undefined);
                         }}
                     >
+                        {globalErrorOptions?.position !== 'bottom' && (
+                            <GlobalError
+                                message={globalError || ''}
+                                options={globalErrorOptions}
+                            />
+                        )}
                         {children}
                         {errorDisplayOptions?.groupErrors && (
                             <GroupedErrors
@@ -154,6 +209,12 @@ export function FormProvider<
                                 delay={errorDisplayOptions.delay}
                                 autoDismiss={errorDisplayOptions.autoDismiss}
                                 dismissAfter={errorDisplayOptions.dismissAfter}
+                            />
+                        )}
+                        {globalErrorOptions?.position === 'bottom' && (
+                            <GlobalError
+                                message={globalError || ''}
+                                options={globalErrorOptions}
                             />
                         )}
                     </form>

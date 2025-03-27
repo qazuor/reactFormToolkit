@@ -16,6 +16,7 @@
         "error": "Error del Formulario",
         "loading": "Cargando",
         "success": "Éxito",
+        "submitError": "Ocurrió un error al enviar el formulario. Por favor, inténtelo de nuevo.",
         "submit": "Enviar",
         "reset": "Restablecer",
         "cancel": "Cancelar",
