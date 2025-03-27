@@ -143,6 +143,7 @@ export function FormProvider<
                 return hasError;
             });
 
+            // If there are pending validations or async errors, do not submit
             if (hasPendingValidations || hasAsyncErrors) {
                 return;
             }
