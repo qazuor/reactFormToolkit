@@ -32,9 +32,9 @@ describe('FormButtonsBar', () => {
             </TestWrapper>
         );
 
-        expect(screen.getByText('Submit')).toBeInTheDocument();
-        expect(screen.getByText('Reset Form')).toBeInTheDocument();
-        expect(screen.getByText('Cancel')).toBeInTheDocument();
+        expect(screen.getByTestId('submit-button')).toBeInTheDocument();
+        expect(screen.getByTestId('reset-button')).toBeInTheDocument();
+        expect(screen.getByTestId('cancel-button')).toBeInTheDocument();
     });
 
     it('applies horizontal layout by default', () => {
@@ -55,7 +55,7 @@ describe('FormButtonsBar', () => {
             </TestWrapper>
         );
 
-        const container = screen.getByText('Submit').parentElement;
+        const container = screen.getByTestId('submit-button').parentElement;
         expect(container).toHaveClass('flex-col');
     });
 
@@ -85,9 +85,9 @@ describe('FormButtonsBar', () => {
             </TestWrapper>
         );
 
-        expect(screen.getByText('Submit')).toHaveClass('custom-submit');
-        expect(screen.getByText('Reset Form')).toHaveClass('custom-reset');
-        expect(screen.getByText('Cancel')).toHaveClass('custom-cancel');
+        expect(screen.getByTestId('submit-button')).toHaveClass('custom-submit');
+        expect(screen.getByTestId('reset-button')).toHaveClass('custom-reset');
+        expect(screen.getByTestId('cancel-button')).toHaveClass('custom-cancel');
     });
 
     it('shows only specified buttons', () => {
@@ -101,7 +101,7 @@ describe('FormButtonsBar', () => {
             </TestWrapper>
         );
 
-        expect(screen.getByText('Submit')).toBeInTheDocument();
+        expect(screen.getByTestId('submit-button')).toBeInTheDocument();
         expect(screen.queryByText('Reset Form')).not.toBeInTheDocument();
         expect(screen.queryByText('Cancel')).not.toBeInTheDocument();
     });
@@ -130,7 +130,7 @@ describe('FormButtonsBar', () => {
             </TestWrapper>
         );
 
-        await userEvent.click(screen.getByText('Cancel'));
+        await userEvent.click(screen.getByTestId('cancel-button'));
         expect(onCancel).toHaveBeenCalledTimes(1);
     });
 

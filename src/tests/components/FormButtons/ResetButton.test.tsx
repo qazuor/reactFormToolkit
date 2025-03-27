@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { ReactNode } from 'react';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
-import React from 'react';
+import React, { act } from 'react';
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
 import { ResetButton } from '../../../components/FormButtons/ResetButton';
@@ -67,43 +67,44 @@ describe('ResetButton', () => {
     });
 
     it('becomes enabled when form values change', async () => {
-        const { container } = render(
+        render(
             <TestWrapper defaultValues={{ test: '' }}>
                 <FormField name='test'>
-                    <input name='test' />
+                    <input type='text' />
                 </FormField>
                 <ResetButton />
             </TestWrapper>
         );
 
-        const input = container.querySelector('input');
+        const input = screen.getByTestId('test');
         const button = screen.getByRole('button');
 
         expect(button).toBeDisabled();
 
-        if (input) {
-            await userEvent.type(input, 'test');
-            await waitFor(() => {
-                expect(button).not.toBeDisabled();
-            });
-        }
+        await userEvent.type(input, 'test');
+        await waitFor(() => {
+            expect(button).not.toBeDisabled();
+        });
     });
 
     it('resets form to initial values when clicked', async () => {
-        const { container } = render(
+        render(
             <TestWrapper defaultValues={{ test: 'initial' }}>
                 <FormField name='test'>
-                    <input name='test' />
+                    <input type='text' />
                 </FormField>
                 <ResetButton />
             </TestWrapper>
         );
 
-        const input = container.querySelector('input') as HTMLInputElement;
+        const input = screen.getByTestId('test') as HTMLInputElement;
         const button = screen.getByRole('button');
 
         // Change input value
-        fireEvent.change(input, { target: { value: 'changed' } });
+        await act(async () => {
+            fireEvent.input(input, { target: { value: 'changed' } });
+            fireEvent.blur(input);
+        });
         await waitFor(() => {
             expect(button).not.toBeDisabled();
         });

@@ -103,7 +103,7 @@ describe('SubmitButton', () => {
             fireEvent.blur(testInput);
         });
 
-        const button = screen.getByRole('button');
+        const button = screen.getByTestId('submit-button');
         expect(button).toBeDisabled();
         expect(button).toHaveAttribute('title', 'Please wait for all validations to complete');
     });
