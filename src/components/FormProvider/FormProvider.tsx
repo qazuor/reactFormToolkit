@@ -62,11 +62,42 @@ export function FormProvider<
     const [formState, setFormState] = useState({
         isDirty: false,
         isSubmitting: false,
-        isValid: false
+        isValid: false,
+        isValidating: false,
+        submitCount: 0,
+        errors: {}
     });
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [globalError, setGlobalError] = useState<string>();
     const { asyncValidations, asyncErrors, registerAsyncValidation, registerAsyncError } = useAsyncValidationState();
+
+    const internalForm = useForm<TFieldValues>({
+        resolver: schema ? zodResolver(schema) : undefined,
+        defaultValues: defaultValues as DefaultValues<TFieldValues>,
+        mode,
+        criteriaMode: 'all', // Show all validation criteria
+        reValidateMode: 'onChange', // Re-validate on change after submission
+        shouldUnregister: false // Keep field values in form state when unmounted
+    });
+
+    const form = externalForm || internalForm;
+
+    // Subscribe to all form state changes
+    useEffect(() => {
+        const subscription = form.watch(() => {
+            const currentState = form.formState;
+            setFormState({
+                isDirty: currentState.isDirty,
+                isSubmitting: currentState.isSubmitting,
+                isValid: currentState.isValid && !Object.keys(asyncErrors || {}).length,
+                isValidating: currentState.isValidating || Object.values(asyncValidations || {}).some(Boolean),
+                submitCount: currentState.submitCount,
+                errors: currentState.errors
+            });
+        });
+
+        return () => subscription.unsubscribe();
+    }, [form, asyncErrors, asyncValidations]);
 
     // Merge style options with defaults
     const mergedStyles = useMemo(() => mergeStyles(defaultStyles, styleOptions), [styleOptions]);
@@ -80,17 +111,6 @@ export function FormProvider<
         });
     }, [i18nOptions, i18n]);
 
-    const internalForm = useForm<TFieldValues>({
-        resolver: schema ? zodResolver(schema) : undefined,
-        defaultValues: defaultValues as DefaultValues<TFieldValues>,
-        mode,
-        criteriaMode: 'all', // Show all validation criteria
-        reValidateMode: 'onChange', // Re-validate on change after submission
-        shouldUnregister: false // Keep field values in form state when unmounted
-    });
-
-    const form = externalForm || internalForm;
-
     // Reset form when defaultValues change
     useEffect(() => {
         if (defaultValues) {
@@ -98,36 +118,31 @@ export function FormProvider<
             setFormState({
                 isDirty: false,
                 isSubmitting: false,
-                isValid: true
+                isValid: true,
+                isValidating: false,
+                submitCount: 0,
+                errors: {}
             });
         }
     }, [defaultValues, form]);
-
-    // Subscribe to form state changes
-    useEffect(() => {
-        const subscription = form.watch(() => {
-            setFormState({
-                isDirty: form.formState.isDirty,
-                isSubmitting: form.formState.isSubmitting,
-                isValid: form.formState.isValid
-            });
-        });
-
-        return () => subscription.unsubscribe();
-    }, [form]);
 
     // Update grouped errors when form state changes
     useEffect(() => {
         if (errorDisplayOptions?.groupErrors) {
             const newErrors: Record<string, string> = {};
-            for (const [key, error] of Object.entries(form.formState.errors)) {
-                if (error?.message) {
-                    newErrors[key] = error.message.toString();
+            for (const [key, error] of Object.entries(formState.errors)) {
+                if (
+                    (error as { message?: string })?.message &&
+                    typeof error === 'object' &&
+                    error !== null &&
+                    'message' in error
+                ) {
+                    newErrors[key] = (error as { message: string }).message.toString();
                 }
             }
             setErrors(newErrors);
         }
-    }, [form.formState.errors, errorDisplayOptions?.groupErrors]);
+    }, [formState.errors, errorDisplayOptions?.groupErrors]);
 
     const handleSubmit = useCallback(
         async (data: TFieldValues) => {

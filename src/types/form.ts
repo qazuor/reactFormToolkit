@@ -184,6 +184,9 @@ export type FormContextValue<
         isDirty: boolean;
         isSubmitting: boolean;
         isValid: boolean;
+        isValidating: boolean;
+        submitCount: number;
+        errors: Record<string, any>;
     };
 
     /**
