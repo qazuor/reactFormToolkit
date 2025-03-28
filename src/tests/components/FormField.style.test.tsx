@@ -17,6 +17,7 @@ describe('FormField Styling', () => {
             <FormProvider
                 schema={schema}
                 onSubmit={(data) => console.log(data)}
+                defaultValues={{ test: '' }}
                 styleOptions={providerStyles}
             >
                 <FormField
@@ -33,7 +34,7 @@ describe('FormField Styling', () => {
     it('should apply default styles', () => {
         renderField();
         const input = screen.getByTestId('test');
-        expect(input).toHaveClass('block', 'w-full', 'rounded-md');
+        expect(input).toHaveClass('block w-full rounded-md border px-3 py-2');
     });
 
     it('should apply provider style overrides', () => {

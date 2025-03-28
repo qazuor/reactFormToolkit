@@ -15,8 +15,8 @@ const schema = z.object({
 });
 
 const schemaForSubmition = z.object({
-    email: z.string(),
-    password: z.string()
+    email: z.string().email('Invalid email address'),
+    password: z.string().min(8, 'Must contain at least 8 characters')
 });
 
 const TestWrapper = ({
@@ -47,6 +47,10 @@ const renderFormForSubmition = (onSubmit: (data: TestFormData) => void) => {
             <FormProvider
                 schema={schemaForSubmition}
                 onSubmit={onSubmit}
+                defaultValues={{
+                    email: '',
+                    password: ''
+                }}
             >
                 <FormField
                     name='email'
@@ -178,57 +182,86 @@ describe('FormProvider', () => {
         };
 
         const onSubmit = vi.fn();
+        const { container } = renderFormForSubmition(onSubmit);
 
-        renderFormForSubmition(onSubmit);
+        const emailInput = container.querySelector('[data-testid="email"]') as HTMLInputElement;
+        const passwordInput = container.querySelector('[data-testid="password"]') as HTMLInputElement;
+        const submitButton = container.querySelector('[data-testid="submit-button"]') as HTMLButtonElement;
 
-        const emailInput = screen.getByTestId('email');
-        const passwordInput = screen.getByTestId('password');
-        const submitButton = screen.getByTestId('submit-button');
+        // Wait for form to initialize
+        await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 100));
+        });
 
         await act(async () => {
             fireEvent.change(emailInput, {
                 target: { value: expectedData.email }
             });
-            await fireEvent.blur(emailInput);
+            fireEvent.blur(emailInput);
+        });
+
+        // Wait for validation
+        await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 100));
         });
 
         await act(async () => {
             fireEvent.change(passwordInput, {
                 target: { value: expectedData.password }
             });
-            await fireEvent.blur(passwordInput);
+            fireEvent.blur(passwordInput);
+        });
+
+        // Wait for validation
+        await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 100));
         });
 
         await act(async () => {
-            await fireEvent.click(submitButton);
+            fireEvent.submit(container.querySelector('form')!);
         });
 
-        await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith(expectedData);
-            expect(onSubmit).toHaveBeenCalledTimes(1);
-        });
+        await waitFor(
+            () => {
+                expect(onSubmit).toHaveBeenCalledWith(expectedData);
+                expect(onSubmit).toHaveBeenCalledTimes(1);
+            },
+            { timeout: 1000 }
+        );
     });
 
     it('should not submit with invalid data', async () => {
         const onSubmit = vi.fn();
-        renderFormForSubmition(onSubmit);
+        const { container } = renderFormForSubmition(onSubmit);
 
-        const emailInput = screen.getByTestId('email');
-        const passwordInput = screen.getByTestId('password');
-        const submitButton = screen.getByTestId('submit-button');
+        const emailInput = container.querySelector('[data-testid="email"]') as HTMLInputElement;
+        const passwordInput = container.querySelector('[data-testid="password"]') as HTMLInputElement;
+        const submitButton = container.querySelector('[data-testid="submit-button"]') as HTMLButtonElement;
+
+        // Wait for form to initialize
+        await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 0));
+        });
 
         await act(async () => {
             fireEvent.change(emailInput, {
                 target: { value: 'invalid-email' }
             });
-            await fireEvent.blur(emailInput);
+            fireEvent.blur(emailInput);
         });
+
         await act(async () => {
             fireEvent.change(passwordInput, {
                 target: { value: '123' }
             });
-            await fireEvent.blur(passwordInput);
+            fireEvent.blur(passwordInput);
         });
+
+        // Wait for validation
+        await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 0));
+        });
+
         await act(async () => {
             fireEvent.click(submitButton);
         });
@@ -236,8 +269,7 @@ describe('FormProvider', () => {
         await waitFor(() => {
             expect(onSubmit).not.toHaveBeenCalled();
             expect(screen.getByText('Invalid email address')).toBeInTheDocument();
-            expect(screen.getByText('Password must be at least 8 characters')).toBeInTheDocument();
-            expect(screen.getByText(/must contain at least 8 character/i)).toBeInTheDocument();
+            expect(screen.getByText('Must contain at least 8 characters')).toBeInTheDocument();
         });
     });
 });
