@@ -1,26 +1,53 @@
 import type { FieldInputProps } from '@/types';
 import type React from 'react';
-import { type ReactElement, cloneElement, isValidElement } from 'react';
-import {
-    type ArrayPath,
-    Controller,
-    type ControllerRenderProps,
-    type FieldValues,
-    type Path,
-    type PathValue
-} from 'react-hook-form';
+import { type ReactElement, cloneElement, isValidElement, useCallback } from 'react';
+import { Controller, type ControllerRenderProps, type FieldValues, type Path } from 'react-hook-form';
 
-export function FieldInput<
-    TFieldValues extends FieldValues,
-    TName extends Path<TFieldValues> | ArrayPath<TFieldValues>
->({
+/**
+ * Handles the onChange event for the field
+ */
+const handleChange = async <T extends FieldValues>(
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: ControllerRenderProps<T, Path<T>>,
+    isCheckbox: boolean,
+    validate?: (value: unknown) => Promise<void>,
+    originalOnChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+): Promise<void> => {
+    // Call original onChange first to update the field value
+    if (originalOnChange) {
+        originalOnChange(e);
+    }
+
+    const value = isCheckbox ? e.target.checked : e.target.value;
+    field.onChange(value);
+
+    // Trigger validation
+    if (validate) {
+        await validate(value);
+    }
+};
+
+/**
+ * Handles the onBlur event for the field
+ */
+const handleBlur = <T extends FieldValues>(
+    e: React.FocusEvent<HTMLInputElement>,
+    field: ControllerRenderProps<T, Path<T>>,
+    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
+): void => {
+    // Call original onBlur first
+    if (onBlur) {
+        onBlur(e);
+    }
+    field.onBlur();
+};
+
+export function FieldInput<TFieldValues extends FieldValues, TName extends Path<TFieldValues>>({
     fieldPath,
-    name,
     children,
     form,
     description,
     validate,
-    setTouched,
     childRef,
     className,
     ariaInvalid,
@@ -28,50 +55,19 @@ export function FieldInput<
 }: FieldInputProps): ReactElement {
     const isCheckbox = isValidElement(children) && (children as ReactElement).props.type === 'checkbox';
 
-    /**
-     * Handles the onChange event for the field
-     */
-    const handleChange = async (
-        e: React.ChangeEvent<HTMLInputElement>,
-        onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-    ): Promise<void> => {
-        // Call original onChange first to update the field value
-        if (onChange) {
-            onChange(e);
-        }
+    const onChangeHandler = useCallback(
+        async (e: React.ChangeEvent<HTMLInputElement>, field: ControllerRenderProps<TFieldValues, TName>) => {
+            await handleChange(e, field, isCheckbox, validate, (children as ReactElement).props.onChange);
+        },
+        [isCheckbox, validate, children]
+    );
 
-        const value = isCheckbox ? e.target.checked : e.target.value;
-
-        // For checkboxes, use the checked value instead of the value
-        form.setValue(name, value as PathValue<TFieldValues, TName>, {
-            shouldDirty: true,
-            shouldTouch: true,
-            shouldValidate: true
-        });
-
-        // Trigger validation
-        if (validate) {
-            await validate(value);
-        }
-    };
-
-    /**
-     * Handles the onBlur event for the field
-     */
-    const handleBlur = (
-        e: React.FocusEvent<HTMLInputElement>,
-        onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
-    ): void => {
-        // Call original onBlur first
-        if (onBlur) {
-            onBlur(e);
-        }
-
-        if (setTouched) {
-            setTouched(true);
-        }
-        form.trigger(name);
-    };
+    const onBlurHandler = useCallback(
+        (e: React.FocusEvent<HTMLInputElement>, field: ControllerRenderProps<TFieldValues, TName>) => {
+            handleBlur(e, field, (children as ReactElement).props.onBlur);
+        },
+        [children]
+    );
 
     if (!isValidElement(children)) {
         return <></>;
@@ -92,14 +88,13 @@ export function FieldInput<
             ...field,
             ...checkboxProps,
             className,
-            value: isCheckbox ? field.value : (field.value ?? ''),
+            onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChangeHandler(e, field),
+            onBlur: (e: React.FocusEvent<HTMLInputElement>) => onBlurHandler(e, field),
             id: fieldPath,
-            onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                handleChange(e, (children as ReactElement).props.onChange),
-            onBlur: (e: React.FocusEvent<HTMLInputElement>) => handleBlur(e, (children as ReactElement).props.onBlur),
             'data-testid': fieldPath,
             'aria-invalid': ariaInvalid,
-            'aria-describedby': description ? ariaDescribedBy : undefined
+            'aria-describedby': description ? ariaDescribedBy : undefined,
+            value: isCheckbox ? field.value : (field.value ?? '')
         };
 
         return cloneElement(children as ReactElement, {

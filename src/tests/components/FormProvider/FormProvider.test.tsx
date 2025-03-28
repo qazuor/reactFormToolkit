@@ -189,14 +189,14 @@ describe('FormProvider', () => {
             fireEvent.change(emailInput, {
                 target: { value: expectedData.email }
             });
-            fireEvent.blur(emailInput);
+            await fireEvent.blur(emailInput);
         });
 
         await act(async () => {
             fireEvent.change(passwordInput, {
                 target: { value: expectedData.password }
             });
-            fireEvent.blur(passwordInput);
+            await fireEvent.blur(passwordInput);
         });
 
         await act(async () => {
@@ -221,13 +221,13 @@ describe('FormProvider', () => {
             fireEvent.change(emailInput, {
                 target: { value: 'invalid-email' }
             });
-            fireEvent.blur(emailInput);
+            await fireEvent.blur(emailInput);
         });
         await act(async () => {
             fireEvent.change(passwordInput, {
                 target: { value: '123' }
             });
-            fireEvent.blur(passwordInput);
+            await fireEvent.blur(passwordInput);
         });
         await act(async () => {
             fireEvent.click(submitButton);
@@ -235,7 +235,8 @@ describe('FormProvider', () => {
 
         await waitFor(() => {
             expect(onSubmit).not.toHaveBeenCalled();
-            expect(screen.getByText(/invalid email/i)).toBeInTheDocument();
+            expect(screen.getByText('Invalid email address')).toBeInTheDocument();
+            expect(screen.getByText('Password must be at least 8 characters')).toBeInTheDocument();
             expect(screen.getByText(/must contain at least 8 character/i)).toBeInTheDocument();
         });
     });
