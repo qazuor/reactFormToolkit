@@ -111,27 +111,6 @@ export function FormField({
         return <></>;
     }
 
-    // const renderChildElement = (field: ControllerRenderProps<TFieldValues, string>): ReactElement => {
-    //     // Filter out non-DOM props
-    //     const { tooltipPosition, errorDisplay, ...childProps } = children.props;
-
-    //     const fieldProps = {
-    //         ...childProps,
-    //         ...field,
-    //         ...(isCheckbox ? { checked: !!field.value } : {}),
-    //         className,
-    //         value: isCheckbox ? field.value : (field.value ?? ''),
-    //         id: fieldPath,
-    //         'data-testid': fieldPath,
-    //         'aria-invalid': ariaInvalid,
-    //         'aria-describedby': description ? ariaDescribedBy : undefined
-    //     };
-
-    //     return cloneElement(children as ReactElement, {
-    //         ...fieldProps,
-    //         ref: childRef
-    //     });
-    // };
     const showError = !providerErrorOptions?.groupErrors && (!!error || !!asyncError);
     const isAbove = mergedErrorOptions?.position === 'above';
     const isRight = mergedErrorOptions?.position === 'right';
