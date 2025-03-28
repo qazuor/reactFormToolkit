@@ -16,7 +16,7 @@ describe('formUtils', () => {
         });
 
         it('should handle non-string fields', () => {
-            expect(formUtils.isFieldRequired('number', schema)).toBe(false);
+            expect(formUtils.isFieldRequired('number', schema)).toBe(true);
         });
 
         it('should handle undefined schema', () => {

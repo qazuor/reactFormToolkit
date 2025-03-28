@@ -45,7 +45,8 @@ export function ValidationFormExample() {
 
     // Example of using form utilities
     const isEmailRequired = formUtils.isFieldRequired('email', schema);
-    // const emailValidation = formUtils.getFieldValidation('email', schema);
+    // you can obtain the fiedl validation rules too
+    // const passwordValidation = formUtils.getFieldValidation('password', schema);
 
     return (
         <FormProvider
