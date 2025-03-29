@@ -1,35 +1,32 @@
 import { FormErrorIcon, LoadingIcon } from '@/components/Icons';
 import { useFormContext } from '@/context';
 import { useQRFTTranslation } from '@/hooks';
-import { cn } from '@/lib';
+import { cn, hasAsyncErrors, hasPendingValidations } from '@/lib';
 import type { SubmitButtonProps } from '@/types';
 
 export function SubmitButton({ children, className, ...props }: SubmitButtonProps) {
     const { t } = useQRFTTranslation();
-    const { formState, asyncValidations, asyncErrors } = useFormContext();
-    const { isSubmitting } = formState;
+    const {
+        formState: { isSubmitting },
+        asyncValidations,
+        asyncErrors
+    } = useFormContext();
 
-    // Check if any async validations are pending
-    const hasPendingValidations = Object.entries(asyncValidations || {}).some(([_fieldName, isValidating]) => {
-        // Only count fields that are actually validating
-        return isValidating;
-    });
+    const hasSomePendingValidations = hasPendingValidations(asyncValidations || {});
+    const hasSomeAsyncErrors = hasAsyncErrors(asyncErrors || {});
 
-    // Check if any async validations have errors
-    const hasAsyncErrors = Object.entries(asyncErrors || {}).some(([_fieldName, hasError]) => {
-        // Only count fields that has errors
-        return hasError;
-    });
-
-    const isFormValid = !(hasPendingValidations || hasAsyncErrors);
+    const isFormValid = !(hasSomePendingValidations || hasSomeAsyncErrors);
     const isDisabled = !isFormValid || isSubmitting;
 
     const getTooltipText = () => {
-        if (hasPendingValidations) {
+        if (hasSomePendingValidations) {
             return t('form.submitDisabledPendingValidations');
         }
-        if (hasAsyncErrors) {
+        if (hasSomeAsyncErrors) {
             return t('form.submitDisabledAsyncErrors');
+        }
+        if (isSubmitting) {
+            return t('form.isSubmitting');
         }
         return undefined;
     };

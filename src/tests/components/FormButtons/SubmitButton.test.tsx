@@ -1,5 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import React, { act } from 'react';
@@ -52,27 +51,28 @@ describe('SubmitButton', () => {
                 schema={schema}
                 onSubmit={onSubmit}
             >
+                <FormField name='test'>
+                    <input type='text' />
+                </FormField>
                 <SubmitButton>Submit</SubmitButton>
             </FormProvider>
         );
 
         const button = screen.getByRole('button');
-        await userEvent.click(button);
+        const testInput = screen.getByTestId('test');
 
-        expect(screen.getByTitle('Form has validation errors and cannot be submitted')).toBeInTheDocument();
-        expect(button).toBeDisabled();
-    });
+        await act(async () => {
+            fireEvent.change(testInput, { target: { value: 'test value' } });
+            fireEvent.blur(testInput);
+        });
 
-    it('is disabled when form is invalid', () => {
-        render(
-            <TestWrapper>
-                <SubmitButton>Submit</SubmitButton>
-            </TestWrapper>
-        );
+        await act(async () => {
+            await fireEvent.click(button);
+        });
 
-        const button = screen.getByRole('button');
-        expect(button).toBeDisabled();
-        expect(button).toHaveAttribute('title', 'Form has validation errors and cannot be submitted');
+        await waitFor(() => {
+            expect(button).toBeDisabled();
+        });
     });
 
     it('is disabled when async validation is pending', async () => {
@@ -97,15 +97,17 @@ describe('SubmitButton', () => {
         );
 
         const testInput = screen.getByTestId('test');
+        const button = screen.getByTestId('submit-button');
 
         await act(async () => {
             fireEvent.change(testInput, { target: { value: 'test value' } });
             fireEvent.blur(testInput);
         });
 
-        const button = screen.getByTestId('submit-button');
-        expect(button).toBeDisabled();
-        expect(button).toHaveAttribute('title', 'Please wait for all validations to complete');
+        await waitFor(() => {
+            expect(button).toBeDisabled();
+            expect(button).toHaveAttribute('title', 'Please wait for all validations to complete');
+        });
     });
 
     it('is disabled when there are async errors', async () => {

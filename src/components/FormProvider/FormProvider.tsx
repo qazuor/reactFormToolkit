@@ -1,12 +1,22 @@
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { FormContext, useAsyncValidationState } from '@/context/FormContext';
 import { useQRFTTranslation } from '@/hooks';
-import { defaultStyles, i18nUtils, mergeStyles } from '@/lib';
+import { defaultStyles, hasAsyncErrors, hasPendingValidations, i18nUtils, mergeStyles } from '@/lib';
 import type { FormProviderProps, FormSchema } from '@/types/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from 'i18next';
 import { type JSX, useCallback, useEffect, useMemo, useState } from 'react';
-import { type DefaultValues, type FieldValues, type UseFormReturn, useForm } from 'react-hook-form';
+import {
+    type Control,
+    type DefaultValues,
+    type FieldValues,
+    type UseFormClearErrors,
+    type UseFormGetValues,
+    type UseFormSetValue,
+    type UseFormTrigger,
+    type UseFormWatch,
+    useForm
+} from 'react-hook-form';
 import { I18nextProvider } from 'react-i18next';
 import type { z } from 'zod';
 import { GlobalError } from './GlobalError';
@@ -46,7 +56,6 @@ export function FormProvider<
 >({
     children,
     schema,
-    form: externalForm,
     defaultValues,
     onSubmit,
     mode = 'onBlur',
@@ -65,13 +74,25 @@ export function FormProvider<
         isValid: false,
         isValidating: false,
         submitCount: 0,
-        errors: {}
+        errors: {},
+        touchedFields: {},
+        dirtyFields: {}
     });
-    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [formErrors, setFormErrors] = useState<Record<string, string>>({});
     const [globalError, setGlobalError] = useState<string>();
     const { asyncValidations, asyncErrors, registerAsyncValidation, registerAsyncError } = useAsyncValidationState();
 
-    const internalForm = useForm<TFieldValues>({
+    const {
+        formState: { isDirty, isSubmitting, isValid, isValidating, submitCount, errors, touchedFields, dirtyFields },
+        watch: watchForm,
+        reset: resetForm,
+        control: controlForm,
+        getValues: getValuesForm,
+        trigger: triggerForm,
+        setValue: setValueForm,
+        clearErrors: clearErrorsForm,
+        handleSubmit: handleSubmitForm
+    } = useForm<TFieldValues>({
         resolver: schema ? zodResolver(schema) : undefined,
         defaultValues: defaultValues as DefaultValues<TFieldValues>,
         mode,
@@ -80,24 +101,36 @@ export function FormProvider<
         shouldUnregister: false // Keep field values in form state when unmounted
     });
 
-    const form = externalForm || internalForm;
+    // si recibo external form usar los controles, states y demas de ahi
+    // const form = externalForm || internalForm;
 
     // Subscribe to all form state changes
     useEffect(() => {
-        const subscription = form.watch(() => {
-            const currentState = form.formState;
-            setFormState({
-                isDirty: currentState.isDirty,
-                isSubmitting: currentState.isSubmitting,
-                isValid: currentState.isValid && !Object.keys(asyncErrors || {}).length,
-                isValidating: currentState.isValidating || Object.values(asyncValidations || {}).some(Boolean),
-                submitCount: currentState.submitCount,
-                errors: currentState.errors
-            });
-        });
+        const hasSomePendingValidations = hasPendingValidations(asyncValidations || {});
+        const hasSomeAsyncErrors = hasAsyncErrors(asyncErrors || {});
 
-        return () => subscription.unsubscribe();
-    }, [form, asyncErrors, asyncValidations]);
+        setFormState({
+            isDirty: isDirty,
+            isSubmitting: isSubmitting,
+            isValid: isValid && !hasSomeAsyncErrors,
+            isValidating: isValidating || hasSomePendingValidations,
+            submitCount: submitCount,
+            errors: errors,
+            touchedFields,
+            dirtyFields
+        });
+    }, [
+        isDirty,
+        isSubmitting,
+        isValid,
+        isValidating,
+        touchedFields,
+        dirtyFields,
+        submitCount,
+        errors,
+        asyncErrors,
+        asyncValidations
+    ]);
 
     // Merge style options with defaults
     const mergedStyles = useMemo(() => mergeStyles(defaultStyles, styleOptions), [styleOptions]);
@@ -114,17 +147,19 @@ export function FormProvider<
     // Reset form when defaultValues change
     useEffect(() => {
         if (defaultValues) {
-            form.reset(defaultValues as DefaultValues<TFieldValues>);
+            resetForm(defaultValues as DefaultValues<TFieldValues>);
             setFormState({
                 isDirty: false,
                 isSubmitting: false,
                 isValid: true,
                 isValidating: false,
                 submitCount: 0,
-                errors: {}
+                errors: {},
+                dirtyFields: {},
+                touchedFields: {}
             });
         }
-    }, [defaultValues, form]);
+    }, [defaultValues, resetForm]);
 
     // Update grouped errors when form state changes
     useEffect(() => {
@@ -140,26 +175,17 @@ export function FormProvider<
                     newErrors[key] = (error as { message: string }).message.toString();
                 }
             }
-            setErrors(newErrors);
+            setFormErrors(newErrors);
         }
     }, [formState.errors, errorDisplayOptions?.groupErrors]);
 
     const handleSubmit = useCallback(
         async (data: TFieldValues) => {
-            // Check if any async validations are pending
-            const hasPendingValidations = Object.entries(asyncValidations || {}).some(([_fieldName, isValidating]) => {
-                // Only count fields that are actually validating
-                return isValidating;
-            });
-
-            // Check if any async validations have errors
-            const hasAsyncErrors = Object.entries(asyncErrors || {}).some(([_fieldName, hasError]) => {
-                // Only count fields that has errors
-                return hasError;
-            });
+            const hasSomePendingValidations = hasPendingValidations(asyncValidations || {});
+            const hasSomeAsyncErrors = hasAsyncErrors(asyncErrors || {});
 
             // If there are pending validations or async errors, do not submit
-            if (hasPendingValidations || hasAsyncErrors) {
+            if (hasSomePendingValidations || hasSomeAsyncErrors) {
                 return;
             }
 
@@ -186,11 +212,19 @@ export function FormProvider<
             >
                 <FormContext.Provider
                     value={{
-                        form: form as UseFormReturn<FieldValues>,
+                        form: {
+                            watch: watchForm as UseFormWatch<FieldValues>,
+                            // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+                            control: controlForm as Control<FieldValues, any>,
+                            getValues: getValuesForm as UseFormGetValues<FieldValues>,
+                            trigger: triggerForm as UseFormTrigger<FieldValues>,
+                            setValue: setValueForm as UseFormSetValue<FieldValues>,
+                            clearErrors: clearErrorsForm as UseFormClearErrors<FieldValues>
+                        },
+                        formState,
                         schema: schema as TSchema,
                         errorDisplayOptions,
                         styleOptions: mergedStyles,
-                        formState,
                         globalErrorOptions,
                         globalError,
                         setGlobalError,
@@ -201,11 +235,11 @@ export function FormProvider<
                     }}
                 >
                     <form
-                        onSubmit={form.handleSubmit(handleSubmit)}
+                        onSubmit={handleSubmitForm(handleSubmit)}
                         noValidate={true}
                         onReset={(e) => {
                             e.preventDefault();
-                            form.reset(defaultValues as DefaultValues<TFieldValues>);
+                            resetForm(defaultValues as DefaultValues<TFieldValues>);
                             setGlobalError(undefined);
                         }}
                     >
@@ -218,7 +252,7 @@ export function FormProvider<
                         {children}
                         {errorDisplayOptions?.groupErrors && (
                             <GroupedErrors
-                                errors={errors}
+                                errors={formErrors}
                                 maxErrors={errorDisplayOptions.maxErrors}
                                 className={errorDisplayOptions.className}
                                 animation={errorDisplayOptions.animation}

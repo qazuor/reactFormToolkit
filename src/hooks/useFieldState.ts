@@ -13,10 +13,9 @@ import { useEffect, useState } from 'react';
  * ```
  */
 export function useFieldState(fieldName: string) {
-    const { form } = useFormContext();
     const {
         formState: { errors, touchedFields, dirtyFields, isValidating: formIsValidating }
-    } = form;
+    } = useFormContext();
 
     const [isValidating, setIsValidating] = useState(false);
 

@@ -2,7 +2,15 @@ import type { AsyncValidationProps } from '@/types/asyncValidation';
 import type React from 'react';
 import type { ReactNode } from 'react';
 import type { ReactElement, RefObject } from 'react';
-import type { FieldValues, UseFormReturn } from 'react-hook-form';
+import type {
+    Control,
+    FieldValues,
+    UseFormClearErrors,
+    UseFormGetValues,
+    UseFormSetValue,
+    UseFormTrigger,
+    UseFormWatch
+} from 'react-hook-form';
 import type { DescriptionOptions } from './description';
 import type { ErrorDisplayOptions } from './form';
 import type { ComponentStyleOptions } from './styles';
@@ -21,7 +29,15 @@ export interface FieldInputProps<TFieldValues extends FieldValues = FieldValues>
     children: ReactElement;
 
     /* Form instance */
-    form: UseFormReturn<TFieldValues>;
+    form: {
+        watch: UseFormWatch<TFieldValues>;
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        control: Control<TFieldValues, any>;
+        getValues: UseFormGetValues<TFieldValues>;
+        trigger: UseFormTrigger<TFieldValues>;
+        setValue: UseFormSetValue<TFieldValues>;
+        clearErrors: UseFormClearErrors<TFieldValues>;
+    };
 
     /* Field description */
     description?: string;
@@ -133,7 +149,15 @@ export interface FieldErrorProps {
 
 export interface FormFieldContextValue<TFieldValues extends FieldValues = FieldValues> {
     name: keyof TFieldValues & string;
-    form: UseFormReturn<TFieldValues>;
+    form: {
+        watch: UseFormWatch<TFieldValues>;
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        control: Control<TFieldValues, any>;
+        getValues: UseFormGetValues<TFieldValues>;
+        trigger: UseFormTrigger<TFieldValues>;
+        setValue: UseFormSetValue<TFieldValues>;
+        clearErrors: UseFormClearErrors<TFieldValues>;
+    };
 }
 
 export interface FormFieldDescriptionProps {

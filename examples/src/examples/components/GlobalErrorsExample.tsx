@@ -11,7 +11,7 @@ type FormData = z.infer<typeof schema>;
 // Simulated API call that sometimes fails
 const submitToAPI = async (data: FormData): Promise<void> => {
     // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Simulate random API errors
     if (Math.random() > 0.5) {

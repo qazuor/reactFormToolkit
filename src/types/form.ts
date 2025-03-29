@@ -1,5 +1,15 @@
 import type { ReactNode } from 'react';
-import type { DefaultValues, FieldValues, UseFormReturn } from 'react-hook-form';
+import type {
+    Control,
+    DefaultValues,
+    FieldValues,
+    UseFormClearErrors,
+    UseFormGetValues,
+    UseFormReturn,
+    UseFormSetValue,
+    UseFormTrigger,
+    UseFormWatch
+} from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import type { z } from 'zod';
 import type { I18nOptions } from './i18n';
@@ -170,7 +180,15 @@ export type FormContextValue<
     /**
      * Form methods from react-hook-form
      */
-    form: UseFormReturn<TFieldValues>;
+    form: {
+        watch: UseFormWatch<TFieldValues>;
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        control: Control<TFieldValues, any>;
+        getValues: UseFormGetValues<TFieldValues>;
+        trigger: UseFormTrigger<TFieldValues>;
+        setValue: UseFormSetValue<TFieldValues>;
+        clearErrors: UseFormClearErrors<TFieldValues>;
+    };
 
     /**
      * Zod schema for form validation
@@ -187,6 +205,8 @@ export type FormContextValue<
         isValidating: boolean;
         submitCount: number;
         errors: Record<string, any>;
+        dirtyFields: Record<string, boolean>;
+        touchedFields: Record<string, boolean>;
     };
 
     /**
