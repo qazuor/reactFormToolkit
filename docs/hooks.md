@@ -62,6 +62,82 @@ function CustomField() {
 | `t` | `TFunction` | Translation function |
 | `i18n` | `i18n` | i18next instance |
 
+## useConditionalField
+
+Hook for handling conditional field logic based on a single condition.
+
+```tsx
+import { useConditionalField } from '@qazuor/react-form-toolkit';
+
+function CustomConditionalField() {
+  const { isConditionMet } = useConditionalField({
+    form,
+    watchField: 'type',
+    condition: 'business',
+    content: <BusinessFields />
+  });
+
+  return isConditionMet ? <BusinessFields /> : null;
+}
+```
+
+### Parameters
+
+```typescript
+interface UseConditionalFieldOptions<TFieldValues extends FieldValues> {
+  form: Form<TFieldValues>;
+  watchField: string;
+  condition: unknown | ((value: unknown) => boolean);
+  content: ReactNode;
+  keepRegistered?: boolean;
+}
+```
+
+### Returns
+
+| Name | Type | Description |
+|------|------|-------------|
+| `isConditionMet` | `boolean` | Whether the condition is currently met |
+
+## useConditionalFieldGroup
+
+Hook for handling conditional field group logic based on multiple conditions.
+
+```tsx
+import { useConditionalFieldGroup } from '@qazuor/react-form-toolkit';
+
+function CustomConditionalFieldGroup() {
+  const { currentValue, conditions } = useConditionalFieldGroup({
+    form,
+    watchField: 'type',
+    conditions: {
+      personal: <PersonalFields />,
+      business: <BusinessFields />
+    }
+  });
+
+  return conditions[currentValue] || null;
+}
+```
+
+### Parameters
+
+```typescript
+interface UseConditionalFieldGroupOptions<TFieldValues extends FieldValues> {
+  form: Form<TFieldValues>;
+  watchField: string;
+  conditions: Record<string, ReactNode>;
+  keepRegistered?: boolean;
+}
+```
+
+### Returns
+
+| Name | Type | Description |
+|------|------|-------------|
+| `currentValue` | `string` | Current value of the watched field |
+| `conditions` | `Record<string, ReactNode>` | Map of conditions to content |
+
 ## useFieldValidation
 
 Hook for handling field validation state and styling.

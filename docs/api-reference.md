@@ -25,6 +25,53 @@ Provides form context and handles form state management, validation, and submiss
 | `errorDisplayOptions` | `ErrorDisplayOptions` | - | Error display configuration |
 | `form` | `UseFormReturn<T>` | - | External form instance |
 
+## ConditionalField
+
+Component for conditionally rendering form fields based on another field's value.
+
+```tsx
+<ConditionalField
+  watchField="accountType"
+  condition="business"
+  keepRegistered={false}
+>
+  <FormField name="companyName">
+    <input type="text" />
+  </FormField>
+</ConditionalField>
+```
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `watchField` | `string` | - | Field name to watch for changes |
+| `condition` | `string \| ((value: unknown) => boolean)` | - | Value to match or function that returns boolean |
+| `children` | `ReactNode` | - | Content to show when condition is met |
+| `fallback` | `ReactNode` | `null` | Optional content to show when condition is not met |
+| `keepRegistered` | `boolean` | `false` | Keep fields registered when hidden |
+
+## ConditionalFieldGroup
+
+Component for switching between different sets of form fields based on a field's value.
+
+```tsx
+<ConditionalFieldGroup
+  watchField="accountType"
+  conditions={{
+    personal: <PersonalFields />,
+    business: <BusinessFields />
+  }}
+  className="space-y-4"
+/>
+```
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `watchField` | `string` | - | Field name to watch for changes |
+| `conditions` | `Record<string, ReactNode>` | - | Map of field values to content |
+| `fallback` | `ReactNode` | `null` | Content to show when no condition matches |
+| `className` | `string` | `''` | Optional CSS class for wrapper |
+| `keepRegistered` | `boolean` | `false` | Keep fields registered when hidden |
+
 ## FormField
 
 Component for rendering form inputs with validation.
