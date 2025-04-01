@@ -1,12 +1,13 @@
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { type ReactNode, useRef } from 'react';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
-import React from 'react';
+import React, { act } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
 import { FieldError } from '../../components/FormField/FieldError';
 import { FormProvider } from '../../components/FormProvider/FormProvider';
 import { TooltipProvider } from '../../components/ui/tooltip';
+import { ErrorAnimation } from '../../types/form';
 
 const testSchema = z.object({
     test: z.string().min(3, 'Invalid input')

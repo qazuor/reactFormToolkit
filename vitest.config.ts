@@ -11,7 +11,7 @@ export default mergeConfig(
             globals: true,
             setupFiles: ['./src/tests/setupTest.ts'],
             include: ['src/tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-            testTimeout: 10000,
+            testTimeout: 1000,
             css: true,
             coverage: {
                 provider: 'v8',
