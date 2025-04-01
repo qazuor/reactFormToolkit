@@ -12,20 +12,22 @@ import remarkHeadingGap from 'remark-heading-gap';
 import 'remark-github-blockquote-alert/alert.css';
 import 'github-markdown-css/github-markdown-light.css';
 import rehypeScrollToTop from '@benjc/rehype-scroll-to-top';
+import { useTranslation } from 'react-i18next';
 import rehypePrism from 'rehype-prism-plus';
 
 export const DocsViewer: FC = () => {
+    const { t } = useTranslation();
     const location = useLocation();
-    const [content, setContent] = useState<string>('Cargando...');
+    const [content, setContent] = useState<string>(t('loading'));
 
     useEffect(() => {
         const path = location.pathname.replace('docs/', '');
         const mdPath = `/docs${path}.md?raw`;
 
         fetch(mdPath)
-            .then((res) => (res.ok ? res.text() : Promise.reject('Archivo no encontrado')))
+            .then((res) => (res.ok ? res.text() : Promise.reject(t('fileNotFound'))))
             .then(setContent)
-            .catch(() => setContent('Error: archivo no encontrado.'));
+            .catch(() => setContent(`Error: ${t('fileNotFound')}`));
     }, [location]);
 
     return (
@@ -45,11 +47,11 @@ export const DocsViewer: FC = () => {
                                 disabled: true
                             },
                             bottomLink: {
-                                ariaLabel: 'Back to top',
+                                ariaLabel: t('backToTop'),
                                 classes: 'backToTop',
                                 disabled: false,
                                 id: 'backToTop',
-                                text: 'Back to top ↑'
+                                text: `${t('backToTop')} ↑`
                             }
                         }
                     ]

@@ -4,11 +4,12 @@ import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-tsx';
 import 'prismjs/components/prism-json';
 import 'prism-themes/themes/prism-ghcolors.css';
-import Normalizer from 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace';
 import 'prismjs/plugins/toolbar/prism-toolbar';
 import 'prismjs/plugins/toolbar/prism-toolbar.css';
 import 'prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard';
+import Normalizer from 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace';
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     code: string;
@@ -27,8 +28,10 @@ const nw = new Normalizer({
 });
 
 export const CodePreview = ({ code, language = 'tsx' }: Props) => {
+    const { t } = useTranslation();
     const ref = useRef<HTMLElement>(null);
     code = nw.normalize(code);
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
         if (ref.current) {
             Prism.highlightElement(ref.current);
@@ -40,9 +43,9 @@ export const CodePreview = ({ code, language = 'tsx' }: Props) => {
             <code
                 ref={ref}
                 className={`language-${language}`}
-                data-prismjs-copy='Copy the code'
-                data-prismjs-copy-error='Fallo!'
-                data-prismjs-copy-success='Copiado'
+                data-prismjs-copy={t('copyToClipboard.label')}
+                data-prismjs-copy-error={t('copyToClipboard.error')}
+                data-prismjs-copy-success={t('copyToClipboard.success')}
             >
                 {code}
             </code>
