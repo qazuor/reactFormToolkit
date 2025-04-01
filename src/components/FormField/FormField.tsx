@@ -39,6 +39,7 @@ export function FormField({
     const { form, schema, styleOptions: providerStyles, errorDisplayOptions: providerErrorOptions } = useFormContext();
     const childRef = useRef<HTMLInputElement>(null);
     const arrayContext = useContext(FieldArrayContext);
+    const previousValueRef = useRef<unknown>();
 
     const fieldPath = arrayContext ? `${arrayContext.name}.${arrayContext.index}.${name}` : name;
 
@@ -98,9 +99,13 @@ export function FormField({
     // Effect to force revalidation when the value changes
     useEffect(() => {
         const subscription = form.watch((_value, { name: fieldName }) => {
-            if (fieldName === name && isTouched) {
-                // Force revalidation when the field changes and has been touched
-                form.trigger(name).catch(console.error);
+            if (fieldName === name) {
+                const currentValue = form.getValues(name);
+                if (currentValue !== previousValueRef.current && isTouched) {
+                    previousValueRef.current = currentValue;
+                    // Force revalidation when the field changes and has been touched
+                    form.trigger(name).catch(console.error);
+                }
             }
         });
 

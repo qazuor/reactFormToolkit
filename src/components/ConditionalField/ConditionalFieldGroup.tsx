@@ -1,5 +1,6 @@
 import { useFormContext } from '@/context/FormContext';
 import { useConditionalFieldGroup } from '@/hooks/useConditionalField';
+import { cn } from '@/lib/utils';
 import type { ConditionalFieldGroupProps } from '@/types';
 import type { ReactElement } from 'react';
 import type { FieldPath, FieldValues } from 'react-hook-form';
@@ -51,13 +52,12 @@ export function ConditionalFieldGroup<
     const { currentValue } = useConditionalFieldGroup({
         form,
         watchField,
-        conditions,
-        keepRegistered,
+        conditions: conditions,
+        keepRegistered: keepRegistered,
         content: conditions
     });
 
     // Get the content to render based on the current value
     const contentToRender = conditions[currentValue] || fallback;
-
-    return <div className={className}>{contentToRender}</div>;
+    return <div className={cn(className)}>{contentToRender}</div>;
 }

@@ -5,7 +5,7 @@ import { defaultStyles, hasAsyncErrors, hasPendingValidations, i18nUtils, mergeS
 import type { FormProviderProps, FormSchema } from '@/types/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from 'i18next';
-import { type JSX, useCallback, useEffect, useMemo, useState } from 'react';
+import { type JSX, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
     type Control,
     type DefaultValues,
@@ -83,6 +83,13 @@ export function FormProvider<
     const [formErrors, setFormErrors] = useState<Record<string, string>>({});
     const [globalError, setGlobalError] = useState<string>();
     const { asyncValidations, asyncErrors, registerAsyncValidation, registerAsyncError } = useAsyncValidationState();
+    const previousFormStateRef = useRef({
+        isDirty: false,
+        isSubmitting: false,
+        isValid: false,
+        isValidating: false,
+        submitCount: 0
+    });
 
     const {
         formState: { isDirty, isSubmitting, isValid, isValidating, submitCount, errors, touchedFields, dirtyFields },
@@ -105,6 +112,17 @@ export function FormProvider<
         shouldUnregister: false // Keep field values in form state when unmounted
     });
 
+    const shouldUpdateFormState = useCallback(() => {
+        const prev = previousFormStateRef.current;
+        return (
+            isDirty !== prev.isDirty ||
+            isSubmitting !== prev.isSubmitting ||
+            isValid !== prev.isValid ||
+            isValidating !== prev.isValidating ||
+            submitCount !== prev.submitCount
+        );
+    }, [isDirty, isSubmitting, isValid, isValidating, submitCount]);
+
     // si recibo external form usar los controles, states y demas de ahi
     // const form = externalForm || internalForm;
 
@@ -112,6 +130,18 @@ export function FormProvider<
     useEffect(() => {
         const hasSomePendingValidations = hasPendingValidations(asyncValidations || {});
         const hasSomeAsyncErrors = hasAsyncErrors(asyncErrors || {});
+
+        if (!shouldUpdateFormState()) {
+            return;
+        }
+
+        previousFormStateRef.current = {
+            isDirty,
+            isSubmitting,
+            isValid,
+            isValidating,
+            submitCount
+        };
 
         setFormState({
             isDirty: isDirty,
@@ -124,6 +154,7 @@ export function FormProvider<
             dirtyFields
         });
     }, [
+        shouldUpdateFormState,
         isDirty,
         isSubmitting,
         isValid,
@@ -168,6 +199,13 @@ export function FormProvider<
     // Update grouped errors when form state changes
     useEffect(() => {
         if (errorDisplayOptions?.groupErrors) {
+            const currentErrors = JSON.stringify(errors);
+            const prevErrors = JSON.stringify(formErrors);
+
+            if (currentErrors === prevErrors) {
+                return;
+            }
+
             const newErrors: Record<string, string> = {};
             for (const [key, error] of Object.entries(formState.errors)) {
                 if (

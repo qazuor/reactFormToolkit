@@ -1,6 +1,6 @@
 import { findFieldNames } from '@/lib/conditional-field';
-import type { Form, UseConditionalFieldOptions } from '@/types';
-import { useEffect, useState } from 'react';
+import type { UseConditionalFieldOptions } from '@/types';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { FieldPath, FieldValues } from 'react-hook-form';
 
@@ -22,34 +22,42 @@ export function useConditionalField<
     const { form, watchField, condition, keepRegistered = false, content } = options;
     const [isConditionMet, setIsConditionMet] = useState<boolean>(false);
     const [previousCondition, setPreviousCondition] = useState<boolean>(false);
+    const watchSubscriptionRef = useRef<{ unsubscribe: () => void }>();
+    const initialValueRef = useRef<boolean>(true);
+
+    const evaluateCondition = useCallback(
+        (value: unknown) => {
+            return typeof condition === 'function'
+                ? (condition as (value: unknown) => boolean)(value)
+                : value === condition;
+        },
+        [condition]
+    );
 
     // Update condition state when watched field changes
     useEffect(() => {
-        const subscription = form.watch((_values, { name }) => {
+        // Initial evaluation
+        const watchedValue = form.getValues(watchField);
+        const initialConditionMet = evaluateCondition(watchedValue);
+
+        if (initialValueRef.current) {
+            setIsConditionMet(initialConditionMet);
+            setPreviousCondition(initialConditionMet);
+            initialValueRef.current = false;
+        }
+
+        // Setup watch subscription
+        watchSubscriptionRef.current = form.watch((_values, { name }) => {
             // Only update if the watched field changed or if it's the initial watch
             if (name === watchField || name === undefined) {
                 const watchedValue = form.getValues(watchField);
-                const newConditionMet =
-                    typeof condition === 'function'
-                        ? (condition as (value: unknown) => boolean)(watchedValue)
-                        : watchedValue === condition;
-
+                const newConditionMet = evaluateCondition(watchedValue);
                 setIsConditionMet(newConditionMet);
             }
         });
 
-        // Initial evaluation
-        const watchedValue = form.getValues(watchField);
-        const initialConditionMet =
-            typeof condition === 'function'
-                ? (condition as (value: unknown) => boolean)(watchedValue)
-                : watchedValue === condition;
-
-        setIsConditionMet(initialConditionMet);
-        setPreviousCondition(initialConditionMet);
-
-        return () => subscription.unsubscribe();
-    }, [form, watchField, condition]);
+        return () => watchSubscriptionRef.current?.unsubscribe();
+    }, [form, watchField, evaluateCondition]);
 
     // Handle field registration/unregistration when visibility changes
     useEffect(() => {
@@ -76,6 +84,11 @@ export function useConditionalField<
         setPreviousCondition(isConditionMet);
     }, [form, isConditionMet, keepRegistered, content, previousCondition]);
 
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => watchSubscriptionRef.current?.unsubscribe();
+    }, []);
+
     return { isConditionMet };
 }
 
@@ -98,32 +111,6 @@ function collectFieldNamesForUnregistration(conditions: Record<string, ReactNode
 }
 
 /**
- * Unregisters fields that are not in the current condition
- */
-function unregisterFields<TFieldValues extends FieldValues>(form: Form<TFieldValues>, fieldNames: Set<string>): void {
-    if (fieldNames.size > 0) {
-        // Use timeout to ensure unregister happens after render cycle
-        setTimeout(() => {
-            for (const fieldName of fieldNames) {
-                form.unregister(fieldName as FieldPath<TFieldValues>);
-            }
-        }, 0);
-    }
-}
-
-/**
- * Determines if fields should be unregistered based on current state
- */
-function shouldUnregisterFields(
-    keepRegistered: boolean,
-    initialized: boolean,
-    currentValue: string,
-    previousValue: string
-): boolean {
-    return !keepRegistered && (currentValue !== previousValue || !initialized);
-}
-
-/**
  * Hook for handling conditional field group logic based on multiple conditions
  */
 export function useConditionalFieldGroup<
@@ -139,46 +126,50 @@ export function useConditionalFieldGroup<
 ) {
     const { form, watchField, conditions, keepRegistered = false } = options;
     const [currentValue, setCurrentValue] = useState<string>('');
-    const [previousValue, setPreviousValue] = useState<string>('');
-    const [initialized, setInitialized] = useState(false);
+    const previousValueRef = useRef<string>(currentValue);
+    const watchedValueRef = useRef<string | null>(null);
 
-    // Update current value when watched field changes
-    useEffect(() => {
-        const subscription = form.watch((_values, { name }) => {
-            // Only update if the watched field changed or if it's the initial watch
-            if (name === watchField || name === undefined) {
-                const watchedValue = form.getValues(watchField) as string;
-                setCurrentValue(watchedValue);
+    // Memoize the watch callback
+    const watchCallback = useCallback(
+        (_values: unknown, { name }: { name?: string }) => {
+            if (name !== watchField && name !== undefined) {
+                return;
             }
-        });
 
-        // Initial value
-        const initialValue = form.getValues(watchField) as string;
-        setCurrentValue(initialValue);
-        setPreviousValue(initialValue);
+            const watchedValue = form.getValues(watchField) as string;
+            if (watchedValue === watchedValueRef.current) {
+                return;
+            }
 
+            watchedValueRef.current = watchedValue;
+            setCurrentValue(watchedValue);
+        },
+        [form, watchField]
+    );
+
+    // Set up watch subscription
+    useEffect(() => {
+        const subscription = form.watch(watchCallback);
+        watchCallback({}, { name: watchField });
         return () => subscription.unsubscribe();
-    }, [form, watchField]);
+    }, [form, watchField, watchCallback]);
 
     // Handle field registration/unregistration when visibility changes
     useEffect(() => {
-        // Skip the first render to avoid unregistering fields on mount
-        if (!initialized) {
-            setInitialized(true);
-            return;
-        }
+        const previousValue = previousValueRef.current;
+        previousValueRef.current = currentValue;
 
-        if (shouldUnregisterFields(keepRegistered, initialized, currentValue, previousValue)) {
+        if (!keepRegistered && currentValue !== previousValue) {
             // Collect field names to unregister
             const fieldsToUnregister = collectFieldNamesForUnregistration(conditions, currentValue);
 
-            // Unregister fields
-            unregisterFields(form, fieldsToUnregister);
-
-            // Update previous value
-            setPreviousValue(currentValue);
+            if (fieldsToUnregister.size > 0) {
+                for (const fieldName of fieldsToUnregister) {
+                    form.unregister(fieldName as FieldPath<TFieldValues>);
+                }
+            }
         }
-    }, [form, currentValue, previousValue, conditions, keepRegistered, initialized]);
+    }, [form, currentValue, conditions, keepRegistered]);
 
     return { currentValue, conditions };
 }
