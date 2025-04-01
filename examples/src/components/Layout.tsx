@@ -3,6 +3,7 @@ import { Book, Code, Github, Menu } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { withErrorBoundary } from './ErrorBoundary';
 import { LanguageSelector } from './LanguageSelector';
 import { MainNakLink } from './MainNavLink';
 import { Button } from './ui/button';
@@ -23,6 +24,8 @@ export function Layout() {
             .then(setDocs)
             .catch(() => setDocs([]));
     }, []);
+
+    const SafeComponent = withErrorBoundary(Outlet);
 
     return (
         <div className='flex min-h-screen flex-col'>
@@ -92,7 +95,7 @@ export function Layout() {
                                 isDocsRoute && 'p-10'
                             )}
                         >
-                            <Outlet />
+                            <SafeComponent />
                         </div>
                     </div>
                 </main>
