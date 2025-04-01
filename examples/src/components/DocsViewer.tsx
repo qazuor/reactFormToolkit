@@ -18,16 +18,16 @@ import rehypePrism from 'rehype-prism-plus';
 export const DocsViewer: FC = () => {
     const { t } = useTranslation();
     const location = useLocation();
-    const [content, setContent] = useState<string>(t('loading'));
+    const [content, setContent] = useState<string>(t('docViewer.loading'));
 
     useEffect(() => {
         const path = location.pathname.replace('docs/', '');
         const mdPath = `/docs/${path}.md?raw`;
 
         fetch(mdPath)
-            .then((res) => (res.ok ? res.text() : Promise.reject(t('fileNotFound'))))
+            .then((res) => (res.ok ? res.text() : Promise.reject(t('docViewer.fileNotFound'))))
             .then(setContent)
-            .catch(() => setContent(`Error: ${t('fileNotFound')}`));
+            .catch(() => setContent(`Error: ${t('docViewer.fileNotFound')}`));
     }, [location]);
 
     return (

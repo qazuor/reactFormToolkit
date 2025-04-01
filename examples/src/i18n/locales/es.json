@@ -135,6 +135,10 @@
                 "error": "Error al copiar",
                 "success": "Copiado!"
             }
+        },
+        "docViewer": {
+            "fileNotFound": "Archivo de documentación no encontrado",
+            "loading": "Cargando archivo de documentación..."
         }
     }
 }
