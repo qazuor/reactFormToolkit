@@ -142,7 +142,7 @@ function SidebarContent({ docs }) {
                         <MainNakLink
                             key={doc.path}
                             path={`/docs/${doc.path.replace(/\.md$/, '')}`}
-                            text={t(doc.title)}
+                            text={t(`docs.tabs.${doc.title}`, { defaultValue: doc.title })}
                             icon={<Book className='h-4 w-4' />}
                         />
                     ))}
