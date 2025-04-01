@@ -4,6 +4,7 @@ import { Layout } from '@/components/Layout';
 import { AsyncValidation } from '@/examples/async-validation';
 import { BasicForm } from '@/examples/basic-form';
 import { ComplexForm } from '@/examples/complex-form';
+import { ConditionalFieldForm } from '@/examples/conditional-field-form';
 import { ErrorsForm } from '@/examples/errors-form';
 import { FieldArrayForm } from '@/examples/field-array';
 import { GlobalErrors } from '@/examples/global-errors';
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
             {
                 path: 'examples/global-errors',
                 element: <GlobalErrors />
+            },
+            {
+                path: 'examples/conditional-field',
+                element: <ConditionalFieldForm />
             }
         ]
     }

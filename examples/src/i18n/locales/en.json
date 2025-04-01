@@ -18,7 +18,8 @@
                 "preview": "Preview",
                 "styled": "Styled Form",
                 "fieldArray": "Field Array",
-                "code": "Code Example"
+                "code": "Code Example",
+                "conditionalFields": "Conditional Fields"
             },
             "footer": {
                 "text": "Built with ❤️ by"
@@ -45,6 +46,7 @@
         },
         "form": {
             "description": "Please fill out all required fields",
+            "conditionalFieldDescription": "Select an option to show the conditional fields",
             "asyncValidationTitle": "Async Validation Example",
             "asyncValidationDescription": "A form demonstrating asynchronous validation with loading states and error handling",
             "email": "Email",

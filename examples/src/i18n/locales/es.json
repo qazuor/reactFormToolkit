@@ -18,7 +18,8 @@
                 "preview": "Vista Previa",
                 "styled": "Formulario Estilizado",
                 "fieldArray": "Campo Array",
-                "code": "Ejemplo de Código"
+                "code": "Ejemplo de Código",
+                "conditionalFields": "Campos Condicionales"
             },
             "footer": {
                 "text": "Hecho con ❤️ por"
@@ -45,6 +46,7 @@
         },
         "form": {
             "description": "Por favor complete todos los campos requeridos",
+            "conditionalFieldDescription": "Selecciona una opción para mostrar los campos condicionales",
             "asyncValidationTitle": "Ejemplo de Validación Asíncrona",
             "asyncValidationDescription": "Un formulario que demuestra la validación asíncrona con estados de carga y manejo de errores",
             "email": "Correo Electrónico",

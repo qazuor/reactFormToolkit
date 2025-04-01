@@ -193,6 +193,11 @@ function SidebarContent({ docs }) {
                         text={t('examples.tabs.globalErrors')}
                         icon={<Code className='h-4 w-4' />}
                     />
+                    <MainNakLink
+                        path='/examples/conditional-field'
+                        text={t('examples.tabs.conditionalFields')}
+                        icon={<Code className='h-4 w-4' />}
+                    />
                 </ul>
             </div>
         </div>
