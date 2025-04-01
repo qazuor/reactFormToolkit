@@ -121,7 +121,13 @@
             }
         },
         "errors": {
-            "docLoadFailed": "Failed to load documentation. Please try again later."
+            "docLoadFailed": "Failed to load documentation. Please try again later.",
+            "errorBoundary": {
+                "title": "Something went wrong",
+                "description": "An error occurred while loading the component. Please try again later.",
+                "consoleLogTitle": "Error details",
+                "button": "Reload"
+            }
         }
     }
 }

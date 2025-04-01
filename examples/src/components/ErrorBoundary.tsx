@@ -6,6 +6,7 @@ type Props = {
     children: ReactNode;
     fallback?: ReactNode;
     title: string;
+    description: string;
     consoleLogTitle: string;
 };
 
@@ -31,6 +32,7 @@ class InternalErrorBoundary extends Component<Props, State> {
                 this.props.fallback ?? (
                     <div className='rounded border bg-red-100 p-4 text-red-800'>
                         <h2>{this.props.title}</h2>
+                        <p>{this.props.description}</p>
                         <p>{this.state.error?.message}</p>
                     </div>
                 )
@@ -47,8 +49,9 @@ export function withErrorBoundary(Component: React.FC, fallback?: ReactNode) {
         return (
             <InternalErrorBoundary
                 fallback={fallback}
-                title={t('errorBoundary.title')}
-                consoleLogTitle={t('errorBoundary.title')}
+                title={t('errors.errorBoundary.title')}
+                description={t('errors.errorBoundary.description')}
+                consoleLogTitle={t('errors.errorBoundary.consoleLogTitle')}
             >
                 <Component {...props} />
             </InternalErrorBoundary>

@@ -121,7 +121,13 @@
             }
         },
         "errors": {
-            "docLoadFailed": "Error al cargar la documentación. Por favor intenta de nuevo."
+            "docLoadFailed": "Error al cargar la documentación. Por favor intenta de nuevo.",
+            "errorBoundary": {
+                "title": "Error de Carga",
+                "description": "Ocurrió un error al cargar el componente. Por favor intenta de nuevo más tarde.",
+                "consoleLogTitle": "Error",
+                "button": "Recargar"
+            }
         }
     }
 }
