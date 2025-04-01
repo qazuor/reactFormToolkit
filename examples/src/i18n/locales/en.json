@@ -118,13 +118,20 @@
                 "submit": "Submit",
                 "reset": "Reset"
             },
+            "country": "Country",
+            "topic": "Topic",
+            "subtopics": "Subtopics",
             "state": "State",
             "selectCountry": "Select a country",
             "selectState": "Select a state",
             "countryTooltip": "Select your country",
             "stateTooltip": "Select your state/province",
             "dependentFieldsTitle": "Dependent Fields Example",
-            "dependentFieldsDescription": "A form demonstrating dependent fields with dynamic loading"
+            "dependentFieldsDescription": "A form demonstrating dependent fields with dynamic loading",
+            "selectBasedDependencies": "Select-based Dependencies",
+            "radioCheckboxDependencies": "Radio/Checkbox Dependencies",
+            "frontend": "Frontend",
+            "backend": "Backend"
         },
         "errors": {
             "docLoadFailed": "Failed to load documentation. Please try again later.",

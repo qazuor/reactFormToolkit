@@ -19,7 +19,8 @@
                 "styled": "Formulario Estilizado",
                 "fieldArray": "Campo Array",
                 "code": "Ejemplo de Código",
-                "conditionalFields": "Campos Condicionales"
+                "conditionalFields": "Campos Condicionales",
+                "dependentFields": "Campos Dependientes"
             },
             "footer": {
                 "text": "Hecho con ❤️ por"
@@ -117,13 +118,20 @@
                 "submit": "Enviar",
                 "reset": "Reiniciar"
             },
+            "country": "País",
+            "topic": "Tema",
+            "subtopics": "Subtemas",
             "state": "Estado",
             "selectCountry": "Seleccione un país",
             "selectState": "Seleccione un estado",
             "countryTooltip": "Seleccione su país",
             "stateTooltip": "Seleccione su estado/provincia",
             "dependentFieldsTitle": "Ejemplo de Campos Dependientes",
-            "dependentFieldsDescription": "Un formulario que demuestra campos dependientes con carga dinámica"
+            "dependentFieldsDescription": "Un formulario que demuestra campos dependientes con carga dinámica",
+            "selectBasedDependencies": "Dependencias basadas en Select",
+            "radioCheckboxDependencies": "Dependencias de Radio/Checkbox",
+            "frontend": "Frontend",
+            "backend": "Backend"
         },
         "errors": {
             "docLoadFailed": "Error al cargar la documentación. Por favor intenta de nuevo.",

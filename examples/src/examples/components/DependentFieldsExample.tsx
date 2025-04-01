@@ -89,7 +89,7 @@ export function DependentFieldsExample({ setResult }: DependentFieldsProps) {
             <div className='space-y-8'>
                 {/* Select-based dependent fields */}
                 <div className='rounded-lg border bg-white p-6'>
-                    <h3 className='mb-4 font-semibold'>Select-based Dependencies</h3>
+                    <h3 className='mb-4 font-semibold'>{t('form.selectBasedDependencies')}</h3>
                     <div className='space-y-4'>
                         <FormField
                             name='country'
@@ -119,7 +119,7 @@ export function DependentFieldsExample({ setResult }: DependentFieldsProps) {
 
                 {/* Radio/Checkbox-based dependent fields */}
                 <div className='rounded-lg border bg-white p-6'>
-                    <h3 className='mb-4 font-semibold'>Radio/Checkbox Dependencies</h3>
+                    <h3 className='mb-4 font-semibold'>{t('form.radioCheckboxDependencies')}</h3>
                     <div className='space-y-4'>
                         <FormField
                             name='topic'
@@ -137,7 +137,7 @@ export function DependentFieldsExample({ setResult }: DependentFieldsProps) {
                                             onBlur={field.onBlur}
                                             className='h-4 w-4 border-gray-300 text-blue-600'
                                         />
-                                        <span>Frontend</span>
+                                        <span>{t('form.frontend')}</span>
                                     </label>
                                     <label className='flex items-center gap-2'>
                                         <input
@@ -148,7 +148,7 @@ export function DependentFieldsExample({ setResult }: DependentFieldsProps) {
                                             onBlur={field.onBlur}
                                             className='h-4 w-4 border-gray-300 text-blue-600'
                                         />
-                                        <span>Backend</span>
+                                        <span>{t('form.backend')}</span>
                                     </label>
                                 </div>
                             )}
