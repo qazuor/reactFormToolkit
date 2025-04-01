@@ -1,4 +1,4 @@
-import { DocsViewer } from '@/components/DocsViewer';
+import DocsPage from '@/components/DocsPage';
 import { Home } from '@/components/Home';
 import { Layout } from '@/components/Layout';
 import { AsyncValidation } from '@/examples/async-validation';
@@ -22,52 +22,8 @@ export const router = createBrowserRouter([
                 element: <Home />
             },
             {
-                path: '/docs/readme',
-                element: <DocsViewer path='README.md' />
-            },
-            {
-                path: '/docs/api-reference',
-                element: <DocsViewer path='api-reference.md' />
-            },
-            {
-                path: '/docs/deployment',
-                element: <DocsViewer path='deployment.md' />
-            },
-            {
-                path: '/docs/field-array',
-                element: <DocsViewer path='field-array.md' />
-            },
-            {
-                path: '/docs/form-buttons',
-                element: <DocsViewer path='form-buttons.md' />
-            },
-            {
-                path: '/docs/form-field',
-                element: <DocsViewer path='form-field.md' />
-            },
-            {
-                path: '/docs/form-provider',
-                element: <DocsViewer path='form-provider.md' />
-            },
-            {
-                path: '/docs/hooks',
-                element: <DocsViewer path='hooks.md' />
-            },
-            {
-                path: '/docs/i18n',
-                element: <DocsViewer path='i18n.md' />
-            },
-            {
-                path: '/docs/introduction',
-                element: <DocsViewer path='introduction.md' />
-            },
-            {
-                path: '/docs/styling',
-                element: <DocsViewer path='styling.md' />
-            },
-            {
-                path: '/docs/utilities',
-                element: <DocsViewer path='utilities.md' />
+                path: '/docs/*',
+                element: <DocsPage />
             },
             {
                 path: 'examples/basic',

@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 import { Book, Code, Github, Menu } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { LanguageSelector } from './LanguageSelector';
@@ -13,6 +14,15 @@ export function Layout() {
     const { t } = useTranslation();
     const location = useLocation();
     const isDocsRoute = location.pathname === '/';
+
+    const [docs, setDocs] = useState([]);
+
+    useEffect(() => {
+        fetch('/docs/docs-index.json')
+            .then((res) => res.json())
+            .then(setDocs)
+            .catch(() => setDocs([]));
+    }, []);
 
     return (
         <div className='flex min-h-screen flex-col'>
@@ -31,7 +41,7 @@ export function Layout() {
                             </SheetTrigger>
                             <SheetContent side='left'>
                                 <div className='mt-8'>
-                                    <SidebarContent />
+                                    <SidebarContent docs={docs} />
                                 </div>
                             </SheetContent>
                         </Sheet>
@@ -70,7 +80,7 @@ export function Layout() {
                         style={{ width: SIDEBAR_WIDTH }}
                     >
                         <div className='p-6'>
-                            <SidebarContent />
+                            <SidebarContent docs={docs} />
                         </div>
                     </div>
                 </aside>
@@ -106,7 +116,7 @@ export function Layout() {
     );
 }
 
-function SidebarContent() {
+function SidebarContent({ docs }) {
     const { t } = useTranslation();
 
     return (
@@ -125,66 +135,14 @@ function SidebarContent() {
                 </Link>
                 <h2 className='font-semibold text-gray-900 text-sm'>{t('docs.title')}</h2>
                 <ul className='mt-2 space-y-1'>
-                    <MainNakLink
-                        path='/docs/readme'
-                        text={t('docs.tabs.readme')}
-                        icon={<Book className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/docs/introduction'
-                        text={t('docs.tabs.introduction')}
-                        icon={<Book className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/docs/form-provider'
-                        text={t('docs.tabs.formProvider')}
-                        icon={<Book className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/docs/form-field'
-                        text={t('docs.tabs.formField')}
-                        icon={<Book className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/docs/form-buttons'
-                        text={t('docs.tabs.formButtons')}
-                        icon={<Book className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/docs/field-array'
-                        text={t('docs.tabs.fieldArray')}
-                        icon={<Book className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/docs/hooks'
-                        text={t('docs.tabs.hooks')}
-                        icon={<Book className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/docs/i18n'
-                        text={t('docs.tabs.i18n')}
-                        icon={<Book className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/docs/styling'
-                        text={t('docs.tabs.styling')}
-                        icon={<Book className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/docs/utilities'
-                        text={t('docs.tabs.utilities')}
-                        icon={<Book className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/docs/api-reference'
-                        text={t('docs.tabs.api-reference')}
-                        icon={<Book className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/docs/deployment'
-                        text={t('docs.tabs.deployment')}
-                        icon={<Book className='h-4 w-4' />}
-                    />
+                    {docs.map((doc) => (
+                        <MainNakLink
+                            key={doc.path}
+                            path={`/docs${doc.path}`}
+                            text={t(doc.title)}
+                            icon={<Book className='h-4 w-4' />}
+                        />
+                    ))}
                 </ul>
             </div>
             <div>

@@ -1,49 +1,51 @@
-import { useEffect, useState } from 'react';
-import { getHighlighter } from 'shiki';
+import Prism from 'prismjs';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-jsx';
+import 'prismjs/components/prism-tsx';
+import 'prismjs/components/prism-json';
+import 'prism-themes/themes/prism-ghcolors.css';
+import Normalizer from 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace';
+import 'prismjs/plugins/toolbar/prism-toolbar';
+import 'prismjs/plugins/toolbar/prism-toolbar.css';
+import 'prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard';
+import { useEffect, useRef } from 'react';
 
-interface CodePreviewProps {
+type Props = {
     code: string;
     language?: string;
-}
+};
 
-export function CodePreview({ code, language = 'tsx' }: CodePreviewProps) {
-    const [highlightedCode, setHighlightedCode] = useState<string>('');
+const nw = new Normalizer({
+    'remove-trailing': true,
+    'remove-indent': true,
+    'left-trim': true,
+    'right-trim': true,
+    'break-lines': 80,
+    indent: 1,
+    'remove-initial-line-feed': false,
+    'tabs-to-spaces': 4
+});
 
+export const CodePreview = ({ code, language = 'tsx' }: Props) => {
+    const ref = useRef<HTMLElement>(null);
+    code = nw.normalize(code);
     useEffect(() => {
-        async function highlight() {
-            try {
-                const highlighter = await getHighlighter({
-                    themes: ['github-light'],
-                    langs: ['typescript', 'tsx', 'javascript', 'jsx']
-                });
-
-                const html = highlighter.codeToHtml(code, {
-                    lang: language,
-                    theme: 'github-light'
-                });
-                setHighlightedCode(html);
-            } catch (error) {
-                console.error('Error initializing syntax highlighter:', error);
-                // Fallback to plain text if highlighting fails
-                setHighlightedCode(`<pre><code>${code}</code></pre>`);
-            }
+        if (ref.current) {
+            Prism.highlightElement(ref.current);
         }
-
-        highlight();
-    }, [code, language]);
+    }, [code]);
 
     return (
-        <div className='overflow-x-auto rounded-lg bg-[var(--shiki-color-background)] p-4'>
-            {highlightedCode ? (
-                <div
-                    className='font-mono text-[13px] leading-relaxed'
-                    dangerouslySetInnerHTML={{ __html: highlightedCode }}
-                />
-            ) : (
-                <pre className='whitespace-pre-wrap font-mono text-[13px] leading-relaxed text-[var(--shiki-color-text)]'>
-                    {code}
-                </pre>
-            )}
-        </div>
+        <pre className='overflow-auto rounded-md border bg-zinc-50 p-4 text-sm dark:bg-zinc-900'>
+            <code
+                ref={ref}
+                className={`language-${language}`}
+                data-prismjs-copy='Copy the code'
+                data-prismjs-copy-error='Fallo!'
+                data-prismjs-copy-success='Copiado'
+            >
+                {code}
+            </code>
+        </pre>
     );
-}
+};

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CodePreview } from './CodePreview';
+import { FormResult } from './FormResult';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 
 interface ExampleViewerProps {
@@ -8,9 +9,10 @@ interface ExampleViewerProps {
     code: string;
     title: string;
     description?: string;
+    result: any;
 }
 
-export function ExampleViewer({ example, code, title, description }: ExampleViewerProps) {
+export function ExampleViewer({ example, code, title, description, result }: ExampleViewerProps) {
     const { t } = useTranslation();
 
     return (
@@ -19,7 +21,7 @@ export function ExampleViewer({ example, code, title, description }: ExampleView
                 <h2 className='mb-2 font-bold text-2xl'>{title}</h2>
                 {description && <p className='text-gray-600'>{description}</p>}
             </div>
-
+            <FormResult result={result} />
             <Tabs defaultValue='preview'>
                 <TabsList>
                     <TabsTrigger value='preview'>{t('examples.tabs.preview')}</TabsTrigger>
