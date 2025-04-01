@@ -1,113 +1,147 @@
 {
-    "errors": {
-        "invalid_type": "Atteso {{expected}}, ricevuto {{received}}",
-        "invalid_type_received_undefined": "Obbligatorio",
-        "invalid_type_received_null": "Obbligatorio",
-        "invalid_literal": "Valore literal non valido, atteso {{expected}}",
-        "unrecognized_keys": "Campo/i non riconosciuto nell'oggetto: {{- keys}}",
-        "invalid_union": "Input non valido",
-        "invalid_union_discriminator": "Valore discriminante non valido. Atteso {{- options}}",
-        "invalid_enum_value": "Valore dell'enum non valido. Atteso {{- options}}, ricevuto '{{received}}'",
-        "invalid_arguments": "Argomenti della funzione non validi",
-        "invalid_return_type": "Tipo di ritorno della funzione non valido",
-        "invalid_date": "Data non valida",
-        "custom": "Input non valido",
-        "invalid_intersection_types": "Il risultato dell'intersezione non può essere unito",
-        "not_multiple_of": "Il numero deve essere un multiplo di {{multipleOf}}",
-        "not_finite": "Il numero deve essere finito",
-        "invalid_string": {
-            "email": "{{validation}} non valida",
-            "url": "{{validation}} non valido",
-            "uuid": "{{validation}} non valido",
-            "cuid": "{{validation}} non valido",
-            "regex": "Non valida",
-            "datetime": "{{validation}} non valido",
-            "startsWith": "Input non valido: deve iniziare con \"{{startsWith}}\"",
-            "endsWith": "Input non valido: deve finire con \"{{endsWith}}\""
-        },
-        "too_small": {
-            "array": {
-                "exact": "L'array deve contenere esattamente {{minimum}} elementi",
-                "inclusive": "L'array deve contenere almeno {{minimum}} elementi",
-                "not_inclusive": "L'array deve contenere più di {{minimum}} elementi"
+    "field": {
+        "info": "Informazioni sul Campo",
+        "error": "Errore del Campo",
+        "asyncValidationError": "La validazione è fallita. Per favore riprova.",
+        "selectOption": "Seleziona un'opzione"
+    },
+    "fieldArray": {
+        "item": "Elemento {{number}}",
+        "add": "Aggiungi Nuovo Elemento",
+        "remove": "Rimuovi Elemento",
+        "minError": "Minimo {{min}} elementi richiesti",
+        "maxError": "Massimo {{max}} elementi consentiti",
+        "noItems": "Nessun elemento aggiunto"
+    },
+    "form": {
+        "error": "Errore del Modulo",
+        "loading": "Caricamento",
+        "success": "Successo",
+        "selectOption": "Seleziona un'opzione",
+        "submitError": "Si è verificato un errore durante l'invio del modulo. Per favore riprova.",
+        "submit": "Invia",
+        "reset": "Reimposta",
+        "cancel": "Annulla",
+        "resetDisabledTooltip": "Nessuna modifica da reimpostare",
+        "validationErrors": "Errori di Validazione",
+        "submitDisabledTooltip": "Il modulo contiene errori e non può essere inviato",
+        "submitDisabledPendingValidations": "Attendi il completamento di tutte le validazioni",
+        "submitDisabledAsyncErrors": "Correggi tutti gli errori prima di inviare",
+        "remainingErrors": "e {{count}} altro errore",
+        "remainingErrors_plural": "e {{count}} altri errori",
+        "viewMoreErrors": "Visualizza altri errori"
+    },
+    "zod": {
+        "errors": {
+            "invalid_type": "Atteso {{expected}}, ricevuto {{received}}",
+            "invalid_type_received_undefined": "Obbligatorio",
+            "invalid_type_received_null": "Obbligatorio",
+            "invalid_literal": "Valore letterale non valido, atteso {{expected}}",
+            "unrecognized_keys": "Chiave/i non riconosciuta/e nell'oggetto: {{- keys}}",
+            "invalid_union": "Input non valido",
+            "invalid_union_discriminator": "Valore discriminatore non valido. Atteso {{- options}}",
+            "invalid_enum_value": "Valore enumerazione non valido. Atteso {{- options}}, ricevuto '{{received}}'",
+            "invalid_arguments": "Argomenti funzione non validi",
+            "invalid_return_type": "Tipo di ritorno funzione non valido",
+            "invalid_date": "Data non valida",
+            "custom": "Input non valido",
+            "invalid_intersection_types": "I risultati dell'intersezione non possono essere uniti",
+            "not_multiple_of": "Il numero deve essere un multiplo di {{multipleOf}}",
+            "not_finite": "Il numero deve essere finito",
+            "invalid_string": {
+                "email": "{{validation}} non valida",
+                "url": "{{validation}} non valido",
+                "uuid": "{{validation}} non valido",
+                "cuid": "{{validation}} non valido",
+                "regex": "Formato non valido",
+                "datetime": "{{validation}} non valida",
+                "startsWith": "Formato non valido: deve iniziare con \"{{startsWith}}\"",
+                "endsWith": "Formato non valido: deve terminare con \"{{endsWith}}\""
             },
-            "string": {
-                "exact": "La stringa deve contenere esattamente {{minimum}} caratteri",
-                "inclusive": "La stringa deve contenere almeno {{minimum}} caratteri",
-                "not_inclusive": "La stringa deve contenere più di {{minimum}} caratteri"
+            "too_small": {
+                "array": {
+                    "exact": "L'array deve contenere esattamente {{minimum}} elemento/i",
+                    "inclusive": "L'array deve contenere almeno {{minimum}} elemento/i",
+                    "not_inclusive": "L'array deve contenere più di {{minimum}} elemento/i"
+                },
+                "string": {
+                    "exact": "La stringa deve contenere esattamente {{minimum}} carattere/i",
+                    "inclusive": "La stringa deve contenere almeno {{minimum}} carattere/i",
+                    "not_inclusive": "La stringa deve contenere più di {{minimum}} carattere/i"
+                },
+                "number": {
+                    "exact": "Il numero deve essere esattamente {{minimum}}",
+                    "inclusive": "Il numero deve essere maggiore o uguale a {{minimum}}",
+                    "not_inclusive": "Il numero deve essere maggiore di {{minimum}}"
+                },
+                "set": {
+                    "exact": "Input non valido",
+                    "inclusive": "Input non valido",
+                    "not_inclusive": "Input non valido"
+                },
+                "date": {
+                    "exact": "La data deve essere {{- minimum, datetime}}",
+                    "inclusive": "La data deve essere successiva o uguale a {{- minimum, datetime}}",
+                    "not_inclusive": "La data deve essere successiva a {{- minimum, datetime}}"
+                }
             },
-            "number": {
-                "exact": "Il numero deve essere esattamente {{minimum}}",
-                "inclusive": "Il numero deve essere maggiore o uguale a {{minimum}}",
-                "not_inclusive": "Il numero deve essere maggiore di {{minimum}}"
-            },
-            "set": {
-                "exact": "Input non valido",
-                "inclusive": "Input non valido",
-                "not_inclusive": "Input non valido"
-            },
-            "date": {
-                "exact": "La data deve essere esattamente {{- minimum, datetime}}",
-                "inclusive": "La data deve essere maggiore di o uguale a {{- minimum, datetime}}",
-                "not_inclusive": "La data deve essere maggiore {{- minimum, datetime}}"
+            "too_big": {
+                "array": {
+                    "exact": "L'array deve contenere esattamente {{maximum}} elemento/i",
+                    "inclusive": "L'array deve contenere al massimo {{maximum}} elemento/i",
+                    "not_inclusive": "L'array deve contenere meno di {{maximum}} elemento/i"
+                },
+                "string": {
+                    "exact": "La stringa deve contenere esattamente {{maximum}} carattere/i",
+                    "inclusive": "La stringa deve contenere al massimo {{maximum}} carattere/i",
+                    "not_inclusive": "La stringa deve contenere meno di {{maximum}} carattere/i"
+                },
+                "number": {
+                    "exact": "Il numero deve essere esattamente {{maximum}}",
+                    "inclusive": "Il numero deve essere minore o uguale a {{maximum}}",
+                    "not_inclusive": "Il numero deve essere minore di {{maximum}}"
+                },
+                "set": {
+                    "exact": "Input non valido",
+                    "inclusive": "Input non valido",
+                    "not_inclusive": "Input non valido"
+                },
+                "date": {
+                    "exact": "La data deve essere {{- maximum, datetime}}",
+                    "inclusive": "La data deve essere precedente o uguale a {{- maximum, datetime}}",
+                    "not_inclusive": "La data deve essere precedente a {{- maximum, datetime}}"
+                }
             }
         },
-        "too_big": {
-            "array": {
-                "exact": "L'array deve contenere esattamente {{maximum}} elementi",
-                "inclusive": "L'array deve contenere al massimo {{maximum}} elementi",
-                "not_inclusive": "L'array deve contenere meno di {{maximum}} elementi"
-            },
-            "string": {
-                "exact": "La stringa deve contenere esattamente {{maximum}} caratteri",
-                "inclusive": "La stringa deve contenere al massimo {{maximum}} caratteri",
-                "not_inclusive": "La stringa deve contenere meno di {{maximum}} caratteri"
-            },
-            "number": {
-                "exact": "Il numero deve essere esattamente {{maximum}}",
-                "inclusive": "Il numero deve essere minore di o uguale a {{maximum}}",
-                "not_inclusive": "Il numero deve essere minore di {{maximum}}"
-            },
-            "set": {
-                "exact": "Input non valido",
-                "inclusive": "Input non valido",
-                "not_inclusive": "Input non valido"
-            },
-            "date": {
-                "exact": "La data deve essere esattamente {{- maximum, datetime}}",
-                "inclusive": "La data deve essere minore di o uguale a {{- maximum, datetime}}",
-                "not_inclusive": "La data deve essere minore di {{- maximum, datetime}}"
-            }
+        "validations": {
+            "email": "email",
+            "url": "url",
+            "uuid": "uuid",
+            "cuid": "cuid",
+            "regex": "espressione regolare",
+            "datetime": "data e ora"
+        },
+        "types": {
+            "function": "funzione",
+            "number": "numero",
+            "string": "stringa",
+            "nan": "NaN",
+            "integer": "intero",
+            "float": "decimale",
+            "boolean": "booleano",
+            "date": "data",
+            "bigint": "intero lungo",
+            "undefined": "undefined",
+            "symbol": "simbolo",
+            "null": "null",
+            "array": "array",
+            "object": "oggetto",
+            "unknown": "sconosciuto",
+            "promise": "promise",
+            "void": "void",
+            "never": "never",
+            "map": "mappa",
+            "set": "insieme"
         }
-    },
-    "validations": {
-        "email": "email",
-        "url": "url",
-        "uuid": "uuid",
-        "cuid": "cuid",
-        "regex": "regex",
-        "datetime": "datetime"
-    },
-    "types": {
-        "function": "function",
-        "number": "number",
-        "string": "string",
-        "nan": "nan",
-        "integer": "integer",
-        "float": "float",
-        "boolean": "boolean",
-        "date": "date",
-        "bigint": "bigint",
-        "undefined": "undefined",
-        "symbol": "symbol",
-        "null": "null",
-        "array": "array",
-        "object": "object",
-        "unknown": "unknown",
-        "promise": "promise",
-        "void": "void",
-        "never": "never",
-        "map": "map",
-        "set": "set"
     }
 }

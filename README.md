@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/logo.webp" alt="Qazuor React Form Toolkit" width="800" />
+  <img src="/logo.webp" alt="Qazuor React Form Toolkit" width="300" />
 </p>
 
 A comprehensive React form management library built with React Hook Form and Zod.
@@ -10,7 +10,7 @@ A comprehensive React form management library built with React Hook Form and Zod
 ## Features
 
 - 🎯 Type-safe form validation with Zod
-- 🌍 Internationalization support
+- 🌍 Internationalization support (English, Spanish, Russian, Italian, Portuguese, French, German)
 - 🎨 Tailwind CSS styling with customization options
 - 💅 Comprehensive style system with component-level overrides
 - ⚡ Framework agnostic (works with Next.js, Remix, etc.)
