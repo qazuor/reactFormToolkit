@@ -128,6 +128,13 @@
                 "consoleLogTitle": "Error details",
                 "button": "Reload"
             }
+        },
+        "codePreview": {
+            "copyToClipboard": {
+                "label": "Copy",
+                "error": "Copy failed",
+                "success": "Copied!"
+            }
         }
     }
 }

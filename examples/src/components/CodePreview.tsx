@@ -4,11 +4,11 @@ import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-tsx';
 import 'prismjs/components/prism-json';
 import 'prism-themes/themes/prism-ghcolors.css';
-import 'prismjs/plugins/toolbar/prism-toolbar';
-import 'prismjs/plugins/toolbar/prism-toolbar.css';
-import 'prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { Check, ClipboardCopy } from 'lucide-react';
 import Normalizer from 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace';
-import { useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 type Props = {
@@ -29,26 +29,53 @@ const nw = new Normalizer({
 
 export const CodePreview = ({ code, language = 'tsx' }: Props) => {
     const { t } = useTranslation();
-    const ref = useRef<HTMLElement>(null);
-    code = nw.normalize(code);
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-    useEffect(() => {
-        if (ref.current) {
-            Prism.highlightElement(ref.current);
+    const [copied, setCopied] = useState(false);
+
+    const normalizedCode = nw.normalize(code);
+    const html = Prism.highlight(normalizedCode, Prism.languages[language] || Prism.languages.tsx, language);
+
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(normalizedCode);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch (error) {
+            console.error(t('codePreview.copyToClipboard.error'), error);
         }
-    }, [code]);
+    };
 
     return (
-        <pre className='overflow-auto rounded-md border bg-zinc-50 p-4 text-sm dark:bg-zinc-900'>
-            <code
-                ref={ref}
-                className={`language-${language}`}
-                data-prismjs-copy={t('copyToClipboard.label')}
-                data-prismjs-copy-error={t('copyToClipboard.error')}
-                data-prismjs-copy-success={t('copyToClipboard.success')}
+        <div className='relative'>
+            <Button
+                variant='ghost'
+                size='sm'
+                onClick={handleCopy}
+                className={cn(
+                    'absolute top-2 right-2 z-10 flex items-center gap-1 rounded border text-xs hover:bg-zinc-50',
+                    copied
+                        ? 'border-green-500 bg-green-50 text-green-600 hover:bg-green-50 hover:text-green-600'
+                        : 'border-zinc-300 bg-white text-zinc-600 hover:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:border-zinc-600'
+                )}
             >
-                {code}
-            </code>
-        </pre>
+                {copied ? (
+                    <>
+                        <Check className='h-4 w-4' />
+                        {t('codePreview.copyToClipboard.success')}
+                    </>
+                ) : (
+                    <>
+                        <ClipboardCopy className='h-4 w-4' />
+                        {t('codePreview.copyToClipboard.label')}
+                    </>
+                )}
+            </Button>
+            <pre className='overflow-auto rounded-md border bg-zinc-50 p-4 text-sm dark:bg-zinc-900'>
+                <code
+                    className={`language-${language}`}
+                    // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+                    dangerouslySetInnerHTML={{ __html: html }}
+                />
+            </pre>
+        </div>
     );
 };
