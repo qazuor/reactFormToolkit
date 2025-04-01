@@ -12,8 +12,10 @@ import {
     type FieldValues,
     type UseFormClearErrors,
     type UseFormGetValues,
+    type UseFormRegister,
     type UseFormSetValue,
     type UseFormTrigger,
+    type UseFormUnregister,
     type UseFormWatch,
     useForm
 } from 'react-hook-form';
@@ -91,7 +93,9 @@ export function FormProvider<
         trigger: triggerForm,
         setValue: setValueForm,
         clearErrors: clearErrorsForm,
-        handleSubmit: handleSubmitForm
+        handleSubmit: handleSubmitForm,
+        register: registerForm,
+        unregister: unregisterForm
     } = useForm<TFieldValues>({
         resolver: schema ? zodResolver(schema) : undefined,
         defaultValues: defaultValues as DefaultValues<TFieldValues>,
@@ -219,7 +223,9 @@ export function FormProvider<
                             getValues: getValuesForm as UseFormGetValues<FieldValues>,
                             trigger: triggerForm as UseFormTrigger<FieldValues>,
                             setValue: setValueForm as UseFormSetValue<FieldValues>,
-                            clearErrors: clearErrorsForm as UseFormClearErrors<FieldValues>
+                            clearErrors: clearErrorsForm as UseFormClearErrors<FieldValues>,
+                            register: registerForm as UseFormRegister<FieldValues>,
+                            unregister: unregisterForm as UseFormUnregister<FieldValues>
                         },
                         formState,
                         schema: schema as TSchema,

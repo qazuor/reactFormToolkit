@@ -5,9 +5,11 @@ import type {
     FieldValues,
     UseFormClearErrors,
     UseFormGetValues,
+    UseFormRegister,
     UseFormReturn,
     UseFormSetValue,
     UseFormTrigger,
+    UseFormUnregister,
     UseFormWatch
 } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
@@ -171,6 +173,21 @@ export interface GlobalErrorOptions {
 }
 
 /**
+ * Form instance value type
+ */
+export type Form<TFieldValues extends FieldValues = FieldValues> = {
+    watch: UseFormWatch<TFieldValues>;
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    control: Control<TFieldValues, any>;
+    getValues: UseFormGetValues<TFieldValues>;
+    trigger: UseFormTrigger<TFieldValues>;
+    setValue: UseFormSetValue<TFieldValues>;
+    clearErrors: UseFormClearErrors<TFieldValues>;
+    unregister: UseFormUnregister<TFieldValues>;
+    register: UseFormRegister<TFieldValues>;
+};
+
+/**
  * Form context value type
  */
 export type FormContextValue<
@@ -180,15 +197,7 @@ export type FormContextValue<
     /**
      * Form methods from react-hook-form
      */
-    form: {
-        watch: UseFormWatch<TFieldValues>;
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        control: Control<TFieldValues, any>;
-        getValues: UseFormGetValues<TFieldValues>;
-        trigger: UseFormTrigger<TFieldValues>;
-        setValue: UseFormSetValue<TFieldValues>;
-        clearErrors: UseFormClearErrors<TFieldValues>;
-    };
+    form: Form<TFieldValues>;
 
     /**
      * Zod schema for form validation
