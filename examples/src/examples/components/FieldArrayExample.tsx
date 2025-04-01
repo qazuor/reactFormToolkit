@@ -38,7 +38,9 @@ const schema = z.object({
         .min(1, 'At least one department is required')
 });
 
-type FormData = z.infer<typeof schema>;
+interface FieldArrayProps {
+    setResult: (data: Record<string, unknown> | null) => void;
+}
 
 const defaultValues: FormData = {
     companyName: '',
@@ -62,11 +64,11 @@ const defaultValues: FormData = {
     ]
 };
 
-export function FieldArrayExample() {
+export function FieldArrayExample({ setResult }: FieldArrayProps) {
     const { t } = useTranslation();
 
-    const handleSubmit = async (data: FormData) => {
-        console.info('Form submitted:', data);
+    const handleSubmit = async (data: z.infer<typeof schema>) => {
+        setResult(data);
     };
 
     return (

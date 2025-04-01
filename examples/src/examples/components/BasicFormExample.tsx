@@ -7,13 +7,15 @@ const schema = z.object({
     password: z.string().min(8)
 });
 
-type LoginForm = z.infer<typeof schema>;
+interface BasicFormProps {
+    setResult: (data: Record<string, unknown> | null) => void;
+}
 
-export function BasicFormExample() {
+export function BasicFormExample({ setResult }: BasicFormProps) {
     const { t } = useTranslation();
 
-    const handleSubmit = async (data: LoginForm) => {
-        console.info('Form submitted:', data);
+    const handleSubmit = async (data: z.infer<typeof schema>) => {
+        setResult(data);
     };
 
     return (

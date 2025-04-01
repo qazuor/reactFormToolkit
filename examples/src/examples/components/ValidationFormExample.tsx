@@ -31,16 +31,18 @@ const validationSchema = z
         path: ['confirmPassword']
     });
 
-type ValidationForm = z.infer<typeof validationSchema>;
+interface ValidationFormProps {
+    setResult: (data: Record<string, unknown> | null) => void;
+}
 
-export function ValidationFormExample() {
+export function ValidationFormExample({ setResult }: ValidationFormProps) {
     const { t } = useTranslation();
     const schema = useMemo(() => {
         return validationSchema;
     }, []);
 
-    const handleSubmit = async (data: ValidationForm) => {
-        console.info('Form submitted:', data);
+    const handleSubmit = async (data: z.infer<typeof validationSchema>) => {
+        setResult(data);
     };
 
     // Example of using form utilities

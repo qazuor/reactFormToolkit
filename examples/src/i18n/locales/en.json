@@ -100,8 +100,6 @@
                 "dismissAfter": "Dismiss After (ms)",
                 "clear": "Clear Configuration"
             },
-            "viewResult": "View result",
-            "hideResult": "Hide result",
             "exampleForm": {
                 "title": "Example Form",
                 "username": {
@@ -139,6 +137,11 @@
         "docViewer": {
             "fileNotFound": "Doc File not found",
             "loading": "Loading doc file..."
+        },
+        "formResults": {
+            "submissionResult": "Form Submission Result",
+            "submittedData": "Submitted Data",
+            "submitError": "An error occurred while submitting the form. Please try again."
         }
     }
 }

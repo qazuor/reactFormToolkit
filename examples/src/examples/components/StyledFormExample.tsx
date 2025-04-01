@@ -42,11 +42,11 @@ const emailFieldStyles = {
     isInvalid: 'border-red-400 bg-red-50'
 };
 
-export function StyledFormExample() {
+export function StyledFormExample({ setResult }: StyledFormProps) {
     const { t } = useTranslation();
 
     const handleSubmit = async (data: z.infer<typeof schema>) => {
-        console.info('Form submitted:', data);
+        setResult(data);
     };
 
     return (

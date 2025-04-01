@@ -6,15 +6,17 @@ const schema = z.object({
     email: z.string().email('Invalid email address')
 });
 
-type FormData = z.infer<typeof schema>;
+interface GlobalErrorsProps {
+    setResult: (data: Record<string, unknown> | null) => void;
+}
 
 // Simulated API call that sometimes fails
 const submitToAPI = async (data: FormData): Promise<void> => {
     // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Simulate random API errors
-    if (Math.random() > 0.5) {
+    if (Math.random() > 0.7) {
         throw new Error('Server is temporarily unavailable. Please try again later.');
     }
 
@@ -26,10 +28,11 @@ const submitToAPI = async (data: FormData): Promise<void> => {
     console.info('Form submitted successfully:', data);
 };
 
-export function GlobalErrorsExample() {
+export function GlobalErrorsExample({ setResult }: GlobalErrorsProps) {
     const handleSubmit = async (data: FormData) => {
         try {
-            return await submitToAPI(data);
+            setResult(data);
+            await submitToAPI(data);
         } catch (error) {
             // This error will be displayed as a global error
             return error;

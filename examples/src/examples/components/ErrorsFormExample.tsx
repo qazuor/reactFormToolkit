@@ -6,7 +6,9 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
-type FormData = z.infer<typeof schema>;
+interface ErrorsFormProps {
+    setResult: (data: Record<string, unknown> | null) => void;
+}
 
 const schema = z.object({
     username: z.string().min(3, 'Username must be at least 3 characters'),
@@ -33,7 +35,7 @@ const defaultConfig: ErrorDisplayOptions = {
 const positions: ErrorPosition[] = ['below', 'above', 'right', 'tooltip'];
 const animations: ErrorAnimation[] = ['none', 'fadeIn', 'slideIn', 'pulse', 'shake'];
 
-export function ErrorsFormExample() {
+export function ErrorsFormExample({ setResult }: ErrorsFormProps) {
     const { t } = useTranslation();
     const [config, setConfig] = useState<ErrorDisplayOptions>(defaultConfig);
     const exampleForm = useForm<FormData>({
@@ -41,8 +43,8 @@ export function ErrorsFormExample() {
         mode: 'onBlur'
     });
 
-    const handleSubmit: SubmitHandler<FormData> = async (data) => {
-        console.info('Form submitted:', data);
+    const handleSubmit: SubmitHandler<FormData> = async (data: z.infer<typeof schema>) => {
+        setResult(data);
     };
 
     const handleReset = () => {

@@ -16,7 +16,9 @@ const schema = z.object({
     message: z.string().min(10)
 });
 
-type ContactForm = z.infer<typeof schema>;
+interface I18nFormProps {
+    setResult: (data: Record<string, unknown> | null) => void;
+}
 
 const customTranslations = {
     en: {
@@ -75,15 +77,15 @@ const customTranslations = {
     }
 };
 
-export function I18nFormExample() {
+export function I18nFormExample({ setResult }: I18nFormProps) {
     const [language, setLanguage] = useState<'en' | 'es'>('en');
 
     const toggleLanguage = useCallback(() => {
         setLanguage((prev) => (prev === 'en' ? 'es' : 'en'));
     }, []);
 
-    const handleSubmit = async (data: ContactForm) => {
-        console.info('Form submitted:', data);
+    const handleSubmit = async (data: z.infer<typeof schema>) => {
+        setResult(data);
     };
 
     // const { i18n } = useTranslation();

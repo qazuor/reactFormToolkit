@@ -100,8 +100,6 @@
                 "dismissAfter": "Ocultar Después (ms)",
                 "clear": "Limpiar Configuración"
             },
-            "viewResult": "Ver resultado",
-            "hideResult": "Ocultar resultado",
             "exampleForm": {
                 "title": "Formulario de Ejemplo",
                 "username": {
@@ -139,6 +137,11 @@
         "docViewer": {
             "fileNotFound": "Archivo de documentación no encontrado",
             "loading": "Cargando archivo de documentación..."
+        },
+        "formResults": {
+            "submissionResult": "Resultado de Envío del Formulario",
+            "submittedData": "Datos Enviados",
+            "submitError": "Ocurrió un error al enviar el formulario. Por favor intenta de nuevo."
         }
     }
 }

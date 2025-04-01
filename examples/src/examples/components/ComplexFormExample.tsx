@@ -17,13 +17,15 @@ const schema = z.object({
     message: z.string().min(10).max(500)
 });
 
-type ContactForm = z.infer<typeof schema>;
+interface ComplexFormProps {
+    setResult: (data: Record<string, unknown> | null) => void;
+}
 
-export function ComplexFormExample() {
+export function ComplexFormExample({ setResult }: ComplexFormProps) {
     const { t } = useTranslation();
 
-    const handleSubmit = async (data: ContactForm) => {
-        console.info('Form submitted:', data);
+    const handleSubmit = async (data: z.infer<typeof schema>) => {
+        setResult(data);
     };
 
     return (

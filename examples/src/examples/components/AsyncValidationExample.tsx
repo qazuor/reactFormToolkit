@@ -1,5 +1,4 @@
 import {
-    type AsyncValidationProps,
     CancelButton,
     FormDescription,
     FormField,
@@ -15,7 +14,9 @@ const schema = z.object({
     email: z.string().email('Invalid email address')
 });
 
-type FormData = z.infer<typeof schema>;
+interface AsyncValidationProps {
+    setResult: (data: Record<string, unknown> | null) => void;
+}
 
 // Simulated API calls
 const checkUsername = async (username: string): Promise<boolean> => {
@@ -28,11 +29,11 @@ const checkEmail = async (email: string): Promise<boolean> => {
     return !['admin@example.com', 'test@example.com'].includes(email);
 };
 
-export function AsyncValidationExample() {
+export function AsyncValidationExample({ setResult }: AsyncValidationProps) {
     const { t } = useTranslation();
 
-    const handleSubmit = async (data: FormData) => {
-        console.info('Form submitted:', data);
+    const handleSubmit = async (data: z.infer<typeof schema>) => {
+        setResult(data);
     };
 
     const userNameAsyncValidationOptions: AsyncValidationProps = {
