@@ -116,7 +116,14 @@
                 },
                 "submit": "Enviar",
                 "reset": "Reiniciar"
-            }
+            },
+            "state": "Estado",
+            "selectCountry": "Seleccione un país",
+            "selectState": "Seleccione un estado",
+            "countryTooltip": "Seleccione su país",
+            "stateTooltip": "Seleccione su estado/provincia",
+            "dependentFieldsTitle": "Ejemplo de Campos Dependientes",
+            "dependentFieldsDescription": "Un formulario que demuestra campos dependientes con carga dinámica"
         },
         "errors": {
             "docLoadFailed": "Error al cargar la documentación. Por favor intenta de nuevo.",

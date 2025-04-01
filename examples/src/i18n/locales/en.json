@@ -19,7 +19,8 @@
                 "styled": "Styled Form",
                 "fieldArray": "Field Array",
                 "code": "Code Example",
-                "conditionalFields": "Conditional Fields"
+                "conditionalFields": "Conditional Fields",
+                "dependentFields": "Dependent Fields"
             },
             "footer": {
                 "text": "Built with ❤️ by"
@@ -116,7 +117,14 @@
                 },
                 "submit": "Submit",
                 "reset": "Reset"
-            }
+            },
+            "state": "State",
+            "selectCountry": "Select a country",
+            "selectState": "Select a state",
+            "countryTooltip": "Select your country",
+            "stateTooltip": "Select your state/province",
+            "dependentFieldsTitle": "Dependent Fields Example",
+            "dependentFieldsDescription": "A form demonstrating dependent fields with dynamic loading"
         },
         "errors": {
             "docLoadFailed": "Failed to load documentation. Please try again later.",

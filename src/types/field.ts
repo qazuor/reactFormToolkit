@@ -170,9 +170,19 @@ export interface FormFieldProps {
     required?: boolean;
 
     /**
-     * Field input component
+     * Field input component or render function
      */
-    children: ReactNode;
+    children:
+        | ReactNode
+        | ((props: {
+              field: {
+                  value: any;
+                  onChange: (value: any) => void;
+                  onBlur: () => void;
+              };
+              options?: Array<{ value: string; label: string }>;
+              isLoading?: boolean;
+          }) => ReactNode);
 
     /**
      * Field description
@@ -208,6 +218,16 @@ export interface FormFieldProps {
      * Optional async validation props
      */
     asyncValidation?: AsyncValidationProps;
+
+    /**
+     * Name of the field this field depends on
+     */
+    dependsOn?: string;
+
+    /**
+     * Callback to update options when dependency changes
+     */
+    dependencyUpdateCallback?: (value: string) => Promise<Array<{ value: string; label: string }>>;
 }
 
 export interface FormFieldComponent extends React.FC<FormFieldProps>, FormFieldComposition {}

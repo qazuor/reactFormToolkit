@@ -2,7 +2,8 @@
     "field": {
         "info": "Información del Campo",
         "error": "Error del Campo",
-        "asyncValidationError": "La validación falló. Por favor, inténtelo de nuevo."
+        "asyncValidationError": "La validación falló. Por favor, inténtelo de nuevo.",
+        "selectOption": "Seleccione una opción"
     },
     "fieldArray": {
         "item": "Elemento {{number}}",

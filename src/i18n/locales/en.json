@@ -2,7 +2,8 @@
     "field": {
         "info": "Field Info",
         "error": "Field Error",
-        "asyncValidationError": "Validation failed. Please try again."
+        "asyncValidationError": "Validation failed. Please try again.",
+        "selectOption": "Select an option"
     },
     "fieldArray": {
         "item": "Item {{number}}",

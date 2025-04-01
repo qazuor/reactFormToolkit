@@ -1,9 +1,10 @@
 import { FormFieldContext, useFormContext } from '@/context';
 import { FieldArrayContext } from '@/context';
-import { useFieldState, useFieldValidation } from '@/hooks';
+import { useFieldState, useFieldValidation, useQRFTTranslation } from '@/hooks';
 import { cn, defaultStyles, formUtils, mergeStyles } from '@/lib';
 import type { FormFieldProps } from '@/types';
-import { type ReactElement, isValidElement, useContext, useEffect, useMemo, useRef } from 'react';
+import { type ReactElement, isValidElement, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React from 'react';
 import { FieldDescription } from './FieldDescription';
 import { FieldError } from './FieldError';
 import { FieldInput } from './FieldInput';
@@ -27,6 +28,8 @@ export function FormField({
     name,
     label,
     required,
+    dependsOn,
+    dependencyUpdateCallback,
     asyncValidation,
     children,
     description,
@@ -37,9 +40,12 @@ export function FormField({
     errorDisplayOptions
 }: FormFieldProps): ReactElement {
     const { form, schema, styleOptions: providerStyles, errorDisplayOptions: providerErrorOptions } = useFormContext();
+    const { t } = useQRFTTranslation();
     const childRef = useRef<HTMLInputElement>(null);
     const arrayContext = useContext(FieldArrayContext);
     const previousValueRef = useRef<unknown>();
+    const [dependentOptions, setDependentOptions] = useState<Array<{ value: string; label: string }>>([]);
+    const [isLoadingOptions, setIsLoadingOptions] = useState(false);
 
     const fieldPath = arrayContext ? `${arrayContext.name}.${arrayContext.index}.${name}` : name;
 
@@ -88,6 +94,61 @@ export function FormField({
 
     const displayError = asyncError || error?.message;
 
+    // Handle render function children
+    const renderChildren = (): ReactElement => {
+        if (typeof children === 'function') {
+            const fieldProps = {
+                value: form.getValues(fieldPath),
+                onChange: (value: unknown) => form.setValue(fieldPath, value),
+                onBlur: () => form.trigger(fieldPath)
+            };
+
+            const rendered = children({
+                field: fieldProps,
+                options: dependentOptions,
+                isLoading: isLoadingOptions
+            });
+
+            // Ensure we return a ReactElement
+            if (!isValidElement(rendered)) {
+                return <>{rendered}</>;
+            }
+            return rendered;
+        }
+
+        // Handle select fields with dependencies
+        if (dependsOn && isValidElement(children) && children.type === 'select') {
+            const selectProps = {
+                ...children.props,
+                disabled: isLoadingOptions || dependentOptions.length === 0,
+                'aria-busy': isLoadingOptions,
+                children: [
+                    <option
+                        key='placeholder'
+                        value=''
+                    >
+                        {t('form.selectOption')}
+                    </option>,
+                    ...dependentOptions.map(({ value, label }) => (
+                        <option
+                            key={value}
+                            value={value}
+                        >
+                            {label}
+                        </option>
+                    ))
+                ]
+            };
+            return React.cloneElement(children, selectProps);
+        }
+
+        // Ensure children is a ReactElement
+        if (!isValidElement(children)) {
+            return <>{children}</>;
+        }
+        return children;
+    };
+
     const contextValue = useMemo(
         () => ({
             name: fieldPath,
@@ -112,8 +173,44 @@ export function FormField({
         return () => subscription.unsubscribe();
     }, [form, name, isTouched]);
 
-    if (!isValidElement(children)) {
-        return <></>;
+    // Handle dependency updates
+    useEffect(() => {
+        if (dependsOn && dependencyUpdateCallback) {
+            const subscription = form.watch((_value, { name: changedField }) => {
+                if (changedField === dependsOn) {
+                    const dependencyValue = form.getValues(dependsOn);
+                    if (dependencyValue) {
+                        setIsLoadingOptions(true);
+                        dependencyUpdateCallback(dependencyValue)
+                            .then((options) => {
+                                setDependentOptions(options);
+                                // Clear current value when dependency changes
+                                form.setValue(name, '');
+                                form.trigger(name).catch(console.error);
+                            })
+                            .catch(() => {
+                                // Handle error
+                                setDependentOptions([]);
+                                form.setValue(name, '');
+                                form.trigger(name).catch(console.error);
+                            })
+                            .finally(() => {
+                                setIsLoadingOptions(false);
+                            });
+                    } else {
+                        setDependentOptions([]);
+                        form.setValue(name, '');
+                        form.trigger(name).catch(console.error);
+                    }
+                }
+            });
+
+            return () => subscription.unsubscribe();
+        }
+    }, [dependsOn, dependencyUpdateCallback, form, name]);
+
+    if (typeof children === 'function') {
+        return renderChildren();
     }
 
     const showError = !providerErrorOptions?.groupErrors && (!!error || !!asyncError);
@@ -162,7 +259,7 @@ export function FormField({
                             fieldPath={fieldPath}
                             name={name}
                             validate={validate}
-                            children={children}
+                            children={renderChildren()}
                             form={form}
                         />
                         <FormFieldAsyncValidationIndicator
