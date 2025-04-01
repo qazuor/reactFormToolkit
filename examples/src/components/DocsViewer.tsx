@@ -22,7 +22,7 @@ export const DocsViewer: FC = () => {
 
     useEffect(() => {
         const path = location.pathname.replace('docs/', '');
-        const mdPath = `/docs${path}.md?raw`;
+        const mdPath = `/docs/${path}.md?raw`;
 
         fetch(mdPath)
             .then((res) => (res.ok ? res.text() : Promise.reject(t('fileNotFound'))))
