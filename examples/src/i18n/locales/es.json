@@ -98,6 +98,8 @@
                 "dismissAfter": "Ocultar Después (ms)",
                 "clear": "Limpiar Configuración"
             },
+            "viewResult": "Ver resultado",
+            "hideResult": "Ocultar resultado",
             "exampleForm": {
                 "title": "Formulario de Ejemplo",
                 "username": {

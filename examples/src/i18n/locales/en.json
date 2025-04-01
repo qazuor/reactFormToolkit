@@ -98,6 +98,8 @@
                 "dismissAfter": "Dismiss After (ms)",
                 "clear": "Clear Configuration"
             },
+            "viewResult": "View result",
+            "hideResult": "Hide result",
             "exampleForm": {
                 "title": "Example Form",
                 "username": {
