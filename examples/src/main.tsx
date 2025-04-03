@@ -3,7 +3,9 @@ import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import i18n from './i18n';
 import { router } from './routes';
-import './index.css';
+import './styles/index.css';
+import './styles/markdown-theme.css';
+import './styles/code-theme.css';
 import { I18nextProvider } from 'react-i18next';
 import '@qazuor/react-form-toolkit/animations.css';
 

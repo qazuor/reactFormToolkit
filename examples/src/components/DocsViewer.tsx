@@ -10,7 +10,6 @@ import remarkGfm from 'remark-gfm';
 import { remarkAlert } from 'remark-github-blockquote-alert';
 import remarkHeadingGap from 'remark-heading-gap';
 import 'remark-github-blockquote-alert/alert.css';
-import 'github-markdown-css/github-markdown-light.css';
 import rehypeScrollToTop from '@benjc/rehype-scroll-to-top';
 import { useTranslation } from 'react-i18next';
 import rehypePrism from 'rehype-prism-plus';
@@ -31,7 +30,7 @@ export const DocsViewer: FC = () => {
     }, [location]);
 
     return (
-        <div className='markdown-body'>
+        <div className='markdown-body bg-white px-4 py-6 text-black dark:bg-zinc-900 dark:text-zinc-100'>
             <Markdown
                 remarkPlugins={[remarkGfm, remarkAlert, remarkBreaks, remarkHeadingGap]}
                 rehypePlugins={[
@@ -47,11 +46,11 @@ export const DocsViewer: FC = () => {
                                 disabled: true
                             },
                             bottomLink: {
-                                ariaLabel: t('backToTop'),
+                                ariaLabel: t('docViewer.backToTop'),
                                 classes: 'backToTop',
                                 disabled: false,
                                 id: 'backToTop',
-                                text: `${t('backToTop')} ↑`
+                                text: `${t('docViewer.backToTop')} ↑`
                             }
                         }
                     ]

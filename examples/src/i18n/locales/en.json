@@ -166,7 +166,11 @@
         },
         "docViewer": {
             "fileNotFound": "Doc File not found",
-            "loading": "Loading doc file..."
+            "loading": "Loading doc file...",
+            "backToTop": "Back to top"
+        },
+        "search": {
+            "placeholder": "Search documentation..."
         },
         "formResults": {
             "submissionResult": "Form Submission Result",

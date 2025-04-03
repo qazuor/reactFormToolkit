@@ -144,12 +144,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      github-markdown-css:
-        specifier: ^5.8.1
-        version: 5.8.1
-      github.css:
-        specifier: link:highlight.js/styles/github.css
-        version: link:highlight.js/styles/github.css
       i18next:
         specifier: ^23.7.16
         version: 23.16.8
@@ -159,9 +153,9 @@ importers:
       lucide-react:
         specifier: ^0.344.0
         version: 0.344.0(react@18.3.1)
-      prism-themes:
-        specifier: ^1.9.0
-        version: 1.9.0
+      prism-theme-vars:
+        specifier: ^0.2.5
+        version: 0.2.5
       prismjs:
         specifier: ^1.30.0
         version: 1.30.0
@@ -1866,10 +1860,6 @@ packages:
     resolution: {integrity: sha512-VaUJspBffn/LMCJVoMvSAdmscJyS1auj5Zulnn5UoYcY531UWmdwhRWkcGKnGU93m5HSXP9LP2usOryrBtQowA==}
     engines: {node: '>=16'}
 
-  github-markdown-css@5.8.1:
-    resolution: {integrity: sha512-8G+PFvqigBQSWLQjyzgpa2ThD9bo7+kDsriUIidGcRhXgmcaAWUIpCZf8DavJgc+xifjbCG+GvMyWr0XMXmc7g==}
-    engines: {node: '>=10'}
-
   github-slugger@2.0.0:
     resolution: {integrity: sha512-IaOQ9puYtjrkq7Y0Ygl9KDZnrf/aiUJYUpVf89y8kyaxbRG7Y1SrX/jaumrv81vc61+kiMempujsM3Yw7w5qcw==}
 
@@ -2691,8 +2681,8 @@ packages:
     resolution: {integrity: sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  prism-themes@1.9.0:
-    resolution: {integrity: sha512-tX2AYsehKDw1EORwBps+WhBFKc2kxfoFpQAjxBndbZKr4fRmMkv47XN0BghC/K1qwodB1otbe4oF23vUTFDokw==}
+  prism-theme-vars@0.2.5:
+    resolution: {integrity: sha512-/D8gBTScYzi9afwE6v3TC1U/1YFZ6k+ly17mtVRdLpGy7E79YjJJWkXFgUDHJ2gDksV/ZnXF7ydJ4TvoDm2z/Q==}
 
   prismjs@1.30.0:
     resolution: {integrity: sha512-DEvV2ZF2r2/63V+tK8hQvrR2ZGn10srHbXviTlcv7Kpzw8jWiNTqbVgjO3IY8RxrrOUF8VPMQQFysYYYv0YZxw==}
@@ -5026,8 +5016,6 @@ snapshots:
 
   get-stream@8.0.1: {}
 
-  github-markdown-css@5.8.1: {}
-
   github-slugger@2.0.0: {}
 
   glob-parent@5.1.2:
@@ -6105,7 +6093,7 @@ snapshots:
       ansi-styles: 5.2.0
       react-is: 18.3.1
 
-  prism-themes@1.9.0: {}
+  prism-theme-vars@0.2.5: {}
 
   prismjs@1.30.0: {}
 

@@ -3,7 +3,6 @@ import 'prismjs/components/prism-typescript';
 import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-tsx';
 import 'prismjs/components/prism-json';
-import 'prism-themes/themes/prism-ghcolors.css';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Check, ClipboardCopy } from 'lucide-react';
@@ -21,7 +20,7 @@ const nw = new Normalizer({
     'remove-indent': true,
     'left-trim': true,
     'right-trim': true,
-    'break-lines': 80,
+    'break-lines': 120,
     indent: 1,
     'remove-initial-line-feed': false,
     'tabs-to-spaces': 4
@@ -69,7 +68,7 @@ export const CodePreview = ({ code, language = 'tsx' }: Props) => {
                     </>
                 )}
             </Button>
-            <pre className='overflow-auto rounded-md border bg-zinc-50 p-4 text-sm dark:bg-zinc-900'>
+            <pre className='overflow-auto rounded-md border border-zinc-200 pt-4 pb-4 dark:border-zinc-700'>
                 <code
                     className={`language-${language}`}
                     // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>

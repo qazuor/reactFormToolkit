@@ -166,7 +166,11 @@
         },
         "docViewer": {
             "fileNotFound": "Archivo de documentación no encontrado",
-            "loading": "Cargando archivo de documentación..."
+            "loading": "Cargando archivo de documentación...",
+            "backToTop": "Volver al inicio"
+        },
+        "search": {
+            "placeholder": "Buscar documentación..."
         },
         "formResults": {
             "submissionResult": "Resultado de Envío del Formulario",
