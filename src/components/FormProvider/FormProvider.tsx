@@ -68,7 +68,7 @@ export function FormProvider<
 }: FormProviderProps<TFieldValues>): JSX.Element {
     // Get i18n instance from context or create new one
     const { i18n: contextI18n } = useQRFTTranslation({ useSuspense: false });
-    const i18n = i18nOptions?.i18n || contextI18n || i18nUtils.getI18nInstance();
+    const i18nInstance = i18nOptions?.i18n || contextI18n || i18nUtils.getI18nInstance();
 
     const [formState, setFormState] = useState({
         isDirty: false,
@@ -173,11 +173,11 @@ export function FormProvider<
     useEffect(() => {
         // Initialize i18n with current instance and any custom resources
         i18nUtils.initializeI18n({
-            i18n,
+            i18n: i18nInstance,
             resources: i18nOptions?.resources,
             lng: i18nOptions?.lng
         });
-    }, [i18nOptions, i18n]);
+    }, [i18nOptions, i18nInstance]);
 
     // Reset form when defaultValues change
     useEffect(() => {
@@ -246,7 +246,7 @@ export function FormProvider<
     );
 
     return (
-        <I18nextProvider i18n={i18n}>
+        <I18nextProvider i18n={i18nInstance}>
             <TooltipProvider
                 delayDuration={0}
                 skipDelayDuration={0}

@@ -86,10 +86,6 @@ export const i18nUtils = {
             }
         }
 
-        if (options?.lng) {
-            i18nInstance.changeLanguage(options.lng);
-        }
-
         globalI18nInstance = i18nInstance;
         return i18nInstance;
     },
