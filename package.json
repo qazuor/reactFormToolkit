@@ -43,7 +43,7 @@
 	"scripts": {
 		"preinstall": "npx only-allow pnpm",
 		"build": "tsup",
-		"dev": "pnpm run -r --parallel dev",
+		"dev": "pnpm run build && pnpm run -r --parallel dev",
 		"watch": "tsup --watch",
 		"lint": "biome check ./src",
 		"test": "vitest",
