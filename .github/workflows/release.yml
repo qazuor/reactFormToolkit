@@ -1,0 +1,52 @@
+name: Release Library
+
+on:
+  push:
+    tags:
+      - 'v*' # e.g. v1.2.3 o v1.2.3-beta.0
+
+jobs:
+  release:
+    name: Release to NPM
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+
+      - name: Install deps
+        run: pnpm install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Build package
+        run: pnpm build
+
+      - name: Publish to NPM
+        run: |
+          TAG=$(echo "${GITHUB_REF#refs/tags/}" | grep -q "beta" && echo "beta" || echo "latest")
+          pnpm publish --tag "$TAG"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  deploy-docs:
+    name: Trigger Vercel Deployment
+    runs-on: ubuntu-latest
+    needs: release
+    steps:
+      - name: Call Vercel Deploy Hook
+        run: curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}"
+        
