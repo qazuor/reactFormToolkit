@@ -77,6 +77,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     name='name'
                     label='Name'
                     required={true}
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <Input placeholder='Enter your name' />
                 </FormField>
@@ -86,6 +87,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     name='email'
                     label='Email'
                     required={true}
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <Input
                         type='email'
@@ -98,6 +100,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     name='bio'
                     label='Bio'
                     required={true}
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <Textarea
                         placeholder='Tell us about yourself'
@@ -110,6 +113,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     name='role'
                     label='Role'
                     required={true}
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <Select placeholder='Select a role'>
                         <option value='developer'>Developer</option>
@@ -122,6 +126,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                 <FormField
                     name='newsletter'
                     label='Subscribe to newsletter'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <Checkbox>Subscribe to newsletter</Checkbox>
                 </FormField>
@@ -130,6 +135,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                 <FormField
                     name='programmingLanguage'
                     label='Programming Language'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     {({ field }) => {
                         const [inputValue, setInputValue] = useState('');
@@ -231,6 +237,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                 <FormField
                     name='experience'
                     label='Experience Level'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <RadioGroup defaultValue='beginner'>
                         <Stack
@@ -254,6 +261,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                 <FormField
                     name='darkMode'
                     label='Dark Mode'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <FormControl
                         display='flex'

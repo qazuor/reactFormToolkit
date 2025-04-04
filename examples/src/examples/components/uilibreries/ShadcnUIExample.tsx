@@ -1,7 +1,10 @@
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { FormButtonsBar, FormField, FormProvider } from '@qazuor/react-form-toolkit';
 import { useTranslation } from 'react-i18next';
@@ -52,6 +55,7 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     name='name'
                     label='Name'
                     required={true}
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <Input placeholder='Enter your name' />
                 </FormField>
@@ -61,6 +65,7 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     name='email'
                     label='Email'
                     required={true}
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <Input
                         type='email'
@@ -73,8 +78,9 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     name='bio'
                     label='Bio'
                     required={true}
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    <textarea
+                    <Textarea
                         placeholder='Tell us about yourself'
                         style={{ height: '120px', width: '100%' }}
                     />
@@ -85,6 +91,7 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     name='role'
                     label='Role'
                     required={true}
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <Select>
                         <SelectTrigger>
@@ -102,14 +109,22 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                 <FormField
                     name='newsletter'
                     label='Subscribe to newsletter'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    <input type='checkbox' />
+                    <Checkbox id='terms1' />
+                    <Label
+                        htmlFor='terms1'
+                        className='font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                    >
+                        Accept terms and conditions
+                    </Label>
                 </FormField>
 
                 {/* Radio Group */}
                 <FormField
                     name='experience'
                     label='Experience Level'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <RadioGroup>
                         <div>
@@ -117,21 +132,21 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                                 value='beginner'
                                 id='shadcn-beginner'
                             />
-                            <label htmlFor='shadcn-beginner'>Beginner</label>
+                            <Label htmlFor='shadcn-beginner'>Beginner</Label>
                         </div>
                         <div>
                             <RadioGroupItem
                                 value='intermediate'
                                 id='shadcn-intermediate'
                             />
-                            <label htmlFor='shadcn-intermediate'>Intermediate</label>
+                            <Label htmlFor='shadcn-intermediate'>Intermediate</Label>
                         </div>
                         <div>
                             <RadioGroupItem
                                 value='expert'
                                 id='shadcn-expert'
                             />
-                            <label htmlFor='shadcn-expert'>Expert</label>
+                            <Label htmlFor='shadcn-expert'>Expert</Label>
                         </div>
                     </RadioGroup>
                 </FormField>
@@ -140,6 +155,7 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                 <FormField
                     name='frameworks'
                     label='Frameworks'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     {({ field }) => (
                         <ToggleGroup
@@ -159,10 +175,11 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                 <FormField
                     name='darkMode'
                     label='Dark Mode'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <div>
                         <Switch id='shadcn-dark-mode' />
-                        <label htmlFor='shadcn-dark-mode'>Enable Dark Mode</label>
+                        <Label htmlFor='shadcn-dark-mode'>Enable Dark Mode</Label>
                     </div>
                 </FormField>
 

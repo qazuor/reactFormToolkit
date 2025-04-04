@@ -76,6 +76,7 @@ export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
                     name='name'
                     label='Name'
                     required={true}
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <TextField
                         fullWidth={true}
@@ -88,6 +89,7 @@ export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
                     name='email'
                     label='Email'
                     required={true}
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <TextField
                         fullWidth={true}
@@ -101,6 +103,7 @@ export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
                     name='bio'
                     label='Bio'
                     required={true}
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <TextField
                         fullWidth={true}
@@ -115,6 +118,7 @@ export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
                     name='role'
                     label='Role'
                     required={true}
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <Select
                         fullWidth={true}
@@ -130,6 +134,7 @@ export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
                 <FormField
                     name='newsletter'
                     label='Subscribe to newsletter'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <FormControlLabel
                         control={<Checkbox />}
@@ -141,6 +146,7 @@ export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
                 <FormField
                     name='programmingLanguage'
                     label='Programming Language'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <Autocomplete
                         options={programmingLanguages}
@@ -160,6 +166,7 @@ export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
                 <FormField
                     name='startDate'
                     label='Start Date'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
@@ -174,6 +181,7 @@ export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
                 <FormField
                     name='experience'
                     label='Experience Level'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <RadioGroup row={true}>
                         <FormControlLabel
@@ -198,6 +206,7 @@ export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
                 <FormField
                     name='frameworks'
                     label='Frameworks'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     {({ field }) => (
                         <ToggleButtonGroup
@@ -218,6 +227,7 @@ export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
                 <FormField
                     name='darkMode'
                     label='Dark Mode'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <FormControlLabel
                         control={<Switch />}
