@@ -172,7 +172,7 @@
             },
             "uiLibrary": {
                 "title": "Ejemplo de Componentes de Librerías UI",
-                "description": "Un formulario que muestra la integración con librerías UI populares: Shadcn/UI, Material-UI y Chakra UI"
+                "description": "Un formulario que muestra la integración con librerías UI populares: Shadcn/UI, Material-UI y Chakra UI con componentes avanzados como autocompletado, selectores de fecha, interruptores y grupos de botones"
             },
             "conditionalFieldDescription": "Un formulario que demuestra renderizado condicional de campos",
             "dependentFieldTitle": "Ejemplo de Campos Dependientes",

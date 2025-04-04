@@ -152,3 +152,20 @@ Add i18n support:
   {/* ... */}
 </FormProvider>
 ```
+
+### UI Library Integration
+
+Configure the form to work with UI libraries:
+
+```tsx
+<FormProvider
+  uiLibrary={{
+    enabled: true,
+    name: 'material-ui'
+  }}
+>
+  {/* Form fields */}
+</FormProvider>
+```
+
+When `uiLibrary.enabled` is set to `true`, the form will not apply default input styles, allowing the UI library's native styles to be used.

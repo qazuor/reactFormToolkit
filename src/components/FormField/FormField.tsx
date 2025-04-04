@@ -2,6 +2,7 @@ import { FormFieldContext, useFormContext } from '@/context';
 import { FieldArrayContext } from '@/context';
 import { useFieldState, useFieldValidation, useQRFTTranslation } from '@/hooks';
 import { cn, defaultStyles, formUtils, mergeStyles } from '@/lib';
+import { getUiLibraryCompatibleStyles } from '@/lib/ui-library';
 import type { FormFieldProps } from '@/types';
 import { type ReactElement, isValidElement, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import React from 'react';
@@ -39,7 +40,13 @@ export function FormField({
     styleOptions,
     errorDisplayOptions
 }: FormFieldProps): ReactElement {
-    const { form, schema, styleOptions: providerStyles, errorDisplayOptions: providerErrorOptions } = useFormContext();
+    const {
+        form,
+        schema,
+        styleOptions: providerStyles,
+        errorDisplayOptions: providerErrorOptions,
+        uiLibrary
+    } = useFormContext();
     const { t } = useQRFTTranslation();
     const childRef = useRef<HTMLInputElement>(null);
     const arrayContext = useContext(FieldArrayContext);
@@ -57,10 +64,13 @@ export function FormField({
         [providerErrorOptions, errorDisplayOptions]
     );
 
-    const mergedStyles = useMemo(
-        () => mergeStyles(defaultStyles, providerStyles || {}, styleOptions as Record<string, string>),
-        [providerStyles, styleOptions]
-    );
+    // Get the appropriate base styles based on UI library configuration
+    const mergedStyles = useMemo(() => {
+        // If using a UI library, use the modified styles that don't style inputs
+        const baseStyles = uiLibrary?.enabled ? getUiLibraryCompatibleStyles(defaultStyles) : defaultStyles;
+
+        return mergeStyles(baseStyles, providerStyles || {}, styleOptions as Record<string, string>);
+    }, [uiLibrary, providerStyles, styleOptions]);
 
     const isRequired = useMemo(
         () => required ?? formUtils.isFieldRequired(fieldPath, schema),

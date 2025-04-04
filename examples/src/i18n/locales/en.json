@@ -172,7 +172,7 @@
             },
             "uiLibrary": {
                 "title": "UI Library Components Example",
-                "description": "A form showcasing integration with popular UI libraries: Shadcn/UI, Material-UI, and Chakra UI"
+                "description": "A form showcasing integration with popular UI libraries: Shadcn/UI, Material-UI, and Chakra UI with advanced components like autocomplete, date pickers, switches, and toggle groups"
             },
             "conditionalFieldDescription": "A form demonstrating conditional field rendering",
             "dependentFieldTitle": "Dependent Fields Example",

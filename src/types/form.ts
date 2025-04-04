@@ -136,6 +136,11 @@ export interface FormProviderProps<
 
     /** Internationalization options */
     i18n?: I18nOptions;
+
+    /**
+     * UI library integration options
+     */
+    uiLibrary?: UILibraryOptions;
 }
 
 /**
@@ -170,6 +175,24 @@ export interface GlobalErrorOptions {
      * Custom CSS class for the error message container
      */
     className?: string;
+}
+
+/**
+ * Configuration options for UI library integration
+ */
+export interface UILibraryOptions {
+    /**
+     * Whether the form is using a UI library for inputs
+     * When true, default input styles will not be applied
+     * @default false
+     */
+    enabled?: boolean;
+
+    /**
+     * Name of the UI library being used (for logging/debugging)
+     * @example 'material-ui', 'chakra-ui', 'shadcn'
+     */
+    name?: string;
 }
 
 /**
@@ -232,6 +255,11 @@ export type FormContextValue<
      * Global error configuration
      */
     globalErrorOptions?: GlobalErrorOptions;
+
+    /**
+     * UI library integration options
+     */
+    uiLibrary?: UILibraryOptions;
 
     /**
      * Global form error

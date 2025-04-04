@@ -17,7 +17,7 @@ export function FormResult({ result }: FormResultProps) {
     }
 
     return (
-        <div className='fixed right-4 bottom-4 z-50 w-96 rounded-lg border bg-white shadow-lg transition-all'>
+        <div className='fixed right-4 bottom-4 z-50 w-96 rounded-lg border border-gray-200 bg-white shadow-lg transition-all'>
             <div
                 className='flex cursor-pointer items-center justify-between border-b p-3'
                 onClick={() => setIsExpanded(!isExpanded)}

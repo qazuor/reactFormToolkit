@@ -64,6 +64,7 @@ export function FormProvider<
     styleOptions,
     errorDisplayOptions,
     globalErrorOptions,
+    uiLibrary,
     i18n: i18nOptions
 }: FormProviderProps<TFieldValues>): JSX.Element {
     // Get i18n instance from context or create new one
@@ -269,6 +270,7 @@ export function FormProvider<
                         schema: schema as TSchema,
                         errorDisplayOptions,
                         styleOptions: mergedStyles,
+                        uiLibrary,
                         globalErrorOptions,
                         globalError,
                         setGlobalError,

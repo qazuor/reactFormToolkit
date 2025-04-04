@@ -1,5 +1,6 @@
 import { useFormContext } from '@/context';
 import { cn } from '@/lib';
+import { shouldApplyInputStyles } from '@/lib/ui-library';
 import type { UseFieldValidationProps, UseValidationReturn, ValidationState } from '@/types';
 import { t } from 'i18next';
 import { useCallback, useRef, useState } from 'react';
@@ -38,7 +39,7 @@ export function useFieldValidation({
     schema,
     hasError: fieldHasError
 }: UseFieldValidationProps): UseValidationReturn {
-    const { registerAsyncValidation, registerAsyncError } = useFormContext();
+    const { registerAsyncValidation, registerAsyncError, uiLibrary } = useFormContext();
     const [validationState, setValidationState] = useState<ValidationState>({
         hasError: fieldHasError as boolean,
         isValidating: false,
@@ -125,11 +126,14 @@ export function useFieldValidation({
     const inputType = isCheckbox ? 'checkbox' : 'input';
     const baseClasses = mergedStyles.field?.[inputType as keyof typeof mergedStyles.field];
 
+    // Only apply validation state classes if we're not using a UI library
+    const shouldApplyStyles = shouldApplyInputStyles(uiLibrary);
+
     // Build state classes based on validation state
     const stateClasses = cn({
-        [(mergedStyles.field?.isInvalid as string) || '']: validationState.hasError,
-        [(mergedStyles.field?.isValid as string) || '']: !validationState.hasError,
-        [(mergedStyles.field?.isLoading as string) || '']: validationState.isValidating
+        [(mergedStyles.field?.isInvalid as string) || '']: shouldApplyStyles && validationState.hasError,
+        [(mergedStyles.field?.isValid as string) || '']: shouldApplyStyles && !validationState.hasError,
+        [(mergedStyles.field?.isLoading as string) || '']: shouldApplyStyles && validationState.isValidating
     });
 
     return {
