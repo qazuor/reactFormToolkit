@@ -53,6 +53,7 @@ export const i18nUtils = {
     initializeI18n: (options?: I18nOptions): i18n => {
         // Use provided instance or get/create global instance
         const i18nInstance = options?.i18n || i18nUtils.getI18nInstance();
+        const targetLanguage = options?.lng || 'en';
 
         if (!i18nInstance.isInitialized) {
             const resources = options?.resources
@@ -67,8 +68,9 @@ export const i18nUtils = {
                   )
                 : {};
 
+            // Initialize with target language
             i18nInstance.use(initReactI18next).init({
-                lng: options?.lng || 'en',
+                lng: targetLanguage,
                 fallbackLng: 'en',
                 resources: {
                     ...QRFTTranslations,
@@ -84,6 +86,11 @@ export const i18nUtils = {
             for (const [lang, value] of Object.entries(options.resources)) {
                 i18nInstance.addResourceBundle(lang, 'QRFT', value, true, true);
             }
+        }
+
+        // Always ensure language is set correctly
+        if (options?.lng) {
+            i18nInstance.changeLanguage(targetLanguage);
         }
 
         globalI18nInstance = i18nInstance;

@@ -1,8 +1,10 @@
 import { vi } from 'vitest';
 import { QRFTTranslations } from '../../i18n/locales';
 
+const DEFAULT_LANGUAGE = 'en';
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-const resources: Record<string, Record<string, any>> = {};
+let resources: Record<string, Record<string, any>> = {};
+let currentLanguage = DEFAULT_LANGUAGE;
 
 export const getMockI18n = () => {
     const mockI18n = {
@@ -17,13 +19,19 @@ export const getMockI18n = () => {
             }
             return value || key;
         },
-        language: 'en',
+        get language() {
+            return currentLanguage;
+        },
+        set language(value: string) {
+            currentLanguage = value;
+        },
         isInitialized: false,
         use: vi.fn().mockReturnThis(),
         init: vi.fn().mockImplementation((options: { resources?: Record<string, Record<string, string | number>> }) => {
             for (const [lang, namespaces] of Object.entries(options.resources || {})) {
                 resources[lang] = namespaces;
             }
+            currentLanguage = options.lng || DEFAULT_LANGUAGE;
             mockI18n.isInitialized = true;
             return mockI18n;
         }),
@@ -49,13 +57,21 @@ export const getMockI18n = () => {
                 resources[lang][ns] = { ...resources[lang][ns], ...bundle };
             }
         }),
-        changeLanguage: vi.fn(),
+        changeLanguage: vi.fn().mockImplementation((lng: string) => {
+            currentLanguage = lng;
+            return Promise.resolve(currentLanguage);
+        }),
         options: {
             defaultNS: 'translation',
-            fallbackLng: 'en',
+            fallbackLng: DEFAULT_LANGUAGE,
             supportedLngs: ['en', 'es'],
             interpolation: { escapeValue: false }
         }
     };
+
+    // Reset resources for clean state
+    resources = {};
+    currentLanguage = DEFAULT_LANGUAGE;
+
     return mockI18n;
 };

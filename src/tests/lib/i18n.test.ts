@@ -1,27 +1,27 @@
 import type { i18n } from 'i18next';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { i18nUtils } from '../../lib/i18n';
 import type { I18nOptions, ResourceContent } from '../../types/i18n';
 import { getMockI18n } from './i18nMock';
 
 describe('i18nUtils', () => {
-    const resources: Record<string, Record<string, string>> = {};
-
-    const mockI18n = getMockI18n();
+    let mockI18n: ReturnType<typeof getMockI18n>;
 
     beforeEach(() => {
-        // Reset resources and mock state
-        for (const key of Object.keys(resources)) {
-            delete resources[key];
-        }
-        mockI18n.isInitialized = false;
+        // Get a fresh mock i18n instance before each test
+        mockI18n = getMockI18n();
+        // Reset the global i18n instance
+        vi.spyOn(i18nUtils, 'getI18nInstance').mockReturnValue(mockI18n as unknown as i18n);
+    });
+
+    afterEach(() => {
         vi.clearAllMocks();
     });
 
     describe('initializeI18n', () => {
         it('should initialize new i18n instance with default values', () => {
             const i18n = i18nUtils.initializeI18n();
-            expect(i18n.language.split('-')[0]).toBe('en');
+            expect(i18n.language).toBe('en');
         });
 
         it('should merge custom resources with defaults', () => {
@@ -36,8 +36,20 @@ describe('i18nUtils', () => {
         });
 
         it('should use provided language', () => {
-            i18nUtils.initializeI18n({ lng: 'es', i18n: mockI18n as unknown as i18n });
+            const i18n = i18nUtils.initializeI18n({ lng: 'es', i18n: mockI18n as unknown as i18n });
+            expect(i18n.language).toBe('es');
             expect(mockI18n.changeLanguage).toHaveBeenCalledWith('es');
+        });
+
+        it('should persist language change after initialization', async () => {
+            const i18n = i18nUtils.initializeI18n({ i18n: mockI18n as unknown as i18n });
+            expect(i18n.language).toBe('en');
+
+            await i18n.changeLanguage('es');
+            expect(i18n.language).toBe('es');
+
+            const currentLang = i18nUtils.getCurrentLanguage(i18n);
+            expect(currentLang).toBe('es');
         });
 
         it('should add resources to existing instance', () => {
