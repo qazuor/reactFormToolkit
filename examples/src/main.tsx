@@ -6,16 +6,19 @@ import { router } from './routes';
 import './styles/index.css';
 import './styles/markdown-theme.css';
 import './styles/code-theme.css';
+import { ChakraProvider } from '@chakra-ui/react';
 import { I18nextProvider } from 'react-i18next';
 import '@qazuor/react-form-toolkit/animations.css';
 
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <I18nextProvider i18n={i18n}>
-            <Suspense fallback='loading'>
-                <RouterProvider router={router} />
-            </Suspense>
-        </I18nextProvider>
+        <ChakraProvider>
+            <I18nextProvider i18n={i18n}>
+                <Suspense fallback='loading'>
+                    <RouterProvider router={router} />
+                </Suspense>
+            </I18nextProvider>
+        </ChakraProvider>
     </StrictMode>
 );

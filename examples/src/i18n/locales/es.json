@@ -21,7 +21,8 @@
                 "code": "Ejemplo de Código",
                 "conditionalFields": "Campos Condicionales",
                 "dependentFields": "Campos Dependientes",
-                "nativeInputs": "Campos Nativos"
+                "nativeInputs": "Campos Nativos",
+                "uiLibrary": "Librerías UI"
             },
             "footer": {
                 "text": "Hecho con ❤️ por"
@@ -168,6 +169,10 @@
                 "gender_other": "Otro",
                 "gender_prefer_not_to_say": "Prefiero no decir",
                 "avatar": "Foto de Perfil"
+            },
+            "uiLibrary": {
+                "title": "Ejemplo de Componentes de Librerías UI",
+                "description": "Un formulario que muestra la integración con librerías UI populares: Shadcn/UI, Material-UI y Chakra UI"
             },
             "conditionalFieldDescription": "Un formulario que demuestra renderizado condicional de campos",
             "dependentFieldTitle": "Ejemplo de Campos Dependientes",

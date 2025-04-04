@@ -12,6 +12,7 @@ import { GlobalErrors } from '@/examples/global-errors';
 import { I18nForm } from '@/examples/i18n-form';
 import { NativeInputs } from '@/examples/native-inputs';
 import { StyledForm } from '@/examples/styled-form';
+import { UILibrary } from '@/examples/ui-library';
 import { ValidationForm } from '@/examples/validation-form';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -75,6 +76,10 @@ export const router = createBrowserRouter([
             {
                 path: 'examples/native-inputs',
                 element: <NativeInputs />
+            },
+            {
+                path: 'examples/ui-library',
+                element: <UILibrary />
             }
         ]
     }

@@ -89,6 +89,11 @@ export function SidebarContent({ docs }: SidebarContentProps) {
                         text={t('examples.tabs.nativeInputs')}
                         icon={<Code className='h-4 w-4' />}
                     />
+                    <MainNakLink
+                        path='/examples/ui-library'
+                        text={t('examples.tabs.uiLibrary')}
+                        icon={<Code className='h-4 w-4' />}
+                    />
                 </ul>
             </div>
         </div>
