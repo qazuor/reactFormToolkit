@@ -105,7 +105,7 @@ export function FormField({
     const displayError = asyncError || error?.message;
 
     // Handle render function children
-    const renderChildren = (): ReactElement => {
+    const renderChildrenContent = (): ReactElement => {
         if (typeof children === 'function') {
             const fieldProps = {
                 value: form.getValues(fieldPath),
@@ -159,6 +159,7 @@ export function FormField({
         return children;
     };
 
+    // Create context value for field
     const contextValue = useMemo(
         () => ({
             name: fieldPath,
@@ -220,7 +221,80 @@ export function FormField({
     }, [dependsOn, dependencyUpdateCallback, form, name]);
 
     if (typeof children === 'function') {
-        return renderChildren();
+        // For function children, we still want to render the field wrapper with label, description, etc.
+        const showError = !providerErrorOptions?.groupErrors && (!!error || !!asyncError);
+        const isAbove = mergedErrorOptions?.position === 'above';
+        const isRight = mergedErrorOptions?.position === 'right';
+
+        return (
+            <div className={cn(mergedStyles.field?.wrapper)}>
+                <FormFieldContext.Provider value={contextValue}>
+                    {description && descriptionOptions?.position === 'above' && (
+                        <FieldDescription
+                            id={descriptionOptions?.id || `${fieldPath}-description`}
+                            position='above'
+                            className={cn(mergedStyles.field?.description, descriptionOptions?.className)}
+                            role={descriptionOptions?.role}
+                            aria-label={descriptionOptions?.['aria-label']}
+                        >
+                            {description}
+                        </FieldDescription>
+                    )}
+                    {label && (
+                        <FieldLabel
+                            htmlFor={fieldPath}
+                            required={isRequired}
+                            tooltip={tooltip}
+                            tooltipOptions={tooltipOptions}
+                        >
+                            {label}
+                        </FieldLabel>
+                    )}
+                    <div className='relative'>
+                        {showError && isAbove && (
+                            <FieldError
+                                name={fieldPath}
+                                message={displayError}
+                                inputRef={childRef}
+                                options={mergedErrorOptions}
+                            />
+                        )}
+                        <div className={cn(isRight && 'flex items-center gap-2')}>
+                            {renderChildrenContent()}
+                            <FormFieldAsyncValidationIndicator
+                                showValidationIcons={showValidationIcons}
+                                isValidating={asyncValidating}
+                                showLoadingSpinner={showLoadingSpinner}
+                                asyncValidatingStarted={asyncValidatingStarted}
+                                hasError={hasAsyncError}
+                                error={asyncError}
+                                textWhenValidating={textWhenValidating}
+                                textWhenBeforeStartValidating={textWhenBeforeStartValidating}
+                            />
+                            {showError && !isAbove && (
+                                <FieldError
+                                    name={fieldPath}
+                                    message={displayError}
+                                    inputRef={childRef}
+                                    options={mergedErrorOptions}
+                                />
+                            )}
+                        </div>
+                    </div>
+                    {description && (!descriptionOptions?.position || descriptionOptions?.position === 'below') && (
+                        <FieldDescription
+                            id={descriptionOptions?.id || `${fieldPath}-description`}
+                            position='below'
+                            className={descriptionOptions?.className}
+                            role={descriptionOptions?.role}
+                            aria-label={descriptionOptions?.['aria-label']}
+                        >
+                            {description}
+                        </FieldDescription>
+                    )}
+                </FormFieldContext.Provider>
+            </div>
+        );
     }
 
     const showError = !providerErrorOptions?.groupErrors && (!!error || !!asyncError);
@@ -269,7 +343,7 @@ export function FormField({
                             fieldPath={fieldPath}
                             name={name}
                             validate={validate}
-                            children={renderChildren()}
+                            children={renderChildrenContent()}
                             form={form}
                         />
                         <FormFieldAsyncValidationIndicator

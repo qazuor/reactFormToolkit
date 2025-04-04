@@ -117,6 +117,35 @@ describe('FormField', () => {
         expect(input).toHaveAttribute('aria-invalid', 'false');
     });
 
+    it('renders label and description when children is a function', () => {
+        render(
+            <TestWrapper>
+                <FormProvider
+                    schema={schema}
+                    onSubmit={() => {}}
+                >
+                    <FormField
+                        name='testField'
+                        label='Function Field'
+                        description='Field description'
+                    >
+                        {({ field }) => (
+                            <input
+                                type='text'
+                                value={field.value || ''}
+                                onChange={(e) => field.onChange(e.target.value)}
+                                onBlur={field.onBlur}
+                            />
+                        )}
+                    </FormField>
+                </FormProvider>
+            </TestWrapper>
+        );
+
+        expect(screen.getByText('Function Field')).toBeInTheDocument();
+        expect(screen.getByText('Field description')).toBeInTheDocument();
+    });
+
     it('handles non-string error messages', async () => {
         const schema = z.object({
             testField: z.string().min(5, 'Must be at least 5 characters')
