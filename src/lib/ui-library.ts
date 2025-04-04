@@ -1,5 +1,6 @@
 import type { UILibraryOptions } from '@/types';
 import type { FormProviderStyleOptions } from '@/types/styles';
+import { defaultStyles } from './styles';
 
 /**
  * Determines if default input styles should be applied based on UI library configuration.
@@ -20,11 +21,13 @@ export function shouldApplyInputStyles(uiLibrary?: UILibraryOptions): boolean {
  * @param defaultStyles - The default styles object
  * @returns A modified styles object with input-related styles removed
  */
-export function getUiLibraryCompatibleStyles(defaultStyles: FormProviderStyleOptions): FormProviderStyleOptions {
+export function getUiLibraryCompatibleStyles(
+    styles: FormProviderStyleOptions = defaultStyles
+): FormProviderStyleOptions {
     return {
-        ...defaultStyles,
+        ...styles,
         field: {
-            ...defaultStyles.field,
+            ...styles.field,
             // Remove input-specific styles
             input: undefined,
             select: undefined,

@@ -111,13 +111,18 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     label='Subscribe to newsletter'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    <Checkbox id='terms1' />
-                    <Label
-                        htmlFor='terms1'
-                        className='font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
-                    >
-                        Accept terms and conditions
-                    </Label>
+                    <div className='flex items-center space-x-2'>
+                        <Checkbox
+                            id='newsletter-checkbox'
+                            className='h-4 w-4 rounded border-gray-300 text-primary'
+                        />
+                        <Label
+                            htmlFor='newsletter-checkbox'
+                            className='font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                        >
+                            Subscribe to newsletter
+                        </Label>
+                    </div>
                 </FormField>
 
                 {/* Radio Group */}
@@ -177,7 +182,7 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     label='Dark Mode'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    <div>
+                    <div className='flex items-center space-x-2'>
                         <Switch id='shadcn-dark-mode' />
                         <Label htmlFor='shadcn-dark-mode'>Enable Dark Mode</Label>
                     </div>
