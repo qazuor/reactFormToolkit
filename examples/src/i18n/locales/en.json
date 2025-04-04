@@ -20,7 +20,8 @@
                 "fieldArray": "Field Array",
                 "code": "Code Example",
                 "conditionalFields": "Conditional Fields",
-                "dependentFields": "Dependent Fields"
+                "dependentFields": "Dependent Fields",
+                "nativeInputs": "Native Inputs"
             },
             "footer": {
                 "text": "Built with ❤️ by"
@@ -142,6 +143,32 @@
             "fieldArrayTitle": "Field Array Example",
             "fieldArrayDescription": "A form demonstrating dynamic form arrays with validation",
             "conditionalFieldTitle": "Conditional Fields Example",
+            "nativeInputs": {
+                "title": "Native Form Inputs Example",
+                "description": "A form showcasing all native HTML form inputs with validation",
+                "name": "Name",
+                "namePlaceholder": "Enter your name",
+                "email": "Email",
+                "emailPlaceholder": "Enter your email",
+                "bio": "Biography",
+                "bioPlaceholder": "Tell us about yourself",
+                "birthDate": "Birth Date",
+                "country": "Country",
+                "selectCountry": "Select a country",
+                "languages": "Languages",
+                "acceptTerms": "I accept the terms and conditions",
+                "interests": "Interests",
+                "interests_sports": "Sports",
+                "interests_music": "Music",
+                "interests_movies": "Movies",
+                "interests_books": "Books",
+                "gender": "Gender",
+                "gender_male": "Male",
+                "gender_female": "Female",
+                "gender_other": "Other",
+                "gender_prefer_not_to_say": "Prefer not to say",
+                "avatar": "Profile Picture"
+            },
             "conditionalFieldDescription": "A form demonstrating conditional field rendering",
             "dependentFieldTitle": "Dependent Fields Example",
             "dependentFieldDescription": "A form demonstrating dependent field loading and validation",

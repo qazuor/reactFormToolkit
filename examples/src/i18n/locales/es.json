@@ -20,7 +20,8 @@
                 "fieldArray": "Campo Array",
                 "code": "Ejemplo de Código",
                 "conditionalFields": "Campos Condicionales",
-                "dependentFields": "Campos Dependientes"
+                "dependentFields": "Campos Dependientes",
+                "nativeInputs": "Campos Nativos"
             },
             "footer": {
                 "text": "Hecho con ❤️ por"
@@ -142,6 +143,32 @@
             "fieldArrayTitle": "Ejemplo de Campo Array",
             "fieldArrayDescription": "Un formulario que demuestra arrays de formularios dinámicos con validación",
             "conditionalFieldTitle": "Ejemplo de Campos Condicionales",
+            "nativeInputs": {
+                "title": "Ejemplo de Campos Nativos",
+                "description": "Un formulario que muestra todos los campos nativos de HTML con validación",
+                "name": "Nombre",
+                "namePlaceholder": "Ingrese su nombre",
+                "email": "Correo",
+                "emailPlaceholder": "Ingrese su correo",
+                "bio": "Biografía",
+                "bioPlaceholder": "Cuéntanos sobre ti",
+                "birthDate": "Fecha de Nacimiento",
+                "country": "País",
+                "selectCountry": "Seleccione un país",
+                "languages": "Idiomas",
+                "acceptTerms": "Acepto los términos y condiciones",
+                "interests": "Intereses",
+                "interests_sports": "Deportes",
+                "interests_music": "Música",
+                "interests_movies": "Películas",
+                "interests_books": "Libros",
+                "gender": "Género",
+                "gender_male": "Masculino",
+                "gender_female": "Femenino",
+                "gender_other": "Otro",
+                "gender_prefer_not_to_say": "Prefiero no decir",
+                "avatar": "Foto de Perfil"
+            },
             "conditionalFieldDescription": "Un formulario que demuestra renderizado condicional de campos",
             "dependentFieldTitle": "Ejemplo de Campos Dependientes",
             "dependentFieldDescription": "Un formulario que demuestra carga y validación de campos dependientes",

@@ -84,6 +84,11 @@ export function SidebarContent({ docs }: SidebarContentProps) {
                         text={t('examples.tabs.dependentFields')}
                         icon={<Code className='h-4 w-4' />}
                     />
+                    <MainNakLink
+                        path='/examples/native-inputs'
+                        text={t('examples.tabs.nativeInputs')}
+                        icon={<Code className='h-4 w-4' />}
+                    />
                 </ul>
             </div>
         </div>
