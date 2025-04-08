@@ -10,6 +10,7 @@ const handleChange = async <T extends FieldValues>(
     e: React.ChangeEvent<HTMLInputElement>,
     field: ControllerRenderProps<T, Path<T>>,
     isCheckbox: boolean,
+    isMultipleSelect: boolean,
     validate?: (value: unknown) => Promise<void>,
     originalOnChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 ): Promise<void> => {
@@ -17,8 +18,14 @@ const handleChange = async <T extends FieldValues>(
     if (originalOnChange) {
         originalOnChange(e);
     }
+    // const isMultipleSelect = isValidElement(children) && children.props.multiple === true;
 
-    const value = isCheckbox ? e.target.checked : e.target.value;
+    const value = isCheckbox
+        ? e.target.checked
+        : isMultipleSelect
+          ? Array.from((e.target as unknown as HTMLSelectElement).selectedOptions).map((opt) => opt.value)
+          : e.target.value;
+
     field.onChange(value);
 
     // Trigger validation
@@ -54,12 +61,20 @@ export function FieldInput<TFieldValues extends FieldValues, TName extends Path<
     ariaDescribedBy
 }: FieldInputProps): ReactElement {
     const isCheckbox = isValidElement(children) && (children as ReactElement).props.type === 'checkbox';
+    const isMultipleSelect = isValidElement(children) && (children as ReactElement).props.multiple === true;
 
     const onChangeHandler = useCallback(
         async (e: React.ChangeEvent<HTMLInputElement>, field: ControllerRenderProps<TFieldValues, TName>) => {
-            await handleChange(e, field, isCheckbox, validate, (children as ReactElement).props.onChange);
+            await handleChange(
+                e,
+                field,
+                isCheckbox,
+                isMultipleSelect,
+                validate,
+                (children as ReactElement).props.onChange
+            );
         },
-        [isCheckbox, validate, children]
+        [isCheckbox, isMultipleSelect, validate, children]
     );
 
     const onBlurHandler = useCallback(
