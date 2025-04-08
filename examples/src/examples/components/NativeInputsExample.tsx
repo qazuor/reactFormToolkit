@@ -169,28 +169,30 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                 >
                     {({ field }) => (
                         <div className='space-y-2'>
-                            {['sports', 'music', 'movies', 'books'].map((interest) => (
-                                <label
-                                    key={interest}
-                                    className='flex items-center gap-2'
-                                >
-                                    <input
-                                        type='checkbox'
-                                        value={interest}
-                                        checked={field.value?.includes(interest)}
-                                        onChange={(e) => {
-                                            const checked = e.target.checked;
-                                            const value = e.target.value;
-                                            const newValue = checked
-                                                ? [...(field.value || []), value]
-                                                : field.value.filter((v: string) => v !== value);
-                                            field.onChange(newValue);
-                                        }}
-                                        className='h-4 w-4 rounded border-gray-300'
-                                    />
-                                    {t(`form.nativeInputs.interests_${interest}`)}
-                                </label>
-                            ))}
+                            {['sports', 'music', 'movies', 'books'].map((interest) => {
+                                const checked = field.value?.includes(interest);
+                                return (
+                                    <label
+                                        key={interest}
+                                        className='flex items-center gap-2'
+                                    >
+                                        <input
+                                            type='checkbox'
+                                            value={interest}
+                                            checked={checked}
+                                            onChange={(e) => {
+                                                const isChecked = e.target.checked;
+                                                const newValue = isChecked
+                                                    ? [...(field.value || []), interest]
+                                                    : field.value.filter((v: string) => v !== interest);
+                                                field.onChange(newValue);
+                                            }}
+                                            className='h-4 w-4 rounded border-gray-300'
+                                        />
+                                        {t(`form.nativeInputs.interests_${interest}`)}
+                                    </label>
+                                );
+                            })}
                         </div>
                     )}
                 </FormField>
