@@ -60,7 +60,7 @@ export function FormProvider<
     schema,
     defaultValues,
     onSubmit,
-    mode = 'onBlur',
+    mode = 'all',
     styleOptions,
     errorDisplayOptions,
     globalErrorOptions,
