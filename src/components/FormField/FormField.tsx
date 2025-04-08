@@ -6,6 +6,7 @@ import { getUiLibraryCompatibleStyles } from '@/lib/ui-library';
 import type { FormFieldProps } from '@/types';
 import { type ReactElement, isValidElement, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import React from 'react';
+import { Controller } from 'react-hook-form';
 import { FieldDescription } from './FieldDescription';
 import { FieldError } from './FieldError';
 import { FieldInput } from './FieldInput';
@@ -240,6 +241,7 @@ export function FormField({
                             {description}
                         </FieldDescription>
                     )}
+
                     {label && (
                         <FieldLabel
                             htmlFor={fieldPath}
@@ -250,6 +252,7 @@ export function FormField({
                             {label}
                         </FieldLabel>
                     )}
+
                     <div className='relative'>
                         {showError && isAbove && (
                             <FieldError
@@ -259,18 +262,42 @@ export function FormField({
                                 options={mergedErrorOptions}
                             />
                         )}
+
                         <div className={cn(isRight && 'flex items-center gap-2')}>
-                            {renderChildrenContent()}
-                            <FormFieldAsyncValidationIndicator
-                                showValidationIcons={showValidationIcons}
-                                isValidating={asyncValidating}
-                                showLoadingSpinner={showLoadingSpinner}
-                                asyncValidatingStarted={asyncValidatingStarted}
-                                hasError={hasAsyncError}
-                                error={asyncError}
-                                textWhenValidating={textWhenValidating}
-                                textWhenBeforeStartValidating={textWhenBeforeStartValidating}
+                            {/* Aquí montamos el <Controller> en lugar de llamar a children una sola vez */}
+                            <Controller
+                                control={form.control}
+                                name={fieldPath}
+                                render={({ field: rhfField }) => {
+                                    // 'children' es tu función. Le pasamos el field con los handlers y el value actual:
+                                    const rendered = children({
+                                        field: {
+                                            value: rhfField.value,
+                                            onChange: rhfField.onChange,
+                                            onBlur: rhfField.onBlur
+                                        },
+                                        options: dependentOptions,
+                                        isLoading: isLoadingOptions
+                                    });
+
+                                    return (
+                                        <>
+                                            {rendered}
+                                            <FormFieldAsyncValidationIndicator
+                                                showValidationIcons={showValidationIcons}
+                                                isValidating={asyncValidating}
+                                                showLoadingSpinner={showLoadingSpinner}
+                                                asyncValidatingStarted={asyncValidatingStarted}
+                                                hasError={hasAsyncError}
+                                                error={asyncError}
+                                                textWhenValidating={textWhenValidating}
+                                                textWhenBeforeStartValidating={textWhenBeforeStartValidating}
+                                            />
+                                        </>
+                                    );
+                                }}
                             />
+
                             {showError && !isAbove && (
                                 <FieldError
                                     name={fieldPath}
@@ -281,6 +308,7 @@ export function FormField({
                             )}
                         </div>
                     </div>
+
                     {description && (!descriptionOptions?.position || descriptionOptions?.position === 'below') && (
                         <FieldDescription
                             id={descriptionOptions?.id || `${fieldPath}-description`}
