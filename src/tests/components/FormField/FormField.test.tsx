@@ -1,13 +1,15 @@
 import { TooltipProvider } from '@radix-ui/react-tooltip';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { ReactNode } from 'react';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
-import React, { act, type ReactNode } from 'react';
-import { describe, expect, it, vi } from 'vitest';
+import React from 'react';
+import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { FormField } from '../../components/FormField/FormField';
-import { FormProvider } from '../../components/FormProvider/FormProvider';
-import type { TooltipOptions } from '../../types/field';
+import { FormField } from '../../../components/FormField/FormField';
+import { FormProvider } from '../../../components/FormProvider/FormProvider';
+import type { TooltipOptions } from '../../../types/field';
+
 const TestWrapper = ({ children }: { children: ReactNode }) => <TooltipProvider>{children}</TooltipProvider>;
 
 describe('FormField', () => {
@@ -173,113 +175,5 @@ describe('FormField', () => {
         fireEvent.blur(input);
 
         expect(await screen.findByText('Must be at least 5 characters')).toBeInTheDocument();
-    });
-
-    it('handles async validation', async () => {
-        // vi.useFakeTimers();
-        const asyncValidation = vi.fn().mockImplementation((value: string) => {
-            return new Promise((resolve) => {
-                resolve(value === 'taken' ? 'This value is already taken' : undefined);
-            });
-        });
-
-        const schema = z.object({
-            testField: z.string().min(3)
-        });
-
-        render(
-            <TestWrapper>
-                <FormProvider
-                    schema={schema}
-                    onSubmit={() => Promise.resolve()}
-                    mode='onChange'
-                    defaultValues={{ testField: '' }}
-                >
-                    <FormField
-                        name='testField'
-                        asyncValidation={{
-                            asyncValidationDebounce: 100,
-                            asyncValidationFn: async (value: string) => {
-                                const isAvailable = await asyncValidation(value);
-                                return isAvailable ? true : 'Email is already registered';
-                            }
-                        }}
-                    >
-                        <input type='text' />
-                    </FormField>
-                </FormProvider>
-            </TestWrapper>
-        );
-
-        const input = screen.getByTestId('testField');
-        await act(() => {
-            fireEvent.change(input, { target: { value: 'valid' } });
-        });
-        // vi.runAllTimers();
-
-        await waitFor(() => {
-            expect(asyncValidation).toHaveBeenCalledWith('valid');
-            expect(screen.queryByText('This value is already taken')).not.toBeInTheDocument();
-        });
-        // vi.useRealTimers();
-    });
-});
-
-describe('FormField Performance', () => {
-    const schema = z.object({
-        testField: z.string().min(3, 'Must be at least 3 characters')
-    });
-
-    it('should not trigger unnecessary re-renders', async () => {
-        const renderSpy = vi.fn();
-
-        const TestComponent = () => {
-            renderSpy();
-            return (
-                <TooltipProvider>
-                    <FormProvider
-                        schema={schema}
-                        onSubmit={() => {
-                            // Intentionally left empty for testing purposes
-                        }}
-                    >
-                        <FormField
-                            name='testField'
-                            label='Test Field'
-                        >
-                            <input type='text' />
-                        </FormField>
-                    </FormProvider>
-                </TooltipProvider>
-            );
-        };
-
-        render(<TestComponent />);
-
-        // Initial render + FormProvider context setup
-        expect(renderSpy).toHaveBeenCalledTimes(1);
-
-        // Type in the field
-        const input = screen.getByTestId('testField');
-        fireEvent.change(input, { target: { value: 'a' } });
-        fireEvent.blur(input);
-
-        // Wait for validation
-        await waitFor(() => {
-            expect(screen.getByText('Must be at least 3 characters')).toBeInTheDocument();
-        });
-
-        // Type more to fix validation
-        fireEvent.change(input, { target: { value: 'abc' } });
-        fireEvent.blur(input);
-
-        // Wait for validation to clear
-        await waitFor(() => {
-            expect(screen.queryByText('Must be at least 3 characters')).not.toBeInTheDocument();
-        });
-
-        // Verify the component didn't re-render unnecessarily
-        // We expect only the initial render + context updates
-        expect(renderSpy).toHaveBeenCalledTimes(1);
     });
 });

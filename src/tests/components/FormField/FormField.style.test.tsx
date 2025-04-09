@@ -3,9 +3,9 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { FormField } from '../../components/FormField/FormField';
-import { FormProvider } from '../../components/FormProvider/FormProvider';
-import type { FormProviderStyleOptions } from '../../types/styles';
+import { FormField } from '../../../components/FormField/FormField';
+import { FormProvider } from '../../../components/FormProvider/FormProvider';
+import type { FormProviderStyleOptions } from '../../../types/styles';
 
 describe('FormField Styling', () => {
     const schema = z.object({
