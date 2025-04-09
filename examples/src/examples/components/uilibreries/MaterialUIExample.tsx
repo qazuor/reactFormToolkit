@@ -145,21 +145,31 @@ export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
                 {/* Autocomplete */}
                 <FormField
                     name='programmingLanguage'
-                    label='Programming Language'
+                    label='Programming language'
+                    required={true}
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    <Autocomplete
-                        options={programmingLanguages}
-                        getOptionLabel={(option) => (typeof option === 'string' ? option : option.label)}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                placeholder='Select a language'
-                                variant='outlined'
-                                fullWidth={true}
-                            />
-                        )}
-                    />
+                    {({ field }) => (
+                        <Autocomplete
+                            // Usamos un array de strings como opciones
+                            options={['JavaScript', 'Python', 'C#', 'Java', 'Go']}
+                            // Valor actual: field.value
+                            value={field.value || ''}
+                            // Cada vez que el usuario selecciona un valor:
+                            onChange={(_event, newValue) => {
+                                // newValue será un string (o null si borró)
+                                field.onChange(newValue ?? '');
+                            }}
+                            // MUI necesita renderizar un <TextField> para mostrar
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label='Programming language'
+                                    variant='outlined'
+                                />
+                            )}
+                        />
+                    )}
                 </FormField>
 
                 {/* Date Picker */}
