@@ -267,12 +267,10 @@ export function FormField({
                         )}
 
                         <div className={cn(isRight && 'flex items-center gap-2')}>
-                            {/* Aquí montamos el <Controller> en lugar de llamar a children una sola vez */}
                             <Controller
                                 control={form.control}
                                 name={fieldPath}
                                 render={({ field: rhfField }) => {
-                                    // 'children' es tu función. Le pasamos el field con los handlers y el value actual:
                                     const rendered = children({
                                         field: {
                                             value: rhfField.value,
