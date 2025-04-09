@@ -153,7 +153,7 @@ export function FormField({
             isErrorRight={isErrorRight}
             childRef={childRef}
             contextValue={contextValue}
-            wrapperClassName={mergedStyles.field?.wrapper}
+            wrapperClassName={cn(mergedStyles.field?.wrapper)}
             asyncValidationProps={{
                 showValidationIcons,
                 isValidating: asyncValidating,
