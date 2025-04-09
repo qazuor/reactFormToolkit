@@ -101,7 +101,7 @@ export function FieldInput<TFieldValues extends FieldValues, TName extends Path<
     description,
     validate,
     childRef,
-    className,
+    className = '',
     ariaInvalid,
     ariaDescribedBy
 }: FieldInputProps): ReactElement {

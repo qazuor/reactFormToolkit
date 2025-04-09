@@ -1,22 +1,18 @@
-import { FormFieldContext, useFormContext } from '@/context';
-import { FieldArrayContext } from '@/context';
+import { FieldArrayContext, useFormContext } from '@/context';
 import { useFieldState, useFieldValidation } from '@/hooks';
 import { cn, defaultStyles, formUtils, mergeStyles } from '@/lib';
 import { getUiLibraryCompatibleStyles } from '@/lib/ui-library';
 import type { FormFieldProps } from '@/types';
-import { type ReactElement, isValidElement, useContext, useEffect, useMemo, useRef } from 'react';
-import { Controller } from 'react-hook-form';
-import { FieldDescription } from './FieldDescription';
-import { FieldError } from './FieldError';
-import { FieldInput } from './FieldInput';
-import { FieldLabel } from './FieldLabel';
-import { FormFieldAsyncValidationIndicator } from './FormFieldAsyncValidationIndicator';
+import { type ReactElement, useContext, useEffect, useMemo, useRef } from 'react';
+import { isValidElement } from 'react';
+import { FormFieldRenderer } from './FormFieldRenderer';
 
 /**
  * FormField component for rendering form inputs with validation
+ * This component handles state management and validation logic
  *
  * @param {FormFieldProps} props - Component props
- * @returns {ReactElement} Form f`ield component
+ * @returns {ReactElement} Form field component
  *
  * @example
  * ```tsx
@@ -117,157 +113,6 @@ export function FormField({
         [fieldPath, form]
     );
 
-    // Render the input element based on children type
-    const renderInput = (): ReactElement => {
-        if (typeof children === 'function') {
-            // For function children, use Controller to handle field state
-            return (
-                <Controller
-                    control={form.control}
-                    name={fieldPath}
-                    render={({ field: rhfField }) => {
-                        const rendered = children({
-                            field: {
-                                value: rhfField.value,
-                                onChange: rhfField.onChange,
-                                onBlur: rhfField.onBlur
-                            }
-                        });
-
-                        return (
-                            <>
-                                {rendered}
-                                <FormFieldAsyncValidationIndicator
-                                    showValidationIcons={showValidationIcons}
-                                    isValidating={asyncValidating}
-                                    showLoadingSpinner={showLoadingSpinner}
-                                    asyncValidatingStarted={asyncValidatingStarted}
-                                    hasError={hasAsyncError}
-                                    error={asyncError || undefined}
-                                    textWhenValidating={textWhenValidating}
-                                    textWhenBeforeStartValidating={textWhenBeforeStartValidating}
-                                />
-                            </>
-                        );
-                    }}
-                />
-            );
-        }
-
-        // For regular children (React elements)
-        // Ensure children is a ReactElement
-        if (!isValidElement(children)) {
-            return <>{children}</>;
-        }
-
-        return children;
-    };
-
-    // Render the field with all its parts (label, input, description, error)
-    const renderField = () => {
-        const showError = !providerErrorOptions?.groupErrors && (!!error || !!asyncError);
-        const isAbove = mergedErrorOptions?.position === 'above';
-        const isRight = mergedErrorOptions?.position === 'right';
-
-        return (
-            <div className={cn(mergedStyles.field?.wrapper)}>
-                <FormFieldContext.Provider value={contextValue}>
-                    {/* Description (above) */}
-                    {description && descriptionOptions?.position === 'above' && (
-                        <FieldDescription
-                            id={descriptionOptions?.id || `${fieldPath}-description`}
-                            position='above'
-                            className={cn(mergedStyles.field?.description, descriptionOptions?.className)}
-                            role={descriptionOptions?.role}
-                            aria-label={descriptionOptions?.['aria-label']}
-                        >
-                            {description}
-                        </FieldDescription>
-                    )}
-
-                    {/* Label */}
-                    {label && (
-                        <FieldLabel
-                            htmlFor={fieldPath}
-                            required={isRequired}
-                            tooltip={tooltip}
-                            tooltipOptions={tooltipOptions}
-                        >
-                            {label}
-                        </FieldLabel>
-                    )}
-
-                    <div className='relative'>
-                        {/* Error (above) */}
-                        {showError && isAbove && (
-                            <FieldError
-                                name={fieldPath}
-                                message={displayError}
-                                inputRef={childRef}
-                                options={mergedErrorOptions}
-                            />
-                        )}
-
-                        <div className={cn(isRight && 'flex items-center gap-2')}>
-                            {/* Input */}
-                            {typeof children === 'function' ? (
-                                renderInput()
-                            ) : (
-                                <>
-                                    <FieldInput
-                                        className={cn(mergedStyles.field?.input, className)}
-                                        ariaInvalid={ariaInvalid}
-                                        ariaDescribedBy={ariaDescribedBy}
-                                        childRef={childRef}
-                                        fieldPath={fieldPath}
-                                        name={name}
-                                        validate={validate}
-                                        children={renderInput()}
-                                        form={form}
-                                        description={description}
-                                    />
-                                    <FormFieldAsyncValidationIndicator
-                                        showValidationIcons={showValidationIcons}
-                                        isValidating={asyncValidating}
-                                        showLoadingSpinner={showLoadingSpinner}
-                                        asyncValidatingStarted={asyncValidatingStarted}
-                                        hasError={hasAsyncError}
-                                        error={asyncError}
-                                        textWhenValidating={textWhenValidating}
-                                        textWhenBeforeStartValidating={textWhenBeforeStartValidating}
-                                    />
-                                </>
-                            )}
-
-                            {/* Error (right or below) */}
-                            {showError && !isAbove && (
-                                <FieldError
-                                    name={fieldPath}
-                                    message={displayError}
-                                    inputRef={childRef}
-                                    options={mergedErrorOptions}
-                                />
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Description (below) */}
-                    {description && (!descriptionOptions?.position || descriptionOptions?.position === 'below') && (
-                        <FieldDescription
-                            id={descriptionOptions?.id || `${fieldPath}-description`}
-                            position='below'
-                            className={cn(mergedStyles.field?.description, descriptionOptions?.className)}
-                            role={descriptionOptions?.role}
-                            aria-label={descriptionOptions?.['aria-label']}
-                        >
-                            {description}
-                        </FieldDescription>
-                    )}
-                </FormFieldContext.Provider>
-            </div>
-        );
-    };
-
     // Effect to force revalidation when the value changes
     useEffect(() => {
         const subscription = form.watch((_value, { name: fieldName }) => {
@@ -284,6 +129,47 @@ export function FormField({
         return () => subscription.unsubscribe();
     }, [form, name, isTouched]);
 
-    // Return the unified field rendering
-    return renderField();
+    // Determine error display settings
+    const showError = !providerErrorOptions?.groupErrors && (!!error || !!asyncError);
+    const isErrorAbove = mergedErrorOptions?.position === 'above';
+    const isErrorRight = mergedErrorOptions?.position === 'right';
+
+    // Return the renderer component with all necessary props
+    return (
+        <FormFieldRenderer
+            fieldPath={fieldPath}
+            name={name}
+            label={label}
+            isRequired={isRequired}
+            description={description}
+            descriptionOptions={descriptionOptions}
+            tooltip={tooltip}
+            tooltipOptions={tooltipOptions}
+            children={children}
+            showError={showError}
+            displayError={displayError}
+            errorOptions={mergedErrorOptions}
+            isErrorAbove={isErrorAbove}
+            isErrorRight={isErrorRight}
+            childRef={childRef}
+            contextValue={contextValue}
+            wrapperClassName={mergedStyles.field?.wrapper}
+            asyncValidationProps={{
+                showValidationIcons,
+                isValidating: asyncValidating,
+                showLoadingSpinner,
+                asyncValidatingStarted,
+                hasError: hasAsyncError,
+                error: asyncError,
+                textWhenValidating,
+                textWhenBeforeStartValidating
+            }}
+            inputProps={{
+                className: cn(mergedStyles.field?.input, className),
+                ariaInvalid,
+                ariaDescribedBy,
+                validate
+            }}
+        />
+    );
 }

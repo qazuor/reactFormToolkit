@@ -221,3 +221,127 @@ export interface FormFieldProps {
 }
 
 export interface FormFieldComponent extends React.FC<FormFieldProps>, FormFieldComposition {}
+
+/**
+ * Props for the FormFieldRenderer component
+ */
+export interface FormFieldRendererProps {
+    /**
+     * Field path in the form
+     */
+    fieldPath: string;
+
+    /**
+     * Field name
+     */
+    name: string;
+
+    /**
+     * Field label
+     */
+    label?: string;
+
+    /**
+     * Whether the field is required
+     */
+    isRequired: boolean;
+
+    /**
+     * Field description
+     */
+    description?: string | ReactNode;
+
+    /**
+     * Description configuration options
+     */
+    descriptionOptions?: DescriptionOptions;
+
+    /**
+     * Tooltip text
+     */
+    tooltip?: string;
+
+    /**
+     * Tooltip configuration options
+     */
+    tooltipOptions?: TooltipOptions;
+
+    /**
+     * Input element or render function
+     */
+    children:
+        | ReactNode
+        | ((props: {
+              field: {
+                  value: any;
+                  onChange: (value: any) => void;
+                  onBlur: () => void;
+              };
+              options?: Array<{ value: string; label: string }>;
+              isLoading?: boolean;
+          }) => ReactNode);
+
+    /**
+     * Whether to show error
+     */
+    showError: boolean;
+
+    /**
+     * Error message to display
+     */
+    displayError?: string;
+
+    /**
+     * Error display options
+     */
+    errorOptions: Partial<ErrorDisplayOptions>;
+
+    /**
+     * Whether error position is above
+     */
+    isErrorAbove: boolean;
+
+    /**
+     * Whether error position is right
+     */
+    isErrorRight: boolean;
+
+    /**
+     * Reference to input element
+     */
+    childRef: RefObject<HTMLInputElement>;
+
+    /**
+     * Form context value
+     */
+    contextValue: FormFieldContextValue;
+
+    /**
+     * CSS class for the wrapper
+     */
+    wrapperClassName?: string | null | undefined;
+
+    /**
+     * Async validation indicator props
+     */
+    asyncValidationProps: {
+        showValidationIcons: boolean;
+        isValidating: boolean;
+        showLoadingSpinner: boolean;
+        asyncValidatingStarted: boolean;
+        hasError: boolean;
+        error?: string;
+        textWhenValidating?: string;
+        textWhenBeforeStartValidating?: string;
+    };
+
+    /**
+     * Input props
+     */
+    inputProps: {
+        className?: string;
+        ariaInvalid: boolean;
+        ariaDescribedBy?: string;
+        validate?: (value: unknown) => Promise<void>;
+    };
+}
