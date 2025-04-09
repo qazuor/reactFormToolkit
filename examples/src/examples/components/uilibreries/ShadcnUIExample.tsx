@@ -1,13 +1,19 @@
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { FormButtonsBar, FormField, FormProvider } from '@qazuor/react-form-toolkit';
-import { useTranslation } from 'react-i18next';
+import { FormButtonsBar, FormField, FormProvider, cn } from '@qazuor/react-form-toolkit';
+import { format } from 'date-fns';
+import { CalendarIcon, Check, ChevronsUpDown } from 'lucide-react';
+import { useState } from 'react';
 import { z } from 'zod';
 
 const schema = z.object({
@@ -15,8 +21,9 @@ const schema = z.object({
     email: z.string().email('Invalid email address'),
     bio: z.string().min(10, 'Bio must be at least 10 characters'),
     role: z.string().min(1, 'Please select a role'),
+    status: z.string().min(1, 'Please select a status'),
+    startDate: z.any().optional(),
     newsletter: z.boolean(),
-    programmingLanguage: z.string().optional(),
     frameworks: z.array(z.string()).optional(),
     experience: z.string().optional(),
     darkMode: z.boolean().optional()
@@ -26,12 +33,22 @@ interface ShadcnUIExampleProps {
     setResult: (data: Record<string, unknown> | null) => void;
 }
 
-export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
-    const { t } = useTranslation();
+const statuses: Status[] = [
+    { value: 'backlog', label: 'Backlog' },
+    { value: 'todo', label: 'Todo' },
+    { value: 'in progress', label: 'In Progress' },
+    { value: 'done', label: 'Done' },
+    { value: 'canceled', label: 'Canceled' }
+];
 
+export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
     const handleSubmit = async (data: z.infer<typeof schema>) => {
         setResult(data);
     };
+
+    const [date, setDate] = useState<Date>();
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState('');
 
     return (
         <div className='space-y-4'>
@@ -44,7 +61,6 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     bio: '',
                     role: '',
                     newsletter: false,
-                    programmingLanguage: '',
                     frameworks: [],
                     experience: '',
                     darkMode: false
@@ -93,22 +109,110 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     required={true}
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    <Select>
-                        <SelectTrigger>
-                            <SelectValue placeholder='Select a role' />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value='developer'>Developer</SelectItem>
-                            <SelectItem value='designer'>Designer</SelectItem>
-                            <SelectItem value='manager'>Manager</SelectItem>
-                        </SelectContent>
-                    </Select>
+                    {({ field }) => (
+                        <Select
+                            onValueChange={field.onChange}
+                            value={field.value}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder='Select a role' />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value='developer'>Developer</SelectItem>
+                                <SelectItem value='designer'>Designer</SelectItem>
+                                <SelectItem value='manager'>Manager</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    )}
+                </FormField>
+
+                {/* Autocomplete combobox */}
+                <FormField
+                    name='status'
+                    label='Status'
+                    required={true}
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                >
+                    <Popover
+                        open={open}
+                        onOpenChange={setOpen}
+                    >
+                        <PopoverTrigger asChild={true}>
+                            <Button
+                                variant='outline'
+                                role='combobox'
+                                aria-expanded={open}
+                                className='w-[200px] justify-between'
+                            >
+                                {value ? statuses.find((status) => status.value === value)?.label : 'Select Status...'}
+                                <ChevronsUpDown className='opacity-50' />
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className='w-[200px] p-0'>
+                            <Command>
+                                <CommandInput placeholder='Search Status...' />
+                                <CommandList>
+                                    <CommandEmpty>No status found.</CommandEmpty>
+                                    <CommandGroup>
+                                        {statuses.map((status) => (
+                                            <CommandItem
+                                                key={status.value}
+                                                value={status.value}
+                                                onSelect={(currentValue) => {
+                                                    setValue(currentValue === value ? '' : currentValue);
+                                                    setOpen(false);
+                                                }}
+                                            >
+                                                {status.label}
+                                                <Check
+                                                    className={cn(
+                                                        'ml-auto',
+                                                        value === status.value ? 'opacity-100' : 'opacity-0'
+                                                    )}
+                                                />
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                </CommandList>
+                            </Command>
+                        </PopoverContent>
+                    </Popover>
+                </FormField>
+
+                {/* Date Picker Input */}
+                <FormField
+                    name='startDate'
+                    label='Start Date'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                >
+                    <Popover>
+                        <PopoverTrigger asChild={true}>
+                            <Button
+                                variant='outline'
+                                className={cn(
+                                    'w-[280px] justify-start text-left font-normal',
+                                    !date && 'text-muted-foreground'
+                                )}
+                            >
+                                <CalendarIcon className='mr-2 h-4 w-4' />
+                                {date ? format(date, 'PPP') : <span>Pick a date</span>}
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className='w-auto p-0'>
+                            <Calendar
+                                mode='single'
+                                selected={date}
+                                onSelect={setDate}
+                                initialFocus={true}
+                            />
+                        </PopoverContent>
+                    </Popover>
                 </FormField>
 
                 {/* Checkbox */}
                 <FormField
                     name='newsletter'
-                    label='Subscribe to newsletter'
+                    label='Newsletter'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <div className='flex items-center space-x-2'>
@@ -131,29 +235,26 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     label='Experience Level'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    <RadioGroup>
-                        <div>
-                            <RadioGroupItem
-                                value='beginner'
-                                id='shadcn-beginner'
-                            />
-                            <Label htmlFor='shadcn-beginner'>Beginner</Label>
-                        </div>
-                        <div>
-                            <RadioGroupItem
-                                value='intermediate'
-                                id='shadcn-intermediate'
-                            />
-                            <Label htmlFor='shadcn-intermediate'>Intermediate</Label>
-                        </div>
-                        <div>
-                            <RadioGroupItem
-                                value='expert'
-                                id='shadcn-expert'
-                            />
-                            <Label htmlFor='shadcn-expert'>Expert</Label>
-                        </div>
-                    </RadioGroup>
+                    {({ field }) => (
+                        <RadioGroup
+                            onValueChange={field.onChange}
+                            value={field.value}
+                        >
+                            {['beginner', 'intermediate', 'expert'].map((value) => (
+                                <div
+                                    key={value}
+                                    className='flex items-center space-x-2'
+                                >
+                                    <RadioGroupItem
+                                        value={value}
+                                        id={`shadcn-${value}`}
+                                        checked={field.value === value}
+                                    />
+                                    <Label htmlFor={`shadcn-${value}`}>{value}</Label>
+                                </div>
+                            ))}
+                        </RadioGroup>
+                    )}
                 </FormField>
 
                 {/* Toggle Group */}
@@ -182,9 +283,11 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     label='Dark Mode'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    <div className='flex items-center space-x-2'>
-                        <Switch id='shadcn-dark-mode' />
-                        <Label htmlFor='shadcn-dark-mode'>Enable Dark Mode</Label>
+                    <div>
+                        <div className='flex items-center space-x-2'>
+                            <Switch id='shadcn-dark-mode' />
+                            <Label htmlFor='shadcn-dark-mode'>Enable Dark Mode</Label>
+                        </div>
                     </div>
                 </FormField>
 
