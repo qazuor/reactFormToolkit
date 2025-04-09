@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { FormButtonsBar, FormField, FormProvider, cn } from '@qazuor/react-form-toolkit';
+import { cn, FormButtonsBar, FormField, FormProvider } from '@qazuor/react-form-toolkit';
 import { format } from 'date-fns';
 import { CalendarIcon, Check, ChevronsUpDown } from 'lucide-react';
 import { useState } from 'react';
