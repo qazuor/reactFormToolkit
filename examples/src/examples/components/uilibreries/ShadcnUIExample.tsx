@@ -33,7 +33,7 @@ interface ShadcnUIExampleProps {
     setResult: (data: Record<string, unknown> | null) => void;
 }
 
-const statuses: Status[] = [
+const statuses = [
     { value: 'backlog', label: 'Backlog' },
     { value: 'todo', label: 'Todo' },
     { value: 'in progress', label: 'In Progress' },
