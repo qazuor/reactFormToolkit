@@ -70,7 +70,10 @@ export function FormField({
         // If using a UI library, use the modified styles that don't style inputs
         const baseStyles = uiLibrary?.enabled ? getUiLibraryCompatibleStyles(defaultStyles) : defaultStyles;
 
-        return mergeStyles(baseStyles, providerStyles || {}, styleOptions as Record<string, string>);
+        const filteredProviderStyles = uiLibrary?.enabled
+            ? getUiLibraryCompatibleStyles(providerStyles)
+            : providerStyles;
+        return mergeStyles(baseStyles, filteredProviderStyles || {}, styleOptions as Record<string, string>);
     }, [uiLibrary, providerStyles, styleOptions]);
 
     const isRequired = useMemo(
