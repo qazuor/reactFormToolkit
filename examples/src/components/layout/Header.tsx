@@ -43,9 +43,16 @@ export function Header({ docs, searchQuery, setSearchQuery }: HeaderProps) {
                         className='flex items-center gap-4'
                     >
                         <img
-                            src='/logo.webp'
+                            className={theme === 'dark' ? 'hidden' : 'inline-block'}
+                            width={150}
                             alt='Qazuor React Form Toolkit'
-                            className='h-10 w-auto'
+                            src='/logo-transparent.png'
+                        />
+                        <img
+                            className={theme === 'light' ? 'hidden' : 'inline-block'}
+                            width={150}
+                            alt='Qazuor React Form Toolkit'
+                            src='/logo-transparent-dark.png'
                         />
                     </Link>
                 </div>

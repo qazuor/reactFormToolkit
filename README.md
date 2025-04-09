@@ -1,8 +1,5 @@
-<p align="center">
-  <img src="/logo.webp" alt="Qazuor React Form Toolkit" width="300" />
-</p>
 
-A comprehensive React form management library built with React Hook Form and Zod.
+# A comprehensive React form management library built with React Hook Form and Zod.
 
 > [!CAUTION]
 > **Do not use** in production environments. This package is currently in development, and we do not have an alpha version yet.
