@@ -59,5 +59,5 @@ export function ConditionalFieldGroup<
 
     // Get the content to render based on the current value
     const contentToRender = conditions[currentValue] || fallback;
-    return <div className={cn(className)}>{contentToRender}</div>;
+    return <div className={cn('space-y-2', className)}>{contentToRender}</div>;
 }
