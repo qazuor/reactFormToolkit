@@ -48,28 +48,6 @@ const checkProjectName = async (name: string): Promise<boolean> => {
     return !['test', 'demo', 'example'].includes(name.toLowerCase());
 };
 
-const getFrameworksByLanguage = async (language: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    const frameworks = {
-        javascript: [
-            { value: 'react', label: 'React' },
-            { value: 'vue', label: 'Vue' },
-            { value: 'angular', label: 'Angular' }
-        ],
-        python: [
-            { value: 'django', label: 'Django' },
-            { value: 'flask', label: 'Flask' },
-            { value: 'fastapi', label: 'FastAPI' }
-        ],
-        java: [
-            { value: 'spring', label: 'Spring' },
-            { value: 'quarkus', label: 'Quarkus' },
-            { value: 'micronaut', label: 'Micronaut' }
-        ]
-    };
-    return frameworks[language as keyof typeof frameworks] || [];
-};
-
 const customStyles = {
     field: {
         wrapper: 'space-y-2',
@@ -222,52 +200,15 @@ export function ComplexFormExample({ setResult }: ComplexFormProps) {
                             label='Primary Language'
                             required={true}
                         >
-                            <select>
+                            <select className='w-full rounded-md border px-3 py-2'>
                                 <option value=''>Select Language</option>
                                 <option value='javascript'>JavaScript</option>
+                                <option value='typescript'>TypeScript</option>
                                 <option value='python'>Python</option>
                                 <option value='java'>Java</option>
+                                <option value='csharp'>C#</option>
+                                <option value='go'>Go</option>
                             </select>
-                        </FormField>
-
-                        <FormField
-                            name='frameworks'
-                            label='Frameworks'
-                            required={true}
-                            dependsOn='primaryLanguage'
-                            dependencyUpdateCallback={getFrameworksByLanguage}
-                        >
-                            {({ field, options = [], isLoading }) => (
-                                <div className='space-y-2'>
-                                    {isLoading ? (
-                                        <div className='text-gray-500'>Loading frameworks...</div>
-                                    ) : (
-                                        options.map((opt) => (
-                                            <label
-                                                key={opt.value}
-                                                className='flex items-center gap-2'
-                                            >
-                                                <input
-                                                    type='checkbox'
-                                                    value={opt.value}
-                                                    checked={field.value?.includes(opt.value)}
-                                                    onChange={(e) => {
-                                                        const checked = e.target.checked;
-                                                        const value = opt.value;
-                                                        const newValue = checked
-                                                            ? [...(field.value || []), value]
-                                                            : field.value.filter((v: string) => v !== value);
-                                                        field.onChange(newValue);
-                                                    }}
-                                                    onBlur={field.onBlur}
-                                                    className='h-4 w-4 rounded border-gray-300 text-blue-600'
-                                                />
-                                                <span>{opt.label}</span>
-                                            </label>
-                                        ))
-                                    )}
-                                </div>
-                            )}
                         </FormField>
                     </div>
                 </div>

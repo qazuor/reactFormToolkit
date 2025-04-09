@@ -5,7 +5,6 @@ import { AsyncValidation } from '@/examples/async-validation';
 import { BasicForm } from '@/examples/basic-form';
 import { ComplexForm } from '@/examples/complex-form';
 import { ConditionalFieldForm } from '@/examples/conditional-field-form';
-import { DependentFields } from '@/examples/dependent-field';
 import { ErrorsForm } from '@/examples/errors-form';
 import { FieldArrayForm } from '@/examples/field-array';
 import { GlobalErrors } from '@/examples/global-errors';
@@ -68,10 +67,6 @@ export const router = createBrowserRouter([
             {
                 path: 'examples/conditional-field',
                 element: <ConditionalFieldForm />
-            },
-            {
-                path: 'examples/dependent-fields',
-                element: <DependentFields />
             },
             {
                 path: 'examples/native-inputs',

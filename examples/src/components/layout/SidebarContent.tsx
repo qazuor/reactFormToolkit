@@ -80,11 +80,6 @@ export function SidebarContent({ docs }: SidebarContentProps) {
                         icon={<Code className='h-4 w-4' />}
                     />
                     <MainNakLink
-                        path='/examples/dependent-fields'
-                        text={t('examples.tabs.dependentFields')}
-                        icon={<Code className='h-4 w-4' />}
-                    />
-                    <MainNakLink
                         path='/examples/native-inputs'
                         text={t('examples.tabs.nativeInputs')}
                         icon={<Code className='h-4 w-4' />}

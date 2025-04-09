@@ -4,8 +4,7 @@ import { useFieldState, useFieldValidation, useQRFTTranslation } from '@/hooks';
 import { cn, defaultStyles, formUtils, mergeStyles } from '@/lib';
 import { getUiLibraryCompatibleStyles } from '@/lib/ui-library';
 import type { FormFieldProps } from '@/types';
-import { type ReactElement, isValidElement, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import React from 'react';
+import { type ReactElement, isValidElement, useContext, useEffect, useMemo, useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { FieldDescription } from './FieldDescription';
 import { FieldError } from './FieldError';
@@ -30,8 +29,6 @@ export function FormField({
     name,
     label,
     required,
-    dependsOn,
-    dependencyUpdateCallback,
     asyncValidation,
     children,
     description,
@@ -52,8 +49,6 @@ export function FormField({
     const childRef = useRef<HTMLInputElement>(null);
     const arrayContext = useContext(FieldArrayContext);
     const previousValueRef = useRef<unknown>();
-    const [dependentOptions, setDependentOptions] = useState<Array<{ value: string; label: string }>>([]);
-    const [isLoadingOptions, setIsLoadingOptions] = useState(false);
 
     // Get the full field path considering array context
     const fieldPath = arrayContext ? `${arrayContext.name}.${arrayContext.index}.${name}` : name;
@@ -137,9 +132,7 @@ export function FormField({
                                 value: rhfField.value,
                                 onChange: rhfField.onChange,
                                 onBlur: rhfField.onBlur
-                            },
-                            options: dependentOptions,
-                            isLoading: isLoadingOptions
+                            }
                         });
 
                         return (
@@ -163,32 +156,6 @@ export function FormField({
         }
 
         // For regular children (React elements)
-        if (dependsOn && isValidElement(children) && children.type === 'select') {
-            // Handle select fields with dependencies
-            const fieldProps = {
-                ...children.props,
-                disabled: isLoadingOptions || dependentOptions.length === 0,
-                'aria-busy': isLoadingOptions,
-                children: [
-                    <option
-                        key='placeholder'
-                        value=''
-                    >
-                        {t('form.selectOption')}
-                    </option>,
-                    ...dependentOptions.map(({ value, label }) => (
-                        <option
-                            key={value}
-                            value={value}
-                        >
-                            {label}
-                        </option>
-                    ))
-                ]
-            };
-            return React.cloneElement(children, fieldProps);
-        }
-
         // Ensure children is a ReactElement
         if (!isValidElement(children)) {
             return <>{children}</>;
@@ -317,42 +284,6 @@ export function FormField({
 
         return () => subscription.unsubscribe();
     }, [form, name, isTouched]);
-
-    // Handle dependency updates
-    useEffect(() => {
-        if (dependsOn && dependencyUpdateCallback) {
-            const subscription = form.watch((_value, { name: changedField }) => {
-                if (changedField === dependsOn) {
-                    const dependencyValue = form.getValues(dependsOn);
-                    if (dependencyValue) {
-                        setIsLoadingOptions(true);
-                        dependencyUpdateCallback(dependencyValue)
-                            .then((options) => {
-                                setDependentOptions(options);
-                                // Clear current value when dependency changes
-                                form.setValue(name, '');
-                                form.trigger(name).catch(console.error);
-                            })
-                            .catch(() => {
-                                // Handle error
-                                setDependentOptions([]);
-                                form.setValue(name, '');
-                                form.trigger(name).catch(console.error);
-                            })
-                            .finally(() => {
-                                setIsLoadingOptions(false);
-                            });
-                    } else {
-                        setDependentOptions([]);
-                        form.setValue(name, '');
-                        form.trigger(name).catch(console.error);
-                    }
-                }
-            });
-
-            return () => subscription.unsubscribe();
-        }
-    }, [dependsOn, dependencyUpdateCallback, form, name]);
 
     // Return the unified field rendering
     return renderField();

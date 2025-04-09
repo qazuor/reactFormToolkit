@@ -218,16 +218,6 @@ export interface FormFieldProps {
      * Optional async validation props
      */
     asyncValidation?: AsyncValidationProps;
-
-    /**
-     * Name of the field this field depends on
-     */
-    dependsOn?: string;
-
-    /**
-     * Callback to update options when dependency changes
-     */
-    dependencyUpdateCallback?: (value: string) => Promise<Array<{ value: string; label: string }>>;
 }
 
 export interface FormFieldComponent extends React.FC<FormFieldProps>, FormFieldComposition {}
