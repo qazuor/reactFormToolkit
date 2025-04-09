@@ -143,6 +143,56 @@ export interface FieldErrorProps {
     inputRef?: React.RefObject<HTMLElement>;
 }
 
+/**
+ * Props for the FieldErrorRenderer component
+ */
+export interface FieldErrorRendererProps {
+    /**
+     * Error message to display
+     */
+    message: string;
+
+    /**
+     * Position of the error message
+     */
+    position: string;
+
+    /**
+     * Animation class for the error
+     */
+    animationClass: string;
+
+    /**
+     * Whether to show the error icon
+     */
+    showIcon: boolean;
+
+    /**
+     * Custom CSS class for the error
+     */
+    className?: string;
+
+    /**
+     * Custom CSS class for the error icon
+     */
+    iconClassName?: string;
+
+    /**
+     * Position class for standard error display
+     */
+    positionClass?: string;
+
+    /**
+     * Whether to show tooltip (for tooltip position)
+     */
+    showTooltip?: boolean;
+
+    /**
+     * Reference to the input element for tooltip positioning
+     */
+    inputRef?: React.RefObject<HTMLElement>;
+}
+
 export interface FormFieldContextValue<TFieldValues extends FieldValues = FieldValues> {
     name: keyof TFieldValues & string;
     form: Form<TFieldValues>;

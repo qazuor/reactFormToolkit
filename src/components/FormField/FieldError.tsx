@@ -1,10 +1,8 @@
 import { useFormContext } from '@/context';
 import { useFieldState } from '@/hooks';
-import { cn } from '@/lib';
 import type { ErrorAnimation, ErrorPosition, FieldErrorProps } from '@/types';
-import { type JSX, memo, useEffect, useState } from 'react';
-import { FieldErrorIcon } from '../Icons/FieldErrorIcon';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { memo, useEffect, useState } from 'react';
+import { FieldErrorRenderer } from './FieldErrorRenderer';
 
 const ANIMATION_CLASSES: Record<ErrorAnimation, string> = {
     none: '',
@@ -22,16 +20,31 @@ const POSITION_CLASSES: Record<ErrorPosition, string> = {
 };
 
 /**
+ * Prepares the error display configuration based on options and state
+ */
+const prepareErrorConfig = (message: string, options: FieldErrorProps['options'], position: ErrorPosition) => {
+    const animation: ErrorAnimation = (options?.animation as ErrorAnimation) || 'none';
+    // Don't apply animation for tooltip position
+    const shouldAnimate = position !== 'tooltip' && animation !== 'none';
+    const animationClass = shouldAnimate ? ANIMATION_CLASSES[animation as keyof typeof ANIMATION_CLASSES] : '';
+    const showIcon = options?.showIcon ?? true;
+
+    return {
+        message,
+        position,
+        animationClass,
+        showIcon,
+        className: options?.className,
+        iconClassName: options?.iconClassName
+    };
+};
+
+/**
  * FieldError component for displaying field validation errors
  * @param props - Component properties
- * @returns Form field error component
+ * @returns Field error component or null if no error
  */
-export const FieldError = memo(function FieldError({
-    options,
-    name,
-    message: propMessage,
-    inputRef
-}: FieldErrorProps): JSX.Element | null {
+export const FieldError = memo(function FieldError({ options, name, message: propMessage, inputRef }: FieldErrorProps) {
     const { errorDisplayOptions: providerOptions } = useFormContext();
     const { error } = useFieldState(name);
     const message = propMessage || error?.message;
@@ -45,14 +58,8 @@ export const FieldError = memo(function FieldError({
     }
 
     const position: ErrorPosition = (options?.position as ErrorPosition) || 'below';
-    const animation: ErrorAnimation = (options?.animation as ErrorAnimation) || 'none';
-    // Don't apply animation for tooltip position
-    const shouldAnimate = position !== 'tooltip' && animation !== 'none';
-    const animationClass = shouldAnimate ? ANIMATION_CLASSES[animation as keyof typeof ANIMATION_CLASSES] : '';
-    const showIcon = options?.showIcon ?? true;
 
     // Handle delay and auto-dismiss
-    // biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
     useEffect(() => {
         let showTimeout: NodeJS.Timeout | undefined;
         let dismissTimeout: NodeJS.Timeout | undefined;
@@ -80,7 +87,6 @@ export const FieldError = memo(function FieldError({
     }, [message, options?.delay, options?.autoDismiss, options?.dismissAfter]);
 
     // Handle tooltip visibility
-    // biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
     useEffect(() => {
         if (!inputRef?.current || position !== 'tooltip') {
             return;
@@ -100,52 +106,27 @@ export const FieldError = memo(function FieldError({
         return null;
     }
 
-    const errorContent = (
-        <div
-            className={cn(
-                'flex items-center gap-1 text-red-600 text-sm',
-                POSITION_CLASSES[position],
-                animationClass,
-                options?.className
-            )}
-            data-testid='field-error'
-            aria-live='polite'
-            role='alert'
-        >
-            {showIcon && <FieldErrorIcon className={cn(options?.iconClassName || 'h-4 w-4 shrink-0')} />}
-            <span>{message.toString()}</span>
-        </div>
-    );
+    // Convert message to string to ensure it's never undefined
+    const errorMessage = message.toString();
+
+    // Prepare configuration for the renderer
+    const errorConfig = prepareErrorConfig(errorMessage, options, position);
 
     if (position === 'tooltip') {
         return (
-            <div className='relative'>
-                <Tooltip open={showTooltip}>
-                    <TooltipTrigger asChild={true}>
-                        <div className='absolute inset-0 z-10' />
-                    </TooltipTrigger>
-                    <TooltipContent
-                        side='bottom'
-                        align='start'
-                        sideOffset={0}
-                        data-testid='error-tooltip'
-                        className={cn(
-                            'z-50 border border-red-200 bg-red-50 px-3 py-2 text-red-600',
-                            animation !== 'none' && animation === 'pulse' && 'animate-pulse',
-                            options?.className
-                        )}
-                    >
-                        <div className='flex items-center gap-2'>
-                            {showIcon && (
-                                <FieldErrorIcon className={cn(options?.iconClassName || 'h-4 w-4 shrink-0')} />
-                            )}
-                            <span>{message.toString()}</span>
-                        </div>
-                    </TooltipContent>
-                </Tooltip>
-            </div>
+            <FieldErrorRenderer
+                {...errorConfig}
+                position='tooltip'
+                showTooltip={showTooltip}
+                inputRef={inputRef}
+            />
         );
     }
 
-    return <div className={cn('relative', position === 'right' && 'w-0')}>{errorContent}</div>;
+    return (
+        <FieldErrorRenderer
+            {...errorConfig}
+            positionClass={POSITION_CLASSES[position]}
+        />
+    );
 });
