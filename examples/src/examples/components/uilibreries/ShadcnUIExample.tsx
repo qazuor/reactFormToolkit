@@ -10,10 +10,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { cn, FormButtonsBar, FormField, FormProvider } from '@qazuor/react-form-toolkit';
+import { FormButtonsBar, FormField, FormProvider, cn } from '@qazuor/react-form-toolkit';
 import { format } from 'date-fns';
 import { CalendarIcon, Check, ChevronsUpDown } from 'lucide-react';
-import { useState } from 'react';
 import { z } from 'zod';
 
 const schema = z.object({
@@ -46,9 +45,7 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
         setResult(data);
     };
 
-    const [date, setDate] = useState<Date>();
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState('');
+    console.log('ShadcnUIExample re render');
 
     return (
         <div className='space-y-4'>
@@ -60,6 +57,8 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     email: '',
                     bio: '',
                     role: '',
+                    status: '',
+                    startDate: '',
                     newsletter: false,
                     frameworks: [],
                     experience: '',
@@ -133,50 +132,58 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     required={true}
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    <Popover
-                        open={open}
-                        onOpenChange={setOpen}
-                    >
-                        <PopoverTrigger asChild={true}>
-                            <Button
-                                variant='outline'
-                                role='combobox'
-                                aria-expanded={open}
-                                className='w-[200px] justify-between'
-                            >
-                                {value ? statuses.find((status) => status.value === value)?.label : 'Select Status...'}
-                                <ChevronsUpDown className='opacity-50' />
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className='w-[200px] p-0'>
-                            <Command>
-                                <CommandInput placeholder='Search Status...' />
-                                <CommandList>
-                                    <CommandEmpty>No status found.</CommandEmpty>
-                                    <CommandGroup>
-                                        {statuses.map((status) => (
-                                            <CommandItem
-                                                key={status.value}
-                                                value={status.value}
-                                                onSelect={(currentValue) => {
-                                                    setValue(currentValue === value ? '' : currentValue);
-                                                    setOpen(false);
-                                                }}
-                                            >
-                                                {status.label}
-                                                <Check
-                                                    className={cn(
-                                                        'ml-auto',
-                                                        value === status.value ? 'opacity-100' : 'opacity-0'
-                                                    )}
-                                                />
-                                            </CommandItem>
-                                        ))}
-                                    </CommandGroup>
-                                </CommandList>
-                            </Command>
-                        </PopoverContent>
-                    </Popover>
+                    {({ field }) => (
+                        <Popover>
+                            <PopoverTrigger asChild={true}>
+                                <Button
+                                    variant='outline'
+                                    role='combobox'
+                                    className='w-[200px] justify-between'
+                                >
+                                    {/* MOSTRAMOS LO QUE HAY EN field.value */}
+                                    {field.value
+                                        ? statuses.find((s) => s.value === field.value)?.label
+                                        : 'Select Status...'}
+                                    <ChevronsUpDown className='opacity-50' />
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className='w-[200px] p-0'>
+                                <Command>
+                                    <CommandInput placeholder='Search Status...' />
+                                    <CommandList>
+                                        <CommandEmpty>No status found.</CommandEmpty>
+                                        <CommandGroup>
+                                            {statuses.map((status) => (
+                                                <CommandItem
+                                                    key={status.value}
+                                                    value={status.value}
+                                                    onSelect={(currentValue) => {
+                                                        // Actualizamos el valor en el formulario
+                                                        // si se selecciona el mismo valor, lo ponemos vacío
+                                                        const newValue =
+                                                            currentValue === field.value ? '' : currentValue;
+
+                                                        console.log('newValue', newValue);
+                                                        // NOTIFICAMOS A react-hook-form
+                                                        field.onChange(newValue);
+                                                    }}
+                                                >
+                                                    {status.label}
+                                                    {/* Check si coincide field.value para mostrar ícono */}
+                                                    <Check
+                                                        className={cn(
+                                                            'ml-auto',
+                                                            field.value === status.value ? 'opacity-100' : 'opacity-0'
+                                                        )}
+                                                    />
+                                                </CommandItem>
+                                            ))}
+                                        </CommandGroup>
+                                    </CommandList>
+                                </Command>
+                            </PopoverContent>
+                        </Popover>
+                    )}
                 </FormField>
 
                 {/* Date Picker Input */}
@@ -185,28 +192,30 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     label='Start Date'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    <Popover>
-                        <PopoverTrigger asChild={true}>
-                            <Button
-                                variant='outline'
-                                className={cn(
-                                    'w-[280px] justify-start text-left font-normal',
-                                    !date && 'text-muted-foreground'
-                                )}
-                            >
-                                <CalendarIcon className='mr-2 h-4 w-4' />
-                                {date ? format(date, 'PPP') : <span>Pick a date</span>}
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className='w-auto p-0'>
-                            <Calendar
-                                mode='single'
-                                selected={date}
-                                onSelect={setDate}
-                                initialFocus={true}
-                            />
-                        </PopoverContent>
-                    </Popover>
+                    {({ field }) => (
+                        <Popover>
+                            <PopoverTrigger asChild={true}>
+                                <Button
+                                    variant='outline'
+                                    className={cn(
+                                        'w-[280px] justify-start text-left font-normal',
+                                        !field.value && 'text-muted-foreground'
+                                    )}
+                                >
+                                    <CalendarIcon className='mr-2 h-4 w-4' />
+                                    {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className='w-auto p-0'>
+                                <Calendar
+                                    mode='single'
+                                    selected={field.value}
+                                    onSelect={field.onChange}
+                                    initialFocus={true}
+                                />
+                            </PopoverContent>
+                        </Popover>
+                    )}
                 </FormField>
 
                 {/* Checkbox */}
