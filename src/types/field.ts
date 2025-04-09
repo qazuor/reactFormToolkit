@@ -24,7 +24,7 @@ export interface FieldInputProps<TFieldValues extends FieldValues = FieldValues>
     form: Form<TFieldValues>;
 
     /* Field description */
-    description?: string;
+    description?: string | ReactNode;
 
     /* Validation function */
     validate?: (value: unknown) => Promise<void>;

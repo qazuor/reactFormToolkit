@@ -1,6 +1,6 @@
 import { FormFieldContext, useFormContext } from '@/context';
 import { FieldArrayContext } from '@/context';
-import { useFieldState, useFieldValidation, useQRFTTranslation } from '@/hooks';
+import { useFieldState, useFieldValidation } from '@/hooks';
 import { cn, defaultStyles, formUtils, mergeStyles } from '@/lib';
 import { getUiLibraryCompatibleStyles } from '@/lib/ui-library';
 import type { FormFieldProps } from '@/types';
@@ -45,7 +45,6 @@ export function FormField({
         errorDisplayOptions: providerErrorOptions,
         uiLibrary
     } = useFormContext();
-    const { t } = useQRFTTranslation();
     const childRef = useRef<HTMLInputElement>(null);
     const arrayContext = useContext(FieldArrayContext);
     const previousValueRef = useRef<unknown>();
@@ -144,7 +143,7 @@ export function FormField({
                                     showLoadingSpinner={showLoadingSpinner}
                                     asyncValidatingStarted={asyncValidatingStarted}
                                     hasError={hasAsyncError}
-                                    error={asyncError}
+                                    error={asyncError || undefined}
                                     textWhenValidating={textWhenValidating}
                                     textWhenBeforeStartValidating={textWhenBeforeStartValidating}
                                 />
