@@ -89,7 +89,7 @@ describe('ConditionalFieldGroup', () => {
         renderConditionalFieldGroup('A', 'custom-class');
         const inputA = screen.getByTestId('fieldA') as HTMLInputElement;
         const parentConditionalFieldGroup =
-            inputA.parentElement?.parentElement?.parentElement?.parentElement?.parentElement;
+            inputA.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement;
         expect(parentConditionalFieldGroup).toHaveClass('custom-class');
     });
 

@@ -46,6 +46,18 @@ export interface FieldInputProps<TFieldValues extends FieldValues = FieldValues>
 }
 
 /**
+ * Props for the FieldInputRenderer component
+ */
+export interface FieldInputRendererProps {
+    /* Child components */
+    children: ReactElement;
+
+    /* Field props to pass to the child */
+    // biome-ignore lint/suspicious/noExplicitAny: Field props can be of any type
+    fieldProps: Record<string, any>;
+}
+
+/**
  * Tooltip configuration options
  */
 export type TooltipOptions = {

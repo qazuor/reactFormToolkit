@@ -1,8 +1,9 @@
 import { cn } from '@/lib';
 import type { FieldInputProps } from '@/types';
 import type React from 'react';
-import { type ReactElement, cloneElement, isValidElement, memo, useCallback } from 'react';
+import { type ReactElement, isValidElement, memo, useCallback } from 'react';
 import { Controller, type ControllerRenderProps, type FieldValues, type Path } from 'react-hook-form';
+import { FieldInputRenderer } from './FieldInputRenderer';
 
 // Minimal check to see if a component can safely receive `ref`.
 //  - If child.type is a string (e.g. 'input', 'select'), it's a DOM element => ref is fine.
@@ -66,9 +67,19 @@ const handleChange = async <T extends FieldValues>(
               : evt.target.value;
     }
 
-    if (e.target.type === 'checkbox') {
-        value = e.target.checked;
+    // Check if e is an event with target property before accessing it
+    if (
+        e &&
+        typeof e === 'object' &&
+        'target' in e &&
+        e.target &&
+        typeof e.target === 'object' &&
+        'type' in e.target &&
+        (e.target as HTMLInputElement).type === 'checkbox'
+    ) {
+        value = (e.target as HTMLInputElement).checked;
     }
+
     // Notify React Hook Form
     field.onChange(value);
 
@@ -142,14 +153,12 @@ export const FieldInput = memo(function FieldInput<TFieldValues extends FieldVal
         [children]
     );
 
-    if (!isValidElement(children)) {
-        return <></>;
-    }
-
     /**
-     * Renders the child element with the field properties
+     * Prepares the field properties for the child element
+     * @param field - The field from react-hook-form
+     * @returns The props to pass to the child element
      */
-    const renderChildElement = (field: ControllerRenderProps<TFieldValues, TName>): ReactElement => {
+    const prepareFieldProps = (field: ControllerRenderProps<TFieldValues, TName>) => {
         const checkboxProps = isCheckbox ? { checked: !!field.value } : {};
 
         // Shallow copy of child's props
@@ -177,9 +186,7 @@ export const FieldInput = memo(function FieldInput<TFieldValues extends FieldVal
             (props as any).ref = childRef;
         }
 
-        // console.log({ children, fieldProps });
-
-        return cloneElement(children as ReactElement, props);
+        return props;
     };
 
     return (
@@ -187,7 +194,15 @@ export const FieldInput = memo(function FieldInput<TFieldValues extends FieldVal
             <Controller
                 control={form.control}
                 name={fieldPath}
-                render={({ field }) => renderChildElement(field as ControllerRenderProps<TFieldValues, TName>)}
+                render={({ field }) => {
+                    const fieldProps = prepareFieldProps(field as ControllerRenderProps<TFieldValues, TName>);
+                    return (
+                        <FieldInputRenderer
+                            fieldProps={fieldProps}
+                            children={children}
+                        />
+                    );
+                }}
             />
         </div>
     );
