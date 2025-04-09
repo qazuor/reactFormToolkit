@@ -2,7 +2,7 @@ import { useFormContext } from '@/context';
 import { useFieldState } from '@/hooks';
 import { cn } from '@/lib';
 import type { ErrorAnimation, ErrorPosition, FieldErrorProps } from '@/types';
-import { type JSX, useEffect, useState } from 'react';
+import { type JSX, memo, useEffect, useState } from 'react';
 import { FieldErrorIcon } from '../Icons/FieldErrorIcon';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
@@ -26,7 +26,12 @@ const POSITION_CLASSES: Record<ErrorPosition, string> = {
  * @param props - Component properties
  * @returns Form field error component
  */
-export function FieldError({ options, name, message: propMessage, inputRef }: FieldErrorProps): JSX.Element | null {
+export const FieldError = memo(function FieldError({
+    options,
+    name,
+    message: propMessage,
+    inputRef
+}: FieldErrorProps): JSX.Element | null {
     const { errorDisplayOptions: providerOptions } = useFormContext();
     const { error } = useFieldState(name);
     const message = propMessage || error?.message;
@@ -143,4 +148,4 @@ export function FieldError({ options, name, message: propMessage, inputRef }: Fi
     }
 
     return <div className={cn('relative', position === 'right' && 'w-0')}>{errorContent}</div>;
-}
+});

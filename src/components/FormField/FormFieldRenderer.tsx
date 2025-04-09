@@ -1,7 +1,7 @@
 import { FormFieldContext } from '@/context';
 import { cn } from '@/lib';
 import type { FormFieldRendererProps } from '@/types';
-import { type ReactElement, isValidElement } from 'react';
+import { type ReactElement, isValidElement, memo } from 'react';
 import { Controller } from 'react-hook-form';
 import { FieldDescription } from './FieldDescription';
 import { FieldError } from './FieldError';
@@ -28,7 +28,7 @@ import { FormFieldAsyncValidationIndicator } from './FormFieldAsyncValidationInd
  * />
  * ```
  */
-export function FormFieldRenderer({
+export const FormFieldRenderer = memo(function FormFieldRenderer({
     fieldPath,
     name,
     label,
@@ -193,4 +193,4 @@ export function FormFieldRenderer({
             </FormFieldContext.Provider>
         </div>
     );
-}
+});

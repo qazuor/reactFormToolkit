@@ -1,5 +1,6 @@
 import type { FieldAsyncValidationProps } from '@/types';
 import type { JSX } from 'react';
+import { memo } from 'react';
 import { ValidationStatusIcon } from '../Icons';
 
 /**
@@ -7,7 +8,7 @@ import { ValidationStatusIcon } from '../Icons';
  * @param props - Component properties
  * @returns Form field async validation indicator component
  */
-export function FormFieldAsyncValidationIndicator({
+export const FormFieldAsyncValidationIndicator = memo(function FormFieldAsyncValidationIndicator({
     isValidating,
     asyncValidatingStarted,
     showValidationIcons,
@@ -79,4 +80,4 @@ export function FormFieldAsyncValidationIndicator({
             )}
         </div>
     );
-}
+});

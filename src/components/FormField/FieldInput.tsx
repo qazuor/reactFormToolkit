@@ -1,7 +1,7 @@
 import { cn } from '@/lib';
 import type { FieldInputProps } from '@/types';
 import type React from 'react';
-import { type ReactElement, cloneElement, isValidElement, useCallback } from 'react';
+import { type ReactElement, cloneElement, isValidElement, memo, useCallback } from 'react';
 import { Controller, type ControllerRenderProps, type FieldValues, type Path } from 'react-hook-form';
 
 // Minimal check to see if a component can safely receive `ref`.
@@ -94,7 +94,11 @@ const handleBlur = <T extends FieldValues>(
     field.onBlur();
 };
 
-export function FieldInput<TFieldValues extends FieldValues, TName extends Path<TFieldValues>>({
+/**
+ * FieldInput component for rendering form inputs with validation
+ * This component handles the connection between React Hook Form and the input element
+ */
+export const FieldInput = memo(function FieldInput<TFieldValues extends FieldValues, TName extends Path<TFieldValues>>({
     fieldPath,
     children,
     form,
@@ -187,4 +191,4 @@ export function FieldInput<TFieldValues extends FieldValues, TName extends Path<
             />
         </div>
     );
-}
+});

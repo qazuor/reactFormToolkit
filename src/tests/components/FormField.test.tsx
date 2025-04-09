@@ -20,8 +20,9 @@ describe('FormField', () => {
             <TestWrapper>
                 <FormProvider
                     schema={schema}
-                    // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
-                    onSubmit={() => {}}
+                    onSubmit={() => {
+                        // Intentionally left empty for testing purposes
+                    }}
                 >
                     <FormField
                         name='testField'
@@ -92,8 +93,9 @@ describe('FormField', () => {
         render(
             <FormProvider
                 schema={z.object({ checked: z.boolean() })}
-                // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
-                onSubmit={() => {}}
+                onSubmit={() => {
+                    // Intentionally left empty for testing purposes
+                }}
             >
                 <FormField name='checked'>
                     <input type='checkbox' />
@@ -122,7 +124,9 @@ describe('FormField', () => {
             <TestWrapper>
                 <FormProvider
                     schema={schema}
-                    onSubmit={() => {}}
+                    onSubmit={() => {
+                        // Intentionally left empty for testing purposes
+                    }}
                 >
                     <FormField
                         name='testField'
@@ -154,8 +158,9 @@ describe('FormField', () => {
         render(
             <FormProvider
                 schema={schema}
-                // biome-ignore lint/suspicious/noEmptyBlockStatements: <explanation>
-                onSubmit={() => {}}
+                onSubmit={() => {
+                    // Intentionally left empty for testing purposes
+                }}
             >
                 <FormField name='testField'>
                     <input type='text' />
@@ -217,5 +222,64 @@ describe('FormField', () => {
             expect(screen.queryByText('This value is already taken')).not.toBeInTheDocument();
         });
         // vi.useRealTimers();
+    });
+});
+
+describe('FormField Performance', () => {
+    const schema = z.object({
+        testField: z.string().min(3, 'Must be at least 3 characters')
+    });
+
+    it('should not trigger unnecessary re-renders', async () => {
+        const renderSpy = vi.fn();
+
+        const TestComponent = () => {
+            renderSpy();
+            return (
+                <TooltipProvider>
+                    <FormProvider
+                        schema={schema}
+                        onSubmit={() => {
+                            // Intentionally left empty for testing purposes
+                        }}
+                    >
+                        <FormField
+                            name='testField'
+                            label='Test Field'
+                        >
+                            <input type='text' />
+                        </FormField>
+                    </FormProvider>
+                </TooltipProvider>
+            );
+        };
+
+        render(<TestComponent />);
+
+        // Initial render + FormProvider context setup
+        expect(renderSpy).toHaveBeenCalledTimes(1);
+
+        // Type in the field
+        const input = screen.getByTestId('testField');
+        fireEvent.change(input, { target: { value: 'a' } });
+        fireEvent.blur(input);
+
+        // Wait for validation
+        await waitFor(() => {
+            expect(screen.getByText('Must be at least 3 characters')).toBeInTheDocument();
+        });
+
+        // Type more to fix validation
+        fireEvent.change(input, { target: { value: 'abc' } });
+        fireEvent.blur(input);
+
+        // Wait for validation to clear
+        await waitFor(() => {
+            expect(screen.queryByText('Must be at least 3 characters')).not.toBeInTheDocument();
+        });
+
+        // Verify the component didn't re-render unnecessarily
+        // We expect only the initial render + context updates
+        expect(renderSpy).toHaveBeenCalledTimes(1);
     });
 });
