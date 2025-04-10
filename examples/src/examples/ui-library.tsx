@@ -2,11 +2,11 @@ import { ExampleViewer } from '@/components/ExampleViewer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ChakraUIExample } from './components/uilibreries/ChakraUIExample';
+import { ChakraUIExample } from './components/uilibraries/ChakraUIExample';
+import { MaterialUIExample } from './components/uilibraries/MaterialUIExample';
+import { ShadcnUIExample } from './components/uilibraries/ShadcnUIExample';
 import chakraUICode from './components/uilibreries/ChakraUIExample.tsx?raw';
-import { MaterialUIExample } from './components/uilibreries/MaterialUIExample';
 import materialUICode from './components/uilibreries/MaterialUIExample.tsx?raw';
-import { ShadcnUIExample } from './components/uilibreries/ShadcnUIExample';
 import shadcnUICode from './components/uilibreries/ShadcnUIExample.tsx?raw';
 
 export function UILibrary() {
