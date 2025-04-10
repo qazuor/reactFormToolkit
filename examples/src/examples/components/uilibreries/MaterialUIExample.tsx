@@ -15,19 +15,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { FormButtonsBar, FormField, FormProvider } from '@qazuor/react-form-toolkit';
-import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
-
-const programmingLanguages = [
-    { value: 'javascript', label: 'JavaScript' },
-    { value: 'typescript', label: 'TypeScript' },
-    { value: 'python', label: 'Python' },
-    { value: 'java', label: 'Java' },
-    { value: 'csharp', label: 'C#' },
-    { value: 'cpp', label: 'C++' },
-    { value: 'go', label: 'Go' },
-    { value: 'rust', label: 'Rust' }
-];
 
 const schema = z.object({
     name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -47,8 +35,6 @@ interface MaterialUIExampleProps {
 }
 
 export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
-    const { t } = useTranslation();
-
     const handleSubmit = async (data: z.infer<typeof schema>) => {
         setResult(data);
     };
@@ -151,16 +137,11 @@ export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
                 >
                     {({ field }) => (
                         <Autocomplete
-                            // Usamos un array de strings como opciones
                             options={['JavaScript', 'Python', 'C#', 'Java', 'Go']}
-                            // Valor actual: field.value
                             value={field.value || ''}
-                            // Cada vez que el usuario selecciona un valor:
                             onChange={(_event, newValue) => {
-                                // newValue será un string (o null si borró)
                                 field.onChange(newValue ?? '');
                             }}
-                            // MUI necesita renderizar un <TextField> para mostrar
                             renderInput={(params) => (
                                 <TextField
                                     {...params}

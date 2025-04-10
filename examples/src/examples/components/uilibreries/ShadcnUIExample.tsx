@@ -45,8 +45,6 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
         setResult(data);
     };
 
-    console.log('ShadcnUIExample re render');
-
     return (
         <div className='space-y-4'>
             <FormProvider
@@ -158,18 +156,12 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                                                     key={status.value}
                                                     value={status.value}
                                                     onSelect={(currentValue) => {
-                                                        // Actualizamos el valor en el formulario
-                                                        // si se selecciona el mismo valor, lo ponemos vacío
                                                         const newValue =
                                                             currentValue === field.value ? '' : currentValue;
-
-                                                        console.log('newValue', newValue);
-                                                        // NOTIFICAMOS A react-hook-form
                                                         field.onChange(newValue);
                                                     }}
                                                 >
                                                     {status.label}
-                                                    {/* Check si coincide field.value para mostrar ícono */}
                                                     <Check
                                                         className={cn(
                                                             'ml-auto',
