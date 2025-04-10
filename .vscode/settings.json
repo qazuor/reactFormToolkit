@@ -222,7 +222,7 @@
     "typescript.suggest.completeFunctionCalls": true,
     "git.blame.statusBarItem.enabled": true,
     "git.blame.editorDecoration.enabled": false,
-    "github.copilot.nextEditSuggestions.enabled": false,
+    "github.copilot.nextEditSuggestions.enabled": true,
     "github.showAvatar": true,
     "files.associations": {
         "*.css": "tailwindcss"
