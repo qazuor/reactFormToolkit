@@ -1,47 +1,44 @@
+import { FormButtonsBar, FormField, FormProvider } from '@qazuor/react-form-toolkit';
+import { z } from 'zod';
+
+// Importes de Chakra:
 import {
     Box,
     Checkbox,
     FormControl,
     FormLabel,
+    Heading,
     Input,
-    InputGroup,
-    InputRightElement,
-    List,
-    ListItem,
+    NumberDecrementStepper,
+    NumberIncrementStepper,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    PinInput,
+    PinInputField,
     Radio,
     RadioGroup,
     Select,
+    Slider,
+    SliderFilledTrack,
+    SliderThumb,
+    SliderTrack,
     Stack,
     Switch,
-    Textarea,
-    useDisclosure
+    Textarea
 } from '@chakra-ui/react';
-import { FormButtonsBar, FormField, FormProvider } from '@qazuor/react-form-toolkit';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { z } from 'zod';
-
-const programmingLanguages = [
-    { value: 'javascript', label: 'JavaScript' },
-    { value: 'typescript', label: 'TypeScript' },
-    { value: 'python', label: 'Python' },
-    { value: 'java', label: 'Java' },
-    { value: 'csharp', label: 'C#' },
-    { value: 'cpp', label: 'C++' },
-    { value: 'go', label: 'Go' },
-    { value: 'rust', label: 'Rust' }
-];
 
 const schema = z.object({
-    name: z.string().min(2, 'Name must be at least 2 characters'),
-    email: z.string().email('Invalid email address'),
-    bio: z.string().min(10, 'Bio must be at least 10 characters'),
-    role: z.string().min(1, 'Please select a role'),
-    newsletter: z.boolean(),
-    programmingLanguage: z.string().optional(),
-    frameworks: z.array(z.string()).optional(),
+    name: z.string().nonempty('Name is required'),
+    color: z.array(z.string()).min(1), // checkbox group
+    quantity: z.number().optional(), // NumberInput
+    file: z.any().optional(), // file upload
+    pin: z.string().optional(),
+    role: z.string().optional(),
     experience: z.string().optional(),
-    darkMode: z.boolean().optional()
+    sliderValue: z.number().optional(),
+    newsletter: z.boolean().optional(),
+    comment: z.string().optional() // textarea
 });
 
 interface ChakraUIExampleProps {
@@ -49,237 +46,286 @@ interface ChakraUIExampleProps {
 }
 
 export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
-    const { t } = useTranslation();
-
-    const handleSubmit = async (data: z.infer<typeof schema>) => {
+    const handleSubmit = (data: z.infer<typeof schema>) => {
         setResult(data);
     };
 
     return (
-        <div className='space-y-4'>
+        <Box
+            maxW='600px'
+            mx='auto'
+            mt='6'
+        >
+            <Heading
+                as='h2'
+                size='lg'
+                mb='4'
+            >
+                Chakra UI
+            </Heading>
+
             <FormProvider
                 schema={schema}
                 onSubmit={handleSubmit}
                 defaultValues={{
                     name: '',
-                    email: '',
-                    bio: '',
+                    color: ['green'],
+                    quantity: 0,
+                    file: null,
+                    pin: '',
+                    segmentChoice: '',
                     role: '',
-                    newsletter: false,
-                    programmingLanguage: '',
-                    frameworks: [],
                     experience: '',
-                    darkMode: false
+                    sliderValue: 50,
+                    newsletter: false,
+                    comment: ''
                 }}
-                uiLibrary={{ enabled: true, name: 'chakra-ui' }}
+                uiLibrary={{ enabled: true, name: 'chakra' }}
             >
+                {/* Text Input */}
                 <FormField
                     name='name'
                     label='Name'
-                    required={true}
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
-                >
-                    <Input placeholder='Enter your name' />
-                </FormField>
-
-                {/* Email Input */}
-                <FormField
-                    name='email'
-                    label='Email'
                     required={true}
-                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
                     <Input
-                        type='email'
-                        placeholder='Enter your email'
+                        variant='flushed'
+                        placeholder='Enter your name'
                     />
                 </FormField>
 
-                {/* Textarea */}
+                {/* Checkbox */}
                 <FormField
-                    name='bio'
-                    label='Bio'
-                    required={true}
+                    name='newsletter'
+                    label='Newsletter'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    <Textarea
-                        placeholder='Tell us about yourself'
-                        size='md'
-                    />
+                    {({ field }) => (
+                        <FormControl
+                            display='flex'
+                            alignItems='center'
+                        >
+                            <FormLabel mb='0'>Subscribe to newsletter?</FormLabel>
+                            <Checkbox
+                                isChecked={!!field.value}
+                                onChange={(e) => field.onChange(e.target.checked)}
+                            />
+                        </FormControl>
+                    )}
+                </FormField>
+
+                {/* Checkbox Group */}
+                <FormField
+                    name='color'
+                    label='Color'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                >
+                    {({ field }) => {
+                        const handledChange = (value: string) => {
+                            const newValue = [...field.value];
+                            if (field.value.includes(value)) {
+                                newValue.splice(newValue.indexOf(value), 1);
+                            } else {
+                                newValue.push(value);
+                            }
+                            field.onChange(newValue);
+                        };
+                        return (
+                            <Stack
+                                spacing={5}
+                                direction='row'
+                            >
+                                <Checkbox
+                                    isChecked={field.value.includes('red')}
+                                    onChange={(e) => handledChange('red')}
+                                    colorScheme='red'
+                                    defaultChecked={true}
+                                >
+                                    Red
+                                </Checkbox>
+                                <Checkbox
+                                    isChecked={field.value.includes('green')}
+                                    onChange={(e) => handledChange('green')}
+                                    colorScheme='green'
+                                    defaultChecked={true}
+                                >
+                                    Green
+                                </Checkbox>
+                                <Checkbox
+                                    isChecked={field.value.includes('blue')}
+                                    onChange={(e) => handledChange('blue')}
+                                    colorScheme='blue'
+                                    defaultChecked={true}
+                                >
+                                    Blue
+                                </Checkbox>
+                            </Stack>
+                        );
+                    }}
+                </FormField>
+
+                {/* NumberInput */}
+                <FormField
+                    name='quantity'
+                    label='Quantity'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                >
+                    {({ field }) => (
+                        <NumberInput
+                            variant='flushed'
+                            value={field.value ?? 0}
+                            onChange={(valStr, valNum) => {
+                                field.onChange(valNum);
+                            }}
+                            min={0}
+                            max={100}
+                        >
+                            <NumberInputField />
+                            <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                            </NumberInputStepper>
+                        </NumberInput>
+                    )}
+                </FormField>
+
+                {/* File Upload */}
+                <FormField
+                    name='file'
+                    label='Upload file'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                >
+                    {({ field }) => (
+                        <Input
+                            variant='flushed'
+                            type='file'
+                            onChange={(e) => {
+                                const fileList = e.target.files;
+                                field.onChange(fileList?.[0] || null);
+                            }}
+                        />
+                    )}
+                </FormField>
+
+                {/* PinInput */}
+                <FormField
+                    name='pin'
+                    label='Security PIN'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                >
+                    {({ field }) => (
+                        <PinInput
+                            value={field.value || ''}
+                            onChange={(val) => field.onChange(val)}
+                            otp={true}
+                        >
+                            <PinInputField />
+                            <PinInputField />
+                            <PinInputField />
+                            <PinInputField />
+                        </PinInput>
+                    )}
                 </FormField>
 
                 {/* Select */}
                 <FormField
                     name='role'
                     label='Role'
-                    required={true}
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    <Select placeholder='Select a role'>
-                        <option value='developer'>Developer</option>
-                        <option value='designer'>Designer</option>
-                        <option value='manager'>Manager</option>
-                    </Select>
+                    {({ field }) => (
+                        <Select
+                            variant='flushed'
+                            placeholder='Select a role'
+                            value={field.value || ''}
+                            onChange={(e) => field.onChange(e.target.value)}
+                        >
+                            <option value='developer'>Developer</option>
+                            <option value='designer'>Designer</option>
+                            <option value='manager'>Manager</option>
+                        </Select>
+                    )}
                 </FormField>
 
-                {/* Checkbox */}
-                <FormField
-                    name='newsletter'
-                    label='Subscribe to newsletter'
-                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
-                >
-                    <Checkbox>Subscribe to newsletter</Checkbox>
-                </FormField>
-
-                {/* Autocomplete */}
-                <FormField
-                    name='programmingLanguage'
-                    label='Programming Language'
-                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
-                >
-                    {({ field }) => {
-                        const [inputValue, setInputValue] = useState('');
-                        const [filteredOptions, setFilteredOptions] = useState(programmingLanguages);
-                        const { isOpen, onOpen, onClose } = useDisclosure();
-
-                        const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-                            const value = e.target.value;
-                            setInputValue(value);
-
-                            if (value) {
-                                setFilteredOptions(
-                                    programmingLanguages.filter((lang) =>
-                                        lang.label.toLowerCase().includes(value.toLowerCase())
-                                    )
-                                );
-                                onOpen();
-                            } else {
-                                setFilteredOptions(programmingLanguages);
-                                onClose();
-                            }
-                        };
-
-                        const handleSelect = (option: { value: string; label: string }) => {
-                            field.onChange(option.value);
-                            setInputValue(option.label);
-                            onClose();
-                        };
-
-                        // Find the label for the current value
-                        useEffect(() => {
-                            if (field.value) {
-                                const option = programmingLanguages.find((lang) => lang.value === field.value);
-                                if (option) {
-                                    setInputValue(option.label);
-                                }
-                            }
-                        }, [field.value]);
-
-                        return (
-                            <Box position='relative'>
-                                <InputGroup>
-                                    <Input
-                                        value={inputValue}
-                                        onChange={handleInputChange}
-                                        onFocus={onOpen}
-                                        onBlur={() => {
-                                            // Delay closing to allow for selection
-                                            setTimeout(onClose, 200);
-                                        }}
-                                        placeholder='Select a language'
-                                    />
-                                    {inputValue && (
-                                        <InputRightElement>
-                                            <Box
-                                                cursor='pointer'
-                                                onClick={() => {
-                                                    setInputValue('');
-                                                    field.onChange('');
-                                                }}
-                                            >
-                                                ✕
-                                            </Box>
-                                        </InputRightElement>
-                                    )}
-                                </InputGroup>
-                                {isOpen && filteredOptions.length > 0 && (
-                                    <List
-                                        position='absolute'
-                                        zIndex={10}
-                                        width='100%'
-                                        bg='white'
-                                        boxShadow='md'
-                                        borderRadius='md'
-                                        mt={1}
-                                        maxH='200px'
-                                        overflowY='auto'
-                                    >
-                                        {filteredOptions.map((option) => (
-                                            <ListItem
-                                                key={option.value}
-                                                px={4}
-                                                py={2}
-                                                cursor='pointer'
-                                                _hover={{ bg: 'gray.100' }}
-                                                onClick={() => handleSelect(option)}
-                                            >
-                                                {option.label}
-                                            </ListItem>
-                                        ))}
-                                    </List>
-                                )}
-                            </Box>
-                        );
-                    }}
-                </FormField>
-
-                {/* Radio Group */}
+                {/* RadioGroup */}
                 <FormField
                     name='experience'
                     label='Experience Level'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    <RadioGroup defaultValue='beginner'>
-                        <Stack
-                            direction='row'
-                            spacing={4}
+                    {({ field }) => (
+                        <RadioGroup
+                            value={field.value || ''}
+                            onChange={(val) => field.onChange(val)}
                         >
-                            <FormControl>
+                            <Stack direction='row'>
                                 <Radio value='beginner'>Beginner</Radio>
-                            </FormControl>
-                            <FormControl>
                                 <Radio value='intermediate'>Intermediate</Radio>
-                            </FormControl>
-                            <FormControl>
                                 <Radio value='expert'>Expert</Radio>
-                            </FormControl>
-                        </Stack>
-                    </RadioGroup>
+                            </Stack>
+                        </RadioGroup>
+                    )}
+                </FormField>
+
+                {/* Slider */}
+                <FormField
+                    name='sliderValue'
+                    label='Volume'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                >
+                    {({ field }) => (
+                        <Box>
+                            <Slider
+                                value={field.value ?? 50}
+                                onChange={(val) => field.onChange(val)}
+                                min={0}
+                                max={100}
+                            >
+                                <SliderTrack>
+                                    <SliderFilledTrack />
+                                </SliderTrack>
+                                <SliderThumb />
+                            </Slider>
+                            <Box mt={2}>Value: {field.value}</Box>
+                        </Box>
+                    )}
                 </FormField>
 
                 {/* Switch */}
                 <FormField
-                    name='darkMode'
-                    label='Dark Mode'
+                    name='toogle'
+                    label='Toggled'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    <FormControl
-                        display='flex'
-                        alignItems='center'
-                    >
-                        <Switch id='chakra-dark-mode' />
-                        <FormLabel
-                            htmlFor='chakra-dark-mode'
-                            mb='0'
-                            ml='2'
+                    {({ field }) => (
+                        <FormControl
+                            display='flex'
+                            alignItems='center'
                         >
-                            Enable Dark Mode
-                        </FormLabel>
-                    </FormControl>
+                            <FormLabel mb='0'>Toggle Me</FormLabel>
+                            <Switch
+                                isChecked={!!field.value}
+                                onChange={(e) => field.onChange(e.target.checked)}
+                            />
+                        </FormControl>
+                    )}
+                </FormField>
+
+                {/* Textarea */}
+                <FormField
+                    name='comment'
+                    label='Comments'
+                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                >
+                    <Textarea
+                        variant='flushed'
+                        placeholder='Write your comment...'
+                    />
                 </FormField>
 
                 <FormButtonsBar />
             </FormProvider>
-        </div>
+        </Box>
     );
 }
