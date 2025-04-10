@@ -3,11 +3,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChakraUIExample } from './components/uilibraries/ChakraUIExample';
+import chakraUICode from './components/uilibraries/ChakraUIExample.tsx?raw';
 import { MaterialUIExample } from './components/uilibraries/MaterialUIExample';
+import materialUICode from './components/uilibraries/MaterialUIExample.tsx?raw';
 import { ShadcnUIExample } from './components/uilibraries/ShadcnUIExample';
-import chakraUICode from './components/uilibreries/ChakraUIExample.tsx?raw';
-import materialUICode from './components/uilibreries/MaterialUIExample.tsx?raw';
-import shadcnUICode from './components/uilibreries/ShadcnUIExample.tsx?raw';
+import shadcnUICode from './components/uilibraries/ShadcnUIExample.tsx?raw';
 
 export function UILibrary() {
     const { t } = useTranslation();
