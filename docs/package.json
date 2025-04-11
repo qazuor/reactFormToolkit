@@ -19,7 +19,7 @@
     "@mui/icons-material": "^5.15.11",
     "@mui/material": "^5.15.11",
     "@mui/x-date-pickers": "^6.19.6",
-    "@qazuor/react-form-toolkit": "workspace:*",
+    "@qazuor/react-form-toolkit": "^0.1.2",
     "@radix-ui/react-checkbox": "^1.1.4",
     "@radix-ui/react-dialog": "^1.1.7",
     "@radix-ui/react-label": "^2.1.2",
