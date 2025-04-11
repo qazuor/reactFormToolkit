@@ -43,7 +43,7 @@
 	"scripts": {
 		"preinstall": "npx only-allow pnpm",
 		"build": "tsup",
-		"dev": "pnpm run build && pnpm run -r --parallel dev",
+		"dev": "pnpm run build && pnpm run -r --parallel dev", 
 		"watch": "tsup --watch",
 		"lint": "biome check ./src",
 		"test": "vitest",
@@ -57,10 +57,9 @@
 		"bump": "pnpm version patch",
 		"bump:beta": "pnpm version prerelease --preid=beta",
 		"docs:dev": "pnpm run dev --filter docs",
-		"docs:build": "pnpm run build docs",
+		"docs:build": "pnpm run build && cd docs && pnpm run build",
 		"docs:lint": "pnpm run lint docs",
-		"docs:format": "pnpm run format docs",
-		"build:docs": "pnpm run build && cd docs && pnpm run build"
+		"docs:format": "pnpm run format docs"
 	},
 	"peerDependencies": {
 		"i18next": "^23.7.16",
