@@ -5,8 +5,5 @@
     "framework": "vite",
     "rewrites": [
         { "source": "/(.*)", "destination": "/index.html" }
-    ],
-    "buildEnvironment": {
-        "NODE_VERSION": "20"
-    }
+    ]
 }
