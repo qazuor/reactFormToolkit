@@ -1,5 +1,5 @@
 import { useFormContext } from '@/context/FormContext';
-import { useConditionalField } from '@/hooks/useConditionalField';
+import { useConditionalField } from '@/hooks';
 import type { ConditionalFieldProps } from '@/types';
 import type { ReactElement } from 'react';
 import type { FieldPath, FieldValues } from 'react-hook-form';
