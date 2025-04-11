@@ -16,7 +16,7 @@ i18n.use(LanguageDetector)
         },
         supportedLngs: ['en', 'es'],
         fallbackLng: 'en',
-        debug: true,
+        debug: false,
         interpolation: {
             escapeValue: false
         }
