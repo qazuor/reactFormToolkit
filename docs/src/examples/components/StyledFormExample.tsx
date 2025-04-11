@@ -42,6 +42,10 @@ const emailFieldStyles = {
     isInvalid: 'border-red-400 bg-red-50'
 };
 
+interface StyledFormProps {
+    setResult: (data: Record<string, unknown> | null) => void;
+}
+
 export function StyledFormExample({ setResult }: StyledFormProps) {
     const { t } = useTranslation();
 

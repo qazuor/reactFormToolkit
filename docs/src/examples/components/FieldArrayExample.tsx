@@ -42,7 +42,9 @@ interface FieldArrayProps {
     setResult: (data: Record<string, unknown> | null) => void;
 }
 
-const defaultValues: FormData = {
+type FormData = z.infer<typeof schema>;
+
+const defaultValues = {
     companyName: '',
     departments: [
         {

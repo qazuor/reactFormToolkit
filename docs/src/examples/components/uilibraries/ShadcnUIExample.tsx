@@ -106,7 +106,7 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     required={true}
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }) => (
+                    {({ field }: { field: { onChange: (value: string) => void; value: string } }) => (
                         <Select
                             onValueChange={field.onChange}
                             value={field.value}
@@ -130,7 +130,7 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     required={true}
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }) => (
+                    {({ field }: { field: { onChange: (value: string) => void; value: string } }) => (
                         <Popover>
                             <PopoverTrigger asChild={true}>
                                 <Button
@@ -184,7 +184,7 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     label='Start Date'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }) => (
+                    {({ field }: { field: { onChange: (value: Date) => void; value: Date } }) => (
                         <Popover>
                             <PopoverTrigger asChild={true}>
                                 <Button
@@ -236,7 +236,7 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     label='Experience Level'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }) => (
+                    {({ field }: { field: { onChange: (value: string) => void; value: string } }) => (
                         <RadioGroup
                             onValueChange={field.onChange}
                             value={field.value}
@@ -264,7 +264,7 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     label='Frameworks'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }) => (
+                    {({ field }: { field: { onChange: (value: string[]) => void; value: string[] } }) => (
                         <ToggleGroup
                             type='multiple'
                             value={field.value}

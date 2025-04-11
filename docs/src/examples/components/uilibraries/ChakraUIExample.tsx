@@ -121,8 +121,8 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     label='Color'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }) => {
-                        const handledChange = (value: string) => {
+                    {({ field }: { field: { value: string[]; onChange: (value: string[]) => void } }) => {
+                        const handledChange = (value: string): void => {
                             const newValue = [...field.value];
                             if (field.value.includes(value)) {
                                 newValue.splice(newValue.indexOf(value), 1);
@@ -138,7 +138,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                             >
                                 <Checkbox
                                     isChecked={field.value.includes('red')}
-                                    onChange={(e) => handledChange('red')}
+                                    onChange={() => handledChange('red')}
                                     colorScheme='red'
                                     defaultChecked={true}
                                 >
@@ -146,7 +146,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                                 </Checkbox>
                                 <Checkbox
                                     isChecked={field.value.includes('green')}
-                                    onChange={(e) => handledChange('green')}
+                                    onChange={() => handledChange('green')}
                                     colorScheme='green'
                                     defaultChecked={true}
                                 >
@@ -154,7 +154,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                                 </Checkbox>
                                 <Checkbox
                                     isChecked={field.value.includes('blue')}
-                                    onChange={(e) => handledChange('blue')}
+                                    onChange={() => handledChange('blue')}
                                     colorScheme='blue'
                                     defaultChecked={true}
                                 >
@@ -171,11 +171,11 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     label='Quantity'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }) => (
+                    {({ field }: { field: { value: number; onChange: (value: number) => void } }) => (
                         <NumberInput
                             variant='flushed'
                             value={field.value ?? 0}
-                            onChange={(valStr, valNum) => {
+                            onChange={(_valStr, valNum) => {
                                 field.onChange(valNum);
                             }}
                             min={0}
@@ -196,7 +196,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     label='Upload file'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }) => (
+                    {({ field }: { field: { onChange: (value: File | null) => void } }) => (
                         <Input
                             variant='flushed'
                             type='file'
@@ -214,7 +214,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     label='Security PIN'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }) => (
+                    {({ field }: { field: { value: string; onChange: (value: string) => void } }) => (
                         <PinInput
                             value={field.value || ''}
                             onChange={(val) => field.onChange(val)}
@@ -234,7 +234,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     label='Role'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }) => (
+                    {({ field }: { field: { value: string; onChange: (value: string) => void } }) => (
                         <Select
                             variant='flushed'
                             placeholder='Select a role'
@@ -254,7 +254,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     label='Experience Level'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }) => (
+                    {({ field }: { field: { value: string; onChange: (value: string) => void } }) => (
                         <RadioGroup
                             value={field.value || ''}
                             onChange={(val) => field.onChange(val)}
@@ -274,7 +274,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     label='Volume'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }) => (
+                    {({ field }: { field: { value: number; onChange: (value: number) => void } }) => (
                         <Box>
                             <Slider
                                 value={field.value ?? 50}
@@ -298,7 +298,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     label='Toggled'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }) => (
+                    {({ field }: { field: { value: boolean; onChange: (value: boolean) => void } }) => (
                         <FormControl
                             display='flex'
                             alignItems='center'

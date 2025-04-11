@@ -36,13 +36,13 @@ export function AsyncValidationExample({ setResult }: AsyncValidationProps) {
         setResult(data);
     };
 
-    const userNameAsyncValidationOptions: AsyncValidationProps = {
+    const userNameAsyncValidationOptions = {
         asyncValidationDebounce: 1000,
         showValidationIcons: true,
         showLoadingSpinner: true,
         textWhenValidating: 'Checking username...',
         textWhenBeforeStartValidating: 'Username will be checked for availability',
-        asyncValidationFn: async (value) => {
+        asyncValidationFn: async (value: unknown) => {
             if (!value) {
                 return undefined;
             }
@@ -94,7 +94,7 @@ export function AsyncValidationExample({ setResult }: AsyncValidationProps) {
                         showLoadingSpinner: true,
                         textWhenValidating: 'Checking email...',
                         textWhenBeforeStartValidating: 'Email will be checked for availability',
-                        asyncValidationFn: async (value) => {
+                        asyncValidationFn: async (value: unknown) => {
                             if (!value) {
                                 return undefined;
                             }

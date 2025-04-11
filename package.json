@@ -52,14 +52,15 @@
 		"format": "biome format --write ./src",
 		"lint:fix": "biome check --apply ./src",
 		"prepublishOnly": "pnpm test && pnpm build",
-        "release:stable": "pnpm bump && git push --follow-tags",
-        "release:beta": "pnpm bump:beta && git push --follow-tags",
-        "bump": "pnpm version patch",
-        "bump:beta": "pnpm version prerelease --preid=beta",
-		"example:dev": "pnpm run dev --filter docs",
-		"example:build": "pnpm run build docs",
-		"example:lint": "pnpm run lint docs",
-		"example:format": "pnpm run format docs"
+		"release:stable": "pnpm bump && git push --follow-tags",
+		"release:beta": "pnpm bump:beta && git push --follow-tags",
+		"bump": "pnpm version patch",
+		"bump:beta": "pnpm version prerelease --preid=beta",
+		"docs:dev": "pnpm run dev --filter docs",
+		"docs:build": "pnpm run build docs",
+		"docs:lint": "pnpm run lint docs",
+		"docs:format": "pnpm run format docs",
+		"build:docs": "cd docs && pnpm run build"
 	},
 	"peerDependencies": {
 		"i18next": "^23.7.16",

@@ -57,7 +57,6 @@ export const DocsViewer: FC = () => {
                         toc,
                         {
                             customizeTOC: (toc) => {
-                                console.log('toc', toc);
                                 const title = {
                                     type: 'element',
                                     tagName: 'div',
@@ -80,7 +79,9 @@ export const DocsViewer: FC = () => {
                                         }
                                     ]
                                 };
-                                toc.children.unshift(title);
+                                if (toc && toc.children) {
+                                    toc.children.unshift(title);
+                                }
                                 return toc;
                             }
                         }

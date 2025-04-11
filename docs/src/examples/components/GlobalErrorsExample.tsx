@@ -10,8 +10,9 @@ interface GlobalErrorsProps {
     setResult: (data: Record<string, unknown> | null) => void;
 }
 
+type FormData = z.infer<typeof schema>;
 // Simulated API call that sometimes fails
-const submitToAPI = async (data: FormData): Promise<void> => {
+const submitToAPI = async (data: Record<string, any>): Promise<void> => {
     // Simulate network delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -29,7 +30,7 @@ const submitToAPI = async (data: FormData): Promise<void> => {
 };
 
 export function GlobalErrorsExample({ setResult }: GlobalErrorsProps) {
-    const handleSubmit = async (data: FormData) => {
+    const handleSubmit = async (data: Record<string, any>) => {
         try {
             setResult(data);
             await submitToAPI(data);

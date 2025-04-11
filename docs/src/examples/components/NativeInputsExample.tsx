@@ -167,7 +167,7 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                     label={t('form.nativeInputs.interests')}
                     required={true}
                 >
-                    {({ field }) => (
+                    {({ field }: { field: { value: string[]; onChange: (value: string[]) => void } }) => (
                         <div className='space-y-2'>
                             {['sports', 'music', 'movies', 'books'].map((interest) => {
                                 const checked = field.value?.includes(interest);
@@ -203,7 +203,7 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                     label={t('form.nativeInputs.gender')}
                     required={true}
                 >
-                    {({ field }) => (
+                    {({ field }: { field: { value: string; onChange: (value: string) => void } }) => (
                         <div className='space-y-2'>
                             {['male', 'female', 'other', 'prefer_not_to_say'].map((gender) => (
                                 <label

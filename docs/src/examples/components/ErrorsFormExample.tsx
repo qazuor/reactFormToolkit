@@ -21,6 +21,7 @@ const schema = z.object({
         .regex(/[0-9]/, 'Password must contain at least one number')
 });
 
+type FormData = z.infer<typeof schema>;
 const defaultConfig: ErrorDisplayOptions = {
     position: 'below',
     animation: 'none',
@@ -43,7 +44,7 @@ export function ErrorsFormExample({ setResult }: ErrorsFormProps) {
         mode: 'onBlur'
     });
 
-    const handleSubmit: SubmitHandler<FormData> = async (data: z.infer<typeof schema>) => {
+    const handleSubmit: SubmitHandler<FormData> = async (data) => {
         setResult(data);
     };
 
@@ -54,8 +55,8 @@ export function ErrorsFormExample({ setResult }: ErrorsFormProps) {
         }
     };
 
-    const handleConfigChange = (key: keyof ErrorDisplayOptions, value: unknown) => {
-        setConfig((prev) => ({
+    const handleConfigChange = (key: keyof ErrorDisplayOptions, value: any) => {
+        setConfig((prev: ErrorDisplayOptions) => ({
             ...prev,
             [key]: value
         }));

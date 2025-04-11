@@ -135,7 +135,7 @@ export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
                     required={true}
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }) => (
+                    {({ field }: { field: { value: string; onChange: (value: string | null) => void } }) => (
                         <Autocomplete
                             options={['JavaScript', 'Python', 'C#', 'Java', 'Go']}
                             value={field.value || ''}
@@ -199,12 +199,11 @@ export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
                     label='Frameworks'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }) => (
+                    {({ field }: { field: { value: string[]; onChange: (value: string[]) => void } }) => (
                         <ToggleButtonGroup
                             value={field.value}
                             onChange={(_, newValue) => field.onChange(newValue)}
                             aria-label='frameworks'
-                            multiple={true}
                         >
                             <ToggleButton value='react'>React</ToggleButton>
                             <ToggleButton value='angular'>Angular</ToggleButton>
