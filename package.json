@@ -1,6 +1,6 @@
 {
 	"name": "@qazuor/react-form-toolkit",
-	"version": "0.1.1-beta.0",
+	"version": "0.1.1-beta.1",
 	"homepage": "https://github.com/qazuor/reactFormToolkit",
 	"description": "A strongly-typed React form toolkit built on top of React Hook Form with Zod validation. This library provides a simple, flexible, and type-safe way to build forms in React applications.",
 	"keywords": [
