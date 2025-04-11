@@ -10,87 +10,93 @@ interface SidebarContentProps {
 export function SidebarContent({ docs }: SidebarContentProps) {
     const { t } = useTranslation();
     const location = useLocation();
+    const isDocPath = location.pathname.indexOf('/docs') === 0;
+    const isExamplePath = location.pathname.indexOf('/examples') === 0;
 
     return (
         <div className='space-y-6 pb-16'>
-            <div>
-                <h2 className='font-semibold text-foreground text-sm'>{t('docs.title')}</h2>
-                <ul className='mt-2 space-y-1'>
-                    {docs.map((doc) => (
+            {isDocPath && (
+                <div>
+                    <h2 className='font-semibold text-foreground text-sm'>{t('docs.title')}</h2>
+                    <ul className='mt-2 space-y-1'>
+                        {docs.map((doc) => (
+                            <MainNakLink
+                                key={doc.path}
+                                path={`/docs/${doc.path.replace(/\.md$/, '')}`}
+                                text={t(`docs.tabs.${doc.title}`, { defaultValue: doc.title })}
+                                icon={<Book className='h-4 w-4' />}
+                            />
+                        ))}
+                    </ul>
+                </div>
+            )}
+            {isExamplePath && (
+                <div>
+                    <h2 className='font-semibold text-foreground text-sm'>{t('examples.title')}</h2>
+                    <ul className='mt-2 space-y-1'>
                         <MainNakLink
-                            key={doc.path}
-                            path={`/docs/${doc.path.replace(/\.md$/, '')}`}
-                            text={t(`docs.tabs.${doc.title}`, { defaultValue: doc.title })}
-                            icon={<Book className='h-4 w-4' />}
+                            path='/examples/basic'
+                            text={t('examples.tabs.basic')}
+                            icon={<Code className='h-4 w-4' />}
                         />
-                    ))}
-                </ul>
-            </div>
-            <div>
-                <h2 className='font-semibold text-foreground text-sm'>{t('examples.title')}</h2>
-                <ul className='mt-2 space-y-1'>
-                    <MainNakLink
-                        path='/examples/basic'
-                        text={t('examples.tabs.basic')}
-                        icon={<Code className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/examples/complex'
-                        text={t('examples.tabs.complex')}
-                        icon={<Code className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/examples/validation'
-                        text={t('examples.tabs.validation')}
-                        icon={<Code className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/examples/async'
-                        text={t('examples.tabs.async')}
-                        icon={<Code className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/examples/errors'
-                        text={t('examples.tabs.errors')}
-                        icon={<Code className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/examples/i18n'
-                        text={t('examples.tabs.i18n')}
-                        icon={<Code className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/examples/styled'
-                        text={t('examples.tabs.styled')}
-                        icon={<Code className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/examples/field-array'
-                        text={t('examples.tabs.fieldArray')}
-                        icon={<Code className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/examples/global-errors'
-                        text={t('examples.tabs.globalErrors')}
-                        icon={<Code className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/examples/conditional-field'
-                        text={t('examples.tabs.conditionalFields')}
-                        icon={<Code className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/examples/native-inputs'
-                        text={t('examples.tabs.nativeInputs')}
-                        icon={<Code className='h-4 w-4' />}
-                    />
-                    <MainNakLink
-                        path='/examples/ui-library'
-                        text={t('examples.tabs.uiLibrary')}
-                        icon={<Code className='h-4 w-4' />}
-                    />
-                </ul>
-            </div>
+                        <MainNakLink
+                            path='/examples/complex'
+                            text={t('examples.tabs.complex')}
+                            icon={<Code className='h-4 w-4' />}
+                        />
+                        <MainNakLink
+                            path='/examples/validation'
+                            text={t('examples.tabs.validation')}
+                            icon={<Code className='h-4 w-4' />}
+                        />
+                        <MainNakLink
+                            path='/examples/async'
+                            text={t('examples.tabs.async')}
+                            icon={<Code className='h-4 w-4' />}
+                        />
+                        <MainNakLink
+                            path='/examples/errors'
+                            text={t('examples.tabs.errors')}
+                            icon={<Code className='h-4 w-4' />}
+                        />
+                        <MainNakLink
+                            path='/examples/i18n'
+                            text={t('examples.tabs.i18n')}
+                            icon={<Code className='h-4 w-4' />}
+                        />
+                        <MainNakLink
+                            path='/examples/styled'
+                            text={t('examples.tabs.styled')}
+                            icon={<Code className='h-4 w-4' />}
+                        />
+                        <MainNakLink
+                            path='/examples/field-array'
+                            text={t('examples.tabs.fieldArray')}
+                            icon={<Code className='h-4 w-4' />}
+                        />
+                        <MainNakLink
+                            path='/examples/global-errors'
+                            text={t('examples.tabs.globalErrors')}
+                            icon={<Code className='h-4 w-4' />}
+                        />
+                        <MainNakLink
+                            path='/examples/conditional-field'
+                            text={t('examples.tabs.conditionalFields')}
+                            icon={<Code className='h-4 w-4' />}
+                        />
+                        <MainNakLink
+                            path='/examples/native-inputs'
+                            text={t('examples.tabs.nativeInputs')}
+                            icon={<Code className='h-4 w-4' />}
+                        />
+                        <MainNakLink
+                            path='/examples/ui-library'
+                            text={t('examples.tabs.uiLibrary')}
+                            icon={<Code className='h-4 w-4' />}
+                        />
+                    </ul>
+                </div>
+            )}
         </div>
     );
 }

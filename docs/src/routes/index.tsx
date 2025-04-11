@@ -1,4 +1,6 @@
+import { DocsHome } from '@/components/DocsHome';
 import DocsPage from '@/components/DocsPage';
+import { ExamplesHome } from '@/components/ExamplesHome';
 import { Home } from '@/components/Home';
 import { Layout } from '@/components/Layout';
 import { AsyncValidation } from '@/examples/async-validation';
@@ -25,55 +27,63 @@ export const router = createBrowserRouter([
                 element: <Home />
             },
             {
+                path: '/docs',
+                element: <DocsHome />
+            },
+            {
+                path: '/examples',
+                element: <ExamplesHome />
+            },
+            {
                 path: '/docs/*',
                 element: <DocsPage />
             },
             {
-                path: 'examples/basic',
+                path: '/examples/basic',
                 element: <BasicForm />
             },
             {
-                path: 'examples/complex',
+                path: '/examples/complex',
                 element: <ComplexForm />
             },
             {
-                path: 'examples/validation',
+                path: '/examples/validation',
                 element: <ValidationForm />
             },
             {
-                path: 'examples/async',
+                path: '/examples/async',
                 element: <AsyncValidation />
             },
             {
-                path: 'examples/errors',
+                path: '/examples/errors',
                 element: <ErrorsForm />
             },
             {
-                path: 'examples/i18n',
+                path: '/examples/i18n',
                 element: <I18nForm />
             },
             {
-                path: 'examples/styled',
+                path: '/examples/styled',
                 element: <StyledForm />
             },
             {
-                path: 'examples/field-array',
+                path: '/examples/field-array',
                 element: <FieldArrayForm />
             },
             {
-                path: 'examples/global-errors',
+                path: '/examples/global-errors',
                 element: <GlobalErrors />
             },
             {
-                path: 'examples/conditional-field',
+                path: '/examples/conditional-field',
                 element: <ConditionalFieldForm />
             },
             {
-                path: 'examples/native-inputs',
+                path: '/examples/native-inputs',
                 element: <NativeInputs />
             },
             {
-                path: 'examples/ui-library',
+                path: '/examples/ui-library',
                 element: <UILibrary />
             }
         ]

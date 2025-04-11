@@ -1,3 +1,4 @@
+import { cn } from '@qazuor/react-form-toolkit';
 import { Github, Menu, Moon, Search, Sun } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -17,10 +18,12 @@ interface HeaderProps {
 export function Header({ docs, searchQuery, setSearchQuery }: HeaderProps) {
     const { t } = useTranslation();
     const { theme, toggle } = useTheme();
+    const isDocPath = location.pathname.indexOf('/docs') === 0;
+    const isExamplePath = location.pathname.indexOf('/examples') === 0;
 
     return (
         <header className='sticky top-0 z-50 border-b bg-background px-4 py-3 shadow-sm'>
-            <div className='mx-auto flex w-full max-w-7xl items-center justify-between'>
+            <div className='mx-auto flex w-full items-center justify-between'>
                 <div className='flex items-center gap-4'>
                     <Sheet>
                         <SheetTrigger asChild={true}>
@@ -54,6 +57,28 @@ export function Header({ docs, searchQuery, setSearchQuery }: HeaderProps) {
                             alt='Qazuor React Form Toolkit'
                             src='/logo-transparent-dark.png'
                         />
+                    </Link>
+                    <Link
+                        to='/docs'
+                        className={cn(
+                            'flex items-center gap-4 rounded-md px-3 py-2 text-sm transition-colors',
+                            isDocPath
+                                ? 'bg-primary/10 text-primary'
+                                : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                        )}
+                    >
+                        {t('docs.title')}
+                    </Link>
+                    <Link
+                        to='/examples'
+                        className={cn(
+                            'flex items-center gap-4 rounded-md px-3 py-2 text-sm transition-colors',
+                            isExamplePath
+                                ? 'bg-primary/10 text-primary'
+                                : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                        )}
+                    >
+                        {t('examples.title')}
                     </Link>
                 </div>
                 <div className='flex items-center gap-4'>

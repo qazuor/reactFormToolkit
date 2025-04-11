@@ -10,7 +10,7 @@ const SIDEBAR_WIDTH = 320;
 
 export function Layout() {
     const location = useLocation();
-    const isDocsRoute = location.pathname === '/';
+    const isHomeRoute = location.pathname === '/';
     const [searchQuery, setSearchQuery] = useState('');
 
     const [docs, setDocs] = useState([]);
@@ -40,7 +40,7 @@ export function Layout() {
                 />
                 <main className='flex-1 overflow-hidden'>
                     <div className='container mx-auto max-w-4xl px-4 py-12'>
-                        <div className={cn(isDocsRoute && 'p-10')}>
+                        <div className={cn(isHomeRoute && 'p-10')}>
                             <SafeComponent />
                         </div>
                     </div>
