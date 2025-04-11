@@ -4,10 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "pnpm run copy-docs && pnpm run generate-docs-index && vite --force",
-    "build": "pnpm run copy-docs && pnpm run generate-docs-index && tsc && vite build",
-    "copy-docs": "mkdir -p public/docs && cp -r ../README.md public/docs/ && cp -r ../docs/* public/docs/",
-    "generate-docs-index": "node ./scripts/generate-docs-index.ts",
+    "dev": "vite --force",
+    "build": "tsc && vite build",
     "lint": "biome check ./src",
     "format": "biome format --write ./src",
     "lint:fix": "biome check --apply ./src",
