@@ -1,15 +1,7 @@
 [
   {
     "title": "Introduction",
-    "path": "README.md"
-  },
-  {
-    "title": "Introduction",
     "path": "introduction.md"
-  },
-  {
-    "title": "Components",
-    "path": "components.md"
   },
   {
     "title": "Form Provider",

@@ -17,7 +17,7 @@ pnpm run build
 pnpm publish --access public
 ```
 
-## Deploying Examples to Vercel
+## Deploying Docs to Vercel
 
 1. Push your changes to GitHub
 
@@ -26,7 +26,7 @@ pnpm publish --access public
    - Select your repository
    - Configure build settings:
      - Framework Preset: Vite
-     - Root Directory: examples
+     - Root Directory: docs
      - Build Command: npm run build
      - Output Directory: dist
 

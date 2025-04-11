@@ -34,7 +34,7 @@
         "indentWidth": 4,
         "lineEnding": "lf",
         "useEditorconfig": true,
-        "ignore": ["dist", "**/dist", "**/dist/**", "examples/src/components/ui/*.tsx"]
+        "ignore": ["dist", "**/dist", "**/dist/**", "docs/src/components/ui/*.tsx"]
     },
     "organizeImports": {
         "enabled": true
@@ -47,11 +47,11 @@
             "src/**/*.tsx",
             "src/**/*.json",
             "src/**/*.css",
-            "examples/**/*.js",
-            "examples/**/*.ts",
-            "examples/**/*.tsx"
+            "docs/**/*.js",
+            "docs/**/*.ts",
+            "docs/**/*.tsx"
         ],
-        "ignore": ["dist", "**/dist", "**/dist/**", "examples/src/components/ui/*.tsx"],
+        "ignore": ["dist", "**/dist", "**/dist/**", "docs/src/components/ui/*.tsx"],
         "rules": {
             "recommended": true,
             "a11y": {

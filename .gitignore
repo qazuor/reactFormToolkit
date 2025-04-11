@@ -34,9 +34,9 @@ yarn-error.log*
 *.sln
 *.sw?
 
-# Examples
-examples/dist
-examples/node_modules
+# Docs/Examples
+docs/dist
+docs/node_modules
 
 # Misc
 NOTES.md

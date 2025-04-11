@@ -21,7 +21,7 @@
 	},
 	"private": false,
 	"workspaces": [
-		"examples"
+		"docs"
 	],
 	"type": "module",
 	"main": "./dist/index.cjs",
@@ -56,10 +56,10 @@
         "release:beta": "pnpm bump:beta && git push --follow-tags",
         "bump": "pnpm version patch",
         "bump:beta": "pnpm version prerelease --preid=beta",
-		"example:dev": "pnpm run dev --filter examples",
-		"example:build": "pnpm run build examples",
-		"example:lint": "pnpm run lint examples",
-		"example:format": "pnpm run format examples"
+		"example:dev": "pnpm run dev --filter docs",
+		"example:build": "pnpm run build docs",
+		"example:lint": "pnpm run lint docs",
+		"example:format": "pnpm run format docs"
 	},
 	"peerDependencies": {
 		"i18next": "^23.7.16",
