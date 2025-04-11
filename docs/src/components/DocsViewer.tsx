@@ -37,7 +37,6 @@ export const DocsViewer: FC = () => {
                     rehypeRaw,
                     rehypePrism,
                     rehypeSlug,
-                    toc,
                     rehypeAutolinkHeadings,
                     [
                         rehypeScrollToTop,
@@ -51,6 +50,38 @@ export const DocsViewer: FC = () => {
                                 disabled: false,
                                 id: 'backToTop',
                                 text: `${t('docViewer.backToTop')} ↑`
+                            }
+                        }
+                    ],
+                    [
+                        toc,
+                        {
+                            customizeTOC: (toc) => {
+                                console.log('toc', toc);
+                                const title = {
+                                    type: 'element',
+                                    tagName: 'div',
+                                    properties: {
+                                        className: ['toc-title-container']
+                                    },
+                                    children: [
+                                        {
+                                            type: 'element',
+                                            tagName: 'h2',
+                                            properties: {
+                                                className: ['toc-title']
+                                            },
+                                            children: [
+                                                {
+                                                    type: 'text',
+                                                    value: 'Table of Contents'
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                };
+                                toc.children.unshift(title);
+                                return toc;
                             }
                         }
                     ]

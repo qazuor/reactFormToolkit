@@ -2208,3 +2208,27 @@
 .dark .markdown-body .highlight pre:has(+.zeroclipboard-container) {
   min-height: 52px;
 }
+
+
+/* TOC Styles */
+
+.markdown-body .toc {
+    border: 1px solid #cccccc;
+    padding: 10px;
+    margin: 0;
+    font-size: 0.85em;
+    float: right;
+    background-color: #fafafa
+}
+
+.markdown-body .toc-title-container,
+.markdown-body .toc-title,
+.markdown-body .toc-level-1 {
+    padding: 0;
+    margin: 0;
+}
+
+.markdown-body .toc-title {
+    margin-bottom: 10px;
+    font-size: 1.3em;
+}
