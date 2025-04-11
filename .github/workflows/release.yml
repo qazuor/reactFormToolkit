@@ -42,7 +42,7 @@ jobs:
       - name: Publish to NPM
         run: |
             TAG=$(echo "${GITHUB_REF#refs/tags/}" | grep -q "beta" && echo "beta" || echo "latest")
-            pnpm publish --tag "$TAG" --no-git-checks
+            pnpm publish --tag "$TAG" --no-git-checks  --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   deploy-docs:
