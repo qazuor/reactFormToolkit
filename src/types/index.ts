@@ -9,3 +9,4 @@ export * from '@/types/asyncValidation';
 export * from '@/types/validation';
 export * from '@/types/buttons';
 export * from '@/types/conditionalField';
+export * from '@/types/dependantField';

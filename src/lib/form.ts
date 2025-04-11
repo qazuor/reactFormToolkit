@@ -26,9 +26,9 @@ export const formUtils = {
             return false;
         }
 
-        let fieldSchema = getFieldSchema(schema, fieldName);
+        const fieldSchema = getFieldSchema(schema, fieldName);
         if (!fieldSchema) {
-            fieldSchema = schema.shape[fieldName];
+            return false;
         }
 
         try {

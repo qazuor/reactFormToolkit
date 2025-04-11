@@ -24,6 +24,10 @@
     "path": "field-array.md"
   },
   {
+    "title": "Dependant Field",
+    "path": "dependant-field.md"
+  },
+  {
     "title": "Hooks",
     "path": "hooks.md"
   },

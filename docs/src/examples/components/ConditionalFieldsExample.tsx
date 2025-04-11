@@ -74,6 +74,40 @@ export function ConditionalFieldsExample({ setResult }: ConditionalFieldsExample
                     </select>
                 </FormField>
 
+                <FormField
+                    name='country'
+                    label='Country'
+                >
+                    <select>
+                        <option value='ar'>Argentine</option>
+                        <option value='us'>United States</option>
+                    </select>
+                </FormField>
+
+                <DependantField
+                    dependsOnField='country'
+                    dependentValuesCallback={getStateByCountry}
+                >
+                    <FormField
+                        name='country'
+                        label='Country'
+                    >
+                        {(field, dependantValues, isDependentValuesLoading) => {
+                            return (
+                                <select>
+                                    {isDependentValuesLoading && <option>Loading...</option>}
+                                    {!isDependentValuesLoading && <option value=''>Select a state</option>}
+                                    {dependantValues.map((state) => (
+                                        <option key={state.value} value={state.value}>
+                                            {state.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            )
+                        }}
+                    </FormField>
+                </DependantField>
+
                 {/* Show store location field only when shipping type is "pickup" */}
                 <ConditionalField
                     watchField='shippingType'

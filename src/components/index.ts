@@ -5,3 +5,4 @@ export * from '@/components/Icons';
 export * from '@/components/FieldArray';
 export * from '@/components/FormButtons';
 export * from '@/components/ConditionalField';
+export * from '@/components/DependantField';
