@@ -157,6 +157,43 @@ Enables dynamic form arrays with validation support.
 | `className` | `string` | - | Container CSS classes |
 | `buttonClassName` | `string` | - | Button CSS classes |
 
+## DependantField
+
+Component for managing fields that depend on the value of another field.
+
+```tsx
+<DependantField
+  dependsOnField="country"
+  dependentValuesCallback={getStatesByCountry}
+>
+  <FormField name="state">
+    {({ field }, dependentValues, isLoading) => (
+      <select>
+        {isLoading ? (
+          <option>Loading...</option>
+        ) : (
+          dependentValues.map(option => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))
+        )}
+      </select>
+    )}
+  </FormField>
+</DependantField>
+```
+
+Enables dynamic loading of options based on another field's value.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `dependsOnField` | `string` | - | Field name to watch for changes |
+| `dependentValuesCallback` | `(value: unknown) => Promise<DependentOption[]> \| DependentOption[]` | - | Function to fetch dependent values |
+| `children` | `ReactNode` | - | Form fields to render with dependent values |
+| `loadingDelay` | `number` | `300` | Delay before showing loading state |
+| `cacheResults` | `boolean` | `true` | Whether to cache results |
+
 ## FormDescription
 
 Component for form-level descriptions.
