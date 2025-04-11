@@ -202,7 +202,7 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                                 <Calendar
                                     mode='single'
                                     selected={field.value}
-                                    onSelect={field.onChange}
+                                    onSelect={(date) => field.onChange(date)}
                                     initialFocus={true}
                                 />
                             </PopoverContent>

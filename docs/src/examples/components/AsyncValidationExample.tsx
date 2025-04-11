@@ -36,7 +36,7 @@ export function AsyncValidationExample({ setResult }: AsyncValidationProps) {
         setResult(data);
     };
 
-    const userNameAsyncValidationOptions = {
+    const userNameAsyncValidationOptions: any = {
         asyncValidationDebounce: 1000,
         showValidationIcons: true,
         showLoadingSpinner: true,

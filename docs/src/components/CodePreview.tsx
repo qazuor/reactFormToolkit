@@ -6,7 +6,7 @@ import 'prismjs/components/prism-json';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Check, ClipboardCopy } from 'lucide-react';
-import Normalizer from 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace';
+import NormalizerModule from 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -15,7 +15,7 @@ type Props = {
     language?: string;
 };
 
-const nw = new Normalizer({
+const nw = new NormalizerModule({
     'remove-trailing': true,
     'remove-indent': true,
     'left-trim': true,

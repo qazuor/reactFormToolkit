@@ -113,46 +113,48 @@ export function I18nFormExample({ setResult }: I18nFormProps) {
                     position='above'
                     className='rounded-lg bg-blue-50 p-4'
                 >
-                    {customTranslations[language].form.title}
+                    {customTranslations[language]?.form?.title || 'Contact Form'}
                 </FormDescription>
 
                 <div className='space-y-6'>
                     <FormField
                         name='name'
-                        label={customTranslations[language].form.name}
+                        label={customTranslations[language]?.form?.name || 'Name'}
                         required={true}
                     >
                         <input
                             type='text'
                             className='w-full rounded-md border px-3 py-2'
-                            placeholder={customTranslations[language].form.namePlaceholder}
+                            placeholder={customTranslations[language]?.form?.namePlaceholder || 'Enter your name'}
                         />
                     </FormField>
 
                     <FormField
                         name='email'
-                        label={customTranslations[language].form.email}
+                        label={customTranslations[language]?.form?.email || 'Email'}
                         required={true}
                     >
                         <input
                             type='email'
                             className='w-full rounded-md border px-3 py-2'
-                            placeholder={customTranslations[language].form.emailPlaceholder}
+                            placeholder={customTranslations[language]?.form?.emailPlaceholder || 'Enter your email'}
                         />
                     </FormField>
 
                     <FormField
                         name='message'
-                        label={customTranslations[language].form.message}
+                        label={customTranslations[language]?.form?.message || 'Message'}
                         required={true}
                     >
                         <textarea
                             className='h-32 w-full rounded-md border px-3 py-2'
-                            placeholder={customTranslations[language].form.messagePlaceholder}
+                            placeholder={
+                                customTranslations[language]?.form?.messagePlaceholder || 'Your message here...'
+                            }
                         />
                     </FormField>
 
-                    <SubmitButton>{customTranslations[language].form.submit}</SubmitButton>
+                    <SubmitButton>{customTranslations[language]?.form?.submit || 'Submit'}</SubmitButton>
                     <ResetButton />
                     <CancelButton onCancel={() => console.log('Cancelled')} />
                 </div>

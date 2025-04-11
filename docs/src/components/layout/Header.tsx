@@ -1,4 +1,4 @@
-import { cn } from '@qazuor/react-form-toolkit';
+import { cn } from '@/lib/utils';
 import { Github, Menu, Moon, Search, Sun } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';

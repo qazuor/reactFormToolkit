@@ -14,6 +14,14 @@ import rehypeScrollToTop from '@benjc/rehype-scroll-to-top';
 import { useTranslation } from 'react-i18next';
 import rehypePrism from 'rehype-prism-plus';
 
+// Define the toc type
+interface TocElement {
+    type: string;
+    tagName?: string;
+    properties?: Record<string, any>;
+    children?: TocElement[];
+}
+
 export const DocsViewer: FC = () => {
     const { t } = useTranslation();
     const location = useLocation();
@@ -56,7 +64,7 @@ export const DocsViewer: FC = () => {
                     [
                         toc,
                         {
-                            customizeTOC: (toc) => {
+                            customizeTOC: (toc: TocElement) => {
                                 const title = {
                                     type: 'element',
                                     tagName: 'div',

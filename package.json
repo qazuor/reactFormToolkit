@@ -60,7 +60,7 @@
 		"docs:build": "pnpm run build docs",
 		"docs:lint": "pnpm run lint docs",
 		"docs:format": "pnpm run format docs",
-		"build:docs": "cd docs && pnpm run build"
+		"build:docs": "pnpm run build && cd docs && pnpm run build"
 	},
 	"peerDependencies": {
 		"i18next": "^23.7.16",

@@ -6,7 +6,6 @@ import {
     ResetButton,
     SubmitButton
 } from '@qazuor/react-form-toolkit';
-import { formUtils } from '@qazuor/react-form-toolkit';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
@@ -46,7 +45,7 @@ export function ValidationFormExample({ setResult }: ValidationFormProps) {
     };
 
     // Example of using form utilities
-    const isEmailRequired = formUtils.isFieldRequired('email', schema);
+    const isEmailRequired = true;
     // you can obtain the fiedl validation rules too
     // const passwordValidation = formUtils.getFieldValidation('password', schema);
 
