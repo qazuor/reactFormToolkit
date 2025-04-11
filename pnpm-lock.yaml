@@ -265,6 +265,9 @@ importers:
       '@tailwindcss/typography':
         specifier: ^0.5.16
         version: 0.5.16(tailwindcss@3.4.17)
+      '@types/prismjs':
+        specifier: ^1.26.3
+        version: 1.26.5
       '@types/react':
         specifier: ^18.3.5
         version: 18.3.20

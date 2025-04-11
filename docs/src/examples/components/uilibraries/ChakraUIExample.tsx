@@ -73,7 +73,6 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     quantity: 0,
                     file: null,
                     pin: '',
-                    segmentChoice: '',
                     role: '',
                     experience: '',
                     sliderValue: 50,

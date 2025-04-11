@@ -4,6 +4,7 @@ import {
     FormField,
     FormProvider,
     ResetButton,
+    type ResourceContent,
     SubmitButton
 } from '@qazuor/react-form-toolkit';
 import i18n from 'i18next';
@@ -20,19 +21,19 @@ interface I18nFormProps {
     setResult: (data: Record<string, unknown> | null) => void;
 }
 
-const customTranslations = {
+const customTranslations: Record<string, ResourceContent> = {
     en: {
         zod: {
             errors: {
-                invalid_type_received_undefined: 'Required',
-                invalid_type_received_null: 'Required',
-                too_small: {
-                    string: {
+                invalid_type: {
+                    undefined: 'Required',
+                    null: 'Required',
+                    too_small: {
                         min: 'Must be at least {{min}} characters long'
+                    },
+                    string: {
+                        email: 'Please enter a valid email address'
                     }
-                },
-                invalid_string: {
-                    email: 'Please enter a valid email address'
                 }
             }
         },
@@ -51,15 +52,15 @@ const customTranslations = {
     es: {
         zod: {
             errors: {
-                invalid_type_received_undefined: 'Requerido',
-                invalid_type_received_null: 'Requerido',
-                too_small: {
-                    string: {
+                invalid_type: {
+                    undefined: 'Requerido',
+                    null: 'Requerido',
+                    too_small: {
                         min: 'Debe tener al menos {{min}} caracteres'
+                    },
+                    string: {
+                        email: 'Por favor ingrese un email válido'
                     }
-                },
-                invalid_string: {
-                    email: 'Por favor ingrese un email válido'
                 }
             }
         },
