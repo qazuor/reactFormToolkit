@@ -1,7 +1,7 @@
 import { useDebounce } from '@/hooks/useDebounce';
+import { useFormWatch } from '@/hooks/useFormWatch';
 import type { DependentOption, UseDependantFieldOptions } from '@/types';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import type { FieldValues } from 'react-hook-form';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 /**
  * Hook for handling dependent field values based on another field's value
@@ -17,39 +17,33 @@ import type { FieldValues } from 'react-hook-form';
  * });
  * ```
  */
-export function useDependantField<TFieldValues extends FieldValues = FieldValues>({
-    form,
+export function useDependantField({
     dependsOnField,
     dependentValuesCallback,
     loadingDelay = 300,
     cacheResults = true
-}: UseDependantFieldOptions<TFieldValues>) {
+}: Omit<UseDependantFieldOptions, 'form'>) {
     const [dependentValues, setDependentValues] = useState<DependentOption[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const watchSubscriptionRef = useRef<{ unsubscribe: () => void }>();
     const cacheRef = useRef<Record<string, DependentOption[]>>({});
-    const initialValueRef = useRef<boolean>(true);
-    const previousValueRef = useRef<unknown>(null);
+
+    // Track if we're currently fetching to prevent duplicate requests
+    const isFetchingRef = useRef<boolean>(false);
 
     // Debounce the loading state to prevent flickering for fast responses
     const debouncedIsLoading = useDebounce(isLoading, loadingDelay);
 
-    /**
-     * Fetch dependent values based on the parent field value
-     */
-    const fetchDependentValues = useCallback(
-        async (value: unknown) => {
-            // Skip if the value is the same as the previous one
-            if (value === previousValueRef.current && !initialValueRef.current) {
-                return;
-            }
-
-            previousValueRef.current = value;
-            initialValueRef.current = false;
-
+    // Memoize the fetch function to prevent unnecessary re-creation
+    const memoizedFetchDependentValues = useMemo(() => {
+        return async (value: unknown) => {
             // If value is empty or null, reset dependent values
             if (value === '' || value === null || value === undefined) {
                 setDependentValues([]);
+                return;
+            }
+
+            // Prevent concurrent fetches for the same value
+            if (isFetchingRef.current) {
                 return;
             }
 
@@ -61,6 +55,7 @@ export function useDependantField<TFieldValues extends FieldValues = FieldValues
             }
 
             try {
+                isFetchingRef.current = true;
                 setIsLoading(true);
                 const result = await dependentValuesCallback(value);
 
@@ -85,30 +80,35 @@ export function useDependantField<TFieldValues extends FieldValues = FieldValues
                 setDependentValues([]);
             } finally {
                 setIsLoading(false);
+                isFetchingRef.current = false;
             }
+        };
+    }, [dependentValuesCallback, cacheResults]);
+
+    /**
+     * Fetch dependent values based on the parent field value
+     */
+    const fetchDependentValues = useCallback(
+        (value: unknown) => {
+            memoizedFetchDependentValues(value);
         },
-        [dependentValuesCallback, cacheResults]
+        [memoizedFetchDependentValues]
     );
 
-    // Set up watch subscription
+    // Use the useFormWatch hook to watch for changes
+    const currentValue = useFormWatch({
+        name: dependsOnField,
+        onChange: fetchDependentValues,
+        executeOnMount: true,
+        skipIfSameValue: true
+    });
+
+    // Ensure we reset dependent values when the parent field is cleared
     useEffect(() => {
-        // Initial fetch with current value
-        const initialValue = form.getValues(dependsOnField);
-        fetchDependentValues(initialValue);
-
-        // Set up subscription for future changes
-        watchSubscriptionRef.current = form.watch((_values, { name }) => {
-            // Only update if the watched field changed or if it's the initial watch
-            if (name === dependsOnField || name === undefined) {
-                const watchedValue = form.getValues(dependsOnField);
-                fetchDependentValues(watchedValue);
-            }
-        });
-
-        return () => {
-            watchSubscriptionRef.current?.unsubscribe();
-        };
-    }, [form, dependsOnField, fetchDependentValues]);
+        if (currentValue === '' || currentValue === null || currentValue === undefined) {
+            setDependentValues([]);
+        }
+    }, [currentValue]);
 
     return {
         dependentValues,

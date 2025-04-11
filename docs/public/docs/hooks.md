@@ -30,6 +30,48 @@ function CustomField() {
 | `isDirty` | `boolean` | Whether value changed |
 | `hasError` | `boolean` | Whether field has error |
 
+## useFormWatch
+
+Hook for efficiently watching form field changes.
+
+```tsx
+import { useFormWatch } from '@qazuor/react-form-toolkit';
+
+function CountryStateForm() {
+  // Watch the country field and fetch states when it changes
+  useFormWatch({
+    name: 'country',
+    onChange: (value) => {
+      fetchStates(value as string);
+    }
+  });
+
+  return (
+    <div>
+      <FormField name="country">
+        <select>
+          <option value="us">United States</option>
+          <option value="ca">Canada</option>
+        </select>
+      </FormField>
+    </div>
+  );
+}
+```
+
+### Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `string` | Field name to watch |
+| `onChange` | `(value: unknown) => void` | Callback when field changes |
+| `executeOnMount` | `boolean` | Whether to execute callback on mount |
+| `skipIfSameValue` | `boolean` | Skip callback if value hasn't changed |
+
+### Returns
+
+The current value of the watched field.
+
 ## useQRFTTranslation
 
 Hook for accessing translations.

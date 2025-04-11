@@ -26,7 +26,8 @@ interface DependentFieldsExampleProps {
 }
 
 // Simulated API calls
-const getStatesByCountry = async (country: string) => {
+const getStatesByCountry = async (country: unknown) => {
+    const countryStr = country as string;
     // Simulate API delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -48,11 +49,11 @@ const getStatesByCountry = async (country: string) => {
             { value: 'nl', label: 'Nuevo León' }
         ]
     };
-
-    return states[country as keyof typeof states] || [];
+    return states[countryStr as keyof typeof states] || [];
 };
 
-const getSubcategoriesByCategory = async (category: string) => {
+const getSubcategoriesByCategory = async (category: unknown) => {
+    const categoryStr = category as string;
     // Simulate API delay
     await new Promise((resolve) => setTimeout(resolve, 800));
 
@@ -74,8 +75,7 @@ const getSubcategoriesByCategory = async (category: string) => {
             { value: 'decor', label: 'Home Decor' }
         ]
     };
-
-    return subcategories[category as keyof typeof subcategories] || [];
+    return subcategories[categoryStr as keyof typeof subcategories] || [];
 };
 
 export function DependentFieldsExample({ setResult }: DependentFieldsExampleProps) {

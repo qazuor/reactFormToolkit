@@ -6,3 +6,4 @@ export * from '@/hooks/useFieldProps';
 export * from '@/hooks/useDebounce';
 export * from '@/hooks/useDependantField';
 export * from '@/hooks/useConditionalField';
+export * from '@/hooks/useFormWatch';

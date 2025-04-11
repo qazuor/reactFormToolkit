@@ -1,3 +1,4 @@
+import { useFormWatch } from '@/hooks/useFormWatch';
 import { findFieldNames } from '@/lib/conditional-field';
 import type { UseConditionalFieldOptions } from '@/types';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -22,8 +23,6 @@ export function useConditionalField<
     const { form, watchField, condition, keepRegistered = false, content } = options;
     const [isConditionMet, setIsConditionMet] = useState<boolean>(false);
     const [previousCondition, setPreviousCondition] = useState<boolean>(false);
-    const watchSubscriptionRef = useRef<{ unsubscribe: () => void }>();
-    const initialValueRef = useRef<boolean>(true);
 
     const evaluateCondition = useCallback(
         (value: unknown) => {
@@ -34,30 +33,15 @@ export function useConditionalField<
         [condition]
     );
 
-    // Update condition state when watched field changes
-    useEffect(() => {
-        // Initial evaluation
-        const watchedValue = form.getValues(watchField);
-        const initialConditionMet = evaluateCondition(watchedValue);
-
-        if (initialValueRef.current) {
-            setIsConditionMet(initialConditionMet);
-            setPreviousCondition(initialConditionMet);
-            initialValueRef.current = false;
-        }
-
-        // Setup watch subscription
-        watchSubscriptionRef.current = form.watch((_values, { name }) => {
-            // Only update if the watched field changed or if it's the initial watch
-            if (name === watchField || name === undefined) {
-                const watchedValue = form.getValues(watchField);
-                const newConditionMet = evaluateCondition(watchedValue);
-                setIsConditionMet(newConditionMet);
-            }
-        });
-
-        return () => watchSubscriptionRef.current?.unsubscribe();
-    }, [form, watchField, evaluateCondition]);
+    // Use the new useFormWatch hook to watch for changes
+    useFormWatch({
+        name: watchField,
+        onChange: (value) => {
+            const newConditionMet = evaluateCondition(value);
+            setIsConditionMet(newConditionMet);
+        },
+        executeOnMount: true
+    });
 
     // Handle field registration/unregistration when visibility changes
     useEffect(() => {
@@ -83,11 +67,6 @@ export function useConditionalField<
         // Update previous condition
         setPreviousCondition(isConditionMet);
     }, [form, isConditionMet, keepRegistered, content, previousCondition]);
-
-    // Cleanup on unmount
-    useEffect(() => {
-        return () => watchSubscriptionRef.current?.unsubscribe();
-    }, []);
 
     return { isConditionMet };
 }
@@ -127,32 +106,15 @@ export function useConditionalFieldGroup<
     const { form, watchField, conditions, keepRegistered = false } = options;
     const [currentValue, setCurrentValue] = useState<string>('');
     const previousValueRef = useRef<string>(currentValue);
-    const watchedValueRef = useRef<string | null>(null);
 
-    // Memoize the watch callback
-    const watchCallback = useCallback(
-        (_values: unknown, { name }: { name?: string }) => {
-            if (name !== watchField && name !== undefined) {
-                return;
-            }
-
-            const watchedValue = form.getValues(watchField) as string;
-            if (watchedValue === watchedValueRef.current) {
-                return;
-            }
-
-            watchedValueRef.current = watchedValue;
-            setCurrentValue(watchedValue);
+    // Use the new useFormWatch hook to watch for changes
+    useFormWatch({
+        name: watchField,
+        onChange: (value) => {
+            setCurrentValue(value as string);
         },
-        [form, watchField]
-    );
-
-    // Set up watch subscription
-    useEffect(() => {
-        const subscription = form.watch(watchCallback);
-        watchCallback({}, { name: watchField });
-        return () => subscription.unsubscribe();
-    }, [form, watchField, watchCallback]);
+        executeOnMount: true
+    });
 
     // Handle field registration/unregistration when visibility changes
     useEffect(() => {
