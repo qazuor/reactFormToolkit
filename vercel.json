@@ -1,5 +1,5 @@
 {
-    "buildCommand": "cd docs && pnpm install && pnpm run build",
+    "buildCommand": "pnpm install && pnpm run build",
     "installCommand": "pnpm install",
     "outputDirectory": "docs/dist", 
     "framework": "vite",
