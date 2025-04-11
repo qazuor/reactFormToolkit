@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import type { ZodObject, ZodRawShape, ZodTypeAny } from 'zod';
 
 /**
  * Gets a value from an object using dot notation
@@ -55,3 +56,18 @@ export const hasAsyncErrors = (asyncErrors: Record<string, boolean> | undefined)
         return hasError;
     });
 };
+
+/**
+ * Retrieves the Zod schema for a specific field if it exists.
+ *
+ * @param {ZodObject<ZodRawShape>} schema - The Zod schema object from which to retrieve the field schema.
+ * @param {string} fieldName - The name of the field to find in the schema.
+ * @returns {ZodTypeAny | undefined} The specific field schema or undefined if not found.
+ */
+export function getFieldSchema(schema: ZodObject<ZodRawShape>, fieldName: string): ZodTypeAny | undefined {
+    const shape = schema.shape;
+    if (!shape) {
+        return undefined;
+    }
+    return shape[fieldName];
+}

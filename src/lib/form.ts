@@ -1,5 +1,6 @@
 import type { FieldValues, UseFormReturn } from 'react-hook-form';
 import type { ZodType } from 'zod';
+import { getFieldSchema } from './utils';
 
 /**
  * Utility type for form configuration
@@ -25,7 +26,7 @@ export const formUtils = {
             return false;
         }
 
-        let fieldSchema = schema._def?.schema?.shape[fieldName];
+        let fieldSchema = getFieldSchema(schema, fieldName);
         if (!fieldSchema) {
             fieldSchema = schema.shape[fieldName];
         }
@@ -33,7 +34,9 @@ export const formUtils = {
         try {
             // Check if field is required by attempting to parse undefined
             try {
-                fieldSchema.parse(undefined);
+                if (fieldSchema) {
+                    fieldSchema.parse(undefined);
+                }
                 return false; // If parsing undefined succeeds, field is optional
             } catch {
                 return true; // If parsing undefined fails, field is required
@@ -55,7 +58,7 @@ export const formUtils = {
         if (!schema) {
             return {};
         }
-        let fieldSchema = schema._def?.schema?.shape[fieldName];
+        let fieldSchema = getFieldSchema(schema, fieldName);
         if (!fieldSchema) {
             fieldSchema = schema.shape[fieldName];
         }
