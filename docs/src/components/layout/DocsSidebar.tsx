@@ -2,10 +2,13 @@ import { Book } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { MainNakLink } from '../MainNavLink';
 
-export function DocsSidebar({ docs }) {
-    const { t } = useTranslation();
+export interface Doc {
+    path: string;
+    title: string;
+}
 
-    console.log('docs sidebar', docs);
+export function DocsSidebar({ docs }: { docs: Doc[] }) {
+    const { t } = useTranslation();
 
     return (
         <div>

@@ -1,12 +1,12 @@
 import { cn } from '@/lib/utils';
 import { useLocation } from 'react-router-dom';
-import { DocsSidebar } from './DocsSidebar';
+import { type Doc, DocsSidebar } from './DocsSidebar';
 import { ExamplesSidebar } from './ExamplesSidebar';
 import { HomeSidebar } from './HomeSidebar';
 
 interface SidebarProps {
     width: number;
-    docs: any[];
+    docs: Doc[];
 }
 
 export function Sidebar({ width, docs }: SidebarProps) {
@@ -21,7 +21,7 @@ export function Sidebar({ width, docs }: SidebarProps) {
             style={{ width }}
         >
             <div
-                className='flex flex-col overflow-hidden md:fixed md:h-[calc(100vh-4rem)] md:border-r border-gray-200 dark:border-gray-700 md:bg-background md:shadow-md'
+                className='flex flex-col overflow-hidden border-gray-200 md:fixed md:h-[calc(100vh-4rem)] md:border-r md:bg-background md:shadow-md dark:border-gray-700'
                 style={{ width }}
             >
                 <div className='flex-1 space-y-4 overflow-y-auto pb-10 md:p-6'>

@@ -9,13 +9,14 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '../ui/sheet';
+import type { Doc } from './DocsSidebar';
 import { Sidebar } from './Sidebar';
 
 interface HeaderProps {
     searchQuery: string;
     setSearchQuery: (query: string) => void;
     sidebarWidth: number;
-    sidebarDocs: any[];
+    sidebarDocs: Doc[];
 }
 
 export function Header({ searchQuery, setSearchQuery, sidebarWidth, sidebarDocs }: HeaderProps) {
@@ -74,8 +75,6 @@ export function Header({ searchQuery, setSearchQuery, sidebarWidth, sidebarDocs 
                                 <Sidebar
                                     docs={sidebarDocs}
                                     width={sidebarWidth}
-                                    theme={theme}
-                                    toggleTheme={toggleTheme}
                                 />
                             </div>
                             <SheetFooter className='z-1 mt-auto border-t bg-white/40 pt-4 dark:bg-slate-900/40'>
