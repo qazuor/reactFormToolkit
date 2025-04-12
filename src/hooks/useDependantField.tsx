@@ -2,6 +2,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 import { useFormWatch } from '@/hooks/useFormWatch';
 import type { DependentOption, UseDependantFieldOptions } from '@/types';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { FieldPath, FieldValues } from 'react-hook-form';
 
 /**
  * Hook for handling dependent field values based on another field's value
@@ -9,7 +10,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
  * @example
  * ```tsx
  * const { dependentValues, isLoading } = useDependantField({
- *   form,
  *   dependsOnField: 'country',
  *   dependentValuesCallback: getStatesByCountry,
  *   loadingDelay: 300,
@@ -17,12 +17,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
  * });
  * ```
  */
-export function useDependantField({
+export function useDependantField<
+    TFieldValues extends FieldValues = FieldValues,
+    TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
     dependsOnField,
     dependentValuesCallback,
     loadingDelay = 300,
     cacheResults = true
-}: Omit<UseDependantFieldOptions, 'form'>) {
+}: Omit<UseDependantFieldOptions<TFieldValues, TName>, 'form'>) {
     const [dependentValues, setDependentValues] = useState<DependentOption[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const cacheRef = useRef<Record<string, DependentOption[]>>({});
@@ -36,7 +39,7 @@ export function useDependantField({
     // Memoize the fetch function to prevent unnecessary re-creation
     const memoizedFetchDependentValues = useMemo(() => {
         return async (value: unknown) => {
-            // If value is empty or null, reset dependent values
+            // If value is empty, null, or undefined, reset dependent values
             if (value === '' || value === null || value === undefined) {
                 setDependentValues([]);
                 return;
@@ -57,7 +60,10 @@ export function useDependantField({
             try {
                 isFetchingRef.current = true;
                 setIsLoading(true);
-                const result = await dependentValuesCallback(value);
+
+                // Handle both synchronous and asynchronous callbacks
+                const resultPromise = dependentValuesCallback(value);
+                const result = resultPromise instanceof Promise ? await resultPromise : resultPromise;
 
                 // Normalize the result to ensure it's an array of DependentOption objects
                 const normalizedResult = Array.isArray(result)
@@ -98,7 +104,10 @@ export function useDependantField({
     // Use the useFormWatch hook to watch for changes
     const currentValue = useFormWatch({
         name: dependsOnField,
-        onChange: fetchDependentValues,
+        onChange: (value) => {
+            // Ensure we're working with the latest value
+            fetchDependentValues(value);
+        },
         executeOnMount: true,
         skipIfSameValue: true
     });

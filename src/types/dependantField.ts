@@ -57,7 +57,10 @@ export interface DependantFieldProps<
 /**
  * Options for the useDependantField hook
  */
-export interface UseDependantFieldOptions<TFieldValues extends FieldValues = FieldValues> {
+export interface UseDependantFieldOptions<
+    TFieldValues extends FieldValues = FieldValues,
+    TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> {
     /**
      * The form instance from useFormContext
      */
@@ -66,7 +69,7 @@ export interface UseDependantFieldOptions<TFieldValues extends FieldValues = Fie
     /**
      * The field name that this field depends on
      */
-    dependsOnField: FieldPath<TFieldValues>;
+    dependsOnField: TName;
 
     /**
      * Callback function to fetch dependent values based on the parent field value

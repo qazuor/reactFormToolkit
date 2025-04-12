@@ -1,7 +1,6 @@
 import { renderHook } from '@testing-library/react';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
-import React, { useState } from 'react';
-import { act } from 'react-dom/test-utils';
+import React, { useState, act } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useFormWatch } from '../../hooks/useFormWatch';
 
@@ -134,10 +133,7 @@ describe('useFormWatch', () => {
 
     it('should call onChange if value changes even if skipIfSameValue is true', () => {
         const onChange = vi.fn();
-        const mockGetValues = vi
-            .fn()
-            .mockReturnValueOnce('initialValue') // First call during mount
-            .mockReturnValueOnce('newValue'); // Second call during watch callback
+        const mockGetValues = vi.fn().mockReturnValue('initialValue'); // Always return initialValue for consistency
 
         let watchCallback: (values: any, info: { name?: string }) => void;
         const mockWatch = vi.fn().mockImplementation((callback) => {
@@ -162,6 +158,9 @@ describe('useFormWatch', () => {
 
         // Reset mock to test subsequent calls
         onChange.mockReset();
+
+        // Change the mock to return new value for the next call
+        mockGetValues.mockReturnValue('newValue');
 
         // Simulate watch callback with different value
         act(() => {
