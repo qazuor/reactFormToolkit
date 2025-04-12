@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from 'react';
 
-type Theme = 'light' | 'dark';
+export type Theme = 'light' | 'dark';
 
 const THEME_KEY = 'app-theme';
 
@@ -31,7 +31,7 @@ export function useTheme() {
 
     return {
         theme,
-        toggle: () => setTheme((t) => (t === 'dark' ? 'light' : 'dark')),
+        toggleTheme: () => setTheme((t) => (t === 'dark' ? 'light' : 'dark')),
         setTheme
     };
 }

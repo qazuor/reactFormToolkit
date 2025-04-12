@@ -4,7 +4,7 @@ export function Footer() {
     const { t } = useTranslation();
 
     return (
-        <footer className='z-10 mt-auto border-t bg-background bg-zinc-200 px-4 py-6 text-center text-muted-foreground text-sm dark:bg-slate-900'>
+        <footer className='z-10 mt-auto border-t bg-zinc-100 px-4 py-6 text-center text-muted-foreground text-sm dark:bg-slate-900'>
             <div className='mx-auto max-w-7xl'>
                 <p>
                     {t('examples.footer.text')}

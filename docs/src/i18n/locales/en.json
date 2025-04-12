@@ -28,6 +28,13 @@
                 "text": "Built with ❤️ by"
             }
         },
+        "navigation": {
+            "menu": "Menu",
+            "mainMenu": "Main Menu",
+            "backToHome": "Back to Home",
+            "backToMainMenu": "Back",
+            "search": "Search"
+        },
         "docs": {
             "title": "Documentation",
             "tabs": {

@@ -1,39 +1,35 @@
-import { Search } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { Input } from '../ui/input';
-import { SidebarContent } from './SidebarContent';
+import { cn } from '@/lib/utils';
+import { useLocation } from 'react-router-dom';
+import { DocsSidebar } from './DocsSidebar';
+import { ExamplesSidebar } from './ExamplesSidebar';
+import { HomeSidebar } from './HomeSidebar';
 
 interface SidebarProps {
     width: number;
     docs: any[];
-    searchQuery: string;
-    setSearchQuery: (query: string) => void;
 }
 
-export function Sidebar({ width, docs, searchQuery, setSearchQuery }: SidebarProps) {
-    const { t } = useTranslation();
+export function Sidebar({ width, docs }: SidebarProps) {
+    const location = useLocation();
+    const isHomePath = location.pathname === '/';
+    const isDocPath = location.pathname.startsWith('/docs');
+    const isExamplePath = location.pathname.startsWith('/examples');
 
     return (
         <aside
-            className='hidden border-r bg-muted/40 md:block'
+            className={cn('bg-white/40 dark:bg-slate-900/40', isHomePath && 'md:hidden')}
             style={{ width }}
         >
             <div
-                className='fixed flex h-[calc(100vh-4rem)] flex-col'
+                className='flex flex-col overflow-hidden md:fixed md:h-[calc(100vh-4rem)] md:border-r border-gray-200 dark:border-gray-700 md:bg-background md:shadow-md'
                 style={{ width }}
             >
-                <div className='flex-1 space-y-6 overflow-y-auto p-6'>
-                    <div className='relative md:hidden'>
-                        <Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground' />
-                        <Input
-                            type='text'
-                            placeholder={t('search.placeholder')}
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className='pl-9'
-                        />
+                <div className='flex-1 space-y-4 overflow-y-auto pb-10 md:p-6'>
+                    <div className='mb-100 md:pb-20'>
+                        {isHomePath && <HomeSidebar />}
+                        {isDocPath && <DocsSidebar docs={docs} />}
+                        {isExamplePath && <ExamplesSidebar />}
                     </div>
-                    <SidebarContent docs={docs} />
                 </div>
             </div>
         </aside>

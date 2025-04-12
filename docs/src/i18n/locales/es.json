@@ -28,6 +28,13 @@
                 "text": "Hecho con ❤️ por"
             }
         },
+        "navigation": {
+            "menu": "Menú",
+            "mainMenu": "Menú Principal",
+            "backToHome": "Volver al Inicio",
+            "backToMainMenu": "Atras",
+            "search": "Buscar"
+        },
         "docs": {
             "title": "Documentación",
             "tabs": {

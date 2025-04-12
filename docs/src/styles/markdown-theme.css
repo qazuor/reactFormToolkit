@@ -1,16 +1,16 @@
 /* === Base Markdown Styling inspired by github-markdown-light.css === */
 /* light */
 .markdown-body {
-  color-scheme: light;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  margin: 0;
-  color: #1f2328;
-  background-color: #ffffff;
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
-  font-size: 16px;
-  line-height: 1.5;
-  word-wrap: break-word;
+    color-scheme: light;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    margin: 0;
+    color: #1f2328;
+    background-color: #ffffff;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    font-size: 16px;
+    line-height: 1.5;
+    word-wrap: break-word;
 }
 
 .markdown-body .octicon {
@@ -2212,23 +2212,104 @@
 
 /* TOC Styles */
 
-.markdown-body .toc {
-    border: 1px solid #cccccc;
-    padding: 10px;
-    margin: 0;
-    font-size: 0.85em;
-    float: right;
-    background-color: #fafafa
+/* Light mode TOC */
+.toc {
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    padding: 16px;
+    margin: 0 0 24px 0;
+    font-size: 0.9em;
+    width: 100%;
+    background-color: #f6f8fa;
+    position: relative;
 }
 
-.markdown-body .toc-title-container,
-.markdown-body .toc-title,
-.markdown-body .toc-level-1 {
-    padding: 0;
-    margin: 0;
+/* Dark mode TOC */
+.dark .toc {
+    border-color: #30363d;
+    background-color: #161b22;
 }
 
-.markdown-body .toc-title {
-    margin-bottom: 10px;
-    font-size: 1.3em;
+.toc-title-container {
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 1.1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toc-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    font-size: 1.1em !important;
+}
+
+.toc ul {
+    margin-top: 8px !important;
+    margin-bottom: 0 !important;
+    padding-left: 20px !important;
+}
+
+.toc li {
+    margin: 4px 0 !important;
+    line-height: 1.4 !important;
+}
+
+.toc a {
+    color: #0969da !important;
+    text-decoration: none !important;
+}
+
+.dark .toc a {
+    color: #58a6ff !important;
+}
+
+.toc a:hover {
+    text-decoration: underline !important;
+}
+
+/* Back to top button */
+.backToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #0969da;
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    opacity: 0.8;
+    transition: opacity 0.3s;
+    z-index: 100;
+}
+
+.dark .backToTop {
+    background-color: #1f6feb;
+}
+
+.backToTop:hover {
+    opacity: 1;
+    text-decoration: none !important;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .toc {
+        float: none;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    .backToTop {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9em;
+    }
 }

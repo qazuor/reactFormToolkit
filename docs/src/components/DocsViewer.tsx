@@ -38,7 +38,7 @@ export const DocsViewer: FC = () => {
     }, [location]);
 
     return (
-        <div className='markdown-body bg-white px-4 py-6 text-black dark:bg-zinc-900 dark:text-zinc-100'>
+        <div className='markdown-body relative bg-white px-4 py-6 text-black dark:bg-zinc-900 dark:text-zinc-100'>
             <Markdown
                 remarkPlugins={[remarkGfm, remarkAlert, remarkBreaks, remarkHeadingGap]}
                 rehypePlugins={[
