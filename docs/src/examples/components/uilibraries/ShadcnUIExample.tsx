@@ -106,10 +106,10 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     required={true}
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }: { field: { onChange: (value: string) => void; value: string } }) => (
+                    {({ field }: { field: { onChange: (value: unknown) => void; value: unknown } }) => (
                         <Select
-                            onValueChange={field.onChange}
-                            value={field.value}
+                            onValueChange={(value) => field.onChange(value as string)}
+                            value={field.value as string}
                         >
                             <SelectTrigger>
                                 <SelectValue placeholder='Select a role' />
@@ -130,7 +130,7 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     required={true}
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }: { field: { onChange: (value: string) => void; value: string } }) => (
+                    {({ field }: { field: { onChange: (value: unknown) => void; value: unknown } }) => (
                         <Popover>
                             <PopoverTrigger asChild={true}>
                                 <Button
@@ -139,7 +139,7 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                                     className='w-[200px] justify-between'
                                 >
                                     {/* MOSTRAMOS LO QUE HAY EN field.value */}
-                                    {field.value
+                                    {typeof field.value === 'string' && field.value
                                         ? statuses.find((s) => s.value === field.value)?.label
                                         : 'Select Status...'}
                                     <ChevronsUpDown className='opacity-50' />
@@ -184,7 +184,7 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     label='Start Date'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }: { field: { onChange: (value: Date) => void; value: Date } }) => (
+                    {({ field }: { field: { onChange: (value: unknown) => void; value: unknown } }) => (
                         <Popover>
                             <PopoverTrigger asChild={true}>
                                 <Button
@@ -195,13 +195,15 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                                     )}
                                 >
                                     <CalendarIcon className='mr-2 h-4 w-4' />
-                                    {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
+                                    {field.value && field.value instanceof Date
+                                        ? format(field.value, 'PPP')
+                                        : <span>Pick a date</span>}
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className='w-auto p-0'>
                                 <Calendar
                                     mode='single'
-                                    selected={field.value}
+                                    selected={field.value instanceof Date ? field.value : undefined}
                                     onSelect={(date) => date && field.onChange(date)}
                                     initialFocus={true}
                                 />
@@ -236,10 +238,10 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     label='Experience Level'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }: { field: { onChange: (value: string) => void; value: string } }) => (
+                    {({ field }: { field: { onChange: (value: unknown) => void; value: unknown } }) => (
                         <RadioGroup
-                            onValueChange={field.onChange}
-                            value={field.value}
+                            onValueChange={(value) => field.onChange(value as string)}
+                            value={field.value as string}
                         >
                             {['beginner', 'intermediate', 'expert'].map((value) => (
                                 <div
@@ -264,10 +266,10 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                     label='Frameworks'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }: { field: { onChange: (value: string[]) => void; value: string[] } }) => (
+                    {({ field }: { field: { onChange: (value: unknown) => void; value: unknown } }) => (
                         <ToggleGroup
                             type='multiple'
-                            value={field.value}
+                            value={field.value as string[]}
                             onValueChange={(value) => field.onChange(value)}
                         >
                             <ToggleGroupItem value='react'>React</ToggleGroupItem>

@@ -120,10 +120,10 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     label='Color'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }: { field: { value: string[]; onChange: (value: string[]) => void } }) => {
+                    {({ field }: { field: { value: unknown; onChange: (value: string[]) => void } }) => {
                         const handledChange = (value: string): void => {
-                            const newValue = [...field.value];
-                            if (field.value.includes(value)) {
+                            const newValue = [...(field.value as string[])];
+                            if ((field.value as string[]).includes(value)) {
                                 newValue.splice(newValue.indexOf(value), 1);
                             } else {
                                 newValue.push(value);
@@ -136,7 +136,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                                 direction='row'
                             >
                                 <Checkbox
-                                    isChecked={field.value.includes('red')}
+                                    isChecked={(field.value as string[]).includes('red')}
                                     onChange={() => handledChange('red')}
                                     colorScheme='red'
                                     defaultChecked={true}
@@ -144,7 +144,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                                     Red
                                 </Checkbox>
                                 <Checkbox
-                                    isChecked={field.value.includes('green')}
+                                    isChecked={(field.value as string[]).includes('green')}
                                     onChange={() => handledChange('green')}
                                     colorScheme='green'
                                     defaultChecked={true}
@@ -152,7 +152,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                                     Green
                                 </Checkbox>
                                 <Checkbox
-                                    isChecked={field.value.includes('blue')}
+                                    isChecked={(field.value as string[]).includes('blue')}
                                     onChange={() => handledChange('blue')}
                                     colorScheme='blue'
                                     defaultChecked={true}
@@ -170,12 +170,12 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     label='Quantity'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }: { field: { value: number; onChange: (value: number) => void } }) => (
+                    {({ field }: { field: { value: unknown; onChange: (value: unknown) => void } }) => (
                         <NumberInput
                             variant='flushed'
-                            value={field.value ?? 0}
+                            value={typeof field.value === 'number' ? field.value : 0}
                             onChange={(_valStr, valNum) => {
-                                field.onChange(valNum);
+                                field.onChange(valNum as unknown);
                             }}
                             min={0}
                             max={100}
@@ -213,9 +213,9 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     label='Security PIN'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }: { field: { value: string; onChange: (value: string) => void } }) => (
+                    {({ field }: { field: { value: unknown; onChange: (value: string) => void } }) => (
                         <PinInput
-                            value={field.value || ''}
+                            value={(field.value as string) || ''}
                             onChange={(val) => field.onChange(val)}
                             otp={true}
                         >
@@ -233,12 +233,13 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     label='Role'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }: { field: { value: string; onChange: (value: string) => void } }) => (
+                    {({ field }: { field: { value: unknown; onChange: (value: unknown) => void; onBlur: () => void } }) => (
                         <Select
                             variant='flushed'
                             placeholder='Select a role'
-                            value={field.value || ''}
+                            value={(field.value as string) || ''}
                             onChange={(e) => field.onChange(e.target.value)}
+                            onBlur={field.onBlur}
                         >
                             <option value='developer'>Developer</option>
                             <option value='designer'>Designer</option>
@@ -253,9 +254,9 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     label='Experience Level'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }: { field: { value: string; onChange: (value: string) => void } }) => (
+                    {({ field }: { field: { value: unknown; onChange: (value: unknown) => void; onBlur: () => void } }) => (
                         <RadioGroup
-                            value={field.value || ''}
+                            value={(field.value as string) || ''}
                             onChange={(val) => field.onChange(val)}
                         >
                             <Stack direction='row'>
@@ -273,11 +274,12 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     label='Volume'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }: { field: { value: number; onChange: (value: number) => void } }) => (
+                    {({ field }: { field: { value: unknown; onChange: (value: number) => void; onBlur: () => void } }) => (
                         <Box>
                             <Slider
-                                value={field.value ?? 50}
+                                value={typeof field.value === 'number' ? field.value : 50}
                                 onChange={(val) => field.onChange(val)}
+                                onBlur={field.onBlur}
                                 min={0}
                                 max={100}
                             >
@@ -286,7 +288,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                                 </SliderTrack>
                                 <SliderThumb />
                             </Slider>
-                            <Box mt={2}>Value: {field.value}</Box>
+                            <Box mt={2}>Value: {typeof field.value === 'number' ? field.value : 50}</Box>
                         </Box>
                     )}
                 </FormField>
@@ -297,7 +299,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                     label='Toggled'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }: { field: { value: boolean; onChange: (value: boolean) => void } }) => (
+                    {({ field }: { field: { value: unknown; onChange: (value: unknown) => void; onBlur: () => void } }) => (
                         <FormControl
                             display='flex'
                             alignItems='center'
@@ -306,6 +308,7 @@ export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
                             <Switch
                                 isChecked={!!field.value}
                                 onChange={(e) => field.onChange(e.target.checked)}
+                                onBlur={field.onBlur}
                             />
                         </FormControl>
                     )}

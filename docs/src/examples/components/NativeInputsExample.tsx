@@ -167,10 +167,13 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                     label={t('form.nativeInputs.interests')}
                     required={true}
                 >
-                    {({ field }: { field: { value: string[]; onChange: (value: string[]) => void } }) => (
+                    {({
+                        field
+                    }: { field: { value: unknown; onChange: (value: unknown) => void; onBlur: () => void } }) => (
                         <div className='space-y-2'>
                             {['sports', 'music', 'movies', 'books'].map((interest) => {
-                                const checked = field.value?.includes(interest);
+                                const value = field.value as string[]; // Explicitly cast to string[]
+                                const checked = value?.includes(interest);
                                 return (
                                     <label
                                         key={interest}
@@ -183,8 +186,8 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                                             onChange={(e) => {
                                                 const isChecked = e.target.checked;
                                                 const newValue = isChecked
-                                                    ? [...(field.value || []), interest]
-                                                    : field.value.filter((v: string) => v !== interest);
+                                                    ? [...(value || []), interest]
+                                                    : value.filter((v: string) => v !== interest);
                                                 field.onChange(newValue);
                                             }}
                                             className='h-4 w-4 rounded border-gray-300'
@@ -203,7 +206,9 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                     label={t('form.nativeInputs.gender')}
                     required={true}
                 >
-                    {({ field }: { field: { value: string; onChange: (value: string) => void } }) => (
+                    {({
+                        field
+                    }: { field: { value: unknown; onChange: (value: unknown) => void; onBlur: () => void } }) => (
                         <div className='space-y-2'>
                             {['male', 'female', 'other', 'prefer_not_to_say'].map((gender) => (
                                 <label
@@ -213,7 +218,7 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                                     <input
                                         type='radio'
                                         value={gender}
-                                        checked={field.value === gender}
+                                        checked={(field.value as string) === gender}
                                         onChange={(e) => field.onChange(e.target.value)}
                                         className='h-4 w-4 border-gray-300'
                                     />
@@ -237,7 +242,7 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                             const file = e.target.files?.[0];
                             if (file) {
                                 // Handle file upload
-                                console.log('File selected:', file);
+                                console.info('File selected:', file);
                             }
                         }}
                     />

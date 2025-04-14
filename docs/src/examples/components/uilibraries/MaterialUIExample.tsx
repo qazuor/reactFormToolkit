@@ -135,10 +135,10 @@ export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
                     required={true}
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }: { field: { value: string; onChange: (value: string | null) => void } }) => (
+                    {({ field }: { field: { value: unknown; onChange: (value: unknown) => void } }) => (
                         <Autocomplete
                             options={['JavaScript', 'Python', 'C#', 'Java', 'Go']}
-                            value={field.value || ''}
+                            value={(field.value as string) || ''}
                             onChange={(_event, newValue) => {
                                 field.onChange(newValue ?? '');
                             }}
@@ -199,9 +199,9 @@ export function MaterialUIExample({ setResult }: MaterialUIExampleProps) {
                     label='Frameworks'
                     styleOptions={{ wrapper: 'mb-4 pb-4' }}
                 >
-                    {({ field }: { field: { value: string[]; onChange: (value: string[]) => void } }) => (
+                    {({ field }: { field: { value: unknown; onChange: (value: unknown) => void; onBlur: () => void } }) => (
                         <ToggleButtonGroup
-                            value={field.value}
+                            value={Array.isArray(field.value) ? (field.value as string[]) : []}
                             onChange={(_, newValue) => field.onChange(newValue)}
                             aria-label='frameworks'
                         >
