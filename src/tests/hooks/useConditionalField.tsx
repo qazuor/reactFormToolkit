@@ -44,7 +44,7 @@ describe('useConditionalField', () => {
 
     it('updates condition when watched field changes', () => {
         mockForm.getValues.mockReturnValue('valueA');
-        let watchCallback: (values: any, info: { name?: string }) => void;
+        let watchCallback: (values: Record<string, unknown>, info: { name?: string }) => void;
         mockForm.watch.mockImplementation((callback) => {
             watchCallback = callback;
             return { unsubscribe: vi.fn() };
@@ -97,7 +97,7 @@ describe('useConditionalFieldGroup', () => {
 
     it('updates content when watched field changes', () => {
         mockForm.getValues.mockReturnValue('valueA');
-        let watchCallback: (values: any, info: { name?: string }) => void;
+        let watchCallback: (values: Record<string, unknown>, info: { name?: string }) => void;
         mockForm.watch.mockImplementation((callback) => {
             watchCallback = callback;
             return { unsubscribe: vi.fn() };

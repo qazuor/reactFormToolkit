@@ -236,7 +236,7 @@ export type FormContextValue<
         isValid: boolean;
         isValidating: boolean;
         submitCount: number;
-        errors: Record<string, any>;
+        errors: Record<string, unknown>;
         dirtyFields: Record<string, boolean>;
         touchedFields: Record<string, boolean>;
     };

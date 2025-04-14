@@ -15,7 +15,7 @@ function canReceiveRef(child: ReactElement): boolean {
     }
 
     // We'll check for forwardRef or memo(forwardRef)
-    const typeAsAny = child.type as any;
+    const typeAsAny = child.type as React.ElementType & { $$typeof?: symbol; type?: React.ElementType & { $$typeof?: symbol } };
 
     // Direct forwardRef component
     if (typeAsAny?.$$typeof === Symbol.for('react.forward_ref')) {
@@ -44,7 +44,7 @@ const handleChange = async <T extends FieldValues>(
     isCheckbox: boolean,
     isMultipleSelect: boolean,
     validate?: (value: unknown) => Promise<void>,
-    originalOnChange?: (arg: any) => void,
+    originalOnChange?: (arg: unknown) => void,
     hasOnValueChange?: boolean,
     hasOnCheckedChange?: boolean
 ): Promise<void> => {
@@ -183,7 +183,7 @@ export const FieldInput = memo(function FieldInput<TFieldValues extends FieldVal
         // (i.e. a DOM element or a forwardRef component)
         const { ref, ...props } = fieldProps;
         if (canReceiveRef(children)) {
-            (props as any).ref = childRef;
+            (props as typeof fieldProps & { ref?: React.Ref<unknown> }).ref = childRef;
         }
 
         return props;

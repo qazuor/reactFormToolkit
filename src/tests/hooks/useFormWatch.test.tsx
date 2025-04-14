@@ -100,7 +100,7 @@ describe('useFormWatch', () => {
     it('should skip onChange if value is the same and skipIfSameValue is true', () => {
         const onChange = vi.fn();
         const mockGetValues = vi.fn().mockReturnValue('testValue');
-        let watchCallback: (values: any, info: { name?: string }) => void;
+        let watchCallback: (values: Record<string, unknown>, info: { name?: string }) => void;
         const mockWatch = vi.fn().mockImplementation((callback) => {
             watchCallback = callback;
             return { unsubscribe: vi.fn() };
@@ -137,7 +137,7 @@ describe('useFormWatch', () => {
         const onChange = vi.fn();
         const mockGetValues = vi.fn().mockReturnValue('initialValue'); // Always return initialValue for consistency
 
-        let watchCallback: (values: any, info: { name?: string }) => void;
+        let watchCallback: (values: Record<string, unknown>, info: { name?: string }) => void;
         const mockWatch = vi.fn().mockImplementation((callback) => {
             watchCallback = callback;
             return { unsubscribe: vi.fn() };
@@ -176,7 +176,7 @@ describe('useFormWatch', () => {
     it('should always call onChange if skipIfSameValue is false', () => {
         const onChange = vi.fn();
         const mockGetValues = vi.fn().mockReturnValue('sameValue');
-        let watchCallback: (values: any, info: { name?: string }) => void;
+        let watchCallback: (values: Record<string, unknown>, info: { name?: string }) => void;
         const mockWatch = vi.fn().mockImplementation((callback) => {
             watchCallback = callback;
             return { unsubscribe: vi.fn() };

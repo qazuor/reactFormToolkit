@@ -192,7 +192,7 @@ describe('FormFieldRenderer', () => {
     };
 
     const mockFormContext: Partial<FormContextValue> = {
-        form: mockForm as any,
+        form: mockForm as typeof mockForm,
         formState: {
             isDirty: false,
             isSubmitting: false,
@@ -214,7 +214,7 @@ describe('FormFieldRenderer', () => {
 
     const mockContextValue: FormFieldContextValue = {
         name: 'test',
-        form: mockForm as any
+        form: mockForm as typeof mockForm
     };
 
     const defaultProps = {
