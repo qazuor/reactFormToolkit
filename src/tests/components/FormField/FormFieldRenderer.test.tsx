@@ -6,7 +6,8 @@ import { FormFieldRenderer } from '../../../components/FormField/FormFieldRender
 import { TooltipProvider } from '../../../components/ui/tooltip';
 import { FormContext } from '../../../context/FormContext';
 import { FormFieldContext } from '../../../context/FormFieldContext';
-import type { FormContextValue, FormFieldContextValue } from '../../../types';
+import type { FormFieldContextValue } from '../../../types/field';
+import type { FormContextValue } from '../../../types/form';
 
 // Mock react-hook-form to avoid the "array" error
 vi.mock('react-hook-form', async () => {
