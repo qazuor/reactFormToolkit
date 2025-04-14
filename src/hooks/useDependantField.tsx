@@ -1,8 +1,50 @@
 import { useDebounce } from '@/hooks/useDebounce';
 import { useFormWatch } from '@/hooks/useFormWatch';
 import type { DependentOption, UseDependantFieldOptions } from '@/types';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { FieldPath, FieldValues } from 'react-hook-form';
+
+/**
+ * Normalizes the result to ensure it's an array of DependentOption objects
+ */
+function normalizeResult(result: unknown[]): DependentOption[] {
+    return result.map((item) => {
+        if (typeof item === 'object' && item !== null && 'value' in item && 'label' in item) {
+            return item as DependentOption;
+        }
+        return { value: String(item), label: String(item) };
+    });
+}
+
+/**
+ * Handles fetching dependent values with error handling
+ */
+async function fetchValues(
+    value: unknown,
+    dependentValuesCallback: (value: unknown) => Promise<DependentOption[]> | DependentOption[],
+    setIsLoading: (loading: boolean) => void,
+    setDependentValues: (values: DependentOption[]) => void
+): Promise<DependentOption[]> {
+    try {
+        setIsLoading(true);
+
+        // Handle both synchronous and asynchronous callbacks
+        const resultPromise = dependentValuesCallback(value);
+        const result = resultPromise instanceof Promise ? await resultPromise : resultPromise;
+
+        // Normalize the result
+        const normalizedResult = Array.isArray(result) ? normalizeResult(result) : [];
+
+        setDependentValues(normalizedResult);
+        return normalizedResult;
+    } catch (error) {
+        console.error('Error fetching dependent values:', error);
+        setDependentValues([]);
+        return [];
+    } finally {
+        setIsLoading(false);
+    }
+}
 
 /**
  * Hook for handling dependent field values based on another field's value
@@ -30,15 +72,17 @@ export function useDependantField<
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const cacheRef = useRef<Record<string, DependentOption[]>>({});
 
-    // Track if we're currently fetching to prevent duplicate requests
-    const isFetchingRef = useRef<boolean>(false);
-
     // Debounce the loading state to prevent flickering for fast responses
     const debouncedIsLoading = useDebounce(isLoading, loadingDelay);
 
-    // Memoize the fetch function to prevent unnecessary re-creation
-    const memoizedFetchDependentValues = useMemo(() => {
-        return async (value: unknown) => {
+    // Track if we're currently fetching to prevent duplicate requests
+    const isFetchingRef = useRef<boolean>(false);
+
+    /**
+     * Fetch dependent values based on the parent field value
+     */
+    const fetchDependentValues = useCallback(
+        async (value: unknown) => {
             // If value is empty, null, or undefined, reset dependent values
             if (value === '' || value === null || value === undefined) {
                 setDependentValues([]);
@@ -57,48 +101,20 @@ export function useDependantField<
                 return;
             }
 
+            isFetchingRef.current = true;
+
             try {
-                isFetchingRef.current = true;
-                setIsLoading(true);
-
-                // Handle both synchronous and asynchronous callbacks
-                const resultPromise = dependentValuesCallback(value);
-                const result = resultPromise instanceof Promise ? await resultPromise : resultPromise;
-
-                // Normalize the result to ensure it's an array of DependentOption objects
-                const normalizedResult = Array.isArray(result)
-                    ? result.map((item) => {
-                          if (typeof item === 'object' && item !== null && 'value' in item && 'label' in item) {
-                              return item as DependentOption;
-                          }
-                          return { value: String(item), label: String(item) };
-                      })
-                    : [];
-
-                setDependentValues(normalizedResult);
+                const result = await fetchValues(value, dependentValuesCallback, setIsLoading, setDependentValues);
 
                 // Cache the result if caching is enabled
                 if (cacheResults) {
-                    cacheRef.current[cacheKey] = normalizedResult;
+                    cacheRef.current[cacheKey] = result;
                 }
-            } catch (error) {
-                console.error('Error fetching dependent values:', error);
-                setDependentValues([]);
             } finally {
-                setIsLoading(false);
                 isFetchingRef.current = false;
             }
-        };
-    }, [dependentValuesCallback, cacheResults]);
-
-    /**
-     * Fetch dependent values based on the parent field value
-     */
-    const fetchDependentValues = useCallback(
-        (value: unknown) => {
-            memoizedFetchDependentValues(value);
         },
-        [memoizedFetchDependentValues]
+        [dependentValuesCallback, cacheResults]
     );
 
     // Use the useFormWatch hook to watch for changes
