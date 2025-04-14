@@ -65,8 +65,8 @@ export function DependantField<
         if (typeof child.props.children === 'function') {
             // Create a new render function that includes dependentValues and isLoading
             const originalRender = child.props.children;
-            const newRender = (props: Parameters<typeof originalRender>[0]) =>
-                originalRender(props, dependentValues, isLoading);
+            const newRender = (fieldProps: Record<string, unknown>) =>
+                originalRender(fieldProps, dependentValues, isLoading);
 
             // Clone the child with the new render function
             return cloneElement(child, {

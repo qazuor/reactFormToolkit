@@ -129,11 +129,11 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
                                 tooltip={t('form.stateTooltip')}
                                 required={true}
                             >
-                                {(props, dependentValues, isLoading) => (
+                                {({ field }, dependentValues, isLoading) => (
                                     <select
-                                        value={props.field.value}
-                                        onChange={(e) => props.field.onChange(e.target.value)}
-                                        onBlur={props.field.onBlur}
+                                        value={field.value}
+                                        onChange={(e) => field.onChange(e.target.value)}
+                                        onBlur={field.onBlur}
                                         className='w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500'
                                         disabled={isLoading}
                                     >
@@ -197,7 +197,7 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
                                 label={t('form.subtopics')}
                                 required={true}
                             >
-                                {(props, dependentValues, isLoading) => (
+                                {({ field }, dependentValues, isLoading) => (
                                     <div className='space-y-2'>
                                         {isLoading ? (
                                             <div className='text-blue-500'>{t('form.loading')}</div>
@@ -211,9 +211,9 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
                                                         type='radio'
                                                         name='subcategory'
                                                         value={subcategory.value}
-                                                        checked={props.field.value === subcategory.value}
-                                                        onChange={(e) => props.field.onChange(e.target.value)}
-                                                        onBlur={props.field.onBlur}
+                                                        checked={field.value === subcategory.value}
+                                                        onChange={(e) => field.onChange(e.target.value)}
+                                                        onBlur={field.onBlur}
                                                         className='h-4 w-4 border-gray-300 text-blue-600'
                                                     />
                                                     <span className='text-gray-700'>{subcategory.label}</span>

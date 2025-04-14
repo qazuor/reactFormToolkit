@@ -237,7 +237,9 @@ export interface FormFieldProps {
     children:
         | ReactNode
         | ((
-              props: {
+              {
+                  field
+              }: {
                   field: {
                       value: unknown;
                       onChange: (value: unknown) => void;
@@ -336,7 +338,9 @@ export interface FormFieldRendererProps {
     children:
         | ReactNode
         | ((
-              props: {
+              {
+                  field
+              }: {
                   field: {
                       value: unknown;
                       onChange: (value: unknown) => void;
