@@ -34,7 +34,10 @@ export const DocsViewer: FC = () => {
         fetch(mdPath)
             .then((res) => (res.ok ? res.text() : Promise.reject(t('docViewer.fileNotFound'))))
             .then(setContent)
-            .catch(() => setContent(`Error: ${t('docViewer.fileNotFound')}`));
+            .catch(() => {
+                console.error('Error fetching markdown file:', mdPath);
+                setContent(`Error: ${t('docViewer.fileNotFound')}`);
+            });
     }, [location]);
 
     return (
