@@ -8,7 +8,7 @@
     color: #1f2328;
     background-color: #ffffff;
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.5;
     word-wrap: break-word;
 }
@@ -2306,7 +2306,7 @@
         width: 100%;
         margin-bottom: 20px;
     }
-    
+
     .backToTop {
         width: 36px;
         height: 36px;
