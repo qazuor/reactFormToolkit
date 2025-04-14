@@ -15,7 +15,10 @@ function canReceiveRef(child: ReactElement): boolean {
     }
 
     // We'll check for forwardRef or memo(forwardRef)
-    const typeAsAny = child.type as React.ElementType & { $$typeof?: symbol; type?: React.ElementType & { $$typeof?: symbol } };
+    const typeAsAny = child.type as React.ElementType & {
+        $$typeof?: symbol;
+        type?: React.ElementType & { $$typeof?: symbol };
+    };
 
     // Direct forwardRef component
     if (typeAsAny?.$$typeof === Symbol.for('react.forward_ref')) {
