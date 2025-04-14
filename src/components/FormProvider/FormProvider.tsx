@@ -220,7 +220,7 @@ export function FormProvider<
             }
             setFormErrors(newErrors);
         }
-    }, [formState.errors, errorDisplayOptions?.groupErrors]);
+    }, [formState.errors, errors, formErrors, errorDisplayOptions?.groupErrors]);
 
     const handleSubmit = useCallback(
         async (data: TFieldValues) => {

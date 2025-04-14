@@ -54,7 +54,8 @@ vi.mock('../../../components/FormField/FieldInput', () => ({
             ) {
                 return acc;
             }
-            return { ...acc, [key]: value };
+            acc[key] = value;
+            return acc;
         }, {});
 
         return (
@@ -79,7 +80,8 @@ vi.mock('../../../components/FormField/FieldError', () => ({
             if (key === 'options' || key === 'inputRef') {
                 return acc;
             }
-            return { ...acc, [key]: value };
+            acc[key] = value;
+            return acc;
         }, {});
 
         return (
@@ -102,7 +104,8 @@ vi.mock('../../../components/FormField/FieldLabel', () => ({
             if (key === 'tooltipOptions' || key === 'styleOptions' || key === 'errorDisplayOptions') {
                 return acc;
             }
-            return { ...acc, [key]: value };
+            acc[key] = value;
+            return acc;
         }, {});
 
         return (
@@ -153,7 +156,8 @@ vi.mock('../../../components/FormField/FormFieldAsyncValidationIndicator', () =>
             ) {
                 return acc;
             }
-            return { ...acc, [key]: value };
+            acc[key] = value;
+            return acc;
         }, {});
 
         return (
