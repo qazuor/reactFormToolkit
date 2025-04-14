@@ -8,7 +8,18 @@
     },
     "files": {
         "ignoreUnknown": false,
-        "include": ["./src/**/*.js", "./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.json", "./src/**/*.css"],
+        "include": [
+            "./src/**/*.js",
+            "./src/**/*.ts",
+            "./src/**/*.tsx",
+            "./src/**/*.json",
+            "./src/**/*.css",
+            "./docs/**/*.js",
+            "./docs/**/*.ts",
+            "./docs/**/*.tsx",
+            "./docs/**/*.json",
+            "./docs/**/*.css"
+        ],
         "ignore": [
             "package.json",
             "package-lock.json",
@@ -49,7 +60,9 @@
             "src/**/*.css",
             "docs/**/*.js",
             "docs/**/*.ts",
-            "docs/**/*.tsx"
+            "docs/**/*.tsx",
+            "docs/**/*.json",
+            "docs/**/*.css"
         ],
         "ignore": ["dist", "**/dist", "**/dist/**", "docs/src/components/ui/*.tsx"],
         "rules": {
