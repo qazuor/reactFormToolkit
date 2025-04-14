@@ -24,7 +24,7 @@ import type { FieldPath, FieldValues } from 'react-hook-form';
  *         ) : (
  *           <>
  *             <option value="">Select a state</option>
- *             {dependentValues.map((state) => (
+ *             {dependentValues?.map((state) => (
  *               <option key={state.value} value={state.value}>
  *                 {state.label}
  *               </option>
@@ -54,22 +54,18 @@ export function DependantField<
         cacheResults
     });
 
+    // Function to enhance children with dependent values and loading state
     // Clone the children and inject the dependent values and loading state
     const childrenWithProps = React.Children.map(children, (child) => {
-        if (!isValidElement<{ dependentValues?: unknown; isLoading?: boolean }>(child)) {
+        if (!isValidElement(child)) {
             return child;
         }
 
         // Check if the child has a render function
-        if (
-            isValidElement<{
-                children?: (props: TFieldValues, dependentValues: unknown, isLoading: boolean) => React.ReactNode;
-            }>(child) &&
-            typeof child.props.children === 'function'
-        ) {
+        if (typeof child.props.children === 'function') {
             // Create a new render function that includes dependentValues and isLoading
             const originalRender = child.props.children;
-            const newRender = (props: TFieldValues) => originalRender(props, dependentValues, isLoading);
+            const newRender = (props: any) => originalRender(props, dependentValues, isLoading);
 
             // Clone the child with the new render function
             return cloneElement(child, {
@@ -78,11 +74,8 @@ export function DependantField<
             });
         }
 
-        // If the child doesn't have a render function, just pass the props
-        return cloneElement(child, {
-            dependentValues,
-            isLoading
-        });
+        // If the child doesn't have a render function, just return it
+        return child;
     });
 
     return <>{childrenWithProps}</>;

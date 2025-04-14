@@ -236,15 +236,17 @@ export interface FormFieldProps {
      */
     children:
         | ReactNode
-        | ((props: {
-              field: {
-                  value: any;
-                  onChange: (value: any) => void;
-                  onBlur: () => void;
-              };
-              options?: Array<{ value: string; label: string }>;
-              isLoading?: boolean;
-          }) => ReactNode);
+        | ((
+              props: {
+                  field: {
+                      value: any;
+                      onChange: (value: any) => void;
+                      onBlur: () => void;
+                  };
+              },
+              dependentValues?: Array<{ value: string; label: string }>,
+              isLoading?: boolean
+          ) => ReactNode);
 
     /**
      * Field description
@@ -333,15 +335,17 @@ export interface FormFieldRendererProps {
      */
     children:
         | ReactNode
-        | ((props: {
-              field: {
-                  value: any;
-                  onChange: (value: any) => void;
-                  onBlur: () => void;
-              };
-              options?: Array<{ value: string; label: string }>;
-              isLoading?: boolean;
-          }) => ReactNode);
+        | ((
+              props: {
+                  field: {
+                      value: any;
+                      onChange: (value: any) => void;
+                      onBlur: () => void;
+                  };
+              },
+              dependentValues?: Array<{ value: string; label: string }>,
+              isLoading?: boolean
+          ) => ReactNode);
 
     /**
      * Whether to show error
