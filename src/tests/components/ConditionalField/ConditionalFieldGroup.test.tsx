@@ -10,14 +10,14 @@ import { FormProvider } from '../../../components/FormProvider/FormProvider';
 import { TooltipProvider } from '../../../components/ui/tooltip';
 
 const schema = z.object({
-    type: z.enum(['A', 'B', 'C']),
+    type: z.enum(['valueA', 'valueB', 'valueC']),
     fieldA: z.string().optional(),
     fieldB: z.string().optional(),
     fieldC: z.string().optional()
 });
 
 describe('ConditionalFieldGroup', () => {
-    const renderConditionalFieldGroup = (initialType = 'A', customClass = '') => {
+    const renderConditionalFieldGroup = (initialType = 'valueA', customClass = '') => {
         return render(
             <TooltipProvider>
                 <FormProvider
@@ -27,9 +27,9 @@ describe('ConditionalFieldGroup', () => {
                 >
                     <FormField name='type'>
                         <select>
-                            <option value='A'>Type A</option>
-                            <option value='B'>Type B</option>
-                            <option value='C'>Type C</option>
+                            <option value='valueA'>Type A</option>
+                            <option value='valueB'>Type B</option>
+                            <option value='valueC'>Type C</option>
                         </select>
                     </FormField>
 
@@ -37,12 +37,12 @@ describe('ConditionalFieldGroup', () => {
                         watchField='type'
                         className={customClass || ''}
                         conditions={{
-                            A: (
+                            valueA: (
                                 <FormField name='fieldA'>
                                     <input type='text' />
                                 </FormField>
                             ),
-                            B: (
+                            valueB: (
                                 <FormField name='fieldB'>
                                     <input type='text' />
                                 </FormField>
@@ -60,17 +60,17 @@ describe('ConditionalFieldGroup', () => {
     };
 
     it('renders correct field based on condition', () => {
-        renderConditionalFieldGroup('A');
+        renderConditionalFieldGroup('valueA');
         expect(screen.getByTestId('fieldA')).toBeInTheDocument();
         expect(screen.queryByTestId('fieldB')).not.toBeInTheDocument();
         expect(screen.queryByTestId('fieldC')).not.toBeInTheDocument();
     });
 
     it('updates fields when condition changes', async () => {
-        renderConditionalFieldGroup('A');
+        renderConditionalFieldGroup('valueA');
         const select = screen.getByTestId('type') as HTMLSelectElement;
 
-        await userEvent.selectOptions(select, 'B');
+        await userEvent.selectOptions(select, 'valueB');
 
         await waitFor(() => {
             expect(screen.queryByTestId('fieldA')).not.toBeInTheDocument();
@@ -79,14 +79,14 @@ describe('ConditionalFieldGroup', () => {
     });
 
     it('renders fallback when no condition matches', async () => {
-        renderConditionalFieldGroup('C');
+        renderConditionalFieldGroup('valueC');
         expect(screen.queryByTestId('fieldA')).not.toBeInTheDocument();
         expect(screen.queryByTestId('fieldB')).not.toBeInTheDocument();
         expect(screen.getByTestId('fieldC')).toBeInTheDocument();
     });
 
     it('applies custom className', () => {
-        renderConditionalFieldGroup('A', 'custom-class');
+        renderConditionalFieldGroup('valueA', 'custom-class');
         const inputA = screen.getByTestId('fieldA') as HTMLInputElement;
         const parentConditionalFieldGroup =
             inputA.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement;
@@ -98,17 +98,17 @@ describe('ConditionalFieldGroup', () => {
             <FormProvider
                 schema={schema}
                 onSubmit={() => Promise.resolve()}
-                defaultValues={{ type: 'A', fieldA: 'test-a', fieldB: 'test-b' }}
+                defaultValues={{ type: 'valueA', fieldA: 'test-a', fieldB: 'test-b' }}
             >
                 <ConditionalFieldGroup
                     watchField='type'
                     conditions={{
-                        A: (
+                        valueA: (
                             <FormField name='fieldA'>
                                 <input type='text' />
                             </FormField>
                         ),
-                        B: (
+                        valueB: (
                             <FormField name='fieldB'>
                                 <input type='text' />
                             </FormField>
@@ -128,17 +128,17 @@ describe('ConditionalFieldGroup', () => {
             <FormProvider
                 schema={schema}
                 onSubmit={() => Promise.resolve()}
-                defaultValues={{ type: 'B', fieldA: 'test-a', fieldB: 'test-b' }}
+                defaultValues={{ type: 'valueB', fieldA: 'test-a', fieldB: 'test-b' }}
             >
                 <ConditionalFieldGroup
                     watchField='type'
                     conditions={{
-                        A: (
+                        valueA: (
                             <FormField name='fieldA'>
                                 <input type='text' />
                             </FormField>
                         ),
-                        B: (
+                        valueB: (
                             <FormField name='fieldB'>
                                 <input type='text' />
                             </FormField>
@@ -159,17 +159,17 @@ describe('ConditionalFieldGroup', () => {
             <FormProvider
                 schema={schema}
                 onSubmit={() => Promise.resolve()}
-                defaultValues={{ type: 'A', fieldA: 'test-a', fieldB: 'test-b' }}
+                defaultValues={{ type: 'valueA', fieldA: 'test-a', fieldB: 'test-b' }}
             >
                 <ConditionalFieldGroup
                     watchField='type'
                     conditions={{
-                        A: (
+                        valueA: (
                             <FormField name='fieldA'>
                                 <input type='text' />
                             </FormField>
                         ),
-                        B: (
+                        valueB: (
                             <FormField name='fieldB'>
                                 <input type='text' />
                             </FormField>

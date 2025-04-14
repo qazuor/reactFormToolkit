@@ -16,7 +16,9 @@ const mockFormContext = {
 vi.mock('@/context/FormContext', () => {
     return {
         useFormContext: vi.fn().mockImplementation(() => mockFormContext),
+        // biome-ignore lint/style/useNamingConvention: <explanation>
         FormContext: {
+            // biome-ignore lint/style/useNamingConvention: <explanation>
             Provider: ({ children }) => children
         }
     };
@@ -30,7 +32,7 @@ describe('useFormWatch', () => {
     it('should call onChange with initial value when executeOnMount is true', () => {
         const onChange = vi.fn();
         const mockGetValues = vi.fn().mockReturnValue('initialValue');
-        const mockWatch = vi.fn().mockImplementation((callback) => {
+        const mockWatch = vi.fn().mockImplementation((_callback) => {
             return { unsubscribe: vi.fn() };
         });
 

@@ -7,6 +7,7 @@ import { TooltipProvider } from '../../../components/ui/tooltip';
 
 // Mock the FieldErrorIcon to make testing easier
 vi.mock('../../../components/Icons', () => ({
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     FieldErrorIcon: ({ className, title }) => (
         <svg
             data-testid='field-error-icon'

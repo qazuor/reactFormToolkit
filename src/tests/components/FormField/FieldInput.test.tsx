@@ -10,6 +10,7 @@ vi.mock('react-hook-form', async () => {
     const actual = await vi.importActual('react-hook-form');
     return {
         ...actual,
+        // biome-ignore lint/style/useNamingConvention: <explanation>
         Controller: ({ render }) => {
             return render({
                 field: {
@@ -34,12 +35,21 @@ vi.mock('react-hook-form', async () => {
 });
 
 // Create a simple FormField-like component for testing
-const TestFieldInput = ({ name, children, onChange = () => {}, onBlur = () => {} }) => {
+const TestFieldInput = ({
+    name,
+    children,
+    onChange = () => {
+        // Intentionally left empty for testing purposes
+    },
+    onBlur = () => {
+        // Intentionally left empty for testing purposes
+    }
+}) => {
     const [value, setValue] = React.useState('');
 
     const handleChange = (e) => {
         setValue(e.target.value);
-        onChange(e);
+        onChange();
     };
 
     const childProps = {
@@ -103,12 +113,18 @@ describe('FieldInput', () => {
     it('handles checkbox inputs correctly', () => {
         const handleChange = vi.fn();
 
-        const CheckboxFieldInput = ({ name, children, onChange = () => {} }) => {
+        const CheckboxFieldInput = ({
+            name,
+            children,
+            onChange = () => {
+                // Intentionally left empty for testing purposes
+            }
+        }) => {
             const [checked, setChecked] = React.useState(false);
 
             const handleChange = (e) => {
                 setChecked(e.target.checked);
-                onChange(e);
+                onChange();
             };
 
             const childProps = {
@@ -143,7 +159,9 @@ describe('FieldInput', () => {
                 <input
                     type='text'
                     className='custom-class'
-                    onChange={() => {}} // Add onChange to avoid warning
+                    onChange={() => {
+                        // Intentionally left empty for testing purposes
+                    }}
                 />
             </TestFieldInput>
         );
@@ -184,12 +202,16 @@ describe('FieldInput', () => {
             <TooltipProvider>
                 <FormProvider
                     schema={schema}
-                    onSubmit={() => {}}
+                    onSubmit={() => {
+                        // Intentionally left empty for testing purposes
+                    }}
                     defaultValues={{ test: 'test value' }}
                 >
                     <TestFieldInput
                         name='test'
-                        onChange={() => {}}
+                        onChange={() => {
+                            // Intentionally left empty for testing purposes
+                        }}
                     >
                         <input type='text' />
                     </TestFieldInput>

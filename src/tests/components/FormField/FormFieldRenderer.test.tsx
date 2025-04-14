@@ -13,6 +13,7 @@ vi.mock('react-hook-form', async () => {
     const actual = await vi.importActual('react-hook-form');
     return {
         ...actual,
+        // biome-ignore lint/style/useNamingConvention: <explanation>
         Controller: ({ render }) => {
             return render({
                 field: {
@@ -38,6 +39,7 @@ vi.mock('react-hook-form', async () => {
 
 // Mock FieldInput component to avoid Controller issues
 vi.mock('../../../components/FormField/FieldInput', () => ({
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     FieldInput: ({ children, ...props }) => {
         // Convert camelCase props to kebab-case for DOM attributes
         // and remove non-DOM props
@@ -70,6 +72,7 @@ vi.mock('../../../components/FormField/FieldInput', () => ({
 
 // Mock FieldError component
 vi.mock('../../../components/FormField/FieldError', () => ({
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     FieldError: ({ message, inputRef, ...props }) => {
         // Remove non-DOM props
         const domProps = Object.entries(props).reduce((acc, [key, value]) => {
@@ -92,6 +95,7 @@ vi.mock('../../../components/FormField/FieldError', () => ({
 
 // Mock FieldLabel component
 vi.mock('../../../components/FormField/FieldLabel', () => ({
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     FieldLabel: ({ children, tooltip, tooltipOptions, required, ...props }) => {
         // Remove non-DOM props
         const domProps = Object.entries(props).reduce((acc, [key, value]) => {
@@ -115,6 +119,7 @@ vi.mock('../../../components/FormField/FieldLabel', () => ({
 
 // Mock FieldDescription component
 vi.mock('../../../components/FormField/FieldDescription', () => ({
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     FieldDescription: ({ children, position, ...props }) => (
         <div
             data-testid='mocked-field-description'
@@ -129,6 +134,7 @@ vi.mock('../../../components/FormField/FieldDescription', () => ({
 
 // Mock FormFieldAsyncValidationIndicator component
 vi.mock('../../../components/FormField/FormFieldAsyncValidationIndicator', () => ({
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     FormFieldAsyncValidationIndicator: (props) => {
         // Remove non-DOM props
         const domProps = Object.entries(props).reduce((acc, [key, value]) => {
@@ -164,13 +170,21 @@ vi.mock('../../../components/FormField/FormFieldAsyncValidationIndicator', () =>
 describe('FormFieldRenderer', () => {
     const mockForm = {
         control: {},
-        watch: () => {},
+        watch: () => {
+            // Intentionally left empty for testing purposes
+        },
         getValues: () => 'test-value',
-        setValue: () => {},
+        setValue: () => {
+            // Intentionally left empty for testing purposes
+        },
         trigger: () => Promise.resolve(true),
-        clearErrors: () => {},
+        clearErrors: () => {
+            // Intentionally left empty for testing purposes
+        },
         register: () => ({}),
-        unregister: () => {}
+        unregister: () => {
+            // Intentionally left empty for testing purposes
+        }
     };
 
     const mockFormContext: Partial<FormContextValue> = {
@@ -299,7 +313,7 @@ describe('FormFieldRenderer', () => {
     });
 
     it('renders error in right layout when isErrorRight is true', () => {
-        const { container } = renderComponent({
+        renderComponent({
             showError: true,
             displayError: 'Error message',
             isErrorRight: true,

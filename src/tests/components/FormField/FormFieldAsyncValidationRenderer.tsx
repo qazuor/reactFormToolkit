@@ -6,6 +6,7 @@ import { FormFieldAsyncValidationRenderer } from '../../../components/FormField/
 
 // Mock ValidationStatusIcon component
 vi.mock('../../../components/Icons', () => ({
+    // biome-ignore lint/style/useNamingConvention: <explanation>
     ValidationStatusIcon: ({ status }) => (
         <div
             data-testid={`validation-icon-${status}`}

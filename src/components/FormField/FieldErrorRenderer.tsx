@@ -30,8 +30,7 @@ export const FieldErrorRenderer = memo(function FieldErrorRenderer({
     className,
     iconClassName,
     positionClass,
-    showTooltip = false,
-    inputRef = undefined
+    showTooltip = false
 }: FieldErrorRendererProps): JSX.Element {
     // Render tooltip-style error
     if (position === 'tooltip') {

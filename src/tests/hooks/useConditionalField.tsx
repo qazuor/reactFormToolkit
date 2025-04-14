@@ -19,7 +19,7 @@ describe('useConditionalField', () => {
             useConditionalField({
                 form: mockForm as typeof mockForm,
                 watchField: 'type',
-                condition: 'A',
+                condition: 'valueA',
                 content: <div>Test Content</div>
             })
         );
@@ -28,13 +28,13 @@ describe('useConditionalField', () => {
     });
 
     it('evaluates function condition correctly', () => {
-        mockForm.getValues.mockReturnValue('A');
+        mockForm.getValues.mockReturnValue('valueA');
 
         const { result } = renderHook(() =>
             useConditionalField({
                 form: mockForm as typeof mockForm,
                 watchField: 'type',
-                condition: (value) => value === 'A',
+                condition: (value) => value === 'valueA',
                 content: <div>Test Content</div>
             })
         );
@@ -43,7 +43,7 @@ describe('useConditionalField', () => {
     });
 
     it('updates condition when watched field changes', () => {
-        mockForm.getValues.mockReturnValue('A');
+        mockForm.getValues.mockReturnValue('valueA');
         let watchCallback: (values: any, info: { name?: string }) => void;
         mockForm.watch.mockImplementation((callback) => {
             watchCallback = callback;
@@ -54,7 +54,7 @@ describe('useConditionalField', () => {
             useConditionalField({
                 form: mockForm as typeof mockForm,
                 watchField: 'type',
-                condition: 'A',
+                condition: 'valueA',
                 content: <div>Test Content</div>
             })
         );
@@ -62,7 +62,7 @@ describe('useConditionalField', () => {
         expect(result.current.isConditionMet).toBe(true);
 
         // Simulate field value change
-        mockForm.getValues.mockReturnValue('B');
+        mockForm.getValues.mockReturnValue('valueB');
         act(() => {
             watchCallback({}, { name: 'type' });
         });
@@ -79,15 +79,15 @@ describe('useConditionalFieldGroup', () => {
     };
 
     it('returns correct content based on current value', () => {
-        mockForm.getValues.mockReturnValue('A');
+        mockForm.getValues.mockReturnValue('valueA');
 
         const { result } = renderHook(() =>
             useConditionalFieldGroup({
                 form: mockForm as typeof mockForm,
                 watchField: 'type',
                 conditions: {
-                    A: <div>Content A</div>,
-                    B: <div>Content B</div>
+                    valueA: <div>Content A</div>,
+                    valueB: <div>Content B</div>
                 }
             })
         );
@@ -96,7 +96,7 @@ describe('useConditionalFieldGroup', () => {
     });
 
     it('updates content when watched field changes', () => {
-        mockForm.getValues.mockReturnValue('A');
+        mockForm.getValues.mockReturnValue('valueA');
         let watchCallback: (values: any, info: { name?: string }) => void;
         mockForm.watch.mockImplementation((callback) => {
             watchCallback = callback;
@@ -108,25 +108,25 @@ describe('useConditionalFieldGroup', () => {
                 form: mockForm as typeof mockForm,
                 watchField: 'type',
                 conditions: {
-                    A: <div>Content A</div>,
-                    B: <div>Content B</div>
+                    valueA: <div>Content A</div>,
+                    valueB: <div>Content B</div>
                 }
             })
         );
 
-        expect(result.current.currentValue).toBe('A');
+        expect(result.current.currentValue).toBe('valueA');
 
         // Simulate field value change
-        mockForm.getValues.mockReturnValue('B');
+        mockForm.getValues.mockReturnValue('valueB');
         act(() => {
             watchCallback({}, { name: 'type' });
         });
 
-        expect(result.current.currentValue).toBe('B');
+        expect(result.current.currentValue).toBe('valueB');
     });
 
     it('unregisters fields when keepRegistered is false', () => {
-        mockForm.getValues.mockReturnValue('A');
+        mockForm.getValues.mockReturnValue('valueA');
         const unregisterSpy = vi.spyOn(mockForm, 'unregister');
 
         renderHook(() =>
@@ -134,15 +134,15 @@ describe('useConditionalFieldGroup', () => {
                 form: mockForm as typeof mockForm,
                 watchField: 'type',
                 conditions: {
-                    A: <div>Content A</div>,
-                    B: <div>Content B</div>
+                    valueA: <div>Content A</div>,
+                    valueB: <div>Content B</div>
                 },
                 keepRegistered: false
             })
         );
 
         // Simulate field value change
-        mockForm.getValues.mockReturnValue('B');
+        mockForm.getValues.mockReturnValue('valueB');
         act(() => {
             const watchCallback = mockForm.watch.mock.calls[0][0];
             watchCallback({}, { name: 'type' });

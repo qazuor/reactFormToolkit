@@ -186,7 +186,6 @@ describe('FormProvider', () => {
 
         const emailInput = container.querySelector('[data-testid="email"]') as HTMLInputElement;
         const passwordInput = container.querySelector('[data-testid="password"]') as HTMLInputElement;
-        const submitButton = container.querySelector('[data-testid="submit-button"]') as HTMLButtonElement;
 
         // Wait for form to initialize
         await act(async () => {
@@ -218,6 +217,7 @@ describe('FormProvider', () => {
         });
 
         await act(async () => {
+            // biome-ignore lint/style/noNonNullAssertion: <explanation>
             fireEvent.submit(container.querySelector('form')!);
         });
 

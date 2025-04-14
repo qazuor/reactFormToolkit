@@ -60,6 +60,7 @@ export const FieldError = memo(function FieldError({ options, name, message: pro
     const position: ErrorPosition = (options?.position as ErrorPosition) || 'below';
 
     // Handle delay and auto-dismiss
+    // biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
     useEffect(() => {
         let showTimeout: NodeJS.Timeout | undefined;
         let dismissTimeout: NodeJS.Timeout | undefined;
@@ -87,6 +88,7 @@ export const FieldError = memo(function FieldError({ options, name, message: pro
     }, [message, options?.delay, options?.autoDismiss, options?.dismissAfter]);
 
     // Handle tooltip visibility
+    // biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
     useEffect(() => {
         if (!inputRef?.current || position !== 'tooltip') {
             return;

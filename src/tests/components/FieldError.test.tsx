@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { FieldError } from '../../components/FormField/FieldError';
 import { FormProvider } from '../../components/FormProvider/FormProvider';
 import { TooltipProvider } from '../../components/ui/tooltip';
-import { ErrorAnimation } from '../../types/form';
+import type { ErrorAnimation } from '../../types/form';
 
 const testSchema = z.object({
     test: z.string().min(3, 'Invalid input')
@@ -255,7 +255,7 @@ describe('FieldError', () => {
     it('should handle multiple animations correctly', () => {
         const animations: ErrorAnimation[] = ['fadeIn', 'slideIn', 'pulse', 'shake'];
 
-        animations.forEach((animation) => {
+        for (const animation of animations) {
             const { unmount } = renderError({
                 message: 'Invalid input',
                 options: { animation }
@@ -263,7 +263,7 @@ describe('FieldError', () => {
 
             expect(screen.getByTestId('field-error')).toHaveClass(`animate-${animation}`);
             unmount();
-        });
+        }
     });
 
     it('should respect delay option', async () => {
