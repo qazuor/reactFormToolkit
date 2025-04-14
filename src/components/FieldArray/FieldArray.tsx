@@ -1,7 +1,7 @@
-import { useFormContext } from '@/context';
 import { FieldArrayContext } from '@/context/FieldArrayContext';
+import { useFormContext } from '@/context/FormContext';
 import { useQRFTTranslation } from '@/hooks';
-import { cn } from '@/lib';
+import { cn } from '@/lib/utils';
 import type { FieldArrayProps } from '@/types';
 import { useContext } from 'react';
 import { useFieldArray } from 'react-hook-form';
@@ -31,8 +31,14 @@ export function FieldArray({
     buttonClassName
 }: FieldArrayProps) {
     const { t } = useQRFTTranslation();
-    const { form } = useFormContext();
+    const { form, styleOptions } = useFormContext();
     const parentContext = useContext(FieldArrayContext);
+
+    // Get button styles from provider or use defaults
+    const addButtonClass =
+        styleOptions?.buttons?.submit || 'mt-4 rounded-md bg-blue-100 px-4 py-2 text-blue-700 hover:bg-blue-200';
+    const removeButtonClass =
+        styleOptions?.buttons?.cancel || 'rounded-md bg-red-100 px-2 py-1 text-red-700 text-sm hover:bg-red-200';
 
     // Build the full path considering parent FieldArray contexts
     const fullPath = parentContext ? `${parentContext.name}.${parentContext.index}.${name}` : name;
@@ -68,10 +74,7 @@ export function FieldArray({
                                 <button
                                     type='button'
                                     onClick={() => handleRemove(index)}
-                                    className={cn(
-                                        'rounded-md bg-red-100 px-2 py-1 text-red-700 text-sm hover:bg-red-200',
-                                        buttonClassName
-                                    )}
+                                    className={cn(removeButtonClass, buttonClassName)}
                                 >
                                     {removeButtonText || t('fieldArray.remove')}
                                 </button>
@@ -88,10 +91,7 @@ export function FieldArray({
                 <button
                     type='button'
                     onClick={handleAdd}
-                    className={cn(
-                        'mt-4 rounded-md bg-blue-100 px-4 py-2 text-blue-700 hover:bg-blue-200',
-                        buttonClassName
-                    )}
+                    className={cn(addButtonClass, buttonClassName)}
                 >
                     {addButtonText || t('fieldArray.add')}
                 </button>

@@ -1,14 +1,19 @@
 import { ResetIcon } from '@/components/Icons';
 import { useFormContext } from '@/context';
 import { useQRFTTranslation } from '@/hooks';
-import { cn } from '@/lib';
+import { cn } from '@/lib/utils';
 import type { ResetButtonProps } from '@/types';
 
 export function ResetButton({ children, className, ...props }: ResetButtonProps) {
     const { t } = useQRFTTranslation();
     const {
-        formState: { isDirty }
+        formState: { isDirty },
+        styleOptions
     } = useFormContext();
+
+    // Get button style from provider or use default
+    const resetButtonClass =
+        styleOptions?.buttons?.reset || 'bg-gray-200 px-4 py-2 rounded-md text-gray-700 hover:bg-gray-300';
 
     return (
         <button
@@ -16,7 +21,8 @@ export function ResetButton({ children, className, ...props }: ResetButtonProps)
             disabled={!isDirty}
             data-testid='reset-button'
             className={cn(
-                'relative flex items-center justify-center gap-2 rounded-md bg-gray-200 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50',
+                'relative flex items-center justify-center gap-2 rounded-md transition-colors disabled:cursor-not-allowed disabled:opacity-50',
+                resetButtonClass,
                 className
             )}
             title={isDirty ? undefined : t('form.resetDisabledTooltip')}

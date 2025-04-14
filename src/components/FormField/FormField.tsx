@@ -65,6 +65,15 @@ export function FormField({
         const filteredProviderStyles = uiLibrary?.enabled
             ? getUiLibraryCompatibleStyles(providerStyles)
             : providerStyles;
+        console.log(label, {
+            defaultStyles,
+            providerStyles,
+            uiLibrary,
+            baseStyles,
+            filteredProviderStyles,
+            styleOptions,
+            merge: mergeStyles(baseStyles, filteredProviderStyles || {}, styleOptions as Record<string, string>)
+        });
         return mergeStyles(baseStyles, filteredProviderStyles || {}, styleOptions as Record<string, string>);
     }, [uiLibrary, providerStyles, styleOptions]);
 

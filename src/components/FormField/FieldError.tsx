@@ -1,5 +1,6 @@
 import { useFormContext } from '@/context';
 import { useFieldState } from '@/hooks';
+import { cn } from '@/lib/utils';
 import type { ErrorAnimation, ErrorPosition, FieldErrorProps } from '@/types';
 import { memo, useEffect, useState } from 'react';
 import { FieldErrorRenderer } from './FieldErrorRenderer';
@@ -23,18 +24,22 @@ const POSITION_CLASSES: Record<ErrorPosition, string> = {
  * Prepares the error display configuration based on options and state
  */
 const prepareErrorConfig = (message: string, options: FieldErrorProps['options'], position: ErrorPosition) => {
+    const { styleOptions } = useFormContext();
     const animation: ErrorAnimation = (options?.animation as ErrorAnimation) || 'none';
     // Don't apply animation for tooltip position
     const shouldAnimate = position !== 'tooltip' && animation !== 'none';
     const animationClass = shouldAnimate ? ANIMATION_CLASSES[animation as keyof typeof ANIMATION_CLASSES] : '';
     const showIcon = options?.showIcon ?? true;
 
+    // Get error style from provider or use default
+    const errorClass = styleOptions?.field?.error || 'text-red-600 text-sm';
+
     return {
         message,
         position,
         animationClass,
         showIcon,
-        className: options?.className,
+        className: cn(errorClass, options?.className),
         iconClassName: options?.iconClassName
     };
 };
@@ -60,7 +65,6 @@ export const FieldError = memo(function FieldError({ options, name, message: pro
     const position: ErrorPosition = (options?.position as ErrorPosition) || 'below';
 
     // Handle delay and auto-dismiss
-    // biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
     useEffect(() => {
         let showTimeout: NodeJS.Timeout | undefined;
         let dismissTimeout: NodeJS.Timeout | undefined;
@@ -88,7 +92,6 @@ export const FieldError = memo(function FieldError({ options, name, message: pro
     }, [message, options?.delay, options?.autoDismiss, options?.dismissAfter]);
 
     // Handle tooltip visibility
-    // biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
     useEffect(() => {
         if (!inputRef?.current || position !== 'tooltip') {
             return;

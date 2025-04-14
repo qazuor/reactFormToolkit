@@ -1,3 +1,4 @@
+import { useFormContext } from '@/context';
 import { cn } from '@/lib';
 import type { FieldErrorRendererProps } from '@/types';
 import { type JSX, memo } from 'react';
@@ -30,8 +31,11 @@ export const FieldErrorRenderer = memo(function FieldErrorRenderer({
     className,
     iconClassName,
     positionClass,
-    showTooltip = false
+    showTooltip = false,
+    inputRef = undefined
 }: FieldErrorRendererProps): JSX.Element {
+    const { styleOptions } = useFormContext();
+
     // Render tooltip-style error
     if (position === 'tooltip') {
         return (
@@ -47,6 +51,7 @@ export const FieldErrorRenderer = memo(function FieldErrorRenderer({
                         data-testid='error-tooltip'
                         className={cn(
                             'z-50 border border-red-200 bg-red-50 px-3 py-2 text-red-600',
+                            styleOptions?.field?.error,
                             animationClass,
                             className
                         )}
@@ -64,12 +69,12 @@ export const FieldErrorRenderer = memo(function FieldErrorRenderer({
     // Render standard error message
     const errorContent = (
         <div
-            className={cn('flex items-center gap-1 text-red-600 text-sm', positionClass, animationClass, className)}
+            className={cn('flex items-center gap-1', positionClass, animationClass, className)}
             data-testid='field-error'
             aria-live='polite'
             role='alert'
         >
-            {showIcon && <FieldErrorIcon className={iconClassName || 'h-4 w-4 shrink-0'} />}
+            {showIcon && <FieldErrorIcon className={cn('h-4 w-4 shrink-0', iconClassName)} />}
             <span>{message}</span>
         </div>
     );

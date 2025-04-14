@@ -1,16 +1,21 @@
 import { FormErrorIcon, LoadingIcon } from '@/components/Icons';
 import { useFormContext } from '@/context';
 import { useQRFTTranslation } from '@/hooks';
-import { cn, hasAsyncErrors, hasPendingValidations } from '@/lib';
+import { cn, hasAsyncErrors, hasPendingValidations } from '@/lib/utils';
 import type { SubmitButtonProps } from '@/types';
 
 export function SubmitButton({ children, className, ...props }: SubmitButtonProps) {
     const { t } = useQRFTTranslation();
     const {
         formState: { isSubmitting },
+        styleOptions,
         asyncValidations,
         asyncErrors
     } = useFormContext();
+
+    // Get button style from provider or use default
+    const submitButtonClass =
+        styleOptions?.buttons?.submit || 'bg-blue-600 px-4 py-2 rounded-md text-white hover:bg-blue-700';
 
     const hasSomePendingValidations = hasPendingValidations(asyncValidations || {});
     const hasSomeAsyncErrors = hasAsyncErrors(asyncErrors || {});
@@ -37,7 +42,8 @@ export function SubmitButton({ children, className, ...props }: SubmitButtonProp
             disabled={isDisabled}
             data-testid='submit-button'
             className={cn(
-                'relative flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50',
+                'relative flex items-center justify-center rounded-md transition-colors disabled:cursor-not-allowed disabled:opacity-50',
+                submitButtonClass,
                 className
             )}
             title={getTooltipText()}

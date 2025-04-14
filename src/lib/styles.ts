@@ -7,7 +7,7 @@ import { cn } from './utils';
 export const defaultStyles: FormProviderStyleOptions = {
     field: {
         wrapper: 'space-y-2',
-        label: 'group mb-2 block font-medium text-gray-700 text-sm',
+        label: 'group mb-2 block font-medium text-gray-700 text-sm dark:text-gray-100',
         description: 'text-gray-500 text-sm',
         error: 'mt-1 flex items-center gap-1 text-red-600 text-sm',
         requiredMark: 'ml-1 text-red-500',
