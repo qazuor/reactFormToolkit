@@ -2,6 +2,14 @@
 
 The Dependant Fields feature allows you to dynamically load options for a field based on the value of another field. This is useful for creating cascading select fields, such as country/state or category/subcategory relationships.
 
+## Features
+
+- **Dynamic Loading**: Automatically loads options based on parent field value
+- **Loading States**: Shows loading indicators during data fetching
+- **Caching**: Optionally caches results to avoid repeated API calls
+- **Field State**: Provides validation and state information for styling
+- **Auto Reset**: Automatically resets dependent field when parent field changes
+
 ## Basic Usage
 
 ```tsx
@@ -25,7 +33,7 @@ const getStatesByCountry = async (country) => {
             { value: 'bc', label: 'British Columbia' }
         ]
     };
-    
+
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500));
     return states[country] || [];
@@ -45,6 +53,7 @@ function LocationForm() {
             <DependantField
                 dependsOnField="country"
                 dependentValuesCallback={getStatesByCountry}
+                dependentField="state"
             >
                 <FormField name="state" label="State">
                     {({ field }, dependentValues, isLoading) => (
@@ -79,6 +88,7 @@ function LocationForm() {
 | Name | Type | Description |
 |------|------|-------------|
 | `dependsOnField` | `string` | Field name that this field depends on |
+| `dependentField` | `string` | Optional name of the dependent field (for validation state) |
 | `dependentValuesCallback` | `(value: unknown) => Promise<DependentOption[]> \| DependentOption[]` | Function to fetch dependent values |
 | `children` | `ReactNode` | Form fields to render with dependent values |
 | `loadingDelay` | `number` | Delay before showing loading state (ms) |
@@ -88,21 +98,82 @@ function LocationForm() {
 
 ### Render Function
 
-The child `FormField` component should use a render function to access the dependent values and loading state:
+The child `FormField` component should use a render function to access the dependent values, loading state, and field state:
 
 ```tsx
 <FormField name="state" label="State">
-    {({ field }, dependentValues, isLoading) => (
+    {({ field }, dependentValues, isLoading, styleProps, fieldState) => (
         <select
             value={field.value}
             onChange={(e) => field.onChange(e.target.value)}
             onBlur={field.onBlur}
+            className={cn(
+                styleProps.styles.select,
+                fieldState.isValid && styleProps.styles.isValid,
+                fieldState.isInvalid && styleProps.styles.isInvalid,
+                fieldState.isValidating && styleProps.styles.isValidating,
+                fieldState.isEmpty && 'text-gray-400'
+            )}
         >
-            {/* Render options based on dependentValues and isLoading */}
+            {isLoading ? (
+                <option>Loading...</option>
+            ) : (
+                // Render options
+            )}
         </select>
     )}
 </FormField>
 ```
+
+### Field State
+
+The component provides a `fieldState` object with the following properties:
+
+```tsx
+interface DependentFieldState {
+    isValid: boolean;      // Whether the field is in a valid state
+    isInvalid: boolean;    // Whether the field is in an invalid state
+    isValidating: boolean; // Whether the field is currently validating
+    isEmpty: boolean;      // Whether the field has no dependent values loaded
+}
+```
+
+You can use these properties to apply conditional styling:
+
+```tsx
+{({ field }, dependentValues, isLoading, styleProps, fieldState) => (
+    <div>
+        <select
+            value={field.value}
+            onChange={(e) => field.onChange(e.target.value)}
+            className={cn(
+                fieldState.isValid && 'border-green-500',
+                fieldState.isInvalid && 'border-red-500',
+                fieldState.isEmpty && 'text-gray-400'
+            )}
+        >
+            {/* Options */}
+        </select>
+        {fieldState.isValidating && <span>Validating...</span>}
+    </div>
+)}
+```
+
+### Auto Reset
+
+The component automatically resets the dependent field value when the parent field changes:
+
+```tsx
+<DependantField
+    dependsOnField="country"
+    dependentField="state"
+    dependentValuesCallback={getStatesByCountry}
+>
+    {/* When country changes, state will be reset */}
+</DependantField>
+```
+
+This prevents invalid selections from persisting when the parent field changes.
 
 ### Loading State
 
@@ -148,7 +219,7 @@ To prevent flickering for fast responses, you can set a delay before showing the
 
 ### Multiple Dependent Fields
 
-You can nest `DependantField` components to create multiple levels of dependencies:
+You can nest `DependantField` components to create multiple levels of dependencies, with each level resetting when its parent changes:
 
 ```tsx
 <FormField name="country" label="Country">
@@ -157,6 +228,7 @@ You can nest `DependantField` components to create multiple levels of dependenci
 
 <DependantField
     dependsOnField="country"
+    dependentField="state"
     dependentValuesCallback={getStatesByCountry}
 >
     <FormField name="state" label="State">
@@ -164,9 +236,10 @@ You can nest `DependantField` components to create multiple levels of dependenci
             <select>{/* state options */}</select>
         )}
     </FormField>
-    
+
     <DependantField
         dependsOnField="state"
+        dependentField="city"
         dependentValuesCallback={getCitiesByState}
     >
         <FormField name="city" label="City">
@@ -180,22 +253,23 @@ You can nest `DependantField` components to create multiple levels of dependenci
 
 ### Custom Option Rendering
 
-You can customize how options are rendered:
+You can customize how options are rendered and use the field state for styling:
 
 ```tsx
 <DependantField
     dependsOnField="category"
+    dependentField="product"
     dependentValuesCallback={getProductsByCategory}
 >
     <FormField name="product" label="Product">
-        {({ field }, products, isLoading) => (
+        {({ field }, products, isLoading, styleProps, fieldState) => (
             <div className="custom-select">
                 {isLoading ? (
                     <div className="loading-spinner">Loading products...</div>
                 ) : (
-                    <ul>
+                    <ul className={fieldState.isEmpty ? 'text-gray-400' : ''}>
                         {products.map(product => (
-                            <li 
+                            <li
                                 key={product.value}
                                 className={field.value === product.value ? 'selected' : ''}
                                 onClick={() => field.onChange(product.value)}
@@ -235,22 +309,30 @@ const getCategoriesWithErrorHandling = async () => {
 
 ## Best Practices
 
-1. **Initial Loading**
+1. **Field Naming**
+   - Use the `dependentField` prop to specify the name of the dependent field
+   - This enables proper validation state tracking and auto-reset functionality
+
+2. **Initial Loading**
    - Always handle the initial loading state
    - Provide a meaningful loading message or spinner
 
-2. **Error Handling**
+3. **Error Handling**
    - Implement error handling in your callback function
    - Return a default or empty array on error
 
-3. **Performance**
+4. **Performance**
    - Use `cacheResults` to avoid unnecessary API calls
    - Set an appropriate `loadingDelay` to prevent flickering
 
-4. **Validation**
+5. **Validation**
    - Add conditional validation rules based on dependent field values
    - Clear dependent field value when parent field changes
 
-5. **Accessibility**
+6. **Accessibility**
    - Ensure loading states are properly communicated to screen readers
    - Maintain focus management during loading and updates
+
+7. **Field Reset**
+   - The component automatically resets the dependent field when the parent changes
+   - This prevents invalid selections from persisting

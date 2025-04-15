@@ -3,6 +3,7 @@ import type React from 'react';
 import type { ReactNode } from 'react';
 import type { ReactElement, RefObject } from 'react';
 import type { FieldValues } from 'react-hook-form';
+import type { DependentFieldState } from './dependantField';
 import type { DescriptionOptions } from './description';
 import type { ErrorDisplayOptions, Form } from './form';
 import type { ComponentStyleOptions, FormProviderStyleOptions } from './styles';
@@ -247,8 +248,8 @@ export interface FormFieldProps {
                   };
               },
               dependentValues?: Array<{ value: string; label: string }>,
-              isLoading?: boolean,
-              styleOptions?: FormProviderStyleOptions
+              styleOptions?: FormProviderStyleOptions,
+              fieldState?: DependentFieldState
           ) => ReactNode);
 
     /**
@@ -349,8 +350,8 @@ export interface FormFieldRendererProps {
                   };
               },
               dependentValues?: Array<{ value: string; label: string }>,
-              isLoading?: boolean,
-              styleOptions?: FormProviderStyleOptions
+              styleOptions?: FormProviderStyleOptions,
+              fieldState?: DependentFieldState
           ) => ReactNode);
 
     /**

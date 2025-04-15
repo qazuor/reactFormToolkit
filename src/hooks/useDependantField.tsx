@@ -1,7 +1,9 @@
+import { useFormContext } from '@/context/FormContext';
 import { useDebounce } from '@/hooks/useDebounce';
+import { useFieldState } from '@/hooks/useFieldState';
 import { useFormWatch } from '@/hooks/useFormWatch';
-import type { DependentOption, UseDependantFieldOptions } from '@/types';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import type { DependentFieldState, DependentOption, UseDependantFieldOptions } from '@/types';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { FieldPath, FieldValues } from 'react-hook-form';
 
 /**
@@ -64,6 +66,7 @@ export function useDependantField<
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
     dependsOnField,
+    dependentField,
     dependentValuesCallback,
     loadingDelay = 300,
     cacheResults = true
@@ -71,6 +74,15 @@ export function useDependantField<
     const [dependentValues, setDependentValues] = useState<DependentOption[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const cacheRef = useRef<Record<string, DependentOption[]>>({});
+    const previousDependsOnValueRef = useRef<unknown>(null);
+    const [hasError, setHasError] = useState<boolean>(false);
+    const { form } = useFormContext();
+
+    // Get field validation state from React Hook Form if dependentField is provided
+    const { hasError: fieldHasError, isValidating: fieldIsValidating } = dependentField
+        ? // biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
+          useFieldState(dependentField)
+        : { hasError: false, isValidating: false };
 
     // Debounce the loading state to prevent flickering for fast responses
     const debouncedIsLoading = useDebounce(isLoading, loadingDelay);
@@ -84,8 +96,9 @@ export function useDependantField<
     const fetchDependentValues = useCallback(
         async (value: unknown) => {
             // If value is empty, null, or undefined, reset dependent values
-            if (value === '' || value === null || value === undefined) {
+            if (!value || value === '') {
                 setDependentValues([]);
+                setHasError(false);
                 return;
             }
 
@@ -104,12 +117,17 @@ export function useDependantField<
             isFetchingRef.current = true;
 
             try {
+                setHasError(false);
                 const result = await fetchValues(value, dependentValuesCallback, setIsLoading, setDependentValues);
 
                 // Cache the result if caching is enabled
                 if (cacheResults) {
                     cacheRef.current[cacheKey] = result;
                 }
+            } catch (error) {
+                console.error('Error fetching dependent values:', error);
+                setHasError(true);
+                setDependentValues([]);
             } finally {
                 isFetchingRef.current = false;
             }
@@ -131,12 +149,53 @@ export function useDependantField<
     // Ensure we reset dependent values when the parent field is cleared
     useEffect(() => {
         if (currentValue === '' || currentValue === null || currentValue === undefined) {
+            // Reset dependent values when parent field is cleared
             setDependentValues([]);
+            setHasError(false);
         }
     }, [currentValue]);
 
+    // Reset dependent field value when parent field changes
+    useEffect(() => {
+        // Skip on first render
+        if (
+            previousDependsOnValueRef.current !== null &&
+            previousDependsOnValueRef.current !== currentValue &&
+            dependentField
+        ) {
+            // Reset the dependent field value when the parent field changes
+            form.setValue(dependentField, '', { shouldValidate: true });
+        }
+
+        // Update the previous value reference
+        previousDependsOnValueRef.current = currentValue;
+    }, [currentValue, dependentField, form]);
+
+    // Create additional state information for the field
+    const fieldState = useMemo<DependentFieldState>(() => {
+        return {
+            isValid: dependentField
+                ? !(fieldHasError || isLoading) && dependentValues.length > 0
+                : !(hasError || isLoading) && dependentValues.length > 0,
+            isInvalid: dependentField ? fieldHasError : hasError,
+            isValidating: dependentField ? fieldIsValidating : debouncedIsLoading,
+            isEmpty: !currentValue || currentValue === '' || dependentValues.length === 0,
+            isLoading: debouncedIsLoading
+        };
+    }, [
+        hasError,
+        isLoading,
+        debouncedIsLoading,
+        dependentValues.length,
+        currentValue,
+        dependentField,
+        fieldHasError,
+        fieldIsValidating
+    ]);
+
     return {
         dependentValues,
-        isLoading: debouncedIsLoading
+        isLoading: debouncedIsLoading,
+        fieldState
     };
 }

@@ -127,6 +127,7 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
 
                         <DependantField
                             dependsOnField='country'
+                            dependentField='state'
                             dependentValuesCallback={getStatesByCountry}
                             loadingDelay={300}
                         >
@@ -136,22 +137,29 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
                                 tooltip={t('form.stateTooltip')}
                                 required={true}
                             >
-                                {({ field }, dependentValues, isLoading, styles) => (
+                                {({ field }, dependentValues, styleOptions, fieldState) => (
                                     <select
                                         value={field.value as string}
                                         onChange={(e) => field.onChange(e.target.value)}
                                         onBlur={field.onBlur}
-                                        className={styles?.field?.select as string}
-                                        disabled={isLoading}
+                                        className={cn(
+                                            styleOptions?.field?.select,
+                                            fieldState?.isValid && styleOptions?.field?.isValid,
+                                            fieldState?.isInvalid && styleOptions?.field?.isInvalid,
+                                            fieldState?.isLoading && styleOptions?.field?.isValidating,
+                                            fieldState?.isValidating && styleOptions?.field?.isValidating,
+                                            fieldState?.isEmpty && 'text-gray-400'
+                                        )}
+                                        disabled={fieldState?.isLoading}
                                     >
-                                        {isLoading ? (
+                                        {fieldState?.isLoading ? (
                                             <option>{t('form.loading')}</option>
                                         ) : (
                                             <>
                                                 <option value=''>{t('form.selectState')}</option>
                                                 {dependentValues?.map((state) => (
                                                     <option
-                                                        key={state.value}
+                                                        key={`${state.value}-${field.value}`}
                                                         value={state.value}
                                                     >
                                                         {state.label}
@@ -196,6 +204,7 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
 
                         <DependantField
                             dependsOnField='category'
+                            dependentField='subcategory'
                             dependentValuesCallback={getSubcategoriesByCategory}
                         >
                             <FormField
@@ -203,10 +212,23 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
                                 label={t('form.subtopics')}
                                 required={true}
                             >
-                                {({ field }, dependentValues, isLoading, styles) => (
-                                    <div className={cn('space-y-2', styles?.field?.wrapper as string)}>
-                                        {isLoading ? (
+                                {({ field }, dependentValues, styleOptions, fieldState) => (
+                                    <div
+                                        className={cn(
+                                            'space-y-2 rounded-lg border px-3 py-2 text-gray-900 text-sm transition-colors',
+                                            fieldState?.isValid && styleOptions?.field?.isValid,
+                                            fieldState?.isInvalid && styleOptions?.field?.isInvalid,
+                                            fieldState?.isLoading && styleOptions?.field?.isValidating,
+                                            fieldState?.isValidating && styleOptions?.field?.isValidating,
+                                            fieldState?.isEmpty && 'text-gray-400'
+                                        )}
+                                    >
+                                        {fieldState?.isLoading ? (
                                             <div className='text-blue-500 dark:text-blue-400'>{t('form.loading')}</div>
+                                        ) : fieldState?.isEmpty && !fieldState.isLoading ? (
+                                            <div className='text-gray-500 dark:text-gray-400'>
+                                                {t('form.selectOption')}
+                                            </div>
                                         ) : (
                                             dependentValues?.map((subcategory) => (
                                                 <label
@@ -215,7 +237,7 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
                                                 >
                                                     <input
                                                         type='radio'
-                                                        name='subcategory'
+                                                        name={`subcategory-${field.value || 'empty'}`}
                                                         value={subcategory.value}
                                                         checked={field.value === subcategory.value}
                                                         onChange={(e) => field.onChange(e.target.value)}

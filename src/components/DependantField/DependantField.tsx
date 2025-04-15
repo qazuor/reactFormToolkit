@@ -44,6 +44,7 @@ export function DependantField<
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
     dependsOnField,
+    dependentField,
     dependentValuesCallback,
     children,
     loadingDelay = 300,
@@ -51,8 +52,9 @@ export function DependantField<
 }: DependantFieldProps<TFieldValues, TName>): ReactElement {
     const { styleOptions: providerStyles, uiLibrary } = useFormContext();
 
-    const { dependentValues, isLoading } = useDependantField<TFieldValues>({
+    const { dependentValues, fieldState } = useDependantField<TFieldValues>({
         dependsOnField,
+        dependentField,
         dependentValuesCallback,
         loadingDelay,
         cacheResults
@@ -70,10 +72,10 @@ export function DependantField<
 
         // Check if the child has a render function
         if (typeof child.props.children === 'function') {
-            // Create a new render function that includes dependentValues and isLoading
+            // Create a new render function that includes dependentValues, styleOptions and fieldState
             const originalRender = child.props.children;
             const newRender = (fieldProps: Record<string, unknown>) => {
-                return originalRender(fieldProps, dependentValues, isLoading, styleOptions);
+                return originalRender(fieldProps, dependentValues, styleOptions, fieldState);
             };
 
             // Clone the child with the new render function

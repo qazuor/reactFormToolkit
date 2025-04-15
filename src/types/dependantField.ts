@@ -30,6 +30,12 @@ export interface DependantFieldProps<
     dependsOnField: TName;
 
     /**
+     * The dependent field name (optional)
+     * When provided, validation state will be taken from this field
+     */
+    dependentField?: string;
+
+    /**
      * Callback function to fetch dependent values based on the parent field value
      * Should return an array of options or a promise that resolves to an array of options
      */
@@ -55,6 +61,41 @@ export interface DependantFieldProps<
 }
 
 /**
+ * Additional state information for dependent fields
+ */
+export interface DependentFieldState {
+    /**
+     * Whether the field is in a valid state
+     * Based on form validation state
+     */
+    isValid: boolean;
+
+    /**
+     * Whether the field is in an invalid state
+     * Based on form validation state
+     */
+    isInvalid: boolean;
+
+    /**
+     * Whether the field is currently validating
+     * Based on form validation state
+     */
+    isValidating: boolean;
+
+    /**
+     * Whether the field is empty (no dependent values loaded yet)
+     * This is specific to dependent fields
+     */
+    isEmpty: boolean;
+
+    /**
+     * Whether the field is currently loading data
+     * Based on form validation state
+     */
+    isLoading: boolean;
+}
+
+/**
  * Options for the useDependantField hook
  */
 export interface UseDependantFieldOptions<
@@ -70,6 +111,12 @@ export interface UseDependantFieldOptions<
      * The field name that this field depends on
      */
     dependsOnField: TName;
+
+    /**
+     * The dependent field name (optional)
+     * When provided, validation state will be taken from this field
+     */
+    dependentField?: string;
 
     /**
      * Callback function to fetch dependent values based on the parent field value
