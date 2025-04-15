@@ -95,3 +95,8 @@
 .animate-spin {
     animation: spin 1s linear infinite;
 }
+
+/* Dark mode focus ring offset */
+.dark .focus\:ring-offset-2:focus {
+    --tw-ring-offset-color: rgb(31 41 55);
+}

@@ -69,7 +69,13 @@ export const FieldErrorRenderer = memo(function FieldErrorRenderer({
     // Render standard error message
     const errorContent = (
         <div
-            className={cn('flex items-center gap-1', positionClass, animationClass, className)}
+            className={cn(
+                'flex items-center gap-1',
+                styleOptions?.field?.error || 'text-red-600 text-sm',
+                positionClass,
+                animationClass,
+                className
+            )}
             data-testid='field-error'
             aria-live='polite'
             role='alert'

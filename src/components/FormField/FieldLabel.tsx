@@ -1,6 +1,6 @@
 import { InfoTooltipIcon } from '@/components';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { useFormContext } from '@/context/FormContext';
+import { useFormContext } from '@/context';
 import { useQRFTTranslation } from '@/hooks';
 import { cn } from '@/lib';
 import type { FieldLabelProps } from '@/types';

@@ -281,6 +281,7 @@ export function FormProvider<
                     }}
                 >
                     <form
+                        data-testid='form'
                         onSubmit={handleSubmitForm(handleSubmit)}
                         noValidate={true}
                         onReset={(e) => {

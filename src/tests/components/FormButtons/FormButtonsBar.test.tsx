@@ -3,11 +3,33 @@ import userEvent from '@testing-library/user-event';
 import type { ReactNode } from 'react';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import React from 'react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
 import { FormButtonsBar } from '../../../components/FormButtons/FormButtonsBar';
 import { FormProvider } from '../../../components/FormProvider/FormProvider';
 import { TooltipProvider } from '../../../components/ui/tooltip';
+
+// Mock the useQRFTTranslation hook
+vi.mock('@/hooks', () => ({
+    useQRFTTranslation: () => ({
+        t: (key: string) => {
+            if (key === 'form.submit') {
+                return 'Submit';
+            }
+            if (key === 'form.reset') {
+                return 'Reset Form';
+            }
+            if (key === 'form.cancel') {
+                return 'Cancel';
+            }
+            return key;
+        }
+    })
+}));
+
+afterEach(() => {
+    vi.clearAllMocks();
+});
 
 const schema = z.object({
     test: z.string()

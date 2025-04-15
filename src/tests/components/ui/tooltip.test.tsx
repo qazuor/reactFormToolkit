@@ -2,8 +2,25 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import React from 'react';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../../components/ui/tooltip';
+
+// Mock the FormContext
+const mockUseFormContext = vi.fn().mockReturnValue({
+    styleOptions: {
+        tooltip: {
+            content: 'mocked-tooltip-class'
+        }
+    }
+});
+
+vi.mock('@/context', () => ({
+    useFormContext: () => mockUseFormContext()
+}));
+
+afterEach(() => {
+    vi.clearAllMocks();
+});
 
 describe('Tooltip', () => {
     const renderTooltip = (content = 'Tooltip content') => {
@@ -32,14 +49,20 @@ describe('Tooltip', () => {
 
         expect(contentWrapper).toHaveClass(
             'z-50',
+            'overflow-hidden',
             'rounded-md',
             'border',
-            'bg-popover',
+            'border-gray-200',
+            'bg-white',
             'px-3',
             'py-1.5',
             'text-sm',
-            'text-popover-foreground',
-            'shadow-md'
+            'text-gray-900',
+            'shadow-md',
+            'dark:border-gray-700',
+            'dark:bg-gray-800',
+            'dark:text-gray-100',
+            'mocked-tooltip-class'
         );
     });
 

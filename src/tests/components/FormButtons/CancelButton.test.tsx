@@ -2,8 +2,36 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import React from 'react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { CancelButton } from '../../../components/FormButtons/CancelButton';
+
+// Mock the FormContext
+const mockUseFormContext = vi.fn().mockReturnValue({
+    styleOptions: {
+        buttons: {
+            cancel: 'mocked-cancel-button-class'
+        }
+    }
+});
+
+vi.mock('@/context', () => ({
+    useFormContext: () => mockUseFormContext()
+}));
+
+// Mock the useQRFTTranslation hook
+vi.mock('@/hooks', () => ({
+    useQRFTTranslation: () => ({
+        t: (key: string) => (key === 'form.cancel' ? 'Cancel' : key)
+    })
+}));
+
+afterEach(() => {
+    vi.clearAllMocks();
+});
+
+afterEach(() => {
+    vi.clearAllMocks();
+});
 
 describe('CancelButton', () => {
     it('renders with default text', () => {

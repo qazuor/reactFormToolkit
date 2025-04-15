@@ -18,7 +18,7 @@ export function FormDescription({
     const { styleOptions } = useFormContext();
 
     // Get description style from provider or use default
-    const descriptionClass = styleOptions?.field?.description || 'text-gray-600 text-sm';
+    const descriptionClass = styleOptions?.field?.description || 'text-gray-600 text-sm dark:text-gray-400';
 
     return (
         <div

@@ -1,9 +1,26 @@
 import { render, screen } from '@testing-library/react';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import React from 'react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { FieldErrorRenderer } from '../../../components/FormField/FieldErrorRenderer';
 import { TooltipProvider } from '../../../components/ui/tooltip';
+
+// Mock the FormContext
+const mockUseFormContext = vi.fn().mockReturnValue({
+    styleOptions: {
+        field: {
+            error: 'mocked-error-class'
+        }
+    }
+});
+
+vi.mock('@/context', () => ({
+    useFormContext: () => mockUseFormContext()
+}));
+
+afterEach(() => {
+    vi.clearAllMocks();
+});
 
 // Mock the FieldErrorIcon to make testing easier
 vi.mock('../../../components/Icons', () => ({

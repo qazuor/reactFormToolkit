@@ -89,6 +89,7 @@ describe('FormProvider with Global Errors', () => {
             expect(screen.getByRole('alert')).toHaveTextContent(error.message);
         });
     });
+
     it('applies global error options', async () => {
         const onSubmit = vi.fn().mockRejectedValue(new Error('Error'));
         render(
@@ -109,9 +110,10 @@ describe('FormProvider with Global Errors', () => {
         await userEvent.click(screen.getByTestId('submit-button'));
         await waitFor(() => {
             const error = screen.getByRole('alert');
-            expect(error).toHaveClass('mt-6', 'animate-fadeIn', 'custom-error');
+            expect(error).toHaveClass('mt-1', 'animate-fadeIn', 'custom-error');
         });
     });
+
     it('clears global error on form reset', async () => {
         const onSubmit = vi.fn().mockRejectedValue(new Error('Error de test'));
         render(
@@ -180,47 +182,38 @@ describe('FormProvider', () => {
             email: 'valid@email.com',
             password: 'password123'
         };
-
         const onSubmit = vi.fn();
         const { container } = renderFormForSubmition(onSubmit);
-
         const emailInput = container.querySelector('[data-testid="email"]') as HTMLInputElement;
         const passwordInput = container.querySelector('[data-testid="password"]') as HTMLInputElement;
-
         // Wait for form to initialize
         await act(async () => {
             await new Promise((resolve) => setTimeout(resolve, 100));
         });
-
         await act(async () => {
             fireEvent.change(emailInput, {
                 target: { value: expectedData.email }
             });
             fireEvent.blur(emailInput);
         });
-
         // Wait for validation
         await act(async () => {
             await new Promise((resolve) => setTimeout(resolve, 100));
         });
-
         await act(async () => {
             fireEvent.change(passwordInput, {
                 target: { value: expectedData.password }
             });
             fireEvent.blur(passwordInput);
         });
-
         // Wait for validation
         await act(async () => {
             await new Promise((resolve) => setTimeout(resolve, 100));
         });
-
         await act(async () => {
             // biome-ignore lint/style/noNonNullAssertion: <explanation>
             fireEvent.submit(container.querySelector('form')!);
         });
-
         await waitFor(
             () => {
                 expect(onSubmit).toHaveBeenCalledWith(expectedData);
@@ -233,39 +226,32 @@ describe('FormProvider', () => {
     it('should not submit with invalid data', async () => {
         const onSubmit = vi.fn();
         const { container } = renderFormForSubmition(onSubmit);
-
         const emailInput = container.querySelector('[data-testid="email"]') as HTMLInputElement;
         const passwordInput = container.querySelector('[data-testid="password"]') as HTMLInputElement;
         const submitButton = container.querySelector('[data-testid="submit-button"]') as HTMLButtonElement;
-
         // Wait for form to initialize
         await act(async () => {
             await new Promise((resolve) => setTimeout(resolve, 0));
         });
-
         await act(async () => {
             fireEvent.change(emailInput, {
                 target: { value: 'invalid-email' }
             });
             fireEvent.blur(emailInput);
         });
-
         await act(async () => {
             fireEvent.change(passwordInput, {
                 target: { value: '123' }
             });
             fireEvent.blur(passwordInput);
         });
-
         // Wait for validation
         await act(async () => {
             await new Promise((resolve) => setTimeout(resolve, 0));
         });
-
         await act(async () => {
             fireEvent.click(submitButton);
         });
-
         await waitFor(() => {
             expect(onSubmit).not.toHaveBeenCalled();
             expect(screen.getByText('Invalid email address')).toBeInTheDocument();

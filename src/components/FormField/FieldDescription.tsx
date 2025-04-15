@@ -15,10 +15,10 @@ export function FieldDescription({
     position = 'below',
     ...props
 }: DescriptionProps): JSX.Element {
-    const { styleOptions: providerStyles } = useFormContext();
+    const { styleOptions } = useFormContext();
 
     // Get description style from provider or use default
-    const descriptionClass = providerStyles?.field?.description || 'text-gray-500 text-sm';
+    const descriptionClass = styleOptions?.field?.description || 'text-gray-500 text-sm dark:text-gray-400';
 
     return (
         <p

@@ -1,3 +1,4 @@
+import { useFormContext } from '@/context';
 import { useQRFTTranslation } from '@/hooks';
 import { cn } from '@/lib';
 import { type JSX, useCallback, useEffect, useState } from 'react';
@@ -21,6 +22,7 @@ export function GroupedErrors({
     dismissAfter = 5000
 }: GroupedErrorsProps): JSX.Element | null {
     const { t } = useQRFTTranslation();
+    const { styleOptions } = useFormContext();
     const [dismissed, setDismissed] = useState(false);
 
     const errorEntries = Object.entries(errors || {});
@@ -56,22 +58,28 @@ export function GroupedErrors({
         return null;
     }
 
+    // Get error style from provider or use default
+    const errorClass = styleOptions?.field?.error || 'text-red-600 text-sm dark:text-red-400';
+
     return (
         <div
-            className={cn(`mt-4 rounded-lg border border-red-200 bg-red-50 p-4 animate-${animation}`, className)}
+            className={cn(
+                `mt-4 rounded-lg border border-red-200 bg-red-50 p-4 animate-${animation} dark:border-red-800 dark:bg-red-900/30 dark:text-red-400`,
+                className
+            )}
             data-testid='grouped-errors'
             aria-live='polite'
             role='alert'
         >
-            <h3 className='mb-2 font-medium text-red-800'>{t('form.validationErrors')}</h3>
+            <h3 className='mb-2 font-medium text-red-800 dark:text-red-300'>{t('form.validationErrors')}</h3>
             <ul
-                className='list-inside list-disc space-y-2'
+                className='list-inside list-disc space-y-2 text-red-600 dark:text-red-400'
                 data-testid='error-list'
             >
                 {displayErrors.map(([field, message]) => (
                     <li
                         key={field}
-                        className='text-red-600 text-sm'
+                        className={errorClass as string}
                         data-testid='error-item'
                         aria-label={`${field}: ${message}`}
                     >
@@ -81,7 +89,7 @@ export function GroupedErrors({
             </ul>
             {remainingErrors > 0 && (
                 <p
-                    className='mt-2 text-red-500 text-sm italic'
+                    className={cn('mt-2 italic', errorClass)}
                     data-testid='remaining-errors'
                     aria-label={t('form.remainingErrors', { count: remainingErrors })}
                 >

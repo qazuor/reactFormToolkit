@@ -1,8 +1,25 @@
 import { render, screen } from '@testing-library/react';
 // biome-ignore lint/correctness/noUnusedImports: <explanation>
 import React, { act } from 'react';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { FormDescription } from '../../components/FormDescription';
+
+// Mock the FormContext
+const mockUseFormContext = vi.fn().mockReturnValue({
+    styleOptions: {
+        field: {
+            description: 'mocked-description-class'
+        }
+    }
+});
+
+vi.mock('@/context/FormContext', () => ({
+    useFormContext: () => mockUseFormContext()
+}));
+
+afterEach(() => {
+    vi.clearAllMocks();
+});
 
 describe('FormDescription', () => {
     it('renders description text correctly', () => {

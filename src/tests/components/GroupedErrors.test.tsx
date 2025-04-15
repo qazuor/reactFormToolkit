@@ -2,9 +2,26 @@ import { render, screen } from '@testing-library/react';
 // biome-ignore lint/style/useImportType: <explanation>
 import React from 'react';
 import { I18nextProvider } from 'react-i18next';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { GroupedErrors } from '../../components/FormProvider/GroupedErrors';
 import i18n from '../setupTest';
+
+// Mock the FormContext
+const mockUseFormContext = vi.fn().mockReturnValue({
+    styleOptions: {
+        field: {
+            error: 'mocked-error-class'
+        }
+    }
+});
+
+vi.mock('@/context', () => ({
+    useFormContext: () => mockUseFormContext()
+}));
+
+afterEach(() => {
+    vi.clearAllMocks();
+});
 
 describe('GroupedErrors', () => {
     const errors = {
