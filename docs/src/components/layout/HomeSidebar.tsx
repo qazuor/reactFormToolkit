@@ -11,39 +11,33 @@ export function HomeSidebar({ onNavigation }: HomeSidebarProps) {
     const navigate = useNavigate();
 
     const handleClick = (path: string) => {
-        if (onNavigation) {
-            onNavigation(path);
-        } else {
-            navigate(path);
-        }
+        navigate(path);
     };
 
     return (
         <div className='space-y-4'>
-            <div>
-                <ul className='space-y-2'>
-                    <li>
-                        <button
-                            type='button'
-                            onClick={() => handleClick('/docs')}
-                            className='flex items-center gap-2 rounded-md px-3 py-2 text-foreground text-sm transition-colors hover:bg-muted'
-                        >
-                            <Book className='h-4 w-4' />
-                            {t('docs.title')}
-                        </button>
-                    </li>
-                    <li>
-                        <button
-                            type='button'
-                            onClick={() => handleClick('/examples')}
-                            className='flex items-center gap-2 rounded-md px-3 py-2 text-foreground text-sm transition-colors hover:bg-muted'
-                        >
-                            <Code className='h-4 w-4' />
-                            {t('examples.title')}
-                        </button>
-                    </li>
-                </ul>
-            </div>
+            <ul className='space-y-2'>
+                <li>
+                    <button
+                        type='button'
+                        onClick={() => handleClick('/docs')}
+                        className='flex w-full items-center gap-2 rounded-md px-3 py-2 text-foreground text-sm transition-colors hover:bg-muted'
+                    >
+                        <Book className='h-4 w-4' />
+                        {t('docs.title')}
+                    </button>
+                </li>
+                <li>
+                    <button
+                        type='button'
+                        onClick={() => handleClick('/examples')}
+                        className='flex w-full items-center gap-2 rounded-md px-3 py-2 text-foreground text-sm transition-colors hover:bg-muted'
+                    >
+                        <Code className='h-4 w-4' />
+                        {t('examples.title')}
+                    </button>
+                </li>
+            </ul>
         </div>
     );
 }

@@ -209,7 +209,10 @@
             "backToTop": "Back to top"
         },
         "search": {
-            "placeholder": "Search documentation..."
+            "title": "Search",
+            "description": "Search in documentation or examples. Press esc key to close.",
+            "placeholder": "Search documentation...",
+            "results": "Search Results"
         },
         "formResults": {
             "submissionResult": "Form Submission Result",

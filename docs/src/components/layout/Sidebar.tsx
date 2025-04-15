@@ -33,12 +33,9 @@ export function Sidebar({ width, docs, onNavigation }: SidebarProps) {
             className={cn('bg-white/40 dark:bg-slate-900/40', isHomePath && 'md:hidden')}
             style={{ width }}
         >
-            <div
-                className='flex flex-col overflow-hidden border-gray-200 md:fixed md:h-[calc(100vh-4rem)] md:border-r md:bg-background md:shadow-md dark:border-gray-700'
-                style={{ width }}
-            >
-                <div className='flex-1 space-y-4 overflow-y-auto pb-10 md:p-6'>
-                    <div className='mb-100 md:pb-20'>
+            <div className='flex h-full flex-col overflow-hidden border-gray-200 md:fixed md:h-[calc(100vh-4rem)] md:border-r md:bg-background md:shadow-md dark:border-gray-700'>
+                <div className='flex-1 space-y-4 overflow-y-auto p-4 md:p-6'>
+                    <div className='pb-4 md:pb-20'>
                         {isHomePath && <HomeSidebar />}
                         {isDocPath && (
                             <DocsSidebar

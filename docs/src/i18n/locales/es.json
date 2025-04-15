@@ -209,7 +209,10 @@
             "backToTop": "Volver al inicio"
         },
         "search": {
-            "placeholder": "Buscar documentación..."
+            "title": "Buscar",
+            "description": "Buscar en la documentacion o ejemplos. Precione la tecla Esc para cerrar.",
+            "placeholder": "Buscar documentación...",
+            "results": "Resultados"
         },
         "formResults": {
             "submissionResult": "Resultado de Envío del Formulario",
