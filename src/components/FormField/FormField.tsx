@@ -1,6 +1,7 @@
 import { FieldArrayContext, useFormContext } from '@/context';
 import { useFieldState, useFieldValidation } from '@/hooks';
-import { cn, formUtils, prepareStyles } from '@/lib';
+import { cn, formUtils } from '@/lib';
+import { prepareStyles } from '@/lib/styleUtils';
 import type { FormFieldProps } from '@/types';
 import { type ReactElement, useContext, useEffect, useMemo, useRef } from 'react';
 import { isValidElement } from 'react';
@@ -59,7 +60,7 @@ export function FormField({
     // Merge styles from default, provider, and component
     const mergedStyles = useMemo(() => {
         return prepareStyles(providerStyles, uiLibrary, styleOptions as Record<string, string>);
-    }, [uiLibrary, providerStyles, styleOptions]);
+    }, [providerStyles, uiLibrary, styleOptions]);
 
     // Determine if field is required from props or schema
     const isRequired = useMemo(
@@ -160,9 +161,10 @@ export function FormField({
             inputProps={{
                 className: cn(mergedStyles.field?.input, className),
                 ariaInvalid,
-                ariaDescribedBy,
+                ariaDescribedBy: ariaDescribedBy,
                 validate
             }}
+            mergedStyles={mergedStyles}
         />
     );
 }

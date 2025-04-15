@@ -1,4 +1,5 @@
 import { FormFieldContext } from '@/context';
+import { useFormContext } from '@/context';
 import { cn } from '@/lib';
 import type { FormFieldRendererProps } from '@/types';
 import { type ReactElement, isValidElement, memo } from 'react';
@@ -47,8 +48,12 @@ export const FormFieldRenderer = memo(function FormFieldRenderer({
     contextValue,
     wrapperClassName,
     asyncValidationProps,
-    inputProps
+    inputProps,
+    mergedStyles
 }: FormFieldRendererProps): ReactElement {
+    // Get form context to access styleOptions
+    const { styleOptions: providerStyles } = useFormContext();
+
     // Render the input element based on children type
     const renderInput = (): ReactElement => {
         if (typeof children === 'function') {
@@ -111,7 +116,19 @@ export const FormFieldRenderer = memo(function FormFieldRenderer({
                             <Controller
                                 control={contextValue.form.control}
                                 name={fieldPath}
-                                render={({ field: rhfField }) => {
+                                render={({ field: rhfField, fieldState }) => {
+                                    // Extract field styles for passing to render function
+                                    const stylesOptions = mergedStyles || providerStyles;
+
+                                    // Create field state object for the render function
+                                    const mergedFfieldState = {
+                                        isValid: !(fieldState.invalid || asyncValidationProps.isValidating),
+                                        isInvalid: fieldState.invalid || asyncValidationProps.hasError,
+                                        isValidating: fieldState.isValidating || asyncValidationProps.isValidating,
+                                        isEmpty: !rhfField.value || rhfField.value === '',
+                                        isLoading: asyncValidationProps.isValidating
+                                    };
+
                                     const rendered = children(
                                         {
                                             field: {
@@ -120,9 +137,9 @@ export const FormFieldRenderer = memo(function FormFieldRenderer({
                                                 onBlur: rhfField.onBlur
                                             }
                                         },
-                                        undefined, // DependantValues
-                                        {}, // StyleOptions,
-                                        undefined // DependantFieldState
+                                        [], // DependantValues (empty array as this is not a DependantField)
+                                        stylesOptions,
+                                        mergedFfieldState
                                     );
 
                                     return (

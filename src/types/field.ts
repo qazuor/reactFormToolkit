@@ -417,4 +417,9 @@ export interface FormFieldRendererProps {
         ariaDescribedBy?: string;
         validate?: (value: unknown) => Promise<void>;
     };
+
+    /**
+     * Merged styles from provider and component
+     */
+    mergedStyles?: FormProviderStyleOptions;
 }

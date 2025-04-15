@@ -1,5 +1,4 @@
-import type { FormProviderStyleOptions, UILibraryOptions } from '@/types';
-import type { FieldStyleOptions } from '@/types';
+import type { FieldStyleOptions, FormProviderStyleOptions, UILibraryOptions } from '@/types';
 import { defaultStyles } from './styles';
 import { mergeStyles } from './styles';
 import { getUiLibraryCompatibleStyles } from './ui-library';
@@ -35,7 +34,11 @@ export function prepareStyles(
  * @param mergedStyles - The merged styles object
  * @returns Field styles object with input, select, etc. properties
  */
-export function extractFieldStyles(mergedStyles: FormProviderStyleOptions): FieldStyleOptions {
+export function extractFieldStyles(mergedStyles?: FormProviderStyleOptions): FieldStyleOptions {
+    if (!mergedStyles?.field) {
+        return {};
+    }
+
     return {
         input: mergedStyles.field?.input ? String(cn(mergedStyles.field.input)) : undefined,
         select: mergedStyles.field?.select ? String(cn(mergedStyles.field.select)) : undefined,
