@@ -2,7 +2,7 @@ import * as contextModule from '@/context';
 import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useFieldValidation } from '../../hooks/useFieldValidation';
-import type { AsyncValidationProps } from '../../types';
+import type { AsyncValidationProps } from '../../types/asyncValidation';
 
 // Mock the shouldApplyInputStyles function
 vi.mock('@/lib/ui-library', () => ({
@@ -174,7 +174,9 @@ describe('useFieldValidation', () => {
             })
         );
 
-        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {
+            // Ignore console errors in tests
+        });
 
         // Trigger validation
         await act(async () => {
@@ -260,7 +262,9 @@ describe('useFieldValidation', () => {
                     }
                 },
                 asyncValidation,
-                schema: schema as any,
+                schema: schema as {
+                    safeParse: (value: unknown) => { success: boolean; error?: { issues: { path: string[] }[] } };
+                },
                 hasError: false
             })
         );

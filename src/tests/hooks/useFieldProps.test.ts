@@ -1,4 +1,4 @@
-import type { FieldValues, Path } from 'react-hook-form';
+import type { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 import { describe, expect, it } from 'vitest';
 import { useFieldProps } from '../../hooks/useFieldProps';
 
@@ -27,9 +27,9 @@ describe('useFieldProps', () => {
         const expectedClassName = 'parent-class child-class';
 
         const result = useFieldProps({
-            field: field as any,
+            field: field as ControllerRenderProps<FieldValues, string>,
             isCheckbox: false,
-            fieldPath: 'testField' as Path<any>,
+            fieldPath: 'testField' as Path<FieldValues>,
             className: 'parent-class',
             ariaInvalid: false,
             ariaDescribedBy: 'test-description',
@@ -67,9 +67,9 @@ describe('useFieldProps', () => {
         };
 
         const result = useFieldProps({
-            field: field as any,
+            field: field as ControllerRenderProps<FieldValues, string>,
             isCheckbox: true,
-            fieldPath: 'checkboxField' as Path<any>,
+            fieldPath: 'checkboxField' as Path<FieldValues>,
             className: 'checkbox-class',
             ariaInvalid: false,
             childProps: {}
@@ -105,9 +105,9 @@ describe('useFieldProps', () => {
         };
 
         const result = useFieldProps<FieldValues>({
-            field: field as any,
+            field: field as ControllerRenderProps<FieldValues, string>,
             isCheckbox: false,
-            fieldPath: 'testField' as Path<any>,
+            fieldPath: 'testField' as Path<FieldValues>,
             className: 'test-class',
             ariaInvalid: false,
             childProps: {}
@@ -132,9 +132,9 @@ describe('useFieldProps', () => {
         };
 
         const result = useFieldProps<FieldValues>({
-            field: field as any,
+            field: field as ControllerRenderProps<FieldValues, string>,
             isCheckbox: false,
-            fieldPath: 'testField' as Path<any>,
+            fieldPath: 'testField' as Path<FieldValues>,
             className: 'test-class',
             ariaInvalid: false,
             childProps: {}
@@ -164,9 +164,9 @@ describe('useFieldProps', () => {
         };
 
         const result = useFieldProps<FieldValues>({
-            field: field as any,
+            field: field as ControllerRenderProps<FieldValues, string>,
             isCheckbox: false,
-            fieldPath: 'testField' as Path<any>,
+            fieldPath: 'testField' as Path<FieldValues>,
             className: 'test-class',
             ariaInvalid: true,
             ariaDescribedBy: 'test-description',
