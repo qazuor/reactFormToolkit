@@ -1,4 +1,6 @@
+import { useFormContext } from '@/context/FormContext';
 import { useDependantField } from '@/hooks/useDependantField';
+import { prepareStyles } from '@/lib';
 import type { DependantFieldProps } from '@/types';
 import React, { cloneElement, isValidElement, type ReactElement } from 'react';
 import type { FieldPath, FieldValues } from 'react-hook-form';
@@ -47,12 +49,17 @@ export function DependantField<
     loadingDelay = 300,
     cacheResults = true
 }: DependantFieldProps<TFieldValues, TName>): ReactElement {
+    const { styleOptions: providerStyles, uiLibrary } = useFormContext();
+
     const { dependentValues, isLoading } = useDependantField<TFieldValues>({
         dependsOnField,
         dependentValuesCallback,
         loadingDelay,
         cacheResults
     });
+
+    // Use the shared utility function to prepare styles
+    const styleOptions = prepareStyles(providerStyles, uiLibrary);
 
     // Function to enhance children with dependent values and loading state
     // Clone the children and inject the dependent values and loading state
@@ -65,8 +72,9 @@ export function DependantField<
         if (typeof child.props.children === 'function') {
             // Create a new render function that includes dependentValues and isLoading
             const originalRender = child.props.children;
-            const newRender = (fieldProps: Record<string, unknown>) =>
-                originalRender(fieldProps, dependentValues, isLoading);
+            const newRender = (fieldProps: Record<string, unknown>) => {
+                return originalRender(fieldProps, dependentValues, isLoading, styleOptions);
+            };
 
             // Clone the child with the new render function
             return cloneElement(child, {

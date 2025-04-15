@@ -112,13 +112,18 @@ export const FormFieldRenderer = memo(function FormFieldRenderer({
                                 control={contextValue.form.control}
                                 name={fieldPath}
                                 render={({ field: rhfField }) => {
-                                    const rendered = children({
-                                        field: {
-                                            value: rhfField.value,
-                                            onChange: rhfField.onChange,
-                                            onBlur: rhfField.onBlur
-                                        }
-                                    });
+                                    const rendered = children(
+                                        {
+                                            field: {
+                                                value: rhfField.value,
+                                                onChange: rhfField.onChange,
+                                                onBlur: rhfField.onBlur
+                                            }
+                                        },
+                                        undefined,
+                                        undefined,
+                                        {} // StyleOptions
+                                    );
 
                                     return (
                                         <>

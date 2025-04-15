@@ -1,7 +1,6 @@
 import { FieldArrayContext, useFormContext } from '@/context';
 import { useFieldState, useFieldValidation } from '@/hooks';
-import { cn, defaultStyles, formUtils, mergeStyles } from '@/lib';
-import { getUiLibraryCompatibleStyles } from '@/lib/ui-library';
+import { cn, formUtils, prepareStyles } from '@/lib';
 import type { FormFieldProps } from '@/types';
 import { type ReactElement, useContext, useEffect, useMemo, useRef } from 'react';
 import { isValidElement } from 'react';
@@ -59,13 +58,7 @@ export function FormField({
 
     // Merge styles from default, provider, and component
     const mergedStyles = useMemo(() => {
-        // If using a UI library, use the modified styles that don't style inputs
-        const baseStyles = uiLibrary?.enabled ? getUiLibraryCompatibleStyles(defaultStyles) : defaultStyles;
-
-        const filteredProviderStyles = uiLibrary?.enabled
-            ? getUiLibraryCompatibleStyles(providerStyles)
-            : providerStyles;
-        return mergeStyles(baseStyles, filteredProviderStyles || {}, styleOptions as Record<string, string>);
+        return prepareStyles(providerStyles, uiLibrary, styleOptions as Record<string, string>);
     }, [uiLibrary, providerStyles, styleOptions]);
 
     // Determine if field is required from props or schema

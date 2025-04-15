@@ -1,4 +1,11 @@
-import { DependantField, FormButtonsBar, FormDescription, FormField, FormProvider } from '@qazuor/react-form-toolkit';
+import {
+    DependantField,
+    FormButtonsBar,
+    FormDescription,
+    FormField,
+    FormProvider,
+    cn
+} from '@qazuor/react-form-toolkit';
 import type { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
@@ -101,7 +108,7 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
 
             <div className='space-y-8'>
                 {/* Select-based Dependencies Section */}
-                <div className='rounded-lg border bg-gray-50 p-6 dark:bg-gray-800 dark:border-gray-700'>
+                <div className='rounded-lg border bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-800'>
                     <h3 className='mb-4 font-bold text-lg'>{t('form.selectBasedDependencies')}</h3>
                     <div className='space-y-6'>
                         <FormField
@@ -129,12 +136,12 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
                                 tooltip={t('form.stateTooltip')}
                                 required={true}
                             >
-                                {({ field }, dependentValues, isLoading) => (
+                                {({ field }, dependentValues, isLoading, styles) => (
                                     <select
                                         value={field.value as string}
                                         onChange={(e) => field.onChange(e.target.value)}
                                         onBlur={field.onBlur}
-                                        className='w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                                        className={styles?.field?.select as string}
                                         disabled={isLoading}
                                     >
                                         {isLoading ? (
@@ -160,7 +167,7 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
                 </div>
 
                 {/* Radio/Checkbox Dependencies Section */}
-                <div className='rounded-lg border bg-gray-50 p-6 dark:bg-gray-800 dark:border-gray-700'>
+                <div className='rounded-lg border bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-800'>
                     <h3 className='mb-4 font-bold text-lg'>{t('form.radioCheckboxDependencies')}</h3>
                     <div className='space-y-6'>
                         <FormField
@@ -196,8 +203,8 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
                                 label={t('form.subtopics')}
                                 required={true}
                             >
-                                {({ field }, dependentValues, isLoading) => (
-                                    <div className='space-y-2'>
+                                {({ field }, dependentValues, isLoading, styles) => (
+                                    <div className={cn('space-y-2', styles?.field?.wrapper as string)}>
                                         {isLoading ? (
                                             <div className='text-blue-500 dark:text-blue-400'>{t('form.loading')}</div>
                                         ) : (

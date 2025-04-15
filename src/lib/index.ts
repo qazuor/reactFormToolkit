@@ -6,6 +6,7 @@ export * from '@/lib/utils';
 export * from '@/lib/i18n';
 export * from '@/lib/styles';
 export * from '@/lib/ui-library';
+export * from '@/lib/styleUtils';
 
 // Re-export defaultStyles directly
 export { defaultStyles };

@@ -5,7 +5,7 @@ import type { ReactElement, RefObject } from 'react';
 import type { FieldValues } from 'react-hook-form';
 import type { DescriptionOptions } from './description';
 import type { ErrorDisplayOptions, Form } from './form';
-import type { ComponentStyleOptions } from './styles';
+import type { ComponentStyleOptions, FormProviderStyleOptions } from './styles';
 
 /**
  * Props for the FieldInput component
@@ -247,7 +247,8 @@ export interface FormFieldProps {
                   };
               },
               dependentValues?: Array<{ value: string; label: string }>,
-              isLoading?: boolean
+              isLoading?: boolean,
+              styleOptions?: FormProviderStyleOptions
           ) => ReactNode);
 
     /**
@@ -348,7 +349,8 @@ export interface FormFieldRendererProps {
                   };
               },
               dependentValues?: Array<{ value: string; label: string }>,
-              isLoading?: boolean
+              isLoading?: boolean,
+              styleOptions?: FormProviderStyleOptions
           ) => ReactNode);
 
     /**
