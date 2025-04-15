@@ -1,5 +1,4 @@
-import type { UILibraryOptions } from '@/types';
-import type { FormProviderStyleOptions } from '@/types/styles';
+import type { FormProviderStyleOptions, UILibraryOptions } from '@/types';
 import { defaultStyles } from './styles';
 
 /**

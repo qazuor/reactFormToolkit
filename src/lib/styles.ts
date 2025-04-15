@@ -1,4 +1,4 @@
-import type { FormProviderStyleOptions } from '@/types/styles';
+import type { FormProviderStyleOptions } from '@/types';
 import { cn } from './utils';
 
 /**

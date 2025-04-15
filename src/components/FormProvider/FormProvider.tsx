@@ -2,7 +2,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { FormContext, useAsyncValidationState } from '@/context/FormContext';
 import { useQRFTTranslation } from '@/hooks';
 import { defaultStyles, hasAsyncErrors, hasPendingValidations, i18nUtils, mergeStyles } from '@/lib';
-import type { FormProviderProps, FormSchema } from '@/types/form';
+import type { FormProviderProps, FormSchema } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from 'i18next';
 import { type JSX, useCallback, useEffect, useMemo, useRef, useState } from 'react';
