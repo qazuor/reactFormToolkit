@@ -40,6 +40,34 @@ function MyForm() {
 
 ## Features
 
+### Render Function Children
+
+You can use a render function as children to have more control over the field rendering:
+
+```tsx
+<FormField name="state" label="State">
+  {({ field }, dependentValues, styleOptions, fieldState) => (
+    <select
+      value={field.value}
+      onChange={(e) => field.onChange(e.target.value)}
+      className={cn(
+        styleProps.styles.select,
+        fieldState?.isValid && styleProps.styles.isValid,
+        fieldState?.isInvalid && styleProps.styles.isInvalid
+      )}
+    >
+      {/* Options */}
+    </select>
+  )}
+</FormField>
+```
+
+The render function receives:
+- `field`: The field props (value, onChange, onBlur)
+- `dependentValues`: Array of options (when used with DependantField)
+- `styleOptions`: Style information with all form and field properties
+- `fieldState`: Field state information
+
 ### Labels and Descriptions
 
 ```tsx
