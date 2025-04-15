@@ -65,11 +65,11 @@ export function useDependantField<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
-    dependsOnField,
-    dependentField,
-    dependentValuesCallback,
-    loadingDelay = 300,
-    cacheResults = true
+    dependsOnField = '' as TName,
+    dependentField = '',
+    dependentValuesCallback = () => Promise.resolve([]),
+    loadingDelay = 300 as number,
+    cacheResults = true as boolean
 }: Omit<UseDependantFieldOptions<TFieldValues, TName>, 'form'>) {
     const [dependentValues, setDependentValues] = useState<DependentOption[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);

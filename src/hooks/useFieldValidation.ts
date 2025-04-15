@@ -131,9 +131,9 @@ export function useFieldValidation({
 
     // Build state classes based on validation state
     const stateClasses = cn({
-        [(mergedStyles.field?.isInvalid as string) || '']: shouldApplyStyles && validationState.hasError,
-        [(mergedStyles.field?.isValid as string) || '']: shouldApplyStyles && !validationState.hasError,
-        [(mergedStyles.field?.isLoading as string) || '']: shouldApplyStyles && validationState.isValidating
+        [(mergedStyles.field?.isInvalid as string) || '']: shouldApplyStyles ? validationState.hasError : false,
+        [(mergedStyles.field?.isValid as string) || '']: shouldApplyStyles ? !validationState.hasError : false,
+        [(mergedStyles.field?.isLoading as string) || '']: shouldApplyStyles ? validationState.isValidating : false
     });
 
     return {

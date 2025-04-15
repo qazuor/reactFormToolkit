@@ -32,7 +32,7 @@ export function getUiLibraryCompatibleStyles(
             select: undefined,
             textarea: undefined,
             checkbox: undefined,
-            // Keep validation state styles for error/description elements
+            // Remove validation state styles for inputs
             isValid: undefined,
             isInvalid: undefined,
             isValidating: undefined,

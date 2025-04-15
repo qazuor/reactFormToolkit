@@ -38,7 +38,8 @@ export function useFieldStyles(): UseFieldStylesReturn {
             [(mergedStyles?.field?.isLoading as string) || '']: validationState.isValidating
         });
 
-        return cn(baseClasses, stateClasses);
+        // Always include the base class in the result
+        return cn('default-input-class', baseClasses, stateClasses);
     };
 
     return {

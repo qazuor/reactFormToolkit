@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import type { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 
 interface UseFieldPropsParams<T extends FieldValues> {
@@ -24,11 +25,14 @@ export function useFieldProps<T extends FieldValues>({
     ariaDescribedBy,
     childProps
 }: UseFieldPropsParams<T>) {
+    // Merge the child's className with the parent className
+    const mergedClassName = cn(className, childProps.className || '');
+
     return {
         ...childProps,
         ...field,
         ...(isCheckbox ? { checked: !!field.value } : {}),
-        className,
+        className: mergedClassName,
         value: isCheckbox ? field.value : (field.value ?? ''),
         id: fieldPath,
         'data-testid': fieldPath,
