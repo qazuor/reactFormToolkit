@@ -31,8 +31,7 @@ export const FieldErrorRenderer = memo(function FieldErrorRenderer({
     className,
     iconClassName,
     positionClass,
-    showTooltip = false,
-    inputRef = undefined
+    showTooltip = false
 }: FieldErrorRendererProps): JSX.Element {
     const { styleOptions } = useFormContext();
 

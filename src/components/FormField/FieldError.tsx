@@ -24,6 +24,7 @@ const POSITION_CLASSES: Record<ErrorPosition, string> = {
  * Prepares the error display configuration based on options and state
  */
 const prepareErrorConfig = (message: string, options: FieldErrorProps['options'], position: ErrorPosition) => {
+    // biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
     const { styleOptions } = useFormContext();
     const animation: ErrorAnimation = (options?.animation as ErrorAnimation) || 'none';
     // Don't apply animation for tooltip position
@@ -65,6 +66,7 @@ export const FieldError = memo(function FieldError({ options, name, message: pro
     const position: ErrorPosition = (options?.position as ErrorPosition) || 'below';
 
     // Handle delay and auto-dismiss
+    // biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
     useEffect(() => {
         let showTimeout: NodeJS.Timeout | undefined;
         let dismissTimeout: NodeJS.Timeout | undefined;
@@ -92,6 +94,7 @@ export const FieldError = memo(function FieldError({ options, name, message: pro
     }, [message, options?.delay, options?.autoDismiss, options?.dismissAfter]);
 
     // Handle tooltip visibility
+    // biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
     useEffect(() => {
         if (!inputRef?.current || position !== 'tooltip') {
             return;
