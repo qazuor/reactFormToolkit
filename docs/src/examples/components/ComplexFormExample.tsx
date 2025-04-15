@@ -48,25 +48,10 @@ const checkProjectName = async (name: string): Promise<boolean> => {
     return !['test', 'demo', 'example'].includes(name.toLowerCase());
 };
 
-const customStyles = {
-    field: {
-        wrapper: 'space-y-2',
-        label: 'font-semibold text-gray-700',
-        input: 'w-full rounded-lg border-2 border-gray-200 p-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-200',
-        select: 'w-full rounded-lg border-2 border-gray-200 p-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-200',
-        description: 'text-sm text-gray-600',
-        error: 'text-red-600 text-sm flex items-center gap-2',
-        isValid: 'border-green-500 bg-green-50',
-        isInvalid: 'border-red-500 bg-red-50',
-        isValidating: 'border-yellow-500 bg-yellow-50'
-    }
-};
-
 export function ComplexFormExample({ setResult }: ComplexFormProps) {
     const { t } = useTranslation();
 
     const handleSubmit = async (data: z.infer<typeof schema>) => {
-        console.log('Form submitted:', data);
         setResult(data);
     };
 
@@ -74,7 +59,6 @@ export function ComplexFormExample({ setResult }: ComplexFormProps) {
         <FormProvider
             schema={schema}
             onSubmit={handleSubmit}
-            styleOptions={customStyles}
             errorDisplayOptions={{
                 position: 'below',
                 animation: 'fadeIn',
@@ -93,12 +77,7 @@ export function ComplexFormExample({ setResult }: ComplexFormProps) {
                 ]
             }}
         >
-            <FormDescription
-                position='above'
-                className='rounded-lg bg-blue-50 p-4'
-            >
-                {t('form.complexFormdescription')}
-            </FormDescription>
+            <FormDescription position='above'>{t('form.complexFormdescription')}</FormDescription>
             <div className='space-y-8'>
                 {/* Basic Project Info */}
                 <div className='rounded-lg border bg-gray-50 p-6'>

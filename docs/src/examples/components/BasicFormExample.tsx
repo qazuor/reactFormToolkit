@@ -23,12 +23,7 @@ export function BasicFormExample({ setResult }: BasicFormProps) {
             schema={schema}
             onSubmit={handleSubmit}
         >
-            <FormDescription
-                position='above'
-                className='rounded-lg bg-blue-50 p-4'
-            >
-                {t('form.description')}
-            </FormDescription>
+            <FormDescription position='above'>{t('form.description')}</FormDescription>
             <div className='space-y-6'>
                 <FormField
                     name='email'
