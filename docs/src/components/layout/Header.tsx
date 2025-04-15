@@ -90,7 +90,9 @@ export function Header({ searchQuery, setSearchQuery, sidebarWidth, sidebarDocs 
                                         <Button
                                             variant='ghost'
                                             size='icon'
-                                            onClick={toggleTheme}
+                                            onClick={() => {
+                                                toggleTheme();
+                                            }}
                                             className='text-foreground'
                                         >
                                             {theme === 'light' ? (
@@ -107,7 +109,7 @@ export function Header({ searchQuery, setSearchQuery, sidebarWidth, sidebarDocs 
                 </div>
                 <Link
                     to='/'
-                    className='flex flex-shrink-1 items-center gap-4 mr-20'
+                    className='mr-20 flex flex-shrink-1 items-center gap-4'
                 >
                     <img
                         className={cn('w-48', theme === 'dark' ? 'hidden' : 'inline-block')}
@@ -134,7 +136,7 @@ export function Header({ searchQuery, setSearchQuery, sidebarWidth, sidebarDocs 
                     isActiveUseFullPath={false}
                     isAList={false}
                 />
-                <div className='w-full'></div>
+                <div className='w-full' />
                 <div className='flex items-center gap-2 md:gap-4'>
                     <Popover>
                         <PopoverTrigger asChild={true}>
@@ -178,7 +180,9 @@ export function Header({ searchQuery, setSearchQuery, sidebarWidth, sidebarDocs 
                     <Button
                         variant='ghost'
                         size='icon'
-                        onClick={toggleTheme}
+                        onClick={() => {
+                            toggleTheme();
+                        }}
                         className='hidden text-foreground sm:flex'
                     >
                         {theme === 'light' ? <Moon className='h-5 w-5' /> : <Sun className='h-5 w-5' />}

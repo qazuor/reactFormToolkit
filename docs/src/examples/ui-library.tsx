@@ -1,6 +1,8 @@
 import { ExampleViewer } from '@/components/ExampleViewer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { type Theme, useTheme } from '@/hooks/useTheme';
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChakraUIExample } from './components/uilibraries/ChakraUIExample';
 import chakraUICode from './components/uilibraries/ChakraUIExample.tsx?raw';
@@ -15,6 +17,31 @@ export function UILibrary() {
     const [materialResult, setMaterialResult] = useState<Record<string, unknown> | null>(null);
     const [chakraResult, setChakraResult] = useState<Record<string, unknown> | null>(null);
     const [activeTab, setActiveTab] = useState('shadcn');
+    const { theme } = useTheme();
+    const [currentTheme, setCurrentTheme] = useState(theme);
+
+    // Listen for theme changes using a window event listener
+    useEffect(() => {
+        // Set initial theme
+        setCurrentTheme(theme);
+
+        // Create a handler for theme changes
+        const handleThemeChange = () => {
+            // Get the current theme from localStorage to ensure we have the latest value
+            const storedTheme = localStorage.getItem('app-theme');
+            if (storedTheme === 'light' || storedTheme === 'dark') {
+                setCurrentTheme(storedTheme as Theme);
+            }
+        };
+
+        // Add event listener for theme changes
+        window.addEventListener('themeChange', handleThemeChange);
+
+        // Clean up event listener
+        return () => {
+            window.removeEventListener('themeChange', handleThemeChange);
+        };
+    }, []);
 
     const getActiveResult = () => {
         switch (activeTab) {
@@ -45,8 +72,12 @@ export function UILibrary() {
     return (
         <div className='space-y-6'>
             <div>
-                <h2 className='mb-2 font-bold text-2xl'>{t('form.uiLibrary.title')}</h2>
-                <p className='text-gray-600'>{t('form.uiLibrary.description')}</p>
+                <h2 className='mb-2 font-bold text-2xl'>
+                    {t('form.uiLibrary.title')} ({currentTheme === 'dark' ? 'Dark Mode' : 'Light Mode'})
+                </h2>
+                <p className={`${currentTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+                    {t('form.uiLibrary.description')}
+                </p>
             </div>
 
             <Tabs
@@ -67,7 +98,12 @@ export function UILibrary() {
                     <ExampleViewer
                         title={`${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} UI Example`}
                         description=''
-                        example={<ShadcnUIExample setResult={setShadcnResult} />}
+                        example={
+                            <ShadcnUIExample
+                                setResult={setShadcnResult}
+                                currentTheme={currentTheme}
+                            />
+                        }
                         code={getActiveCode()}
                         result={getActiveResult()}
                     />
@@ -80,7 +116,12 @@ export function UILibrary() {
                     <ExampleViewer
                         title={`${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} UI Example`}
                         description=''
-                        example={<MaterialUIExample setResult={setMaterialResult} />}
+                        example={
+                            <MaterialUIExample
+                                setResult={setMaterialResult}
+                                currentTheme={currentTheme}
+                            />
+                        }
                         code={getActiveCode()}
                         result={getActiveResult()}
                     />
@@ -93,7 +134,12 @@ export function UILibrary() {
                     <ExampleViewer
                         title={`${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} UI Example`}
                         description=''
-                        example={<ChakraUIExample setResult={setChakraResult} />}
+                        example={
+                            <ChakraUIExample
+                                setResult={setChakraResult}
+                                currentTheme={currentTheme}
+                            />
+                        }
                         code={getActiveCode()}
                         result={getActiveResult()}
                     />

@@ -1,9 +1,10 @@
 import { FormButtonsBar, FormField, FormProvider } from '@qazuor/react-form-toolkit';
 import { z } from 'zod';
 
-// Importes de Chakra:
+// Imports from Chakra:
 import {
     Box,
+    ChakraProvider,
     Checkbox,
     FormControl,
     FormLabel,
@@ -25,7 +26,8 @@ import {
     SliderTrack,
     Stack,
     Switch,
-    Textarea
+    Textarea,
+    extendTheme
 } from '@chakra-ui/react';
 
 const schema = z.object({
@@ -43,291 +45,327 @@ const schema = z.object({
 
 interface ChakraUIExampleProps {
     setResult: (data: Record<string, unknown> | null) => void;
+    currentTheme?: string;
 }
 
-export function ChakraUIExample({ setResult }: ChakraUIExampleProps) {
+export function ChakraUIExample({ setResult, currentTheme }: ChakraUIExampleProps) {
     const handleSubmit = (data: z.infer<typeof schema>) => {
         setResult(data);
     };
 
+    // Get the current theme from the documentation site
+    // Use the passed currentTheme prop instead of directly accessing the theme
+    const themeToUse = currentTheme || 'light';
+
+    // Create a Chakra UI theme that matches the site theme
+    const chakraTheme = extendTheme({
+        config: {
+            initialColorMode: themeToUse === 'dark' ? 'dark' : 'light',
+            useSystemColorMode: false
+        },
+        colors: {
+            brand: {
+                500: themeToUse === 'dark' ? '#4493f8' : '#0969da'
+            }
+        },
+        styles: {
+            global: (props: any) => ({
+                body: {
+                    bg: themeToUse === 'dark' ? '#0d1117' : '#ffffff',
+                    color: themeToUse === 'dark' ? '#f0f6fc' : '#1f2328'
+                }
+            })
+        }
+    });
+
     return (
-        <Box
-            maxW='600px'
-            mx='auto'
-            mt='6'
-        >
-            <Heading
-                as='h2'
-                size='lg'
-                mb='4'
+        <ChakraProvider theme={chakraTheme}>
+            <Box
+                maxW='600px'
+                mx='auto'
+                mt='6'
             >
-                Chakra UI
-            </Heading>
-
-            <FormProvider
-                schema={schema}
-                onSubmit={handleSubmit}
-                defaultValues={{
-                    name: '',
-                    color: ['green'],
-                    quantity: 0,
-                    file: null,
-                    pin: '',
-                    role: '',
-                    experience: '',
-                    sliderValue: 50,
-                    newsletter: false,
-                    comment: ''
-                }}
-                uiLibrary={{ enabled: true, name: 'chakra' }}
-            >
-                {/* Text Input */}
-                <FormField
-                    name='name'
-                    label='Name'
-                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
-                    required={true}
+                <Heading
+                    as='h2'
+                    size='lg'
+                    mb='4'
                 >
-                    <Input
-                        variant='flushed'
-                        placeholder='Enter your name'
-                    />
-                </FormField>
+                    Chakra UI
+                </Heading>
 
-                {/* Checkbox */}
-                <FormField
-                    name='newsletter'
-                    label='Newsletter'
-                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
-                >
-                    {({ field }) => (
-                        <FormControl
-                            display='flex'
-                            alignItems='center'
-                        >
-                            <FormLabel mb='0'>Subscribe to newsletter?</FormLabel>
-                            <Checkbox
-                                isChecked={!!field.value}
-                                onChange={(e) => field.onChange(e.target.checked)}
-                            />
-                        </FormControl>
-                    )}
-                </FormField>
-
-                {/* Checkbox Group */}
-                <FormField
-                    name='color'
-                    label='Color'
-                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
-                >
-                    {({ field }: { field: { value: unknown; onChange: (value: string[]) => void } }) => {
-                        const handledChange = (value: string): void => {
-                            const newValue = [...(field.value as string[])];
-                            if ((field.value as string[]).includes(value)) {
-                                newValue.splice(newValue.indexOf(value), 1);
-                            } else {
-                                newValue.push(value);
-                            }
-                            field.onChange(newValue);
-                        };
-                        return (
-                            <Stack
-                                spacing={5}
-                                direction='row'
-                            >
-                                <Checkbox
-                                    isChecked={(field.value as string[]).includes('red')}
-                                    onChange={() => handledChange('red')}
-                                    colorScheme='red'
-                                    defaultChecked={true}
-                                >
-                                    Red
-                                </Checkbox>
-                                <Checkbox
-                                    isChecked={(field.value as string[]).includes('green')}
-                                    onChange={() => handledChange('green')}
-                                    colorScheme='green'
-                                    defaultChecked={true}
-                                >
-                                    Green
-                                </Checkbox>
-                                <Checkbox
-                                    isChecked={(field.value as string[]).includes('blue')}
-                                    onChange={() => handledChange('blue')}
-                                    colorScheme='blue'
-                                    defaultChecked={true}
-                                >
-                                    Blue
-                                </Checkbox>
-                            </Stack>
-                        );
+                <FormProvider
+                    schema={schema}
+                    onSubmit={handleSubmit}
+                    defaultValues={{
+                        name: '',
+                        color: ['green'],
+                        quantity: 0,
+                        file: null,
+                        pin: '',
+                        role: '',
+                        experience: '',
+                        sliderValue: 50,
+                        newsletter: false,
+                        comment: ''
                     }}
-                </FormField>
-
-                {/* NumberInput */}
-                <FormField
-                    name='quantity'
-                    label='Quantity'
-                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                    uiLibrary={{ enabled: true, name: 'chakra' }}
                 >
-                    {({ field }: { field: { value: unknown; onChange: (value: unknown) => void } }) => (
-                        <NumberInput
-                            variant='flushed'
-                            value={typeof field.value === 'number' ? field.value : 0}
-                            onChange={(_valStr, valNum) => {
-                                field.onChange(valNum as unknown);
-                            }}
-                            min={0}
-                            max={100}
-                        >
-                            <NumberInputField />
-                            <NumberInputStepper>
-                                <NumberIncrementStepper />
-                                <NumberDecrementStepper />
-                            </NumberInputStepper>
-                        </NumberInput>
-                    )}
-                </FormField>
-
-                {/* File Upload */}
-                <FormField
-                    name='file'
-                    label='Upload file'
-                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
-                >
-                    {({ field }: { field: { onChange: (value: File | null) => void } }) => (
+                    {/* Text Input */}
+                    <FormField
+                        name='name'
+                        label='Name'
+                        styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                        required={true}
+                    >
                         <Input
                             variant='flushed'
-                            type='file'
-                            onChange={(e) => {
-                                const fileList = e.target.files;
-                                field.onChange(fileList?.[0] || null);
-                            }}
+                            placeholder='Enter your name'
                         />
-                    )}
-                </FormField>
+                    </FormField>
 
-                {/* PinInput */}
-                <FormField
-                    name='pin'
-                    label='Security PIN'
-                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
-                >
-                    {({ field }: { field: { value: unknown; onChange: (value: string) => void } }) => (
-                        <PinInput
-                            value={(field.value as string) || ''}
-                            onChange={(val) => field.onChange(val)}
-                            otp={true}
-                        >
-                            <PinInputField />
-                            <PinInputField />
-                            <PinInputField />
-                            <PinInputField />
-                        </PinInput>
-                    )}
-                </FormField>
+                    {/* Checkbox */}
+                    <FormField
+                        name='newsletter'
+                        label='Newsletter'
+                        styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                    >
+                        {({ field }) => (
+                            <FormControl
+                                display='flex'
+                                alignItems='center'
+                            >
+                                <FormLabel mb='0'>Subscribe to newsletter?</FormLabel>
+                                <Checkbox
+                                    isChecked={!!field.value}
+                                    onChange={(e) => field.onChange(e.target.checked)}
+                                />
+                            </FormControl>
+                        )}
+                    </FormField>
 
-                {/* Select */}
-                <FormField
-                    name='role'
-                    label='Role'
-                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
-                >
-                    {({ field }: { field: { value: unknown; onChange: (value: unknown) => void; onBlur: () => void } }) => (
-                        <Select
-                            variant='flushed'
-                            placeholder='Select a role'
-                            value={(field.value as string) || ''}
-                            onChange={(e) => field.onChange(e.target.value)}
-                            onBlur={field.onBlur}
-                        >
-                            <option value='developer'>Developer</option>
-                            <option value='designer'>Designer</option>
-                            <option value='manager'>Manager</option>
-                        </Select>
-                    )}
-                </FormField>
+                    {/* Checkbox Group */}
+                    <FormField
+                        name='color'
+                        label='Color'
+                        styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                    >
+                        {({ field }: { field: { value: unknown; onChange: (value: string[]) => void } }) => {
+                            const handledChange = (value: string): void => {
+                                const newValue = [...(field.value as string[])];
+                                if ((field.value as string[]).includes(value)) {
+                                    newValue.splice(newValue.indexOf(value), 1);
+                                } else {
+                                    newValue.push(value);
+                                }
+                                field.onChange(newValue);
+                            };
+                            return (
+                                <Stack
+                                    spacing={5}
+                                    direction='row'
+                                >
+                                    <Checkbox
+                                        isChecked={(field.value as string[]).includes('red')}
+                                        onChange={() => handledChange('red')}
+                                        colorScheme='red'
+                                        defaultChecked={true}
+                                    >
+                                        Red
+                                    </Checkbox>
+                                    <Checkbox
+                                        isChecked={(field.value as string[]).includes('green')}
+                                        onChange={() => handledChange('green')}
+                                        colorScheme='green'
+                                        defaultChecked={true}
+                                    >
+                                        Green
+                                    </Checkbox>
+                                    <Checkbox
+                                        isChecked={(field.value as string[]).includes('blue')}
+                                        onChange={() => handledChange('blue')}
+                                        colorScheme='blue'
+                                        defaultChecked={true}
+                                    >
+                                        Blue
+                                    </Checkbox>
+                                </Stack>
+                            );
+                        }}
+                    </FormField>
 
-                {/* RadioGroup */}
-                <FormField
-                    name='experience'
-                    label='Experience Level'
-                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
-                >
-                    {({ field }: { field: { value: unknown; onChange: (value: unknown) => void; onBlur: () => void } }) => (
-                        <RadioGroup
-                            value={(field.value as string) || ''}
-                            onChange={(val) => field.onChange(val)}
-                        >
-                            <Stack direction='row'>
-                                <Radio value='beginner'>Beginner</Radio>
-                                <Radio value='intermediate'>Intermediate</Radio>
-                                <Radio value='expert'>Expert</Radio>
-                            </Stack>
-                        </RadioGroup>
-                    )}
-                </FormField>
-
-                {/* Slider */}
-                <FormField
-                    name='sliderValue'
-                    label='Volume'
-                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
-                >
-                    {({ field }: { field: { value: unknown; onChange: (value: number) => void; onBlur: () => void } }) => (
-                        <Box>
-                            <Slider
-                                value={typeof field.value === 'number' ? field.value : 50}
-                                onChange={(val) => field.onChange(val)}
-                                onBlur={field.onBlur}
+                    {/* NumberInput */}
+                    <FormField
+                        name='quantity'
+                        label='Quantity'
+                        styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                    >
+                        {({ field }: { field: { value: unknown; onChange: (value: unknown) => void } }) => (
+                            <NumberInput
+                                variant='flushed'
+                                value={typeof field.value === 'number' ? field.value : 0}
+                                onChange={(_valStr, valNum) => {
+                                    field.onChange(valNum as unknown);
+                                }}
                                 min={0}
                                 max={100}
                             >
-                                <SliderTrack>
-                                    <SliderFilledTrack />
-                                </SliderTrack>
-                                <SliderThumb />
-                            </Slider>
-                            <Box mt={2}>Value: {typeof field.value === 'number' ? field.value : 50}</Box>
-                        </Box>
-                    )}
-                </FormField>
+                                <NumberInputField />
+                                <NumberInputStepper>
+                                    <NumberIncrementStepper />
+                                    <NumberDecrementStepper />
+                                </NumberInputStepper>
+                            </NumberInput>
+                        )}
+                    </FormField>
 
-                {/* Switch */}
-                <FormField
-                    name='toogle'
-                    label='Toggled'
-                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
-                >
-                    {({ field }: { field: { value: unknown; onChange: (value: unknown) => void; onBlur: () => void } }) => (
-                        <FormControl
-                            display='flex'
-                            alignItems='center'
-                        >
-                            <FormLabel mb='0'>Toggle Me</FormLabel>
-                            <Switch
-                                isChecked={!!field.value}
-                                onChange={(e) => field.onChange(e.target.checked)}
-                                onBlur={field.onBlur}
+                    {/* File Upload */}
+                    <FormField
+                        name='file'
+                        label='Upload file'
+                        styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                    >
+                        {({ field }: { field: { onChange: (value: File | null) => void } }) => (
+                            <Input
+                                variant='flushed'
+                                type='file'
+                                onChange={(e) => {
+                                    const fileList = e.target.files;
+                                    field.onChange(fileList?.[0] || null);
+                                }}
                             />
-                        </FormControl>
-                    )}
-                </FormField>
+                        )}
+                    </FormField>
 
-                {/* Textarea */}
-                <FormField
-                    name='comment'
-                    label='Comments'
-                    styleOptions={{ wrapper: 'mb-4 pb-4' }}
-                >
-                    <Textarea
-                        variant='flushed'
-                        placeholder='Write your comment...'
-                    />
-                </FormField>
+                    {/* PinInput */}
+                    <FormField
+                        name='pin'
+                        label='Security PIN'
+                        styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                    >
+                        {({ field }: { field: { value: unknown; onChange: (value: string) => void } }) => (
+                            <PinInput
+                                value={(field.value as string) || ''}
+                                onChange={(val) => field.onChange(val)}
+                                otp={true}
+                            >
+                                <PinInputField />
+                                <PinInputField />
+                                <PinInputField />
+                                <PinInputField />
+                            </PinInput>
+                        )}
+                    </FormField>
 
-                <FormButtonsBar />
-            </FormProvider>
-        </Box>
+                    {/* Select */}
+                    <FormField
+                        name='role'
+                        label='Role'
+                        styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                    >
+                        {({
+                            field
+                        }: { field: { value: unknown; onChange: (value: unknown) => void; onBlur: () => void } }) => (
+                            <Select
+                                variant='flushed'
+                                placeholder='Select a role'
+                                value={(field.value as string) || ''}
+                                onChange={(e) => field.onChange(e.target.value)}
+                                onBlur={field.onBlur}
+                            >
+                                <option value='developer'>Developer</option>
+                                <option value='designer'>Designer</option>
+                                <option value='manager'>Manager</option>
+                            </Select>
+                        )}
+                    </FormField>
+
+                    {/* RadioGroup */}
+                    <FormField
+                        name='experience'
+                        label='Experience Level'
+                        styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                    >
+                        {({
+                            field
+                        }: { field: { value: unknown; onChange: (value: unknown) => void; onBlur: () => void } }) => (
+                            <RadioGroup
+                                value={(field.value as string) || ''}
+                                onChange={(val) => field.onChange(val)}
+                            >
+                                <Stack direction='row'>
+                                    <Radio value='beginner'>Beginner</Radio>
+                                    <Radio value='intermediate'>Intermediate</Radio>
+                                    <Radio value='expert'>Expert</Radio>
+                                </Stack>
+                            </RadioGroup>
+                        )}
+                    </FormField>
+
+                    {/* Slider */}
+                    <FormField
+                        name='sliderValue'
+                        label='Volume'
+                        styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                    >
+                        {({
+                            field
+                        }: { field: { value: unknown; onChange: (value: number) => void; onBlur: () => void } }) => (
+                            <Box>
+                                <Slider
+                                    value={typeof field.value === 'number' ? field.value : 50}
+                                    onChange={(val) => field.onChange(val)}
+                                    onBlur={field.onBlur}
+                                    min={0}
+                                    max={100}
+                                >
+                                    <SliderTrack>
+                                        <SliderFilledTrack />
+                                    </SliderTrack>
+                                    <SliderThumb />
+                                </Slider>
+                                <Box mt={2}>Value: {typeof field.value === 'number' ? field.value : 50}</Box>
+                            </Box>
+                        )}
+                    </FormField>
+
+                    {/* Switch */}
+                    <FormField
+                        name='toogle'
+                        label='Toggled'
+                        styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                    >
+                        {({
+                            field
+                        }: { field: { value: unknown; onChange: (value: unknown) => void; onBlur: () => void } }) => (
+                            <FormControl
+                                display='flex'
+                                alignItems='center'
+                            >
+                                <FormLabel mb='0'>Toggle Me</FormLabel>
+                                <Switch
+                                    isChecked={!!field.value}
+                                    onChange={(e) => field.onChange(e.target.checked)}
+                                    onBlur={field.onBlur}
+                                />
+                            </FormControl>
+                        )}
+                    </FormField>
+
+                    {/* Textarea */}
+                    <FormField
+                        name='comment'
+                        label='Comments'
+                        styleOptions={{ wrapper: 'mb-4 pb-4' }}
+                    >
+                        <Textarea
+                            variant='flushed'
+                            placeholder='Write your comment...'
+                        />
+                    </FormField>
+
+                    <FormButtonsBar />
+                </FormProvider>
+            </Box>
+        </ChakraProvider>
     );
 }

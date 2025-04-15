@@ -30,6 +30,7 @@ const schema = z.object({
 
 interface ShadcnUIExampleProps {
     setResult: (data: Record<string, unknown> | null) => void;
+    currentTheme?: string;
 }
 
 const statuses = [
@@ -40,10 +41,17 @@ const statuses = [
     { value: 'canceled', label: 'Canceled' }
 ];
 
-export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
+export function ShadcnUIExample({ setResult, currentTheme }: ShadcnUIExampleProps) {
     const handleSubmit = async (data: z.infer<typeof schema>) => {
         setResult(data);
     };
+
+    // Note: For shadcn/ui, we don't need to create a theme provider
+    // as it already uses the site's theme through Tailwind CSS classes
+    // The dark mode is handled by the 'dark:' prefix in Tailwind classes
+
+    // The theme is automatically applied through the HTML class="dark" attribute
+    // which is managed by the useTheme hook in the documentation site
 
     return (
         <div className='space-y-4'>
@@ -195,9 +203,11 @@ export function ShadcnUIExample({ setResult }: ShadcnUIExampleProps) {
                                     )}
                                 >
                                     <CalendarIcon className='mr-2 h-4 w-4' />
-                                    {field.value && field.value instanceof Date
-                                        ? format(field.value, 'PPP')
-                                        : <span>Pick a date</span>}
+                                    {field.value && field.value instanceof Date ? (
+                                        format(field.value, 'PPP')
+                                    ) : (
+                                        <span>Pick a date</span>
+                                    )}
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className='w-auto p-0'>
