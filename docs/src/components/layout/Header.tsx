@@ -1,10 +1,11 @@
 import { cn } from '@/lib/utils';
 import { Book, ChevronLeft, Code, Github, Menu, Moon, Search, Sun } from 'lucide-react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../hooks/useTheme';
 import { LanguageSelector } from '../LanguageSelector';
-import { MainNakLink } from '../MainNavLink';
+import { MainNavLink } from '../MainNavLink';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
@@ -26,12 +27,24 @@ export function Header({ searchQuery, setSearchQuery, sidebarWidth, sidebarDocs 
     const isHomePath = location.pathname === '/';
     const isDocPath = location.pathname.startsWith('/docs');
     const isExamplePath = location.pathname.startsWith('/examples');
+    const navigate = useNavigate();
+
+    // Function to handle navigation from sidebar
+    const handleSidebarNavigation = (path: string) => {
+        setOpen(false);
+        navigate(path);
+    };
+
+    const [open, setOpen] = useState(false);
 
     return (
         <header className='sticky top-0 z-50 border-b bg-background px-2 py-2 shadow-sm md:px-4 md:py-3'>
             <div className='mx-auto flex w-full items-center justify-between gap-2'>
                 <div className='flex items-center gap-2 md:gap-4'>
-                    <Sheet>
+                    <Sheet
+                        open={open}
+                        onOpenChange={setOpen}
+                    >
                         <SheetTrigger asChild={true}>
                             <Button
                                 size='icon'
@@ -75,6 +88,7 @@ export function Header({ searchQuery, setSearchQuery, sidebarWidth, sidebarDocs 
                                 <Sidebar
                                     docs={sidebarDocs}
                                     width={sidebarWidth}
+                                    onNavigation={handleSidebarNavigation}
                                 />
                             </div>
                             <SheetFooter className='z-1 mt-auto border-t bg-white/40 pt-4 dark:bg-slate-900/40'>
@@ -122,14 +136,14 @@ export function Header({ searchQuery, setSearchQuery, sidebarWidth, sidebarDocs 
                         src='/logo-transparent-dark.png'
                     />
                 </Link>
-                <MainNakLink
+                <MainNavLink
                     path='/docs'
                     text={t('docs.title')}
                     icon={<Book className='h-4 w-4' />}
                     isActiveUseFullPath={false}
                     isAList={false}
                 />
-                <MainNakLink
+                <MainNavLink
                     path='/examples'
                     text={t('examples.title')}
                     icon={<Code className='h-4 w-4' />}
