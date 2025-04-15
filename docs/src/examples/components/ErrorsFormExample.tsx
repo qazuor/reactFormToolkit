@@ -69,13 +69,13 @@ export function ErrorsFormExample({ setResult }: ErrorsFormProps) {
 
     return (
         <div className='space-y-8'>
-            <section className='rounded-lg border bg-gray-50 p-6'>
+            <section className='rounded-lg border bg-gray-50 p-6 dark:bg-gray-800 dark:border-gray-700'>
                 <div className='mb-4 flex items-center justify-between'>
                     <h2 className='font-bold text-xl'>{t('form.errorConfig.title')}</h2>
                     <button
                         type='button'
                         onClick={handleClearConfig}
-                        className='rounded bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300'
+                        className='rounded bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
                     >
                         {t('form.errorConfig.clear')}
                     </button>
@@ -84,13 +84,13 @@ export function ErrorsFormExample({ setResult }: ErrorsFormProps) {
                     <div>
                         <label
                             htmlFor='position'
-                            className='block font-medium text-sm'
+                            className='block font-medium text-sm dark:text-gray-200'
                         >
                             {t('form.errorConfig.position')}
                         </label>
                         <select
                             id='position'
-                            className='mt-1 block w-full rounded-md border p-2'
+                            className='mt-1 block w-full rounded-md border p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200'
                             value={config.position}
                             onChange={(e) => handleConfigChange('position', e.target.value)}
                         >
@@ -108,13 +108,13 @@ export function ErrorsFormExample({ setResult }: ErrorsFormProps) {
                     <div>
                         <label
                             htmlFor='animation'
-                            className='block font-medium text-sm'
+                            className='block font-medium text-sm dark:text-gray-200'
                         >
                             {t('form.errorConfig.animation')}
                         </label>
                         <select
                             id='animation'
-                            className='mt-1 block w-full rounded-md border p-2'
+                            className='mt-1 block w-full rounded-md border p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200'
                             value={config.animation}
                             onChange={(e) => handleConfigChange('animation', e.target.value)}
                         >
@@ -132,14 +132,14 @@ export function ErrorsFormExample({ setResult }: ErrorsFormProps) {
                     <div>
                         <label
                             htmlFor='delay'
-                            className='block font-medium text-sm'
+                            className='block font-medium text-sm dark:text-gray-200'
                         >
                             {t('form.errorConfig.delay')}
                         </label>
                         <input
                             id='delay'
                             type='number'
-                            className='mt-1 block w-full rounded-md border p-2'
+                            className='mt-1 block w-full rounded-md border p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200'
                             value={config.delay}
                             onChange={(e) => handleConfigChange('delay', Number(e.target.value))}
                             min={0}
@@ -148,31 +148,37 @@ export function ErrorsFormExample({ setResult }: ErrorsFormProps) {
                     </div>
 
                     <div className='space-y-2'>
-                        <label className='flex items-center gap-2'>
+                        <label className='flex items-center gap-2 dark:text-gray-200'>
                             <input
                                 type='checkbox'
                                 checked={config.showIcon}
                                 onChange={(e) => handleConfigChange('showIcon', e.target.checked)}
                             />
-                            <span className='font-medium text-sm'>{t('form.errorConfig.showIcon')}</span>
+                            <span className='font-medium text-sm dark:text-gray-200'>
+                                {t('form.errorConfig.showIcon')}
+                            </span>
                         </label>
 
-                        <label className='flex items-center gap-2'>
+                        <label className='flex items-center gap-2 dark:text-gray-200'>
                             <input
                                 type='checkbox'
                                 checked={config.groupErrors}
                                 onChange={(e) => handleConfigChange('groupErrors', e.target.checked)}
                             />
-                            <span className='font-medium text-sm'>{t('form.errorConfig.groupErrors')}</span>
+                            <span className='font-medium text-sm dark:text-gray-200'>
+                                {t('form.errorConfig.groupErrors')}
+                            </span>
                         </label>
 
-                        <label className='flex items-center gap-2'>
+                        <label className='flex items-center gap-2 dark:text-gray-200'>
                             <input
                                 type='checkbox'
                                 checked={config.autoDismiss}
                                 onChange={(e) => handleConfigChange('autoDismiss', e.target.checked)}
                             />
-                            <span className='font-medium text-sm'>{t('form.errorConfig.autoDismiss')}</span>
+                            <span className='font-medium text-sm dark:text-gray-200'>
+                                {t('form.errorConfig.autoDismiss')}
+                            </span>
                         </label>
                     </div>
 
@@ -180,14 +186,14 @@ export function ErrorsFormExample({ setResult }: ErrorsFormProps) {
                         <div>
                             <label
                                 htmlFor='maxErrors'
-                                className='block font-medium text-sm'
+                                className='block font-medium text-sm dark:text-gray-200'
                             >
                                 {t('form.errorConfig.maxErrors')}
                             </label>
                             <input
                                 id='maxErrors'
                                 type='number'
-                                className='mt-1 block w-full rounded-md border p-2'
+                                className='mt-1 block w-full rounded-md border p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200'
                                 value={config.maxErrors}
                                 onChange={(e) => handleConfigChange('maxErrors', Number(e.target.value))}
                                 min={1}
@@ -199,14 +205,14 @@ export function ErrorsFormExample({ setResult }: ErrorsFormProps) {
                         <div>
                             <label
                                 htmlFor='dismissAfter'
-                                className='block font-medium text-sm'
+                                className='block font-medium text-sm dark:text-gray-200'
                             >
                                 {t('form.errorConfig.dismissAfter')}
                             </label>
                             <input
                                 id='dismissAfter'
                                 type='number'
-                                className='mt-1 block w-full rounded-md border p-2'
+                                className='mt-1 block w-full rounded-md border p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200'
                                 value={config.dismissAfter}
                                 onChange={(e) => handleConfigChange('dismissAfter', Number(e.target.value))}
                                 min={1000}
@@ -217,7 +223,7 @@ export function ErrorsFormExample({ setResult }: ErrorsFormProps) {
                 </div>
             </section>
 
-            <section className='rounded-lg border p-6'>
+            <section className='rounded-lg border p-6 dark:border-gray-700'>
                 <h2 className='mb-4 font-bold text-xl'>{t('form.exampleForm.title')}</h2>
                 <FormProvider
                     schema={schema}
@@ -232,7 +238,6 @@ export function ErrorsFormExample({ setResult }: ErrorsFormProps) {
                         >
                             <input
                                 type='text'
-                                className='w-full rounded-md border px-3 py-2'
                                 placeholder={t('form.exampleForm.username.placeholder')}
                             />
                         </FormField>
@@ -243,7 +248,6 @@ export function ErrorsFormExample({ setResult }: ErrorsFormProps) {
                         >
                             <input
                                 type='email'
-                                className='w-full rounded-md border px-3 py-2'
                                 placeholder={t('form.exampleForm.email.placeholder')}
                             />
                         </FormField>
@@ -254,7 +258,6 @@ export function ErrorsFormExample({ setResult }: ErrorsFormProps) {
                         >
                             <input
                                 type='password'
-                                className='w-full rounded-md border px-3 py-2'
                                 placeholder={t('form.exampleForm.password.placeholder')}
                             />
                         </FormField>

@@ -83,7 +83,7 @@ export function FieldArrayExample({ setResult }: FieldArrayProps) {
                 <FormDescription position='above'>Company Organization Structure</FormDescription>
 
                 {/* Company Level */}
-                <div className='rounded-lg border bg-white p-6 shadow-sm'>
+                <div className='rounded-lg border bg-white p-6 shadow-sm dark:bg-gray-800 dark:border-gray-700'>
                     <FormField
                         name='companyName'
                         label='Company Name'
@@ -92,7 +92,6 @@ export function FieldArrayExample({ setResult }: FieldArrayProps) {
                     >
                         <input
                             type='text'
-                            className='w-full rounded-md border px-3 py-2'
                             placeholder='Enter company name'
                         />
                     </FormField>
@@ -105,7 +104,7 @@ export function FieldArrayExample({ setResult }: FieldArrayProps) {
                     maxItems={5}
                     className='space-y-6'
                 >
-                    <div className='rounded-lg border bg-gray-50 p-6'>
+                    <div className='rounded-lg border bg-gray-50 p-6 dark:bg-gray-800 dark:border-gray-700'>
                         <div className='mb-4 space-y-4'>
                             <FormField
                                 name='name'
@@ -114,7 +113,6 @@ export function FieldArrayExample({ setResult }: FieldArrayProps) {
                             >
                                 <input
                                     type='text'
-                                    className='w-full rounded-md border px-3 py-2'
                                     placeholder='Enter department name'
                                 />
                             </FormField>
@@ -126,7 +124,6 @@ export function FieldArrayExample({ setResult }: FieldArrayProps) {
                             >
                                 <input
                                     type='text'
-                                    className='w-full rounded-md border px-3 py-2'
                                     placeholder='Enter manager name'
                                 />
                             </FormField>
@@ -139,7 +136,7 @@ export function FieldArrayExample({ setResult }: FieldArrayProps) {
                             maxItems={10}
                             className='space-y-4'
                         >
-                            <div className='rounded-lg border bg-white p-4'>
+                            <div className='rounded-lg border bg-white p-4 dark:bg-gray-700 dark:border-gray-600'>
                                 <div className='mb-4 space-y-4'>
                                     <FormField
                                         name='name'
@@ -148,7 +145,6 @@ export function FieldArrayExample({ setResult }: FieldArrayProps) {
                                     >
                                         <input
                                             type='text'
-                                            className='w-full rounded-md border px-3 py-2'
                                             placeholder='Enter employee name'
                                         />
                                     </FormField>
@@ -160,7 +156,6 @@ export function FieldArrayExample({ setResult }: FieldArrayProps) {
                                     >
                                         <input
                                             type='email'
-                                            className='w-full rounded-md border px-3 py-2'
                                             placeholder='Enter employee email'
                                         />
                                     </FormField>
@@ -173,7 +168,7 @@ export function FieldArrayExample({ setResult }: FieldArrayProps) {
                                     maxItems={5}
                                     className='space-y-2'
                                 >
-                                    <div className='rounded border bg-gray-50 p-4'>
+                                    <div className='rounded border bg-gray-50 p-4 dark:bg-gray-800 dark:border-gray-700'>
                                         <div className='grid gap-4 md:grid-cols-2'>
                                             <FormField
                                                 name='name'
@@ -182,7 +177,6 @@ export function FieldArrayExample({ setResult }: FieldArrayProps) {
                                             >
                                                 <input
                                                     type='text'
-                                                    className='w-full rounded-md border px-3 py-2'
                                                     placeholder='Enter skill name'
                                                 />
                                             </FormField>
@@ -196,7 +190,6 @@ export function FieldArrayExample({ setResult }: FieldArrayProps) {
                                                     type='number'
                                                     min='1'
                                                     max='5'
-                                                    className='w-full rounded-md border px-3 py-2'
                                                 />
                                             </FormField>
                                         </div>

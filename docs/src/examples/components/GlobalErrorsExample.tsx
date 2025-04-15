@@ -52,10 +52,7 @@ export function GlobalErrorsExample({ setResult }: GlobalErrorsProps) {
                 className: 'shadow-lg'
             }}
         >
-            <FormDescription
-                position='above'
-                className='rounded-lg bg-blue-50 p-4'
-            >
+            <FormDescription position='above'>
                 Submit the form multiple times to see different global error scenarios:
                 <ul className='list-disc pt-2 pl-5'>
                     <li>Random API errors will trigger global error messages</li>
@@ -74,7 +71,6 @@ export function GlobalErrorsExample({ setResult }: GlobalErrorsProps) {
                 >
                     <input
                         type='text'
-                        className='w-full rounded-md border px-3 py-2'
                         placeholder='Choose a username'
                     />
                 </FormField>
@@ -87,7 +83,6 @@ export function GlobalErrorsExample({ setResult }: GlobalErrorsProps) {
                 >
                     <input
                         type='email'
-                        className='w-full rounded-md border px-3 py-2'
                         placeholder='Enter your email'
                     />
                 </FormField>

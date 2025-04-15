@@ -55,12 +55,7 @@ export function ValidationFormExample({ setResult }: ValidationFormProps) {
             onSubmit={handleSubmit}
             mode='onChange'
         >
-            <FormDescription
-                position='above'
-                className='rounded-lg bg-blue-50 p-4'
-            >
-                {t('form.validationDescription')}
-            </FormDescription>
+            <FormDescription position='above'>{t('form.validationDescription')}</FormDescription>
 
             <div className='space-y-6'>
                 <FormField
@@ -74,13 +69,12 @@ export function ValidationFormExample({ setResult }: ValidationFormProps) {
                     description={t('form.usernameDescription')}
                     descriptionOptions={{
                         position: 'below',
-                        className: 'text-gray-500'
+                        className: 'text-gray-500 dark:text-gray-400'
                     }}
                     required={true}
                 >
                     <input
                         type='text'
-                        className='w-full rounded-md border px-3 py-2'
                         placeholder={t('form.usernamePlaceholder')}
                     />
                 </FormField>
@@ -97,7 +91,6 @@ export function ValidationFormExample({ setResult }: ValidationFormProps) {
                 >
                     <input
                         type='email'
-                        className='w-full rounded-md border px-3 py-2'
                         placeholder={t('form.emailPlaceholder')}
                     />
                 </FormField>
@@ -113,13 +106,12 @@ export function ValidationFormExample({ setResult }: ValidationFormProps) {
                     description={t('form.passwordDescription')}
                     descriptionOptions={{
                         position: 'below',
-                        className: 'text-gray-500'
+                        className: 'text-gray-500 dark:text-gray-400'
                     }}
                     required={true}
                 >
                     <input
                         type='password'
-                        className='w-full rounded-md border px-3 py-2'
                         placeholder={t('form.passwordPlaceholder')}
                     />
                 </FormField>
@@ -136,7 +128,6 @@ export function ValidationFormExample({ setResult }: ValidationFormProps) {
                 >
                     <input
                         type='password'
-                        className='w-full rounded-md border px-3 py-2'
                         placeholder={t('form.confirmPasswordPlaceholder')}
                     />
                 </FormField>

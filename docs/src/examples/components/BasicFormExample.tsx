@@ -31,7 +31,7 @@ export function BasicFormExample({ setResult }: BasicFormProps) {
                     description={t('form.emailDescription')}
                     descriptionOptions={{
                         position: 'below',
-                        className: 'text-blue-600',
+                        className: 'text-blue-600 dark:text-blue-400',
                         role: 'note'
                     }}
                     tooltip={t('form.emailTooltip')}
@@ -45,7 +45,6 @@ export function BasicFormExample({ setResult }: BasicFormProps) {
                 >
                     <input
                         type='email'
-                        className='w-full rounded-md border px-3 py-2'
                         placeholder={t('form.emailPlaceholder')}
                     />
                 </FormField>
@@ -63,7 +62,6 @@ export function BasicFormExample({ setResult }: BasicFormProps) {
                 >
                     <input
                         type='password'
-                        className='w-full rounded-md border px-3 py-2'
                         placeholder={t('form.passwordPlaceholder')}
                     />
                 </FormField>

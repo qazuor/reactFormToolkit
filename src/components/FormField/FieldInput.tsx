@@ -174,7 +174,7 @@ export const FieldInput = memo(function FieldInput<TFieldValues extends FieldVal
             ...checkboxProps,
             onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChangeHandler(e, field),
             onBlur: (e: React.FocusEvent<HTMLInputElement>) => onBlurHandler(e, field),
-            className: cn(className, childProps.className),
+            className: cn(className, childProps.className || ''),
             id: fieldPath,
             'data-testid': fieldPath,
             'aria-invalid': ariaInvalid,

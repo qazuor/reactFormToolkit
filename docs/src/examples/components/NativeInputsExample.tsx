@@ -60,12 +60,7 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                 avatar: undefined
             }}
         >
-            <FormDescription
-                position='above'
-                className='rounded-lg bg-blue-50 p-4'
-            >
-                {t('form.nativeInputs.description')}
-            </FormDescription>
+            <FormDescription position='above'>{t('form.nativeInputs.description')}</FormDescription>
 
             <div className='space-y-6'>
                 {/* Text input */}
@@ -76,7 +71,6 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                 >
                     <input
                         type='text'
-                        className='w-full rounded-md border px-3 py-2'
                         placeholder={t('form.nativeInputs.namePlaceholder')}
                     />
                 </FormField>
@@ -89,7 +83,6 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                 >
                     <input
                         type='email'
-                        className='w-full rounded-md border px-3 py-2'
                         placeholder={t('form.nativeInputs.emailPlaceholder')}
                     />
                 </FormField>
@@ -101,7 +94,7 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                     required={true}
                 >
                     <textarea
-                        className='h-32 w-full rounded-md border px-3 py-2'
+                        className='h-32'
                         placeholder={t('form.nativeInputs.bioPlaceholder')}
                     />
                 </FormField>
@@ -112,10 +105,7 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                     label={t('form.nativeInputs.birthDate')}
                     required={true}
                 >
-                    <input
-                        type='date'
-                        className='w-full rounded-md border px-3 py-2'
-                    />
+                    <input type='date' />
                 </FormField>
 
                 {/* Select */}
@@ -124,7 +114,7 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                     label={t('form.nativeInputs.country')}
                     required={true}
                 >
-                    <select className='w-full rounded-md border px-3 py-2'>
+                    <select>
                         <option value=''>{t('form.nativeInputs.selectCountry')}</option>
                         <option value='us'>United States</option>
                         <option value='uk'>United Kingdom</option>
@@ -140,7 +130,7 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                 >
                     <select
                         multiple={true}
-                        className='h-32 w-full rounded-md border px-3 py-2'
+                        className='h-32'
                     >
                         <option value='en'>English</option>
                         <option value='es'>Spanish</option>
@@ -155,10 +145,7 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                     label={t('form.nativeInputs.acceptTerms')}
                     required={true}
                 >
-                    <input
-                        type='checkbox'
-                        className='h-4 w-4 rounded border-gray-300'
-                    />
+                    <input type='checkbox' />
                 </FormField>
 
                 {/* Checkbox group */}
@@ -170,7 +157,7 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                     {({
                         field
                     }: { field: { value: unknown; onChange: (value: unknown) => void; onBlur: () => void } }) => (
-                        <div className='space-y-2'>
+                        <div className='space-y-2 dark:text-gray-200'>
                             {['sports', 'music', 'movies', 'books'].map((interest) => {
                                 const value = field.value as string[]; // Explicitly cast to string[]
                                 const checked = value?.includes(interest);
@@ -190,7 +177,6 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                                                     : value.filter((v: string) => v !== interest);
                                                 field.onChange(newValue);
                                             }}
-                                            className='h-4 w-4 rounded border-gray-300'
                                         />
                                         {t(`form.nativeInputs.interests_${interest}`)}
                                     </label>
@@ -209,7 +195,7 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                     {({
                         field
                     }: { field: { value: unknown; onChange: (value: unknown) => void; onBlur: () => void } }) => (
-                        <div className='space-y-2'>
+                        <div className='space-y-2 dark:text-gray-200'>
                             {['male', 'female', 'other', 'prefer_not_to_say'].map((gender) => (
                                 <label
                                     key={gender}
@@ -220,7 +206,6 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                                         value={gender}
                                         checked={(field.value as string) === gender}
                                         onChange={(e) => field.onChange(e.target.value)}
-                                        className='h-4 w-4 border-gray-300'
                                     />
                                     {t(`form.nativeInputs.gender_${gender}`)}
                                 </label>
@@ -237,7 +222,6 @@ export function NativeInputsExample({ setResult }: NativeInputsExampleProps) {
                     <input
                         type='file'
                         accept='image/*'
-                        className='w-full rounded-md border px-3 py-2'
                         onChange={(e) => {
                             const file = e.target.files?.[0];
                             if (file) {

@@ -94,14 +94,14 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
         >
             <FormDescription
                 position='above'
-                className='rounded-lg bg-blue-50 p-4'
+                className='rounded-lg bg-blue-50 p-4 dark:bg-blue-900/30 dark:text-blue-100'
             >
                 {t('form.dependentFieldDescription')}
             </FormDescription>
 
             <div className='space-y-8'>
                 {/* Select-based Dependencies Section */}
-                <div className='rounded-lg border bg-gray-50 p-6'>
+                <div className='rounded-lg border bg-gray-50 p-6 dark:bg-gray-800 dark:border-gray-700'>
                     <h3 className='mb-4 font-bold text-lg'>{t('form.selectBasedDependencies')}</h3>
                     <div className='space-y-6'>
                         <FormField
@@ -110,7 +110,7 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
                             tooltip={t('form.countryTooltip')}
                             required={true}
                         >
-                            <select className='w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500'>
+                            <select>
                                 <option value=''>{t('form.selectCountry')}</option>
                                 <option value='us'>United States</option>
                                 <option value='ca'>Canada</option>
@@ -160,7 +160,7 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
                 </div>
 
                 {/* Radio/Checkbox Dependencies Section */}
-                <div className='rounded-lg border bg-gray-50 p-6'>
+                <div className='rounded-lg border bg-gray-50 p-6 dark:bg-gray-800 dark:border-gray-700'>
                     <h3 className='mb-4 font-bold text-lg'>{t('form.radioCheckboxDependencies')}</h3>
                     <div className='space-y-6'>
                         <FormField
@@ -178,9 +178,8 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
                                             type='radio'
                                             name='category'
                                             value={category}
-                                            className='h-4 w-4 border-gray-300 text-blue-600'
                                         />
-                                        <span className='text-gray-700'>
+                                        <span className='text-gray-700 dark:text-gray-300'>
                                             {category.charAt(0).toUpperCase() + category.slice(1)}
                                         </span>
                                     </label>
@@ -200,7 +199,7 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
                                 {({ field }, dependentValues, isLoading) => (
                                     <div className='space-y-2'>
                                         {isLoading ? (
-                                            <div className='text-blue-500'>{t('form.loading')}</div>
+                                            <div className='text-blue-500 dark:text-blue-400'>{t('form.loading')}</div>
                                         ) : (
                                             dependentValues?.map((subcategory) => (
                                                 <label
@@ -214,9 +213,10 @@ export function DependentFieldsExample({ setResult }: DependentFieldsExampleProp
                                                         checked={field.value === subcategory.value}
                                                         onChange={(e) => field.onChange(e.target.value)}
                                                         onBlur={field.onBlur}
-                                                        className='h-4 w-4 border-gray-300 text-blue-600'
                                                     />
-                                                    <span className='text-gray-700'>{subcategory.label}</span>
+                                                    <span className='text-gray-700 dark:text-gray-300'>
+                                                        {subcategory.label}
+                                                    </span>
                                                 </label>
                                             ))
                                         )}

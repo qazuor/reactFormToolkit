@@ -96,7 +96,7 @@ export function I18nFormExample({ setResult }: I18nFormProps) {
             <button
                 type='button'
                 onClick={toggleLanguage}
-                className='mb-4 rounded-md bg-gray-100 px-3 py-1 text-sm'
+                className='mb-4 rounded-md bg-gray-100 px-3 py-1 text-sm dark:bg-gray-700 dark:text-gray-200'
             >
                 {language === 'en' ? 'Cambiar a Español' : 'Switch to English'}
             </button>
@@ -110,10 +110,7 @@ export function I18nFormExample({ setResult }: I18nFormProps) {
                     i18n
                 }}
             >
-                <FormDescription
-                    position='above'
-                    className='rounded-lg bg-blue-50 p-4'
-                >
+                <FormDescription position='above'>
                     {customTranslations[language]?.form?.title || 'Contact Form'}
                 </FormDescription>
 
@@ -125,7 +122,6 @@ export function I18nFormExample({ setResult }: I18nFormProps) {
                     >
                         <input
                             type='text'
-                            className='w-full rounded-md border px-3 py-2'
                             placeholder={customTranslations[language]?.form?.namePlaceholder || 'Enter your name'}
                         />
                     </FormField>
@@ -137,7 +133,6 @@ export function I18nFormExample({ setResult }: I18nFormProps) {
                     >
                         <input
                             type='email'
-                            className='w-full rounded-md border px-3 py-2'
                             placeholder={customTranslations[language]?.form?.emailPlaceholder || 'Enter your email'}
                         />
                     </FormField>
@@ -148,7 +143,7 @@ export function I18nFormExample({ setResult }: I18nFormProps) {
                         required={true}
                     >
                         <textarea
-                            className='h-32 w-full rounded-md border px-3 py-2'
+                            className='h-32'
                             placeholder={
                                 customTranslations[language]?.form?.messagePlaceholder || 'Your message here...'
                             }

@@ -80,7 +80,7 @@ export function ComplexFormExample({ setResult }: ComplexFormProps) {
             <FormDescription position='above'>{t('form.complexFormdescription')}</FormDescription>
             <div className='space-y-8'>
                 {/* Basic Project Info */}
-                <div className='rounded-lg border bg-gray-50 p-6'>
+                <div className='rounded-lg border bg-gray-50 p-6 dark:bg-gray-800 dark:border-gray-700'>
                     <h3 className='mb-4 font-bold text-lg'>Project Information</h3>
                     <div className='space-y-4'>
                         <FormField
@@ -171,7 +171,7 @@ export function ComplexFormExample({ setResult }: ComplexFormProps) {
                 </div>
 
                 {/* Technology Stack */}
-                <div className='rounded-lg border bg-gray-50 p-6'>
+                <div className='rounded-lg border bg-gray-50 p-6 dark:bg-gray-800 dark:border-gray-700'>
                     <h3 className='mb-4 font-bold text-lg'>Technology Stack</h3>
                     <div className='space-y-4'>
                         <FormField
@@ -179,7 +179,7 @@ export function ComplexFormExample({ setResult }: ComplexFormProps) {
                             label='Primary Language'
                             required={true}
                         >
-                            <select className='w-full rounded-md border px-3 py-2'>
+                            <select>
                                 <option value=''>Select Language</option>
                                 <option value='javascript'>JavaScript</option>
                                 <option value='typescript'>TypeScript</option>
@@ -193,7 +193,7 @@ export function ComplexFormExample({ setResult }: ComplexFormProps) {
                 </div>
 
                 {/* Team Members */}
-                <div className='rounded-lg border bg-gray-50 p-6'>
+                <div className='rounded-lg border bg-gray-50 p-6 dark:bg-gray-800 dark:border-gray-700'>
                     <h3 className='mb-4 font-bold text-lg'>Team Members</h3>
                     <FieldArray
                         name='teamMembers'
@@ -201,7 +201,7 @@ export function ComplexFormExample({ setResult }: ComplexFormProps) {
                         maxItems={5}
                         className='space-y-6'
                     >
-                        <div className='rounded-lg border bg-white p-4'>
+                        <div className='rounded-lg border bg-white p-4 dark:bg-gray-700 dark:border-gray-600'>
                             <div className='mb-4 space-y-4'>
                                 <FormField
                                     name='name'
@@ -226,7 +226,7 @@ export function ComplexFormExample({ setResult }: ComplexFormProps) {
                                 maxItems={5}
                                 className='space-y-4'
                             >
-                                <div className='rounded border bg-gray-50 p-4'>
+                                <div className='rounded border bg-gray-50 p-4 dark:bg-gray-800 dark:border-gray-700'>
                                     <div className='grid gap-4 md:grid-cols-2'>
                                         <FormField
                                             name='name'

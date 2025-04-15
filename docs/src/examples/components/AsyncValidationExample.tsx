@@ -56,10 +56,7 @@ export function AsyncValidationExample({ setResult }: AsyncValidationProps) {
             schema={schema}
             onSubmit={handleSubmit}
         >
-            <FormDescription
-                position='above'
-                className='rounded-lg bg-blue-50 p-4'
-            >
+            <FormDescription position='above'>
                 Try these values to see validation in action:
                 <ul className='list-disc pt-2 pl-5'>
                     <li>Username: admin, root, test</li>
@@ -78,7 +75,6 @@ export function AsyncValidationExample({ setResult }: AsyncValidationProps) {
                     <input
                         autoComplete='off'
                         type='text'
-                        className='w-full rounded-md border px-3 py-2'
                         placeholder='Choose a username'
                     />
                 </FormField>
@@ -106,7 +102,6 @@ export function AsyncValidationExample({ setResult }: AsyncValidationProps) {
                     <input
                         autoComplete='off'
                         type='email'
-                        className='w-full rounded-md border px-3 py-2'
                         placeholder='Enter your email'
                     />
                 </FormField>
