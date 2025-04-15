@@ -1,6 +1,6 @@
 import { useFormContext } from '@/context';
 import { useFieldState } from '@/hooks';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 import type { ErrorAnimation, ErrorPosition, FieldErrorProps } from '@/types';
 import { memo, useEffect, useState } from 'react';
 import { FieldErrorRenderer } from './FieldErrorRenderer';
@@ -21,42 +21,22 @@ const POSITION_CLASSES: Record<ErrorPosition, string> = {
 };
 
 /**
- * Prepares the error display configuration based on options and state
- */
-const prepareErrorConfig = (message: string, options: FieldErrorProps['options'], position: ErrorPosition) => {
-    // biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
-    const { styleOptions } = useFormContext();
-    const animation: ErrorAnimation = (options?.animation as ErrorAnimation) || 'none';
-    // Don't apply animation for tooltip position
-    const shouldAnimate = position !== 'tooltip' && animation !== 'none';
-    const animationClass = shouldAnimate ? ANIMATION_CLASSES[animation as keyof typeof ANIMATION_CLASSES] : '';
-    const showIcon = options?.showIcon ?? true;
-
-    // Get error style from provider or use default
-    const errorClass = styleOptions?.field?.error || 'text-red-600 text-sm';
-
-    return {
-        message,
-        position,
-        animationClass,
-        showIcon,
-        className: cn(errorClass, options?.className),
-        iconClassName: options?.iconClassName
-    };
-};
-
-/**
  * FieldError component for displaying field validation errors
  * @param props - Component properties
  * @returns Field error component or null if no error
  */
 export const FieldError = memo(function FieldError({ options, name, message: propMessage, inputRef }: FieldErrorProps) {
-    const { errorDisplayOptions: providerOptions } = useFormContext();
+    // Get context first to ensure consistent hook order
+    const { errorDisplayOptions: providerOptions, styleOptions } = useFormContext();
     const { error } = useFieldState(name);
-    const message = propMessage || error?.message;
+
+    // Initialize all state variables before any conditional returns
     const [visible, setVisible] = useState(!options?.delay);
     const [dismissed, setDismissed] = useState(false);
     const [showTooltip, setShowTooltip] = useState(true);
+
+    // Get the message after initializing all state
+    const message = propMessage || error?.message;
 
     // Don't show individual errors if using grouped errors
     if (providerOptions?.groupErrors) {
@@ -117,8 +97,24 @@ export const FieldError = memo(function FieldError({ options, name, message: pro
     // Convert message to string to ensure it's never undefined
     const errorMessage = message.toString();
 
-    // Prepare configuration for the renderer
-    const errorConfig = prepareErrorConfig(errorMessage, options, position);
+    // Get animation type from options or default to 'none'
+    const animation: ErrorAnimation = (options?.animation as ErrorAnimation) || 'none';
+
+    // Determine if animation should be applied (not for tooltips and not for 'none' animation)
+    const shouldAnimate = position !== 'tooltip' && animation !== 'none';
+
+    // Get animation class if animation should be applied
+    const animationClass = shouldAnimate ? ANIMATION_CLASSES[animation] : '';
+
+    // Prepare error configuration
+    const errorConfig = {
+        message: errorMessage,
+        position,
+        animationClass,
+        showIcon: options?.showIcon ?? true,
+        className: cn(styleOptions?.field?.error || 'text-red-600 text-sm', options?.className),
+        iconClassName: options?.iconClassName
+    };
 
     if (position === 'tooltip') {
         return (
