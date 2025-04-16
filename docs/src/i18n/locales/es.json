@@ -212,7 +212,12 @@
             "title": "Buscar",
             "description": "Buscar en la documentacion o ejemplos. Precione la tecla Esc para cerrar.",
             "placeholder": "Buscar documentación...",
-            "results": "Resultados"
+            "results": "Resultados",
+            "loading": "Cargando índice de búsqueda...",
+            "noResults": "No se encontraron resultados. Intente con otro término de búsqueda.",
+            "shortcut": "ESC para cerrar",
+            "doc": "Documentación",
+            "example": "Ejemplo"
         },
         "formResults": {
             "submissionResult": "Resultado de Envío del Formulario",

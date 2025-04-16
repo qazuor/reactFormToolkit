@@ -11,21 +11,9 @@ const SIDEBAR_WIDTH = 300;
 export function Layout() {
     const location = useLocation();
     const isHomeRoute = location.pathname === '/';
-    const [searchQuery, setSearchQuery] = useState('');
-    const [searchResults, setSearchResults] = useState<string[]>([]);
-
-    const texts = ['hola', 'chau', 'pepe'];
+    const [searchQuery] = useState('');
 
     const [docs, setDocs] = useState([]);
-
-    useEffect(() => {
-        if (!searchQuery) {
-            setSearchResults([]);
-            return;
-        }
-        const filteredResults = texts.filter((text) => text.includes(searchQuery));
-        setSearchResults(filteredResults);
-    }, [searchQuery]);
 
     useEffect(() => {
         fetch('/docs/docs-index.json')
@@ -40,10 +28,8 @@ export function Layout() {
         <div className='flex min-h-screen flex-col bg-background text-foreground'>
             <Header
                 searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
                 sidebarWidth={SIDEBAR_WIDTH}
                 sidebarDocs={docs}
-                searchResults={searchResults}
             />
             <div className='flex-1'>
                 <div className='hidden md:block'>

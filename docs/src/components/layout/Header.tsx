@@ -1,27 +1,23 @@
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@radix-ui/react-dialog';
 import { ChevronLeft, Github, Menu, Moon, Search, Sun } from 'lucide-react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../hooks/useTheme';
 import { LanguageSelector } from '../LanguageSelector';
+import { SearchDialog } from '../SearchDialog';
 import { Button } from '../ui/button';
-import { DialogHeader } from '../ui/dialog';
-import { Input } from '../ui/input';
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '../ui/sheet';
 import type { Doc } from './DocsSidebar';
 import { Sidebar } from './Sidebar';
 
 interface HeaderProps {
     searchQuery: string;
-    setSearchQuery: (query: string) => void;
     sidebarWidth: number;
     sidebarDocs: Doc[];
-    searchResults: string[];
 }
 
-export function Header({ searchQuery, setSearchQuery, sidebarWidth, sidebarDocs, searchResults }: HeaderProps) {
+export function Header({ searchQuery, sidebarWidth, sidebarDocs }: HeaderProps) {
     const { t } = useTranslation();
     const location = useLocation();
     const { theme, toggleTheme } = useTheme();
@@ -39,8 +35,11 @@ export function Header({ searchQuery, setSearchQuery, sidebarWidth, sidebarDocs,
     };
 
     const [open, setOpen] = useState(false);
+    const [searchDialogOpen, setSearchDialogOpen] = useState(false);
 
-    console.log('searchResults', searchResults);
+    const handleOpenSearchDialog = useCallback(() => {
+        setSearchDialogOpen(true);
+    }, []);
 
     return (
         <header className='sticky top-0 z-50 border-b bg-background px-2 py-2 shadow-sm md:px-4 md:py-3'>
@@ -145,72 +144,37 @@ export function Header({ searchQuery, setSearchQuery, sidebarWidth, sidebarDocs,
                 </Link>
                 <div className='w-full' />
                 <div className='flex items-center gap-2 md:gap-4'>
-                    <Dialog>
-                        <DialogTrigger>
-                            <Button
-                                variant='ghost'
-                                size='icon'
-                                className='sm:hidden'
-                            >
-                                <Search className='h-5 w-5' />
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent className='-mt-5 absolute top-[50%] right-5 left-5 z-50 max-w-md rounded-lg bg-slate-300 p-4 shadow-lg dark:bg-slate-800'>
-                            <DialogHeader>
-                                <DialogTitle>{t('search.title')}</DialogTitle>
-                                <DialogDescription className='text-muted-foreground text-sm'>
-                                    {t('search.description')}
-                                </DialogDescription>
-                            </DialogHeader>
-                            <div className='relative mt-5'>
-                                <Search className='-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 text-muted-foreground' />
-                                <Input
-                                    type='text'
-                                    placeholder={t('search.placeholder')}
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    className='w-full pl-9'
-                                />
-                            </div>
-                            {searchResults.length > 0 && (
-                                <div className='relative mt-5'>
-                                    {t('search.results')}
-                                    <ul>
-                                        {searchResults.map((result) => (
-                                            <li key={result}>{result}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
-                        </DialogContent>
-                    </Dialog>
+                    <Button
+                        variant='ghost'
+                        size='icon'
+                        onClick={handleOpenSearchDialog}
+                        className='sm:hidden'
+                    >
+                        <Search className='h-5 w-5' />
+                    </Button>
+
                     <div className='relative hidden sm:block'>
-                        <Search className='-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 text-muted-foreground' />
-                        <Input
-                            type='text'
-                            placeholder={t('search.placeholder')}
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className='w-[150px] pl-9 md:w-[200px]'
-                        />
-                        <Dialog open={searchResults.length > 0}>
-                            <DialogContent className='absolute top-10 left-0 z-50 w-[200px] rounded-lg bg-slate-300 p-4 pt-0 shadow-lg dark:bg-slate-800'>
-                                <DialogHeader>
-                                    <DialogTitle>{t('search.results')}</DialogTitle>
-                                </DialogHeader>
-                                <div className='relative mt-5'>
-                                    <ul>
-                                        {searchResults.map((result) => (
-                                            <li key={result}>{result}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </DialogContent>
-                        </Dialog>
+                        <Button
+                            variant='outline'
+                            onClick={handleOpenSearchDialog}
+                            className='w-[200px] justify-start text-muted-foreground md:w-[260px]'
+                        >
+                            <Search className='mr-2 h-4 w-4' />
+                            <span>{t('search.placeholder')}</span>
+                            <kbd className='pointer-events-none absolute right-3 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-medium font-mono text-[10px] opacity-100 sm:flex'>
+                                <span className='text-xs'>⌘</span>K
+                            </kbd>
+                        </Button>
                     </div>
 
+                    <SearchDialog
+                        open={searchDialogOpen}
+                        onOpenChange={setSearchDialogOpen}
+                        initialQuery={searchQuery}
+                    />
+
                     <div>
-                        <div className='flex items-center gap-2 border md:hidden'>
+                        <div className='flex items-center gap-2 md:hidden'>
                             <LanguageSelector />
                             <Button
                                 variant='ghost'

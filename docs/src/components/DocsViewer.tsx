@@ -90,7 +90,7 @@ export const DocsViewer: FC = () => {
                                         }
                                     ]
                                 };
-                                if (toc && toc.children) {
+                                if (toc?.children) {
                                     toc.children.unshift(title);
                                 }
                                 return toc;
