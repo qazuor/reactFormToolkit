@@ -1,7 +1,7 @@
 import toc from '@jsdevtools/rehype-toc';
 import { type FC, useEffect, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeRaw from 'rehype-raw';
 import rehypeSlug from 'rehype-slug';
@@ -11,6 +11,7 @@ import { remarkAlert } from 'remark-github-blockquote-alert';
 import remarkHeadingGap from 'remark-heading-gap';
 import 'remark-github-blockquote-alert/alert.css';
 import i18n from '@/i18n';
+import { markdownComponents } from '@/lib/markdown-components';
 import rehypeScrollToTop from '@benjc/rehype-scroll-to-top';
 import { useTranslation } from 'react-i18next';
 import rehypePrism from 'rehype-prism-plus';
@@ -34,6 +35,35 @@ export const DocsViewer: FC<DocsViewerProps> = ({ docFile, useTOC = true }) => {
     const contentRef = useRef<HTMLDivElement>(null);
     const [content, setContent] = useState<string>(t('docViewer.loading'));
     const currentLang = i18n.language;
+
+    // Custom components for Markdown rendering
+    const components = {
+        a: ({ href, children, ...props }) => {
+            // Check if the link is internal (starts with / but not with // for external links)
+            if (href && href.startsWith('/') && !href.startsWith('//')) {
+                return (
+                    <Link
+                        to={href}
+                        {...props}
+                    >
+                        {children}
+                    </Link>
+                );
+            }
+
+            // External links
+            return (
+                <a
+                    href={href}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    {...props}
+                >
+                    {children}
+                </a>
+            );
+        }
+    };
 
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
@@ -120,6 +150,7 @@ export const DocsViewer: FC<DocsViewerProps> = ({ docFile, useTOC = true }) => {
             className='markdown-body relative bg-white px-4 py-6 text-black dark:bg-zinc-900 dark:text-zinc-100'
         >
             <Markdown
+                components={markdownComponents}
                 remarkPlugins={[remarkGfm, remarkAlert, remarkBreaks, remarkHeadingGap]}
                 rehypePlugins={[
                     rehypeRaw,

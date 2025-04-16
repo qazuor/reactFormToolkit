@@ -1,8 +1,14 @@
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function ExamplesHome() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
+
+    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+        e.preventDefault();
+        navigate(path);
+    };
 
     return (
         <div className='markdown-body relative bg-white px-4 py-6 text-black dark:bg-zinc-900 dark:text-zinc-100'>
