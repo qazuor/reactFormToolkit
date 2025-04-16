@@ -11,7 +11,7 @@
 
 Una biblioteca completa de gestión de formularios React construida con React Hook Form y Zod.
 
-> [!PRECAUCIÓN]
+> [!CAUTION]
 > **Versión Beta**: Este paquete está actualmente en beta. Aunque es estable para la mayoría de los casos de uso, podría haber cambios importantes en futuras versiones.
 
 ## Características
@@ -43,7 +43,7 @@ pnpm add @qazuor/react-form-toolkit react-hook-form @hookform/resolvers zod
 
 #### En tu archivo CSS principal
 
-> [!IMPORTANTE]
+> [!IMPORTANT]
 > Sin esto, tu CSS de Tailwind eliminará las clases necesarias y no estilizará el formulario.
 
 ```scss
