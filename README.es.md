@@ -1,10 +1,13 @@
 # Qazuor React Form Toolkit
 
-[![npm version](https://img.shields.io/npm/v/@qazuor/react-form-toolkit.svg)](https://www.npmjs.com/package/@qazuor/react-form-toolkit)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18.0-blue)](https://reactjs.org/)
-[![Zod](https://img.shields.io/badge/Zod-3.22-blue)](https://github.com/colinhacks/zod)
+<div style="display: flex; flex-wrap: wrap; gap: 5px;">
+  <a href="https://www.npmjs.com/package/@qazuor/react-form-toolkit"><img src="https://img.shields.io/npm/v/@qazuor/react-form-toolkit.svg" alt="npm version" /></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" /></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.0-blue" alt="TypeScript" /></a>
+  <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-18.0-blue" alt="React" /></a>
+  <a href="https://github.com/colinhacks/zod"><img src="https://img.shields.io/badge/Zod-3.22-blue" alt="Zod" /></a>
+  <a href="https://bundlephobia.com/package/@qazuor/react-form-toolkit"><img src="https://img.shields.io/bundlephobia/minzip/@qazuor/react-form-toolkit" alt="Bundle Size" /></a>
+</div>
 
 Una biblioteca completa de gestión de formularios React construida con React Hook Form y Zod.
 
@@ -130,25 +133,27 @@ Para documentación detallada y ejemplos, visita nuestro [sitio de documentació
 
 ## Comparación con Otras Bibliotecas
 
-| Característica | Qazuor React Form Toolkit | React Hook Form | Formik |
-|----------------|-------------------|-----------------|--------|
-| Validación de Esquema | ✅ (Zod) | ❌ (requiere resolver) | ❌ (requiere Yup) |
-| Soporte TypeScript | ✅ | ✅ | ✅ |
-| Componentes UI | ✅ | ❌ | ❌ |
-| Campos Condicionales | ✅ | ❌ | ❌ |
-| Campos Dependientes | ✅ | ❌ | ❌ |
-| Arrays de Campos | ✅ | ✅ | ✅ |
-| Internacionalización | ✅ | ❌ | ❌ |
-| Sistema de Estilos | ✅ | ❌ | ❌ |
+| Característica | Qazuor React Form Toolkit | React Hook Form |
+|----------------|-------------------|-----------------|
+| Validación de Esquema | ✅ (Zod) | ❌ (requiere resolver) |
+| Soporte TypeScript | ✅ | ✅ |
+| Componentes UI | ✅ | ❌ |
+| Campos Condicionales | ✅ | ❌ |
+| Campos Dependientes | ✅ | ❌ |
+| Arrays de Campos | ✅ | ✅ |
+| Internacionalización | ✅ | ❌ |
+| Sistema de Estilos | ✅ | ❌ |
 
-## Hoja de Ruta
+## Características/Cambios Futuros
 
-- [ ] Componente de Asistente de Formulario
-- [ ] Carga de archivos con vista previa
+- [ ] FormLayouts
+- [ ] MultiStepForm
 - [ ] Persistencia de formulario (localStorage, sessionStorage)
-- [ ] Analíticas de formulario
-- [ ] Más integraciones con bibliotecas UI
-- [ ] Integración de validación del lado del servidor
+- [ ] Añadir contexto global para establecer opciones de **Qazuor React Form Toolkit** globalmente en una app (por ejemplo, estilos, traducciones, opciones de visualización de errores)
+- [ ] Mejorar rendimiento
+- [ ] Integrar validación asíncrona con Zod internamente
+- [ ] Características mejoradas de accesibilidad
+
 
 ## Contribuyendo
 

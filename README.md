@@ -1,10 +1,13 @@
 # Qazuor React Form Toolkit
 
-[![npm version](https://img.shields.io/npm/v/@qazuor/react-form-toolkit.svg)](https://www.npmjs.com/package/@qazuor/react-form-toolkit)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18.0-blue)](https://reactjs.org/)
-[![Zod](https://img.shields.io/badge/Zod-3.22-blue)](https://github.com/colinhacks/zod)
+<div style="display: flex; flex-wrap: wrap; gap: 5px;">
+  <a href="https://www.npmjs.com/package/@qazuor/react-form-toolkit"><img src="https://img.shields.io/npm/v/@qazuor/react-form-toolkit.svg" alt="npm version" /></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" /></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.0-blue" alt="TypeScript" /></a>
+  <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-18.0-blue" alt="React" /></a>
+  <a href="https://github.com/colinhacks/zod"><img src="https://img.shields.io/badge/Zod-3.22-blue" alt="Zod" /></a>
+  <a href="https://bundlephobia.com/package/@qazuor/react-form-toolkit"><img src="https://img.shields.io/bundlephobia/minzip/@qazuor/react-form-toolkit" alt="Bundle Size" /></a>
+</div>
 
 A comprehensive React form management library built with React Hook Form and Zod.
 
@@ -130,25 +133,27 @@ For detailed documentation and examples, visit our [documentation site](https://
 
 ## Comparison with Other Libraries
 
-| Feature | Qazuor React Form Toolkit | React Hook Form | Formik |
-|---------|-------------------|-----------------|--------|
-| Schema Validation | ✅ (Zod) | ❌ (requires resolver) | ❌ (requires Yup) |
-| TypeScript Support | ✅ | ✅ | ✅ |
-| UI Components | ✅ | ❌ | ❌ |
-| Conditional Fields | ✅ | ❌ | ❌ |
-| Dependent Fields | ✅ | ❌ | ❌ |
-| Field Arrays | ✅ | ✅ | ✅ |
-| Internationalization | ✅ | ❌ | ❌ |
-| Style System | ✅ | ❌ | ❌ |
+| Feature | Qazuor React Form Toolkit | React Hook Form |
+|---------|-------------------|-----------------|
+| Schema Validation | ✅ (Zod) | ❌ (requires resolver) |
+| TypeScript Support | ✅ | ✅ |
+| UI Components | ✅ | ❌ |
+| Conditional Fields | ✅ | ❌ |
+| Dependent Fields | ✅ | ❌ |
+| Field Arrays | ✅ | ✅ |
+| Internationalization | ✅ | ❌ |
+| Style System | ✅ | ❌ |
 
-## Roadmap
+## Future Features/Changes
 
-- [ ] Form Wizard component
-- [ ] File upload with preview
+- [ ] FormLayouts
+- [ ] MultiStepForm
 - [ ] Form persistence (localStorage, sessionStorage)
-- [ ] Form analytics
-- [ ] More UI library integrations
-- [ ] Server-side validation integration
+- [ ] Add global context to set **Qazuor React Form Toolkit** options globally in an app (e.g., styling, translations, error display options)
+- [ ] Improve performance
+- [ ] Integrate async validation with Zod internally
+- [ ] Enhanced accessibility features
+
 
 ## Contributing
 
