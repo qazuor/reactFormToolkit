@@ -81,7 +81,7 @@ export function parseMarkdown(content: string, path: string): SearchResult[] {
                 'text' in token
                     ? token.text
                     : 'items' in token
-                      ? token.items.map((item) => ('text' in item ? item.text : '')).join(' ')
+                      ? token.items.map((item: { text?: string }) => ('text' in item ? item.text : '')).join(' ')
                       : '';
             currentContent += ' ';
         } else if (token.type === 'code') {
