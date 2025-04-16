@@ -1,7 +1,7 @@
 import toc from '@jsdevtools/rehype-toc';
 import { type FC, useEffect, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeRaw from 'rehype-raw';
 import rehypeSlug from 'rehype-slug';
@@ -35,35 +35,6 @@ export const DocsViewer: FC<DocsViewerProps> = ({ docFile, useTOC = true }) => {
     const contentRef = useRef<HTMLDivElement>(null);
     const [content, setContent] = useState<string>(t('docViewer.loading'));
     const currentLang = i18n.language;
-
-    // Custom components for Markdown rendering
-    const components = {
-        a: ({ href, children, ...props }) => {
-            // Check if the link is internal (starts with / but not with // for external links)
-            if (href && href.startsWith('/') && !href.startsWith('//')) {
-                return (
-                    <Link
-                        to={href}
-                        {...props}
-                    >
-                        {children}
-                    </Link>
-                );
-            }
-
-            // External links
-            return (
-                <a
-                    href={href}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    {...props}
-                >
-                    {children}
-                </a>
-            );
-        }
-    };
 
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
