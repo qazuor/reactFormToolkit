@@ -137,7 +137,7 @@ export const DocsViewer: FC<DocsViewerProps> = ({ docFile, useTOC = true }) => {
                                 classes: 'backToTop',
                                 disabled: false,
                                 id: 'backToTop',
-                                text: `${t('docViewer.backToTop')} ↑`
+                                text: '↑'
                             }
                         }
                     ],
