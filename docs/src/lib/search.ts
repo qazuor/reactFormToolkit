@@ -110,7 +110,7 @@ export function parseMarkdown(content: string, path: string): SearchResult[] {
  * Loads and indexes all documentation files
  * @returns Promise resolving to array of search results
  */
-export async function buildSearchIndex(lang): Promise<SearchResult[]> {
+export async function buildSearchIndex(lang: string): Promise<SearchResult[]> {
     try {
         // Fetch the docs index
         const docsIndexResponse = await fetch('/docs/docs-index.json');

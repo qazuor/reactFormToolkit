@@ -1,5 +1,5 @@
 import toc from '@jsdevtools/rehype-toc';
-import { FC, useEffect, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import Markdown from 'react-markdown';
 import { useLocation } from 'react-router-dom';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
@@ -24,7 +24,7 @@ interface TocElement {
 }
 
 interface DocsViewerProps {
-    docFile: string;
+    docFile?: string;
     useTOC?: boolean;
 }
 
