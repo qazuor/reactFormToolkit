@@ -153,7 +153,7 @@ Para documentación detallada y ejemplos, visita nuestro [sitio de documentació
 - [ ] Mejorar rendimiento
 - [ ] Integrar validación asíncrona con Zod internamente
 - [ ] Características mejoradas de accesibilidad
-
+- [ ] Generador de Formularios a partir de Schemas de Zod
 
 ## Contribuyendo
 

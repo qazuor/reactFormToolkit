@@ -153,6 +153,7 @@ For detailed documentation and examples, visit our [documentation site](https://
 - [ ] Improve performance
 - [ ] Integrate async validation with Zod internally
 - [ ] Enhanced accessibility features
+- [ ] Form gnerator from zod schema
 
 
 ## Contributing
