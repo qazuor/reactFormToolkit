@@ -1,10 +1,10 @@
 # Primeros Pasos
 
-Esta guía te ayudará a configurar React Form Toolkit en tu proyecto y crear tu primer formulario.
+Esta guía te ayudará a configurar **Qazuor React Form Toolkit** en tu proyecto y crear tu primer formulario.
 
 ## Instalación
 
-Puedes instalar React Form Toolkit usando npm, yarn o pnpm:
+Puedes instalar **Qazuor React Form Toolkit** usando npm, yarn o pnpm:
 
 ```bash
 # npm
@@ -97,7 +97,7 @@ function LoginForm() {
 
 ### FormProvider
 
-El componente `FormProvider` es la base de React Form Toolkit. Gestiona el estado del formulario, la validación y proporciona contexto a los componentes hijos.
+El componente `FormProvider` es la base de **Qazuor React Form Toolkit**. Gestiona el estado del formulario, la validación y proporciona contexto a los componentes hijos.
 
 ```tsx
 <FormProvider
@@ -146,7 +146,7 @@ Aprende más sobre [Form Buttons](./form-buttons.md).
 
 ## Características Avanzadas
 
-React Form Toolkit ofrece muchas características avanzadas:
+**Qazuor React Form Toolkit** ofrece muchas características avanzadas:
 
 - **Campos Condicionales**: Muestra/oculta campos basados en valores de otros campos
 - **Campos Dependientes**: Carga opciones para un campo basado en el valor de otro campo

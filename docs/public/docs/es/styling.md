@@ -1,6 +1,6 @@
 # Estilizado
 
-React Form Toolkit proporciona un sistema de estilizado flexible que funciona con Tailwind CSS.
+**Qazuor React Form Toolkit** proporciona un sistema de estilizado flexible que funciona con Tailwind CSS.
 
 ## Sistema de Estilos
 
@@ -153,7 +153,7 @@ const estilos = {
 
 ## Integración con Tailwind CSS
 
-React Form Toolkit funciona perfectamente con Tailwind CSS. Así es como configurarlo:
+**Qazuor React Form Toolkit** funciona perfectamente con Tailwind CSS. Así es como configurarlo:
 
 ### Configuración
 
@@ -239,7 +239,7 @@ function MiFormulario() {
 
 ## Integración con Bibliotecas UI
 
-Cuando uses bibliotecas UI como Material UI o Chakra UI, puedes deshabilitar los estilos predeterminados de React Form Toolkit:
+Cuando uses bibliotecas UI como Material UI o Chakra UI, puedes deshabilitar los estilos predeterminados de **Qazuor React Form Toolkit**:
 
 ```tsx
 <FormProvider

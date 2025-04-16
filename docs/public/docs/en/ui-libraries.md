@@ -1,6 +1,6 @@
 # UI Libraries Integration
 
-React Form Toolkit is designed to work seamlessly with popular UI libraries. This guide explains how to integrate with Material UI, Chakra UI, and Shadcn UI.
+**Qazuor React Form Toolkit** is designed to work seamlessly with popular UI libraries. This guide explains how to integrate with Material UI, Chakra UI, and Shadcn UI.
 
 ## Overview
 
@@ -27,7 +27,7 @@ To enable UI library integration, use the `uiLibrary` prop on FormProvider:
 </FormProvider>
 ```
 
-When `uiLibrary.enabled` is set to `true`, React Form Toolkit will:
+When `uiLibrary.enabled` is set to `true`, **Qazuor React Form Toolkit** will:
 - Not apply its default input styles
 - Allow the UI library's native styles to be used
 - Still handle form state, validation, and error messages

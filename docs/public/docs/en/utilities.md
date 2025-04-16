@@ -1,6 +1,6 @@
 # Utilities
 
-React Form Toolkit provides utility functions for common form operations.
+**Qazuor React Form Toolkit** provides utility functions for common form operations.
 
 ## Form Utilities
 

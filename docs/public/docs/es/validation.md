@@ -1,6 +1,6 @@
 # Validación
 
-React Form Toolkit proporciona capacidades de validación completas a través de la integración con Zod y características adicionales para validación asíncrona, visualización de errores y más.
+**Qazuor React Form Toolkit** proporciona capacidades de validación completas a través de la integración con Zod y características adicionales para validación asíncrona, visualización de errores y más.
 
 ## Validación de Esquema con Zod
 
@@ -276,5 +276,4 @@ function CampoPersonalizado() {
 
 ## Ejemplos
 
-Consulta el [ejemplo de validación](/examples/validation) para ver estas características en acción.
-consulta el [ejemplo de manejo de errores](/examples/errors) para ver las opciones de visualizacion de errores en acción.
+Consulta los [ejemplos de validación](/examples/validation) para ver estas características en acción.

@@ -1,6 +1,6 @@
 # Integración con TypeScript
 
-React Form Toolkit está construido con TypeScript desde cero, proporcionando excelente seguridad de tipos y experiencia de desarrollo.
+**Qazuor React Form Toolkit** está construido con TypeScript desde cero, proporcionando excelente seguridad de tipos y experiencia de desarrollo.
 
 ## Formularios con Seguridad de Tipos
 

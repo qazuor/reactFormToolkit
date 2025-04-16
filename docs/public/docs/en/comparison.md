@@ -1,32 +1,16 @@
-# Comparison with Other Libraries
+# React Hook Form vs **Qazuor React Form Toolkit**
 
-This guide compares React Form Toolkit with other popular form libraries to help you understand its advantages and use cases.
+This comparison illustrates how forms would look using **plain React Hook Form** versus using **Qazuor React Form Toolkit**, highlighting the differences in structure, boilerplate, and maintainability.
 
-## React Form Toolkit vs React Hook Form
+## Motivation
 
-[React Hook Form](https://react-hook-form.com/) is the foundation of React Form Toolkit, which extends it with additional features.
+The primary motivation behind **Qazuor React Form Toolkit** is to **reduce boilerplate code** when working with forms. While React Hook Form is an excellent library, it often requires repetitive code patterns for common form scenarios. **Qazuor React Form Toolkit** builds on top of React Hook Form to provide a more declarative API, built-in components for common patterns, and additional features that simplify day-to-day web application development.
 
-### Similarities
+## Basic Form Example
 
-- Both use uncontrolled components for better performance
-- Both support form validation
-- Both have minimal re-renders
+Let's compare a simple login form with email and password fields.
 
-### Differences
-
-| Feature | React Form Toolkit | React Hook Form |
-|---------|-------------------|-----------------|
-| UI Components | ✅ Built-in components | ❌ Requires custom implementation |
-| Schema Validation | ✅ Built-in Zod integration | ❌ Requires resolver setup |
-| Conditional Fields | ✅ Built-in components | ❌ Requires custom implementation |
-| Dependent Fields | ✅ Built-in components | ❌ Requires custom implementation |
-| Internationalization | ✅ Built-in i18n support | ❌ Requires custom implementation |
-| Style System | ✅ Built-in style system | ❌ No styling |
-| UI Library Integration | ✅ Built-in support | ❌ Requires custom implementation |
-
-### Code Comparison
-
-**React Hook Form:**
+### Using React Hook Form (Vanilla)
 
 ```tsx
 import { useForm } from 'react-hook-form';
@@ -34,296 +18,546 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 const schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8)
+  email: z.string().email('Please enter a valid email'),
+  password: z.string().min(8, 'Password must be at least 8 characters')
 });
 
+type FormValues = z.infer<typeof schema>;
+
 function LoginForm() {
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: zodResolver(schema)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      email: '',
+      password: ''
+    }
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data: FormValues) => {
+    try {
+      // Submit data to API
+      console.log('Form submitted:', data);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+  };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Email</label>
-        <input {...register('email')} />
-        {errors.email && <p>{errors.email.message}</p>}
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <div className="space-y-2">
+        <label htmlFor="email" className="block text-sm font-medium">
+          Email
+        </label>
+        <input
+          id="email"
+          type="email"
+          {...register('email')}
+          className={`w-full rounded-md border p-2 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+        />
+        {errors.email && (
+          <p className="text-sm text-red-500">{errors.email.message}</p>
+        )}
       </div>
 
-      <div>
-        <label>Password</label>
-        <input type="password" {...register('password')} />
-        {errors.password && <p>{errors.password.message}</p>}
+      <div className="space-y-2">
+        <label htmlFor="password" className="block text-sm font-medium">
+          Password
+        </label>
+        <input
+          id="password"
+          type="password"
+          {...register('password')}
+          className={`w-full rounded-md border p-2 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+        />
+        {errors.password && (
+          <p className="text-sm text-red-500">{errors.password.message}</p>
+        )}
       </div>
 
-      <button type="submit">Submit</button>
+      <div className="pt-4">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+        >
+          {isSubmitting ? 'Submitting...' : 'Sign In'}
+        </button>
+      </div>
     </form>
   );
 }
 ```
 
-**React Form Toolkit:**
+### Using Qazuor React Form Toolkit
 
 ```tsx
 import { FormProvider, FormField, FormButtonsBar } from '@qazuor/react-form-toolkit';
 import { z } from 'zod';
 
 const schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8)
+  email: z.string().email('Please enter a valid email'),
+  password: z.string().min(8, 'Password must be at least 8 characters')
 });
 
-function LoginForm() {
-  const handleSubmit = (data) => console.log(data);
-
-  return (
-    <FormProvider schema={schema} onSubmit={handleSubmit}>
-      <FormField name="email" label="Email">
-        <input type="email" />
-      </FormField>
-
-      <FormField name="password" label="Password">
-        <input type="password" />
-      </FormField>
-
-      <FormButtonsBar />
-    </FormProvider>
-  );
-}
-```
-
-## React Form Toolkit vs Formik
-
-[Formik](https://formik.org/) is another popular form library for React.
-
-### Similarities
-
-- Both provide form validation
-- Both have form-level and field-level components
-- Both support custom validation
-
-### Differences
-
-| Feature | React Form Toolkit | Formik |
-|---------|-------------------|--------|
-| Performance | ✅ Uncontrolled components | ❌ Controlled components (more re-renders) |
-| Schema Validation | ✅ Built-in Zod integration | ❌ Requires Yup or custom validation |
-| Conditional Fields | ✅ Built-in components | ❌ Requires custom implementation |
-| Dependent Fields | ✅ Built-in components | ❌ Requires custom implementation |
-| Internationalization | ✅ Built-in i18n support | ❌ Requires custom implementation |
-| Style System | ✅ Built-in style system | ❌ No styling |
-| UI Library Integration | ✅ Built-in support | ❌ Requires custom implementation |
-
-### Code Comparison
-
-**Formik:**
-
-```tsx
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-
-const validationSchema = Yup.object({
-  email: Yup.string().email('Invalid email').required('Required'),
-  password: Yup.string().min(8, 'Must be at least 8 characters').required('Required')
-});
+type FormValues = z.infer<typeof schema>;
 
 function LoginForm() {
-  return (
-    <Formik
-      initialValues={{ email: '', password: '' }}
-      validationSchema={validationSchema}
-      onSubmit={(values) => console.log(values)}
-    >
-      <Form>
-        <div>
-          <label htmlFor="email">Email</label>
-          <Field name="email" type="email" />
-          <ErrorMessage name="email" component="div" className="error" />
-        </div>
+  const handleSubmit = async (data: FormValues) => {
+    try {
+      // Submit data to API
+      console.log('Form submitted:', data);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      return error; // Return error to display as global error
+    }
+  };
 
-        <div>
-          <label htmlFor="password">Password</label>
-          <Field name="password" type="password" />
-          <ErrorMessage name="password" component="div" className="error" />
-        </div>
-
-        <button type="submit">Submit</button>
-      </Form>
-    </Formik>
-  );
-}
-```
-
-**React Form Toolkit:**
-
-```tsx
-import { FormProvider, FormField, FormButtonsBar } from '@qazuor/react-form-toolkit';
-import { z } from 'zod';
-
-const schema = z.object({
-  email: z.string().email('Invalid email'),
-  password: z.string().min(8, 'Must be at least 8 characters')
-});
-
-function LoginForm() {
   return (
     <FormProvider
       schema={schema}
-      onSubmit={(data) => console.log(data)}
+      onSubmit={handleSubmit}
       defaultValues={{ email: '', password: '' }}
     >
-      <FormField name="email" label="Email">
+      <FormField name="email" label="Email" required>
         <input type="email" />
       </FormField>
 
-      <FormField name="password" label="Password">
+      <FormField name="password" label="Password" required>
         <input type="password" />
       </FormField>
 
-      <FormButtonsBar />
+      <FormButtonsBar submitText="Sign In" />
     </FormProvider>
   );
 }
 ```
 
-## React Form Toolkit vs React Final Form
+## Complex Form Example
 
-[React Final Form](https://final-form.org/react) is a subscription-based form library.
+Now let's compare a more complex form with conditional fields, validation, and field arrays.
 
-### Similarities
-
-- Both focus on performance
-- Both support form validation
-- Both have field-level components
-
-### Differences
-
-| Feature | React Form Toolkit | React Final Form |
-|---------|-------------------|------------------|
-| Schema Validation | ✅ Built-in Zod integration | ❌ Requires custom validation |
-| Conditional Fields | ✅ Built-in components | ❌ Requires custom implementation |
-| Dependent Fields | ✅ Built-in components | ❌ Requires custom implementation |
-| Internationalization | ✅ Built-in i18n support | ❌ Requires custom implementation |
-| Style System | ✅ Built-in style system | ❌ No styling |
-| UI Library Integration | ✅ Built-in support | ❌ Requires custom implementation |
-| Bundle Size | ✅ Smaller | ❌ Larger |
-
-### Code Comparison
-
-**React Final Form:**
+### Using React Hook Form (Vanilla)
 
 ```tsx
-import { Form, Field } from 'react-final-form';
+import { useForm, useFieldArray, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useState, useEffect } from 'react';
 
-const validate = (values) => {
-  const errors = {};
-  if (!values.email) {
-    errors.email = 'Required';
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address';
-  }
-  if (!values.password) {
-    errors.password = 'Required';
-  } else if (values.password.length < 8) {
-    errors.password = 'Must be at least 8 characters';
-  }
-  return errors;
-};
+const schema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  email: z.string().email('Please enter a valid email'),
+  accountType: z.enum(['personal', 'business']),
+  // Conditional fields
+  companyName: z.string().optional(),
+  taxId: z.string().optional(),
+  // Field array
+  contacts: z.array(
+    z.object({
+      name: z.string().min(2, 'Contact name is required'),
+      email: z.string().email('Please enter a valid email')
+    })
+  ).min(1, 'At least one contact is required')
+});
 
-function LoginForm() {
+type FormValues = z.infer<typeof schema>;
+
+function ComplexForm() {
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors, isSubmitting },
+    setValue,
+    reset
+  } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: '',
+      email: '',
+      accountType: 'personal',
+      companyName: '',
+      taxId: '',
+      contacts: [{ name: '', email: '' }]
+    }
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'contacts'
+  });
+
+  // Watch account type for conditional fields
+  const accountType = watch('accountType');
+
+  // Reset conditional fields when account type changes
+  useEffect(() => {
+    if (accountType === 'personal') {
+      setValue('companyName', '');
+      setValue('taxId', '');
+    }
+  }, [accountType, setValue]);
+
+  const onSubmit = async (data: FormValues) => {
+    try {
+      // Submit data to API
+      console.log('Form submitted:', data);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+  };
+
   return (
-    <Form
-      onSubmit={(values) => console.log(values)}
-      validate={validate}
-      render={({ handleSubmit }) => (
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Email</label>
-            <Field name="email">
-              {({ input, meta }) => (
-                <div>
-                  <input {...input} type="email" />
-                  {meta.error && meta.touched && <span>{meta.error}</span>}
-                </div>
-              )}
-            </Field>
-          </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <label htmlFor="name" className="block text-sm font-medium">
+            Name
+          </label>
+          <input
+            id="name"
+            {...register('name')}
+            className={`w-full rounded-md border p-2 ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+          />
+          {errors.name && (
+            <p className="text-sm text-red-500">{errors.name.message}</p>
+          )}
+        </div>
 
-          <div>
-            <label>Password</label>
-            <Field name="password">
-              {({ input, meta }) => (
-                <div>
-                  <input {...input} type="password" />
-                  {meta.error && meta.touched && <span>{meta.error}</span>}
-                </div>
-              )}
-            </Field>
-          </div>
+        <div className="space-y-2">
+          <label htmlFor="email" className="block text-sm font-medium">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            {...register('email')}
+            className={`w-full rounded-md border p-2 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+          />
+          {errors.email && (
+            <p className="text-sm text-red-500">{errors.email.message}</p>
+          )}
+        </div>
 
-          <button type="submit">Submit</button>
-        </form>
-      )}
-    />
+        <div className="space-y-2">
+          <label htmlFor="accountType" className="block text-sm font-medium">
+            Account Type
+          </label>
+          <select
+            id="accountType"
+            {...register('accountType')}
+            className="w-full rounded-md border border-gray-300 p-2"
+          >
+            <option value="personal">Personal</option>
+            <option value="business">Business</option>
+          </select>
+        </div>
+
+        {/* Conditional fields */}
+        {accountType === 'business' && (
+          <>
+            <div className="space-y-2">
+              <label htmlFor="companyName" className="block text-sm font-medium">
+                Company Name
+              </label>
+              <input
+                id="companyName"
+                {...register('companyName')}
+                className={`w-full rounded-md border p-2 ${errors.companyName ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {errors.companyName && (
+                <p className="text-sm text-red-500">{errors.companyName.message}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="taxId" className="block text-sm font-medium">
+                Tax ID
+              </label>
+              <input
+                id="taxId"
+                {...register('taxId')}
+                className={`w-full rounded-md border p-2 ${errors.taxId ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {errors.taxId && (
+                <p className="text-sm text-red-500">{errors.taxId.message}</p>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Field array */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">Contacts</h3>
+
+        {fields.map((field, index) => (
+          <div key={field.id} className="rounded-md border border-gray-200 p-4">
+            <div className="mb-2 flex items-center justify-between">
+              <h4 className="text-sm font-medium">Contact {index + 1}</h4>
+              {fields.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => remove(index)}
+                  className="rounded-md bg-red-100 px-2 py-1 text-sm text-red-600 hover:bg-red-200"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label htmlFor={`contacts.${index}.name`} className="block text-sm font-medium">
+                  Contact Name
+                </label>
+                <input
+                  id={`contacts.${index}.name`}
+                  {...register(`contacts.${index}.name`)}
+                  className={`w-full rounded-md border p-2 ${
+                    errors.contacts?.[index]?.name ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                />
+                {errors.contacts?.[index]?.name && (
+                  <p className="text-sm text-red-500">{errors.contacts?.[index]?.name?.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor={`contacts.${index}.email`} className="block text-sm font-medium">
+                  Contact Email
+                </label>
+                <input
+                  id={`contacts.${index}.email`}
+                  type="email"
+                  {...register(`contacts.${index}.email`)}
+                  className={`w-full rounded-md border p-2 ${
+                    errors.contacts?.[index]?.email ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                />
+                {errors.contacts?.[index]?.email && (
+                  <p className="text-sm text-red-500">{errors.contacts?.[index]?.email?.message}</p>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+
+        <button
+          type="button"
+          onClick={() => append({ name: '', email: '' })}
+          className="rounded-md bg-blue-100 px-4 py-2 text-blue-600 hover:bg-blue-200"
+        >
+          Add Contact
+        </button>
+
+        {errors.contacts && errors.contacts.message && (
+          <p className="text-sm text-red-500">{errors.contacts.message}</p>
+        )}
+      </div>
+
+      <div className="flex space-x-4 pt-4">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="flex-1 rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+        >
+          {isSubmitting ? 'Submitting...' : 'Submit'}
+        </button>
+
+        <button
+          type="button"
+          onClick={() => reset()}
+          className="rounded-md bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300"
+        >
+          Reset
+        </button>
+      </div>
+    </form>
   );
 }
 ```
 
-**React Form Toolkit:**
+### Using Qazuor React Form Toolkit
 
 ```tsx
-import { FormProvider, FormField, FormButtonsBar } from '@qazuor/react-form-toolkit';
+import { FormProvider, FormField, FormButtonsBar, ConditionalField, FieldArray } from '@qazuor/react-form-toolkit';
 import { z } from 'zod';
 
 const schema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(8, 'Must be at least 8 characters')
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  email: z.string().email('Please enter a valid email'),
+  accountType: z.enum(['personal', 'business']),
+  // Conditional fields
+  companyName: z.string().optional(),
+  taxId: z.string().optional(),
+  // Field array
+  contacts: z.array(
+    z.object({
+      name: z.string().min(2, 'Contact name is required'),
+      email: z.string().email('Please enter a valid email')
+    })
+  ).min(1, 'At least one contact is required')
 });
 
-function LoginForm() {
+type FormValues = z.infer<typeof schema>;
+
+function ComplexForm() {
+  const handleSubmit = async (data: FormValues) => {
+    try {
+      // Submit data to API
+      console.log('Form submitted:', data);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      return error; // Return error to display as global error
+    }
+  };
+
   return (
     <FormProvider
       schema={schema}
-      onSubmit={(data) => console.log(data)}
+      onSubmit={handleSubmit}
+      defaultValues={{
+        name: '',
+        email: '',
+        accountType: 'personal',
+        companyName: '',
+        taxId: '',
+        contacts: [{ name: '', email: '' }]
+      }}
     >
-      <FormField name="email" label="Email">
-        <input type="email" />
-      </FormField>
+      <div className="space-y-6">
+        <FormField name="name" label="Name" required>
+          <input type="text" />
+        </FormField>
 
-      <FormField name="password" label="Password">
-        <input type="password" />
-      </FormField>
+        <FormField name="email" label="Email" required>
+          <input type="email" />
+        </FormField>
 
-      <FormButtonsBar />
+        <FormField name="accountType" label="Account Type">
+          <select>
+            <option value="personal">Personal</option>
+            <option value="business">Business</option>
+          </select>
+        </FormField>
+
+        {/* Conditional fields */}
+        <ConditionalField watchField="accountType" condition="business">
+          <div className="space-y-4">
+            <FormField name="companyName" label="Company Name">
+              <input type="text" />
+            </FormField>
+
+            <FormField name="taxId" label="Tax ID">
+              <input type="text" />
+            </FormField>
+          </div>
+        </ConditionalField>
+
+        {/* Field array */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Contacts</h3>
+
+          <FieldArray name="contacts" minItems={1}>
+            <div className="space-y-4">
+              <FormField name="name" label="Contact Name" required>
+                <input type="text" />
+              </FormField>
+
+              <FormField name="email" label="Contact Email" required>
+                <input type="email" />
+              </FormField>
+            </div>
+          </FieldArray>
+        </div>
+
+        <FormButtonsBar />
+      </div>
     </FormProvider>
   );
 }
 ```
 
-## When to Use React Form Toolkit
+## Key Differences
 
-React Form Toolkit is ideal for:
+### 1. Boilerplate Reduction
 
-1. **Complex Forms**: When you need conditional fields, dependent fields, or field arrays
-2. **Type-Safe Applications**: When you want full TypeScript support
-3. **Internationalized Applications**: When you need multi-language support
-4. **Design System Integration**: When you want to integrate with UI libraries
-5. **Rapid Development**: When you want to reduce boilerplate code
+**Qazuor React Form Toolkit** significantly reduces boilerplate code:
 
-## When to Use Other Libraries
+- **No manual error handling**: Error display is handled automatically
+- **No manual field registration**: Fields are registered through components
+- **Built-in form buttons**: Common form actions are pre-built
+- **Automatic label and description handling**: No need to manually create labels
 
-You might prefer other libraries when:
+### 2. Declarative API
 
-1. **Minimal Bundle Size**: If you need the absolute smallest bundle size
-2. **Simple Forms**: For very simple forms with minimal validation
-3. **Custom Validation Logic**: If you need highly custom validation that doesn't fit with Zod
-4. **Legacy Applications**: If you're working with older React versions
+**Qazuor React Form Toolkit** provides a more declarative API:
+
+- **Component-based approach**: Form structure is defined through components
+- **Prop-based configuration**: Behavior is configured through props
+- **Consistent patterns**: Common patterns are standardized
+
+### 3. Advanced Features
+
+**Qazuor React Form Toolkit** includes built-in support for advanced features:
+
+- **Conditional fields**: Show/hide fields based on other field values
+- **Dependent fields**: Load options based on other field values
+- **Field arrays**: Dynamic arrays of fields with validation
+- **Async validation**: Validate fields asynchronously with loading states
+- **Internationalization**: Support for multiple languages
+- **UI library integration**: Works with Material UI, Chakra UI, and more
+
+### 4. Type Safety
+
+Both libraries provide type safety, but **Qazuor React Form Toolkit** makes it more straightforward:
+
+- **Automatic type inference**: Types are inferred from Zod schemas
+- **Component prop types**: All component props are properly typed
+- **Hook return types**: All hooks return properly typed values
+
+## Summary Table
+
+| Feature | React Hook Form | React Form Toolkit |
+|---------|----------------|-------------------|
+| **Code Volume** | More verbose | More concise |
+| **Error Handling** | Manual | Automatic |
+| **Conditional Fields** | Manual implementation | Built-in component |
+| **Field Arrays** | Manual setup | Built-in component |
+| **Styling** | Manual | Built-in system |
+| **Internationalization** | Manual | Built-in |
+| **Type Safety** | Good | Excellent |
+| **Learning Curve** | Moderate | Low |
+| **Flexibility** | Very high | High |
+| **Performance** | Excellent | Excellent |
+
+## When to Use Qazuor React Form Toolkit
+
+Use **Qazuor React Form Toolkit** when:
+
+- You want to reduce boilerplate code
+- You need built-in support for advanced form patterns
+- You want consistent styling and behavior across forms
+- You need internationalization support
+- You're building forms with complex validation requirements
+
+## When to Use React Hook Form Directly
+
+Use React Hook Form directly when:
+
+- You need maximum control over every aspect of the form
+- You have very specific custom requirements that don't fit the React Form Toolkit patterns
+- You're building a very simple form with minimal validation
+- You need to minimize bundle size to the absolute minimum
 
 ## Conclusion
 
-React Form Toolkit builds on the strengths of React Hook Form while adding powerful features that simplify complex form development. It's particularly well-suited for TypeScript projects and applications that require sophisticated form behavior with minimal boilerplate.
+**Qazuor React Form Toolkit** builds on the solid foundation of React Hook Form to provide a more developer-friendly experience. By reducing boilerplate and providing built-in solutions for common form patterns, it allows you to build complex forms faster while maintaining the performance benefits of React Hook Form.
 
-By providing built-in components for common form patterns, React Form Toolkit helps you build robust forms faster while maintaining excellent performance and type safety.
+The choice between the two libraries depends on your specific needs, but for most applications, **Qazuor React Form Toolkit** will provide a better developer experience and faster development time.

@@ -1,6 +1,6 @@
 # Descripción de Formulario
 
-El componente `FormDescription` se utiliza para añadir texto descriptivo a los formularios. Puede posicionarse por encima o por debajo de los campos del formulario.
+El componente `FormDescription` de **Qazuor React Form Toolkit** se utiliza para añadir texto descriptivo a los formularios. Puede posicionarse por encima o por debajo de los campos del formulario.
 
 ## Uso Básico
 

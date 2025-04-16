@@ -1,6 +1,6 @@
 # Campos Dependientes
 
-La característica de Campos Dependientes te permite cargar dinámicamente opciones para un campo basado en el valor de otro campo. Esto es útil para crear campos de selección en cascada, como relaciones país/estado o categoría/subcategoría.
+La característica de Campos Dependientes de **Qazuor React Form Toolkit** te permite cargar dinámicamente opciones para un campo basado en el valor de otro campo. Esto es útil para crear campos de selección en cascada, como relaciones país/estado o categoría/subcategoría.
 
 ## Características
 

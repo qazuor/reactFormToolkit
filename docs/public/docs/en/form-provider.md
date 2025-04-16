@@ -1,6 +1,6 @@
 # Form Provider
 
-The `FormProvider` component is the foundation of React Form Toolkit. It manages form state, validation, and provides context to child components.
+The `FormProvider` component is the foundation of **Qazuor React Form Toolkit**. It manages form state, validation, and provides context to child components.
 
 ## Basic Usage
 

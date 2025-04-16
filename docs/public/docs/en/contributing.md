@@ -1,6 +1,6 @@
-# Contributing to React Form Toolkit
+# Contributing to Qazuor React Form Toolkit
 
-We welcome contributions to React Form Toolkit! This guide will help you get started with the development process.
+We welcome contributions to **Qazuor React Form Toolkit**! This guide will help you get started with the development process.
 
 ## Getting Started
 
@@ -163,10 +163,10 @@ Maintainers will handle releases using the following process:
 
 ## License
 
-By contributing to React Form Toolkit, you agree that your contributions will be licensed under the project's MIT License.
+By contributing to **Qazuor React Form Toolkit**, you agree that your contributions will be licensed under the project's MIT License.
 
 ## Questions?
 
 If you have any questions, feel free to open an issue on GitHub or reach out to the maintainers.
 
-Thank you for contributing to React Form Toolkit!
+Thank you for contributing to **Qazuor React Form Toolkit**!

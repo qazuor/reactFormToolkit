@@ -1,6 +1,6 @@
 # Botones de Formulario
 
-El componente `FormButtonsBar` proporciona una forma consistente de renderizar botones de acción del formulario.
+El componente `FormButtonsBar` de **Qazuor React Form Toolkit** proporciona una forma consistente de renderizar botones de acción del formulario.
 
 ## Uso Básico
 

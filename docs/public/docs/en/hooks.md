@@ -1,6 +1,6 @@
 # Hooks
 
-React Form Toolkit provides several hooks for accessing form state and functionality.
+**Qazuor React Form Toolkit** provides several hooks for accessing form state and functionality.
 
 ## useFieldState
 

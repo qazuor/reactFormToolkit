@@ -1,6 +1,6 @@
 # TypeScript Integration
 
-React Form Toolkit is built with TypeScript from the ground up, providing excellent type safety and developer experience.
+**Qazuor React Form Toolkit** is built with TypeScript from the ground up, providing excellent type safety and developer experience.
 
 ## Type-Safe Forms
 

@@ -1,6 +1,6 @@
 # Array de Campos
 
-El componente `FieldArray` permite arrays de formularios dinámicos con soporte de validación. Esto es útil para formularios donde los usuarios necesitan añadir múltiples elementos, como contactos, direcciones o cualquier otro dato repetible.
+El componente `FieldArray` de **Qazuor React Form Toolkit** permite arrays de formularios dinámicos con soporte de validación. Esto es útil para formularios donde los usuarios necesitan añadir múltiples elementos, como contactos, direcciones o cualquier otro dato repetible.
 
 ## Uso Básico
 

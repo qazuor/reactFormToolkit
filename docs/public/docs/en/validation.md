@@ -1,6 +1,6 @@
 # Validation
 
-React Form Toolkit provides comprehensive validation capabilities through Zod integration and additional features for async validation, error display, and more.
+**Qazuor React Form Toolkit** provides comprehensive validation capabilities through Zod integration and additional features for async validation, error display, and more.
 
 ## Schema Validation with Zod
 
@@ -277,4 +277,3 @@ function CustomField() {
 ## Examples
 
 Check out the [validation examples](/examples/validation) to see these features in action.
-Check out the [Error Handling examples](/examples/errors) to see these error display options in action.

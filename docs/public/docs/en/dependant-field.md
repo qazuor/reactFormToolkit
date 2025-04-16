@@ -1,6 +1,6 @@
 # Dependent Fields
 
-The Dependent Fields feature allows you to dynamically load options for a field based on the value of another field. This is useful for creating cascading select fields, such as country/state or category/subcategory relationships.
+The Dependent Fields feature in **Qazuor React Form Toolkit** allows you to dynamically load options for a field based on the value of another field. This is useful for creating cascading select fields, such as country/state or category/subcategory relationships.
 
 ## Features
 

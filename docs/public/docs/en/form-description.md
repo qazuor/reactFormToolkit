@@ -1,6 +1,6 @@
 # Form Description
 
-The `FormDescription` component is used to add descriptive text to forms. It can be positioned above or below the form fields.
+The `FormDescription` component in **Qazuor React Form Toolkit** is used to add descriptive text to forms. It can be positioned above or below the form fields.
 
 ## Basic Usage
 

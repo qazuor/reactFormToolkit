@@ -1,4 +1,4 @@
-# React Form Toolkit
+# Qazuor React Form Toolkit
 
 [![npm version](https://img.shields.io/npm/v/@qazuor/react-form-toolkit.svg)](https://www.npmjs.com/package/@qazuor/react-form-toolkit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -120,7 +120,7 @@ Para documentación detallada y ejemplos, visita nuestro [sitio de documentació
 
 ## ¿Por qué React Form Toolkit?
 
-React Form Toolkit combina el poder de React Hook Form y Zod con una API amigable para desarrolladores. Proporciona:
+**Qazuor React Form Toolkit** combina el poder de React Hook Form y Zod con una API amigable para desarrolladores. Proporciona:
 
 - **Construcción de Formularios Simplificada**: Crea formularios complejos con mínimo código repetitivo
 - **Seguridad de Tipos**: Soporte completo de TypeScript con tipos inferidos de esquemas Zod
@@ -130,7 +130,7 @@ React Form Toolkit combina el poder de React Hook Form y Zod con una API amigabl
 
 ## Comparación con Otras Bibliotecas
 
-| Característica | React Form Toolkit | React Hook Form | Formik |
+| Característica | Qazuor React Form Toolkit | React Hook Form | Formik |
 |----------------|-------------------|-----------------|--------|
 | Validación de Esquema | ✅ (Zod) | ❌ (requiere resolver) | ❌ (requiere Yup) |
 | Soporte TypeScript | ✅ | ✅ | ✅ |

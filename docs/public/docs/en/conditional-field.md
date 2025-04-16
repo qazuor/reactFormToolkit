@@ -1,6 +1,6 @@
 # Conditional Fields
 
-The Conditional Fields feature allows you to dynamically show or hide form fields based on the value of another field. This is useful for creating dynamic forms where certain fields should only appear under specific conditions.
+The Conditional Fields feature in **Qazuor React Form Toolkit** allows you to dynamically show or hide form fields based on the value of another field. This is useful for creating dynamic forms where certain fields should only appear under specific conditions.
 
 ## Basic Usage
 

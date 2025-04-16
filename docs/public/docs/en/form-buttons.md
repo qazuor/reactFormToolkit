@@ -1,6 +1,6 @@
 # Form Buttons
 
-The `FormButtonsBar` component provides a consistent way to render form action buttons.
+The `FormButtonsBar` component in **Qazuor React Form Toolkit** provides a consistent way to render form action buttons.
 
 ## Basic Usage
 

@@ -1,6 +1,6 @@
 # Styling
 
-React Form Toolkit provides a flexible styling system that works with Tailwind CSS.
+**Qazuor React Form Toolkit** provides a flexible styling system that works with Tailwind CSS.
 
 ## Style System
 
@@ -153,7 +153,7 @@ const styles = {
 
 ## Tailwind CSS Integration
 
-React Form Toolkit works seamlessly with Tailwind CSS. Here's how to set it up:
+**Qazuor React Form Toolkit** works seamlessly with Tailwind CSS. Here's how to set it up:
 
 ### Setup
 
@@ -239,7 +239,7 @@ function MyForm() {
 
 ## UI Library Integration
 
-When using UI libraries like Material UI or Chakra UI, you can disable React Form Toolkit's default styles:
+When using UI libraries like Material UI or Chakra UI, you can disable **Qazuor React Form Toolkit**'s default styles:
 
 ```tsx
 <FormProvider

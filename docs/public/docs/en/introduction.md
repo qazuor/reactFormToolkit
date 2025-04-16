@@ -1,6 +1,6 @@
 # Introduction
 
-React Form Toolkit is a comprehensive form management library built on top of [React Hook Form](https://react-hook-form.com/) and [Zod](https://zod.dev/). It provides a simple, flexible, and type-safe way to build and validate forms in React applications.
+**Qazuor React Form Toolkit** is a comprehensive form management library built on top of [React Hook Form](https://react-hook-form.com/) and [Zod](https://zod.dev/). It provides a simple, flexible, and type-safe way to build and validate forms in React applications.
 
 ## Key Features
 
@@ -18,7 +18,7 @@ React Form Toolkit is a comprehensive form management library built on top of [R
 
 ## Why React Form Toolkit?
 
-Building forms in React can be challenging. You need to handle form state, validation, error messages, and more. React Form Toolkit simplifies this process by providing a set of components and hooks that handle all the complexity for you.
+Building forms in React can be challenging. You need to handle form state, validation, error messages, and more. **Qazuor React Form Toolkit** simplifies this process by providing a set of components and hooks that handle all the complexity for you.
 
 ### Problems We Solve
 
@@ -76,7 +76,7 @@ function LoginForm() {
 
 ## Core Concepts
 
-React Form Toolkit is built around a few core concepts:
+**Qazuor React Form Toolkit** is built around a few core concepts:
 
 1. **Form Provider**: The root component that manages form state and validation
 2. **Form Fields**: Components for rendering and validating individual fields
