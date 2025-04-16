@@ -269,10 +269,10 @@ function CampoPersonalizado() {
 
 ## Componentes Relacionados
 
-- [FormProvider](./form-provider.md) - Para configuración de validación a nivel de formulario
-- [FormField](./form-field.md) - Para validación a nivel de campo
-- [ConditionalField](./conditional-field.md) - Para validación condicional
-- [DependantField](./dependent-field.md) - Para validación de campos dependientes
+- [FormProvider](/docs/form-provider) - Para configuración de validación a nivel de formulario
+- [FormField](/docs/form-field) - Para validación a nivel de campo
+- [ConditionalField](/docs/conditional-field) - Para validación condicional
+- [DependantField](/docs/dependant-field) - Para validación de campos dependientes
 
 ## Ejemplos
 

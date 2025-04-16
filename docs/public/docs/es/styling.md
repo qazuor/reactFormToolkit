@@ -279,8 +279,8 @@ Esto evitará conflictos de estilo entre React Form Toolkit y la biblioteca UI.
 
 ## Componentes Relacionados
 
-- [FormProvider](./form-provider.md) - Para establecer estilos a nivel de proveedor
-- [FormField](./form-field.md) - Para anulaciones de estilo a nivel de componente
+- [FormProvider](/docs/form-provider) - Para establecer estilos a nivel de proveedor
+- [FormField](/docs/form-field) - Para anulaciones de estilo a nivel de componente
 
 ## Ejemplos
 

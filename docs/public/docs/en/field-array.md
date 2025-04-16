@@ -270,9 +270,9 @@ const defaultValues = {
 
 ## Related Components
 
-- [FormProvider](./form-provider.md) - The parent component for all form fields
-- [FormField](./form-field.md) - For rendering individual form fields
-- [ConditionalField](./conditional-field.md) - For conditionally rendering fields
+- [FormProvider](/docs/form-provider) - The parent component for all form fields
+- [FormField](/docs/form-field) - For rendering individual form fields
+- [ConditionalField](/docs/conditional-field) - For conditionally rendering fields
 
 ## Examples
 

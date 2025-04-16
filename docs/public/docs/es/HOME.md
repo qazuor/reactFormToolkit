@@ -110,7 +110,7 @@ function LoginForm() {
 
 ## Documentación
 
-Para documentación detallada y ejemplos, visita nuestro [sitio de documentación](https://qazuor-react-form-toolkit.vercel.app/).
+Para documentación detallada y ejemplos, visita nuestro [sitio de documentación](/docs).
 
 ### Componentes Clave
 
@@ -157,7 +157,7 @@ Para documentación detallada y ejemplos, visita nuestro [sitio de documentació
 
 ## Contribuyendo
 
-¡Damos la bienvenida a contribuciones! Por favor, consulta nuestras [pautas de contribución](/docs/contributing) para más detalles.
+¡Damos la bienvenida a contribuciones! Por favor, consulta nuestras [pautas de contribución](/docs/contributing.md) para más detalles.
 
 ## Licencia
 

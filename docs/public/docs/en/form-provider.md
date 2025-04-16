@@ -268,9 +268,9 @@ function MyForm() {
 
 ## Related Components
 
-- [FormField](./form-field.md) - For rendering individual form fields
-- [FormButtonsBar](./form-buttons.md) - For rendering form action buttons
-- [FormDescription](./form-description.md) - For adding form-level descriptions
+- [FormField](/docs/form-field) - For rendering individual form fields
+- [FormButtonsBar](/docs/form-buttons) - For rendering form action buttons
+- [FormDescription](/docs/form-description) - For adding form-level descriptions
 
 ## Examples
 

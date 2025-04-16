@@ -286,7 +286,7 @@ function DynamicForm({ schema, onSubmit }) {
 
 ## Related Documentation
 
-- [Form Provider](./form-provider.md) - The parent component for all form fields
-- [Form Field](./form-field.md) - For rendering individual form fields
-- [Styling](./styling.md) - For more information on styling options
-- [Internationalization](./i18n.md) - For more information on i18n options
+- [Form Provider](/docs/form-provider) - The parent component for all form fields
+- [Form Field](/docs/form-field) - For rendering individual form fields
+- [Styling](/docs/styling) - For more information on styling options
+- [Internationalization](/docs/i18n) - For more information on i18n options

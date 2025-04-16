@@ -279,8 +279,8 @@ This will prevent style conflicts between React Form Toolkit and the UI library.
 
 ## Related Components
 
-- [FormProvider](./form-provider.md) - For setting provider-level styles
-- [FormField](./form-field.md) - For component-level style overrides
+- [FormProvider](/docs/form-provider) - For setting provider-level styles
+- [FormField](/docs/form-field) - For component-level style overrides
 
 ## Examples
 

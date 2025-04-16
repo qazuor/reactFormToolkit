@@ -161,11 +161,11 @@ Explore these features in the respective documentation sections.
 
 Now that you've set up your first form, you can explore more advanced features:
 
-- [Form Provider](./form-provider.md) - Learn more about form configuration
-- [Form Field](./form-field.md) - Explore field options and validation
-- [Conditional Fields](./conditional-field.md) - Create dynamic forms
-- [Field Arrays](./field-array.md) - Work with dynamic arrays of fields
-- [Validation](./validation.md) - Learn about validation options
+- [Form Provider](/docs/form-provider) - Learn more about form configuration
+- [Form Field](/docs/form-field) - Explore field options and validation
+- [Conditional Fields](/docs/conditional-field) - Create dynamic forms
+- [Field Arrays](/docs/field-array) - Work with dynamic arrays of fields
+- [Validation](/docs/validation) - Learn about validation options
 
 ## Troubleshooting
 

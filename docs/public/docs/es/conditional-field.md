@@ -312,9 +312,9 @@ function FormularioContacto() {
 
 ## Componentes Relacionados
 
-- [FormProvider](./form-provider.md) - El componente padre para todos los campos del formulario
-- [FormField](./form-field.md) - Para renderizar campos individuales del formulario
-- [DependantField](./dependent-field.md) - Para campos que dependen de otros campos
+- [FormProvider](/docs/form-provider) - El componente padre para todos los campos del formulario
+- [FormField](/docs/form-field) - Para renderizar campos individuales del formulario
+- [DependantField](/docs/dependant-field) - Para campos que dependen de otros campos
 
 ## Hooks
 

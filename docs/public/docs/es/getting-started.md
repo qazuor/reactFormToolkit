@@ -161,11 +161,11 @@ Explora estas características en las respectivas secciones de la documentación
 
 Ahora que has configurado tu primer formulario, puedes explorar características más avanzadas:
 
-- [Form Provider](./form-provider.md) - Aprende más sobre la configuración del formulario
-- [Form Field](./form-field.md) - Explora opciones de campo y validación
-- [Campos Condicionales](./conditional-field.md) - Crea formularios dinámicos
-- [Arrays de Campos](./field-array.md) - Trabaja con arrays dinámicos de campos
-- [Validación](./validation.md) - Aprende sobre opciones de validación
+- [Form Provider](/docs/form-provider) - Aprende más sobre la configuración del formulario
+- [Form Field](/docs/form-field) - Explora opciones de campo y validación
+- [Campos Condicionales](/docs/conditional-field) - Crea formularios dinámicos
+- [Arrays de Campos](/docs/field-array) - Trabaja con arrays dinámicos de campos
+- [Validación](/docs/validation) - Aprende sobre opciones de validación
 
 ## Solución de Problemas
 

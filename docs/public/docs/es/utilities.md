@@ -286,7 +286,7 @@ function FormularioDinamico({ schema, onSubmit }) {
 
 ## Documentación Relacionada
 
-- [Form Provider](./form-provider.md) - El componente padre para todos los campos del formulario
-- [Form Field](./form-field.md) - Para renderizar campos individuales del formulario
-- [Styling](./styling.md) - Para más información sobre opciones de estilizado
-- [Internationalization](./i18n.md) - Para más información sobre opciones i18n
+- [Form Provider](/docs/form-provider) - El componente padre para todos los campos del formulario
+- [Form Field](/docs/form-field) - Para renderizar campos individuales del formulario
+- [Styling](/docs/styling) - Para más información sobre opciones de estilizado
+- [Internationalization](/docs/i18n) - Para más información sobre opciones i18n

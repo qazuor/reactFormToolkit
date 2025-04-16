@@ -269,10 +269,10 @@ function CustomField() {
 
 ## Related Components
 
-- [FormProvider](./form-provider.md) - For form-level validation configuration
-- [FormField](./form-field.md) - For field-level validation
-- [ConditionalField](./conditional-field.md) - For conditional validation
-- [DependantField](./dependent-field.md) - For dependent field validation
+- [FormProvider](/docs/form-provider) - For form-level validation configuration
+- [FormField](/docs/form-field) - For field-level validation
+- [ConditionalField](/docs/conditional-field) - For conditional validation
+- [DependantField](/docs/dependant-field) - For dependent field validation
 
 ## Examples
 

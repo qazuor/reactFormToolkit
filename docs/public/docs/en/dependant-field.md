@@ -339,10 +339,10 @@ const getCategoriesWithErrorHandling = async () => {
 
 ## Related Components
 
-- [FormProvider](./form-provider.md) - The parent component for all form fields
-- [FormField](./form-field.md) - For rendering individual form fields
-- [ConditionalField](./conditional-field.md) - For conditionally rendering fields
+- [FormProvider](/docs/form-provider) - The parent component for all form fields
+- [FormField](/docs/form-field) - For rendering individual form fields
+- [ConditionalField](/docs/conditional-field) - For conditionally rendering fields
 
 ## Examples
 
-Check out the [examples section](/examples/dependent-field) to see DependantField in action.
+Check out the [section of examples](/examples/dependent-field) to see DependantField in action.

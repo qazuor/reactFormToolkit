@@ -268,9 +268,9 @@ function MiFormulario() {
 
 ## Componentes Relacionados
 
-- [FormField](./form-field.md) - Para renderizar campos individuales del formulario
-- [FormButtonsBar](./form-buttons.md) - Para renderizar botones de acción del formulario
-- [FormDescription](./form-description.md) - Para añadir descripciones a nivel de formulario
+- [FormField](/docs/form-field) - Para renderizar campos individuales del formulario
+- [FormButtonsBar](/docs/form-buttons) - Para renderizar botones de acción del formulario
+- [FormDescription](/docs/form-description) - Para añadir descripciones a nivel de formulario
 
 ## Ejemplos
 

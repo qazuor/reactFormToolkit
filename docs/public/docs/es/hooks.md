@@ -386,7 +386,7 @@ function CalculadoraPrecios() {
 
 ## Documentación Relacionada
 
-- [Form Provider](./form-provider.md) - El componente padre para todos los campos del formulario
-- [Form Field](./form-field.md) - Para renderizar campos individuales del formulario
-- [Conditional Field](./conditional-field.md) - Para renderizar campos condicionalmente
-- [Dependent Field](./dependent-field.md) - Para campos que dependen de otros campos
+- [Form Provider](/docs/form-provider) - El componente padre para todos los campos del formulario
+- [Form Field](/docs/form-field) - Para renderizar campos individuales del formulario
+- [Conditional Field](/docs/conditional-field) - Para renderizar campos condicionalmente
+- [Dependent Field](/docs/dependant-field) - Para campos que dependen de otros campos

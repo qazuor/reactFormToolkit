@@ -312,9 +312,9 @@ function ContactForm() {
 
 ## Related Components
 
-- [FormProvider](./form-provider.md) - The parent component for all form fields
-- [FormField](./form-field.md) - For rendering individual form fields
-- [DependantField](./dependent-field.md) - For fields that depend on other fields
+- [FormProvider](/docs/form-provider) - The parent component for all form fields
+- [FormField](/docs/form-field) - For rendering individual form fields
+- [DependantField](/docs/dependant-field) - For fields that depend on other fields
 
 ## Hooks
 

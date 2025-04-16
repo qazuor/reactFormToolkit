@@ -90,11 +90,11 @@ Estos conceptos trabajan juntos para proporcionar una solución completa de gest
 
 ## Documentación Relacionada
 
-- [Primeros Pasos](./getting-started.md) - Instalación y configuración básica
-- [Form Provider](./form-provider.md) - Aprende sobre el componente FormProvider
-- [Form Field](./form-field.md) - Explora el componente FormField
-- [Validación](./validation.md) - Aprende sobre la validación de formularios
+- [Primeros Pasos](/docs/getting-started) - Instalación y configuración básica
+- [Form Provider](/docs/form-provider) - Aprende sobre el componente FormProvider
+- [Form Field](/docs/form-field) - Explora el componente FormField
+- [Validación](/docs/validation) - Aprende sobre la validación de formularios
 
 ## Próximos Pasos
 
-¿Listo para comenzar? Dirígete a la guía de [Primeros Pasos](./getting-started.md) para aprender cómo instalar y configurar React Form Toolkit en tu proyecto.
+¿Listo para comenzar? Dirígete a la guía de [Primeros Pasos](/docs/getting-started) para aprender cómo instalar y configurar React Form Toolkit en tu proyecto.

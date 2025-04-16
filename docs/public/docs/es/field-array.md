@@ -270,9 +270,9 @@ const defaultValues = {
 
 ## Componentes Relacionados
 
-- [FormProvider](./form-provider.md) - El componente padre para todos los campos del formulario
-- [FormField](./form-field.md) - Para renderizar campos individuales del formulario
-- [ConditionalField](./conditional-field.md) - Para renderizar campos condicionalmente
+- [FormProvider](/docs/form-provider) - El componente padre para todos los campos del formulario
+- [FormField](/docs/form-field) - Para renderizar campos individuales del formulario
+- [ConditionalField](/docs/conditional-field) - Para renderizar campos condicionalmente
 
 ## Ejemplos
 

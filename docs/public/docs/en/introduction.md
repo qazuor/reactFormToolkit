@@ -90,11 +90,11 @@ These concepts work together to provide a complete form management solution.
 
 ## Related Documentation
 
-- [Getting Started](./getting-started.md) - Installation and basic setup
-- [Form Provider](./form-provider.md) - Learn about the FormProvider component
-- [Form Field](./form-field.md) - Explore the FormField component
-- [Validation](./validation.md) - Learn about form validation
+- [Getting Started](/docs/getting-started) - Installation and basic setup
+- [Form Provider](/docs/form-provider) - Learn about the FormProvider component
+- [Form Field](/docs/form-field) - Explore the FormField component
+- [Validation](/docs/validation) - Learn about form validation
 
 ## Next Steps
 
-Ready to get started? Head over to the [Getting Started](./getting-started.md) guide to learn how to install and set up React Form Toolkit in your project.
+Ready to get started? Head over to the [Getting Started](/docs/getting-started) guide to learn how to install and set up React Form Toolkit in your project.

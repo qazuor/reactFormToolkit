@@ -126,8 +126,8 @@ The component includes proper accessibility attributes:
 
 ## Related Components
 
-- [FormProvider](./form-provider.md) - The parent component for all form elements
-- [FormField](./form-field.md) - For rendering individual form fields with their own descriptions
+- [FormProvider](/docs/form-provider) - The parent component for all form elements
+- [FormField](/docs/form-field) - For rendering individual form fields with their own descriptions
 
 ## Examples
 

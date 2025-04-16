@@ -329,4 +329,4 @@ Puedes acceder a estados de error para aplicar estilizado de error específico d
 
 ## Ejemplos
 
-Consulta el [ejemplo de Bibliotecas UI](/examples/ui-library) para ver estas integraciones en acción.
+Consulta el [ejemplo de Librerías UI](/examples/ui-library) para ver estas integraciones en acción.

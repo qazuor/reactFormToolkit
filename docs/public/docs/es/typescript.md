@@ -299,6 +299,6 @@ if (email) {
 
 ## Documentación Relacionada
 
-- [Form Provider](./form-provider.md) - Para seguridad de tipos a nivel de formulario
-- [Form Field](./form-field.md) - Para seguridad de tipos a nivel de campo
+- [Form Provider](/docs/form-provider) - Para seguridad de tipos a nivel de formulario
+- [Form Field](/docs/form-field) - Para seguridad de tipos a nivel de campo
 - [Documentación de Zod](https://zod.dev/) - Para más información sobre esquemas Zod

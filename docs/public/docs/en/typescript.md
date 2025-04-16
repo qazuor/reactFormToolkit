@@ -299,6 +299,6 @@ if (email) {
 
 ## Related Documentation
 
-- [Form Provider](./form-provider.md) - For form-level type safety
-- [Form Field](./form-field.md) - For field-level type safety
+- [Form Provider](/docs/form-provider) - For form-level type safety
+- [Form Field](/docs/form-field) - For field-level type safety
 - [Zod Documentation](https://zod.dev/) - For more information on Zod schemas

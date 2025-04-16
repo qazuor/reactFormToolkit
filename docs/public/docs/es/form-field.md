@@ -263,10 +263,10 @@ FormField funciona con todos los tipos de entrada HTML:
 
 ## Componentes Relacionados
 
-- [FormProvider](./form-provider.md) - El componente padre para todos los campos del formulario
-- [FormDescription](./form-description.md) - Para añadir descripciones a nivel de formulario
-- [DependantField](./dependent-field.md) - Para campos que dependen de otros campos
-- [ConditionalField](./conditional-field.md) - Para campos renderizados condicionalmente
+- [FormProvider](/docs/form-provider) - El componente padre para todos los campos del formulario
+- [FormDescription](/docs/form-description) - Para añadir descripciones a nivel de formulario
+- [DependantField](/docs/dependant-field) - Para campos que dependen de otros campos
+- [ConditionalField](/docs/conditional-field) - Para campos renderizados condicionalmente
 
 ## Ejemplos
 

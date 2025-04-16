@@ -386,7 +386,7 @@ function PricingCalculator() {
 
 ## Related Documentation
 
-- [Form Provider](./form-provider.md) - The parent component for all form fields
-- [Form Field](./form-field.md) - For rendering individual form fields
-- [Conditional Field](./conditional-field.md) - For conditionally rendering fields
-- [Dependent Field](./dependent-field.md) - For fields that depend on other fields
+- [Form Provider](/docs/form-provider) - The parent component for all form fields
+- [Form Field](/docs/form-field) - For rendering individual form fields
+- [Conditional Field](/docs/conditional-field) - For conditionally rendering fields
+- [Dependent Field](/docs/dependant-field) - For fields that depend on other fields

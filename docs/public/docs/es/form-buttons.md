@@ -206,8 +206,8 @@ import { CancelButton } from '@qazuor/react-form-toolkit';
 
 ## Componentes Relacionados
 
-- [FormProvider](./form-provider.md) - El componente padre para todos los campos del formulario
-- [FormField](./form-field.md) - Para renderizar campos individuales del formulario
+- [FormProvider](/docs/form-provider) - El componente padre para todos los campos del formulario
+- [FormField](/docs/form-field) - Para renderizar campos individuales del formulario
 
 ## Ejemplos
 

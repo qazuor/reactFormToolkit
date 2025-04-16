@@ -126,8 +126,8 @@ El componente incluye atributos de accesibilidad adecuados:
 
 ## Componentes Relacionados
 
-- [FormProvider](./form-provider.md) - El componente padre para todos los elementos del formulario
-- [FormField](./form-field.md) - Para renderizar campos individuales del formulario con sus propias descripciones
+- [FormProvider](/docs/form-provider) - El componente padre para todos los elementos del formulario
+- [FormField](/docs/form-field) - Para renderizar campos individuales del formulario con sus propias descripciones
 
 ## Ejemplos
 
