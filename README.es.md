@@ -157,7 +157,7 @@ Para documentación detallada y ejemplos, visita nuestro [sitio de documentació
 
 ## Contribuyendo
 
-¡Damos la bienvenida a contribuciones! Por favor, consulta nuestras [pautas de contribución](https://github.com/qazuor/reactFormToolkit/blob/main/CONTRIBUTING.md) para más detalles.
+¡Damos la bienvenida a contribuciones! Por favor, consulta nuestras [pautas de contribución](https://github.com/qazuor/reactFormToolkit/blob/main/docs/public/docs/es/contributing.md) para más detalles.
 
 ## Licencia
 
