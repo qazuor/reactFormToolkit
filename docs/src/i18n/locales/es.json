@@ -52,7 +52,14 @@
                 "Form Field": "Campo de Formulario",
                 "Form Buttons": "Form Buttons",
                 "Utilities": "Utilidades",
-                "Conditional Field": "Campos Condicionales"
+                "Conditional Field": "Campos Condicionales",
+                "Contributing": "Contribuyendo",
+                "Getting Started": "Comenzando",
+                "Form Description": "Descripción del Formulario",
+                "Dependant Field": "Campo Dependiente",
+                "Validation": "Validación",
+                "Comparison": "Comparación",
+                "UI Libraries": "Librerías UI"
             }
         },
         "form": {
