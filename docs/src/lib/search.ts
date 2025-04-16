@@ -8,6 +8,7 @@ export interface SearchResult {
     score: number;
     type: 'doc' | 'example';
     headingLevel?: number; // 1 for h1, 2 for h2, etc.
+    originalPath?: string; // Store the original path with language prefix
 }
 
 interface DocIndex {
@@ -47,7 +48,8 @@ export function parseMarkdown(content: string, path: string): SearchResult[] {
     // Add the main document as a result
     results.push({
         title: mainTitle,
-        path,
+        path: path.replace(/^\/(docs|examples)\/[a-z]{2}\//, '/$1/'),
+        originalPath: path,
         content: content,
         excerpt: `${content.slice(0, 150).replace(/\n/g, ' ').trim()}...`,
         score: 0, // Will be calculated during search
@@ -62,7 +64,8 @@ export function parseMarkdown(content: string, path: string): SearchResult[] {
             if (currentTitle && currentContent) {
                 results.push({
                     title: currentTitle,
-                    path: `${path}#${currentTitle.toLowerCase().replace(/\s+/g, '-')}`,
+                    path: `${path.replace(/^\/(docs|examples)\/[a-z]{2}\//, '/$1/')}#${currentTitle.toLowerCase().replace(/\s+/g, '-')}`,
+                    originalPath: `${path}#${currentTitle.toLowerCase().replace(/\s+/g, '-')}`,
                     content: currentContent,
                     excerpt: `${currentContent.slice(0, 150).replace(/\n/g, ' ').trim()}...`,
                     score: 0,
@@ -94,7 +97,8 @@ export function parseMarkdown(content: string, path: string): SearchResult[] {
     if (currentTitle && currentContent) {
         results.push({
             title: currentTitle,
-            path: `${path}#${currentTitle.toLowerCase().replace(/\s+/g, '-')}`,
+            path: `${path.replace(/^\/(docs|examples)\/[a-z]{2}\//, '/$1/')}#${currentTitle.toLowerCase().replace(/\s+/g, '-')}`,
+            originalPath: `${path}#${currentTitle.toLowerCase().replace(/\s+/g, '-')}`,
             content: currentContent,
             excerpt: `${currentContent.slice(0, 150).replace(/\n/g, ' ').trim()}...`,
             score: 0,
