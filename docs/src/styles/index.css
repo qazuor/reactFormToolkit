@@ -30,7 +30,7 @@
         --chart-4: 43 74% 66%;
         --chart-5: 27 87% 67%;
     }
-    
+
     .dark {
         --background: 222.2 84% 4.9%;
         --foreground: 210 40% 98%;
@@ -63,19 +63,33 @@
   * {
       @apply border-border;
   }
-  
+
   body {
       @apply bg-background text-foreground;
   }
-  
+
   /* Improve dark mode contrast */
   .dark .bg-muted {
       background-color: hsl(217.2 32.6% 12%);
   }
-  
+
   .dark .text-muted-foreground {
       color: hsl(215 20.2% 75%);
   }
+}
+
+/* Enhanced admonition styles */
+.markdown-body .markdown-alert {
+    border-radius: 0.5rem !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    margin: 1.5rem 0 !important;
+}
+
+.markdown-body .markdown-alert .markdown-alert-title {
+    font-weight: 600 !important;
+    margin-bottom: 0.5rem !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
 .markdown-body {
@@ -92,15 +106,15 @@
         padding: 16px;
         font-size: 15px;
     }
-    
+
     .markdown-body h1 {
         font-size: 1.8em;
     }
-    
+
     .markdown-body h2 {
         font-size: 1.4em;
     }
-    
+
     .markdown-body pre {
         margin: 1em -16px;
         border-radius: 0;
