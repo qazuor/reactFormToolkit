@@ -73,21 +73,21 @@ export function Header({ searchQuery, sidebarWidth, sidebarDocs }: HeaderProps) 
                                                     {isDocPath && t('docs.title')}
                                                     {isExamplePath && t('examples.title')}
                                                 </h2>
-                                                <Button
-                                                    variant='ghost'
-                                                    size='sm'
-                                                    asChild={true}
-                                                    className='ml-6 flex'
-                                                    onClick={() => handleSidebarNavigation('/', false)}
-                                                >
-                                                    <span>
-                                                        <ChevronLeft className='h-4 w-4' />
-                                                        {t('navigation.backToMainMenu')}
-                                                    </span>
-                                                </Button>
                                             </>
                                         )}
                                     </span>
+                                    <Button
+                                        variant='ghost'
+                                        size='sm'
+                                        asChild={true}
+                                        className='ml-6 flex'
+                                        onClick={() => handleSidebarNavigation('/', false)}
+                                    >
+                                        <span>
+                                            <ChevronLeft className='h-4 w-4' />
+                                            {t('navigation.backToMainMenu')}
+                                        </span>
+                                    </Button>
                                 </SheetTitle>
                             </SheetHeader>
                             <div className='max-h-[calc(100vh-10.5rem)] flex-1 flex-grow overflow-y-auto overflow-x-hidden'>
@@ -142,7 +142,20 @@ export function Header({ searchQuery, sidebarWidth, sidebarDocs }: HeaderProps) 
                         src='/logo-transparent-dark.png'
                     />
                 </Link>
-                <div className='w-full' />
+                <div className='flex items-center'>
+                    {(isDocPath || isExamplePath) && (
+                        <Button
+                            variant='ghost'
+                            size='sm'
+                            onClick={() => navigate('/')}
+                            className='ml-4 hidden md:flex items-center'
+                        >
+                            <ChevronLeft className='h-4 w-4 mr-1' />
+                            {t('navigation.backToHome')}
+                        </Button>
+                    )}
+                </div>
+                <div className='flex-1' />
                 <div className='flex items-center gap-2 md:gap-4'>
                     <Button
                         variant='ghost'

@@ -1,5 +1,6 @@
 {
     "translation": {
+        "language": "es",
         "title": "React Form Toolkit",
         "examples": {
             "title": "Ejemplos",
@@ -24,6 +25,9 @@
                 "nativeInputs": "Campos Nativos",
                 "uiLibrary": "Librerías UI"
             },
+            "homeDescription": "Explora estos ejemplos para ver Qazuor React Form Toolkit en acción. Cada ejemplo demuestra diferentes características y capacidades de la biblioteca.",
+            "basicExamples": "Ejemplos Básicos",
+            "advancedExamples": "Ejemplos Avanzados",
             "footer": {
                 "text": "Hecho con ❤️ por"
             }
@@ -60,7 +64,16 @@
                 "Validation": "Validación",
                 "Comparison": "Comparación",
                 "UI Libraries": "Librerías UI"
-            }
+            },
+            "welcome": "Bienvenido a la documentación de Qazuor React Form Toolkit. Por favor selecciona un tema de la barra lateral para aprender más sobre la biblioteca.",
+            "gettingStarted": "Primeros Pasos",
+            "advancedTopics": "Temas Avanzados",
+            "introDescription": "Aprende sobre la biblioteca y sus características",
+            "formProviderDescription": "El componente principal para gestionar el estado del formulario",
+            "formFieldDescription": "Para renderizar campos individuales del formulario",
+            "conditionalFieldDescription": "Mostrar/ocultar campos basados en condiciones",
+            "dependentFieldDescription": "Campos que dependen de otros campos",
+            "fieldArrayDescription": "Arrays dinámicos de campos de formulario"
         },
         "form": {
             "description": "Por favor complete todos los campos requeridos",

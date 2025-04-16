@@ -30,10 +30,10 @@ export function Sidebar({ width, docs, onNavigation }: SidebarProps) {
 
     return (
         <aside
-            className={cn('bg-white/40 dark:bg-slate-900/40', isHomePath && 'md:hidden')}
+            className={cn('bg-white/40 dark:bg-slate-900/40')}
             style={{ width }}
         >
-            <div className='flex h-full flex-col overflow-hidden border-gray-200 md:fixed md:h-[calc(100vh-4rem)] md:border-r md:bg-background md:shadow-md dark:border-gray-700'>
+            <div className='flex h-full flex-col overflow-hidden border-gray-200 md:fixed md:h-[calc(100vh-4rem)] md:w-[320px] md:border-r md:bg-background md:shadow-md dark:border-gray-700'>
                 <div className='flex-1 space-y-4 overflow-y-auto p-4 md:p-6'>
                     <div className='pb-4 md:pb-20'>
                         {isHomePath && <HomeSidebar />}

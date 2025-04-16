@@ -1,5 +1,6 @@
 {
     "translation": {
+        "language": "en",
         "title": "React Form Toolkit",
         "examples": {
             "title": "Examples",
@@ -24,6 +25,9 @@
                 "nativeInputs": "Native Inputs",
                 "uiLibrary": "UI Libraries"
             },
+            "homeDescription": "Explore these examples to see Qazuor React Form Toolkit in action. Each example demonstrates different features and capabilities of the library.",
+            "basicExamples": "Basic Examples",
+            "advancedExamples": "Advanced Examples",
             "footer": {
                 "text": "Built with ❤️ by"
             }
@@ -53,14 +57,19 @@
                 "Form Buttons": "Form Buttons",
                 "Utilities": "Utilities",
                 "Conditional Field": "Conditional Fields",
-                "Contributing": "Contributing",
-                "Getting Started": "Getting Started",
-                "Form Description": "Form Description",
-                "Dependant Field": "Dependent Fields",
-                "Validation": "Validation",
-                "Comparison": "Comparison",
+                "Dependent Fields": "Dependent Fields",
+                "Native Inputs": "Native Inputs",
                 "UI Libraries": "UI Libraries"
-            }
+            },
+            "welcome": "Welcome to the Qazuor React Form Toolkit documentation. Please select a topic from the sidebar to learn more about the library.",
+            "gettingStarted": "Getting Started",
+            "advancedTopics": "Advanced Topics",
+            "introDescription": "Learn about the library and its features",
+            "formProviderDescription": "The core component for managing form state",
+            "formFieldDescription": "For rendering individual form fields",
+            "conditionalFieldDescription": "Show/hide fields based on conditions",
+            "dependentFieldDescription": "Fields that depend on other fields",
+            "fieldArrayDescription": "Dynamic arrays of form fields"
         },
         "form": {
             "description": "Please fill out all required fields",
