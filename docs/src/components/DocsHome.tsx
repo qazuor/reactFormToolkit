@@ -18,15 +18,15 @@ export function DocsHome() {
             <h2>{t('docs.gettingStarted', { defaultValue: 'Getting Started' })}</h2>
             <ul>
                 <li>
-                    <Link to={`/docs/${lang}/introduction`}>{t('docs.tabs.Introduction')}</Link> -
+                    <Link to='/docs/introduction'>{t('docs.tabs.Introduction')}</Link> -
                     {t('docs.introDescription', { defaultValue: 'Learn about the library and its features' })}
                 </li>
                 <li>
-                    <Link to={`/docs/${lang}/form-provider`}>{t('docs.tabs.Form Provider')}</Link> -
+                    <Link to='/docs/form-provider'>{t('docs.tabs.Form Provider')}</Link> -
                     {t('docs.formProviderDescription', { defaultValue: 'The core component for managing form state' })}
                 </li>
                 <li>
-                    <Link to={`/docs/${lang}/form-field`}>{t('docs.tabs.Form Field')}</Link> -
+                    <Link to='/docs/form-field'>{t('docs.tabs.Form Field')}</Link> -
                     {t('docs.formFieldDescription', { defaultValue: 'For rendering individual form fields' })}
                 </li>
             </ul>
@@ -34,15 +34,15 @@ export function DocsHome() {
             <h2>{t('docs.advancedTopics', { defaultValue: 'Advanced Topics' })}</h2>
             <ul>
                 <li>
-                    <Link to={`/docs/${lang}/conditional-field`}>{t('docs.tabs.Conditional Field')}</Link> -
+                    <Link to='/docs/conditional-field'>{t('docs.tabs.Conditional Field')}</Link> -
                     {t('docs.conditionalFieldDescription', { defaultValue: 'Show/hide fields based on conditions' })}
                 </li>
                 <li>
-                    <Link to={`/docs/${lang}/dependent-field`}>{t('docs.tabs.Dependant Field')}</Link> -
+                    <Link to='/docs/dependent-field'>{t('docs.tabs.Dependant Field')}</Link> -
                     {t('docs.dependentFieldDescription', { defaultValue: 'Fields that depend on other fields' })}
                 </li>
                 <li>
-                    <Link to={`/docs/${lang}/field-array`}>{t('docs.tabs.Field Array')}</Link> -
+                    <Link to='/docs/field-array'>{t('docs.tabs.Field Array')}</Link> -
                     {t('docs.fieldArrayDescription', { defaultValue: 'Dynamic arrays of form fields' })}
                 </li>
             </ul>
