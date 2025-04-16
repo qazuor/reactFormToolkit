@@ -37,6 +37,9 @@ function MyForm() {
 | `i18n` | `I18nOptions` | Internationalization options |
 | `styleOptions` | `FormProviderStyleOptions` | Style customization |
 | `errorDisplayOptions` | `ErrorDisplayOptions` | Error display configuration |
+| `globalErrorOptions` | `GlobalErrorOptions` | Global error configuration |
+| `uiLibrary` | `UILibraryOptions` | UI library integration options |
+| `form` | `UseFormReturn<T>` | External form instance |
 
 ## Features
 
@@ -169,3 +172,106 @@ Configure the form to work with UI libraries:
 ```
 
 When `uiLibrary.enabled` is set to `true`, the form will not apply default input styles, allowing the UI library's native styles to be used.
+
+### Global Error Handling
+
+Handle form-level errors:
+
+```tsx
+<FormProvider
+  globalErrorOptions={{
+    position: 'top',
+    animation: 'fadeIn',
+    autoDismiss: true,
+    dismissAfter: 5000
+  }}
+  onSubmit={async (data) => {
+    try {
+      await submitData(data);
+    } catch (error) {
+      // Return error to display as global error
+      return error;
+    }
+  }}
+>
+  {/* ... */}
+</FormProvider>
+```
+
+## Advanced Usage
+
+### Using External Form Control
+
+You can use an external form instance:
+
+```tsx
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+function MyForm() {
+  const form = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: { email: '', password: '' }
+  });
+
+  return (
+    <FormProvider
+      form={form}
+      onSubmit={handleSubmit}
+    >
+      {/* Form fields */}
+    </FormProvider>
+  );
+}
+```
+
+### Form Reset
+
+The form can be reset to its initial values:
+
+```tsx
+function MyForm() {
+  const handleReset = () => {
+    // The form will be reset to defaultValues
+  };
+
+  return (
+    <FormProvider
+      schema={schema}
+      onSubmit={handleSubmit}
+      defaultValues={defaultValues}
+    >
+      {/* Form fields */}
+      <button type="reset">Reset Form</button>
+    </FormProvider>
+  );
+}
+```
+
+## Best Practices
+
+1. **Schema Definition**
+   - Define your schema outside the component to prevent unnecessary re-renders
+   - Use descriptive error messages in your schema
+
+2. **Form Submission**
+   - Handle async operations properly with try/catch
+   - Return errors from the submit handler to display as global errors
+
+3. **Default Values**
+   - Always provide default values for all fields in your schema
+   - For complex forms, consider using a factory function to generate default values
+
+4. **Performance**
+   - Use `mode="onBlur"` for better performance with large forms
+   - Consider using `shouldUnregister: false` for fields that may be conditionally rendered
+
+## Related Components
+
+- [FormField](./form-field.md) - For rendering individual form fields
+- [FormButtonsBar](./form-buttons.md) - For rendering form action buttons
+- [FormDescription](./form-description.md) - For adding form-level descriptions
+
+## Examples
+
+Check out the [examples section](/examples/basic) to see FormProvider in action.

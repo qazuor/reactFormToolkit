@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
+import i18n from '@/i18n';
 import { type SearchResult, buildSearchIndex, generateHighlightedExcerpt, search } from '@/lib/search';
 import { cn } from '@/lib/utils';
 import { File, FileText, Loader2 } from 'lucide-react';
@@ -22,13 +23,14 @@ export function SearchDialog({ open, onOpenChange, initialQuery = '' }: SearchDi
     const [searchIndex, setSearchIndex] = useState<SearchResult[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
+    const lang = i18n.language;
 
     // Load search index on mount
     useEffect(() => {
         const loadSearchIndex = async () => {
             setIsLoading(true);
             try {
-                const index = await buildSearchIndex();
+                const index = await buildSearchIndex(lang);
                 setSearchIndex(index);
             } catch (error) {
                 console.error('Failed to build search index:', error);
@@ -38,7 +40,7 @@ export function SearchDialog({ open, onOpenChange, initialQuery = '' }: SearchDi
         };
 
         loadSearchIndex();
-    }, []);
+    }, [lang]);
 
     // Focus input when dialog opens
     useEffect(() => {

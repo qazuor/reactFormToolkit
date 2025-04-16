@@ -1,6 +1,6 @@
-# Dependant Fields
+# Dependent Fields
 
-The Dependant Fields feature allows you to dynamically load options for a field based on the value of another field. This is useful for creating cascading select fields, such as country/state or category/subcategory relationships.
+The Dependent Fields feature allows you to dynamically load options for a field based on the value of another field. This is useful for creating cascading select fields, such as country/state or category/subcategory relationships.
 
 ## Features
 
@@ -336,3 +336,13 @@ const getCategoriesWithErrorHandling = async () => {
 7. **Field Reset**
    - The component automatically resets the dependent field when the parent changes
    - This prevents invalid selections from persisting
+
+## Related Components
+
+- [FormProvider](./form-provider.md) - The parent component for all form fields
+- [FormField](./form-field.md) - For rendering individual form fields
+- [ConditionalField](./conditional-field.md) - For conditionally rendering fields
+
+## Examples
+
+Check out the [examples section](/examples/dependent-field) to see DependantField in action.

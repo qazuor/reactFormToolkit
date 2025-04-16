@@ -309,3 +309,33 @@ function ContactForm() {
     );
 }
 ```
+
+## Related Components
+
+- [FormProvider](./form-provider.md) - The parent component for all form fields
+- [FormField](./form-field.md) - For rendering individual form fields
+- [DependantField](./dependent-field.md) - For fields that depend on other fields
+
+## Hooks
+
+If you need more control, you can use the underlying hooks:
+
+```tsx
+import { useConditionalField, useConditionalFieldGroup } from '@qazuor/react-form-toolkit';
+
+// For single condition
+const { isConditionMet } = useConditionalField({
+    watchField: 'type',
+    condition: 'advanced',
+    keepRegistered: true
+});
+
+// For multiple conditions
+const { currentValue, conditions } = useConditionalFieldGroup({
+    watchField: 'section',
+    conditions: {
+        personal: <PersonalInfoFields />,
+        address: <AddressFields />
+    }
+});
+```

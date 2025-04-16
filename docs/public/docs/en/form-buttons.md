@@ -101,6 +101,36 @@ function MyForm() {
 <FormButtonsBar fullWidth={true} />
 ```
 
+## Individual Button Components
+
+In addition to the `FormButtonsBar`, you can use individual button components:
+
+### SubmitButton
+
+```tsx
+import { SubmitButton } from '@qazuor/react-form-toolkit';
+
+<SubmitButton>Submit</SubmitButton>
+```
+
+### ResetButton
+
+```tsx
+import { ResetButton } from '@qazuor/react-form-toolkit';
+
+<ResetButton>Reset</ResetButton>
+```
+
+### CancelButton
+
+```tsx
+import { CancelButton } from '@qazuor/react-form-toolkit';
+
+<CancelButton onCancel={() => console.log('cancelled')}>
+  Cancel
+</CancelButton>
+```
+
 ## Button States
 
 ### Submit Button
@@ -125,3 +155,60 @@ function MyForm() {
 - Always enabled
 - Triggers `onCancel` callback
 - Can be hidden with `showCancel={false}`
+
+## Customization
+
+### Styling with Tailwind CSS
+
+```tsx
+<FormButtonsBar
+  className="mt-8 space-x-4"
+  buttonStyles={{
+    submit: "bg-indigo-600 hover:bg-indigo-700 text-white",
+    reset: "bg-gray-200 hover:bg-gray-300 text-gray-800",
+    cancel: "bg-red-100 hover:bg-red-200 text-red-800"
+  }}
+/>
+```
+
+### Custom Button Layout
+
+```tsx
+<div className="flex justify-between">
+  <div>
+    <CancelButton>Back</CancelButton>
+  </div>
+  <div className="space-x-4">
+    <ResetButton>Clear</ResetButton>
+    <SubmitButton>Continue</SubmitButton>
+  </div>
+</div>
+```
+
+## Best Practices
+
+1. **Consistent Button Order**
+   - Follow platform conventions for button order
+   - On Windows/Web: [Cancel] [Reset] [Submit]
+   - On macOS/iOS: [Submit] [Reset] [Cancel]
+
+2. **Clear Button Labels**
+   - Use action verbs for button labels
+   - Be specific about the action (e.g., "Save Changes" instead of "Submit")
+
+3. **Visual Hierarchy**
+   - Make the primary action (usually submit) visually distinct
+   - Use color and size to indicate importance
+
+4. **Responsive Design**
+   - Use `direction="vertical"` and `fullWidth={true}` on small screens
+   - Consider using media queries to adjust button layout
+
+## Related Components
+
+- [FormProvider](./form-provider.md) - The parent component for all form fields
+- [FormField](./form-field.md) - For rendering individual form fields
+
+## Examples
+
+Check out the [examples section](/examples/basic) to see FormButtonsBar in action.

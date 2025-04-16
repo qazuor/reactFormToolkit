@@ -244,3 +244,149 @@ interface UseValidationReturn {
   textWhenBeforeStartValidating?: string;
 }
 ```
+
+## useDependantField
+
+Hook for handling dependent field values based on another field's value.
+
+```tsx
+import { useDependantField } from '@qazuor/react-form-toolkit';
+
+function CustomDependentField() {
+  const { dependentValues, isLoading, fieldState } = useDependantField({
+    dependsOnField: 'country',
+    dependentField: 'state',
+    dependentValuesCallback: getStatesByCountry,
+    loadingDelay: 300,
+    cacheResults: true
+  });
+
+  return (
+    <div>
+      <select>
+        {isLoading ? (
+          <option>Loading...</option>
+        ) : (
+          dependentValues.map(option => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))
+        )}
+      </select>
+    </div>
+  );
+}
+```
+
+### Parameters
+
+```typescript
+interface UseDependantFieldOptions {
+  dependsOnField: string;
+  dependentField?: string;
+  dependentValuesCallback: (value: unknown) => Promise<DependentOption[]> | DependentOption[];
+  loadingDelay?: number;
+  cacheResults?: boolean;
+}
+```
+
+### Returns
+
+```typescript
+interface UseDependantFieldReturn {
+  dependentValues: DependentOption[];
+  isLoading: boolean;
+  fieldState: DependentFieldState;
+}
+```
+
+## Best Practices
+
+1. **Performance**
+   - Use `useFormWatch` instead of directly accessing form values for better performance
+   - Set appropriate debounce values for async operations
+
+2. **Component Organization**
+   - Use hooks to extract complex logic from your components
+   - Create custom hooks for reusable form patterns
+
+3. **Type Safety**
+   - Leverage TypeScript generics for type-safe form values
+   - Use proper typing for hook parameters and return values
+
+4. **Error Handling**
+   - Handle errors gracefully in async operations
+   - Provide fallback UI for error states
+
+## Examples
+
+### Custom Form Field with Hooks
+
+```tsx
+function CustomEmailField() {
+  const { error, hasError } = useFieldState('email');
+  const { t } = useQRFTTranslation();
+
+  const {
+    className,
+    ariaInvalid,
+    asyncValidating
+  } = useFieldValidation({
+    fieldPath: 'email',
+    asyncValidation: {
+      asyncValidationFn: async (value) => {
+        // Check if email is available
+        const response = await fetch(`/api/check-email?email=${value}`);
+        const data = await response.json();
+        return data.available ? true : t('validation.emailTaken');
+      },
+      asyncValidationDebounce: 500
+    }
+  });
+
+  return (
+    <div className="space-y-2">
+      <label htmlFor="email">{t('field.email')}</label>
+      <input
+        id="email"
+        type="email"
+        className={className}
+        aria-invalid={ariaInvalid}
+      />
+      {asyncValidating && <span>{t('validation.checking')}</span>}
+      {hasError && <span className="text-red-500">{error.message}</span>}
+    </div>
+  );
+}
+```
+
+### Watching Multiple Fields
+
+```tsx
+function PricingCalculator() {
+  const [total, setTotal] = useState(0);
+
+  const quantity = useFormWatch({ name: 'quantity' });
+  const price = useFormWatch({ name: 'price' });
+
+  useEffect(() => {
+    if (quantity && price) {
+      setTotal(Number(quantity) * Number(price));
+    }
+  }, [quantity, price]);
+
+  return (
+    <div>
+      <p>Total: ${total.toFixed(2)}</p>
+    </div>
+  );
+}
+```
+
+## Related Documentation
+
+- [Form Provider](./form-provider.md) - The parent component for all form fields
+- [Form Field](./form-field.md) - For rendering individual form fields
+- [Conditional Field](./conditional-field.md) - For conditionally rendering fields
+- [Dependent Field](./dependent-field.md) - For fields that depend on other fields

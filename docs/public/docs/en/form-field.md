@@ -172,3 +172,102 @@ The `required` prop can be:
 - Explicitly set with the `required` prop
 - Inferred from the schema
 - Overridden with `required={false}`
+
+## Input Types
+
+FormField works with all HTML input types:
+
+### Text Input
+
+```tsx
+<FormField name="name" label="Name">
+  <input type="text" />
+</FormField>
+```
+
+### Select
+
+```tsx
+<FormField name="country" label="Country">
+  <select>
+    <option value="">Select a country</option>
+    <option value="us">United States</option>
+    <option value="ca">Canada</option>
+  </select>
+</FormField>
+```
+
+### Checkbox
+
+```tsx
+<FormField name="agree" label="I agree to the terms">
+  <input type="checkbox" />
+</FormField>
+```
+
+### Radio Buttons
+
+```tsx
+<FormField name="gender" label="Gender">
+  {({ field }) => (
+    <div className="space-y-2">
+      <label className="flex items-center">
+        <input
+          type="radio"
+          value="male"
+          checked={field.value === 'male'}
+          onChange={() => field.onChange('male')}
+        />
+        <span className="ml-2">Male</span>
+      </label>
+      <label className="flex items-center">
+        <input
+          type="radio"
+          value="female"
+          checked={field.value === 'female'}
+          onChange={() => field.onChange('female')}
+        />
+        <span className="ml-2">Female</span>
+      </label>
+    </div>
+  )}
+</FormField>
+```
+
+### Textarea
+
+```tsx
+<FormField name="message" label="Message">
+  <textarea rows={4} />
+</FormField>
+```
+
+## Best Practices
+
+1. **Field Naming**
+   - Use consistent naming conventions for field names
+   - Match field names with your schema properties
+
+2. **Validation**
+   - Use Zod schema for validation rules
+   - Add descriptive error messages to your schema
+
+3. **Accessibility**
+   - Always include labels for form fields
+   - Use descriptions and tooltips to provide additional context
+   - Ensure error messages are clear and helpful
+
+4. **Performance**
+   - Use render function children for complex fields
+   - Consider using `asyncValidationDebounce` for async validation
+
+## Related Components
+
+- [FormProvider](./form-provider.md) - The parent component for all form fields
+- [FormDescription](./form-description.md) - For adding form-level descriptions
+- [DependantField](./dependent-field.md) - For fields that depend on other fields
+- [ConditionalField](./conditional-field.md) - For conditionally rendered fields
+
+## Examples
+
+Check out the [examples section](/examples/basic) to see FormField in action.

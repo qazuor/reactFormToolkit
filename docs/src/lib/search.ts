@@ -110,7 +110,7 @@ export function parseMarkdown(content: string, path: string): SearchResult[] {
  * Loads and indexes all documentation files
  * @returns Promise resolving to array of search results
  */
-export async function buildSearchIndex(): Promise<SearchResult[]> {
+export async function buildSearchIndex(lang): Promise<SearchResult[]> {
     try {
         // Fetch the docs index
         const docsIndexResponse = await fetch('/docs/docs-index.json');
@@ -191,16 +191,16 @@ export async function buildSearchIndex(): Promise<SearchResult[]> {
         // Process markdown files
         for (const doc of docsIndex) {
             try {
-                const response = await fetch(`/docs/${doc.path}?raw`);
+                const response = await fetch(`/docs/${lang}/${doc.path}?raw`);
                 if (!response.ok) {
                     continue;
                 }
 
                 const content = await response.text();
-                const results = parseMarkdown(content, `/docs/${doc.path.replace(/\.md$/, '')}`);
+                const results = parseMarkdown(content, `/docs/${lang}/${doc.path.replace(/\.md$/, '')}`);
                 searchResults.push(...results);
             } catch (error) {
-                console.error(`Error processing ${doc.path}:`, error);
+                console.error(`Error processing ${lang}/${doc.path}:`, error);
             }
         }
 

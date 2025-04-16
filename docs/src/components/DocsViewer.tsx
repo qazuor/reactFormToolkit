@@ -10,6 +10,7 @@ import remarkGfm from 'remark-gfm';
 import { remarkAlert } from 'remark-github-blockquote-alert';
 import remarkHeadingGap from 'remark-heading-gap';
 import 'remark-github-blockquote-alert/alert.css';
+import i18n from '@/i18n';
 import rehypeScrollToTop from '@benjc/rehype-scroll-to-top';
 import { useTranslation } from 'react-i18next';
 import rehypePrism from 'rehype-prism-plus';
@@ -18,7 +19,7 @@ import rehypePrism from 'rehype-prism-plus';
 interface TocElement {
     type: string;
     tagName?: string;
-    properties?: Record<string, any>;
+    properties?: Record<string, string | number | boolean | undefined>;
     children?: TocElement[];
 }
 
@@ -26,10 +27,12 @@ export const DocsViewer: FC = () => {
     const { t } = useTranslation();
     const location = useLocation();
     const [content, setContent] = useState<string>(t('docViewer.loading'));
+    const lang = i18n.language;
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
         const path = location.pathname.replace('docs/', '');
-        const mdPath = `/docs/${path}.md?raw`;
+        const mdPath = `/docs/${lang}/${path}.md?raw`;
 
         fetch(mdPath)
             .then((res) => (res.ok ? res.text() : Promise.reject(t('docViewer.fileNotFound'))))
@@ -38,7 +41,7 @@ export const DocsViewer: FC = () => {
                 console.error('Error fetching markdown file:', mdPath);
                 setContent(`Error: ${t('docViewer.fileNotFound')}`);
             });
-    }, [location]);
+    }, [location, lang]);
 
     return (
         <div className='markdown-body relative bg-white px-4 py-6 text-black dark:bg-zinc-900 dark:text-zinc-100'>
@@ -72,14 +75,14 @@ export const DocsViewer: FC = () => {
                                     type: 'element',
                                     tagName: 'div',
                                     properties: {
-                                        className: ['toc-title-container']
+                                        className: 'toc-title-container'
                                     },
                                     children: [
                                         {
                                             type: 'element',
                                             tagName: 'h2',
                                             properties: {
-                                                className: ['toc-title']
+                                                className: 'toc-title'
                                             },
                                             children: [
                                                 {

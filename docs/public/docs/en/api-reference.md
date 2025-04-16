@@ -186,13 +186,14 @@ Component for managing fields that depend on the value of another field.
 
 Enables dynamic loading of options based on another field's value.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `dependsOnField` | `string` | - | Field name to watch for changes |
-| `dependentValuesCallback` | `(value: unknown) => Promise<DependentOption[]> \| DependentOption[]` | - | Function to fetch dependent values |
-| `children` | `ReactNode` | - | Form fields to render with dependent values |
-| `loadingDelay` | `number` | `300` | Delay before showing loading state |
-| `cacheResults` | `boolean` | `true` | Whether to cache results |
+| Prop | Type | Description |
+|------|------|-------------|
+| `dependsOnField` | `string` | Field name that this field depends on |
+| `dependentField` | `string` | Optional name of the dependent field (for validation state) |
+| `dependentValuesCallback` | `(value: unknown) => Promise<DependentOption[]> \| DependentOption[]` | Function to fetch dependent values |
+| `children` | `ReactNode` | Form fields to render with dependent values |
+| `loadingDelay` | `number` | Delay before showing loading state (ms) |
+| `cacheResults` | `boolean` | Whether to cache results to avoid repeated API calls |
 
 ## FormDescription
 
@@ -259,3 +260,118 @@ Controls asynchronous validation behavior.
 | `showLoadingSpinner` | `boolean` | `true` | Show loading spinner |
 | `textWhenValidating` | `string` | - | Text during validation |
 | `textWhenBeforeStartValidating` | `string` | - | Text before validation |
+
+## Hooks
+
+### useFieldState
+
+```tsx
+const { error, isTouched, isDirty, hasError } = useFieldState('email');
+```
+
+Returns validation state for a field.
+
+### useFormWatch
+
+```tsx
+const value = useFormWatch({
+  name: 'email',
+  onChange: (value) => console.log(value)
+});
+```
+
+Watches a field for changes.
+
+### useQRFTTranslation
+
+```tsx
+const { t, i18n } = useQRFTTranslation();
+```
+
+Provides translation functions.
+
+### useConditionalField
+
+```tsx
+const { isConditionMet } = useConditionalField({
+  form,
+  watchField: 'type',
+  condition: 'business'
+});
+```
+
+Manages conditional field visibility.
+
+### useConditionalFieldGroup
+
+```tsx
+const { currentValue, conditions } = useConditionalFieldGroup({
+  form,
+  watchField: 'type',
+  conditions: {
+    personal: <PersonalFields />,
+    business: <BusinessFields />
+  }
+});
+```
+
+Manages conditional field group visibility.
+
+### useFieldValidation
+
+```tsx
+const {
+  className,
+  ariaInvalid,
+  asyncError,
+  asyncValidating
+} = useFieldValidation({
+  fieldPath: 'email',
+  asyncValidation: {
+    asyncValidationFn: checkEmail
+  }
+});
+```
+
+Manages field validation state and styling.
+
+### useDependantField
+
+```tsx
+const { dependentValues, isLoading, fieldState } = useDependantField({
+  dependsOnField: 'country',
+  dependentValuesCallback: getStatesByCountry
+});
+```
+
+Manages dependent field values.
+
+## Utility Functions
+
+### formUtils
+
+```tsx
+const isRequired = formUtils.isFieldRequired('email', schema);
+const validation = formUtils.getFieldValidation('email', schema);
+```
+
+Utility functions for form operations.
+
+### i18nUtils
+
+```tsx
+const i18n = i18nUtils.initializeI18n(options);
+const lang = i18nUtils.getCurrentLanguage(i18n);
+const text = i18nUtils.getTranslation(i18n, 'path.to.key');
+```
+
+Utility functions for internationalization.
+
+### Style Utilities
+
+```tsx
+const finalStyles = mergeStyles(defaultStyles, providerStyles, componentStyles);
+const className = cn('base-class', isActive && 'active');
+```
+
+Utility functions for styling.

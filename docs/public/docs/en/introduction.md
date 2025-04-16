@@ -1,6 +1,6 @@
 # Introduction
 
-React Form Toolkit is a strongly-typed form management library built on top of React Hook Form and Zod. It provides a simple yet powerful way to build and validate forms in React applications.
+React Form Toolkit is a comprehensive form management library built on top of [React Hook Form](https://react-hook-form.com/) and [Zod](https://zod.dev/). It provides a simple, flexible, and type-safe way to build and validate forms in React applications.
 
 ## Key Features
 
@@ -12,21 +12,24 @@ React Form Toolkit is a strongly-typed form management library built on top of R
 - 🔄 **Form state management** with React Hook Form
 - 🎨 **Compound components** for flexible layouts
 - 🚀 **Framework agnostic** - works with Next.js, Remix, etc.
+- 🧩 **Conditional fields** for dynamic forms
+- 🔄 **Dependent fields** for cascading selects
+- 🎭 **UI library integration** with Material UI, Chakra UI, and more
 
-## Quick Start
+## Why React Form Toolkit?
 
-```bash
-# npm
-npm install @qazuor/react-form-toolkit react-hook-form @hookform/resolvers zod
+Building forms in React can be challenging. You need to handle form state, validation, error messages, and more. React Form Toolkit simplifies this process by providing a set of components and hooks that handle all the complexity for you.
 
-# pnpm
-pnpm add @qazuor/react-form-toolkit react-hook-form @hookform/resolvers zod
+### Problems We Solve
 
-# yarn
-yarn add @qazuor/react-form-toolkit react-hook-form @hookform/resolvers zod
-```
+- **Complex form validation**: Zod integration provides powerful schema-based validation
+- **Type safety**: Built with TypeScript from the ground up
+- **Form state management**: Efficient form state handling with React Hook Form
+- **Internationalization**: Built-in i18n support for multiple languages
+- **UI flexibility**: Works with any UI library or framework
+- **Developer experience**: Intuitive API and great DX
 
-### Basic Example
+## Quick Example
 
 ```tsx
 import { FormProvider, FormField } from '@qazuor/react-form-toolkit';
@@ -71,16 +74,6 @@ function LoginForm() {
 }
 ```
 
-## Why React Form Toolkit?
-
-- **Type Safety**: Built with TypeScript from the ground up
-- **Validation**: Powerful schema-based validation with Zod
-- **Flexibility**: Works with any UI library or framework
-- **Performance**: Efficient form state management
-- **Developer Experience**: Intuitive API and great DX
-- **Internationalization**: Built-in i18n support
-- **Customization**: Extensive styling and theming options
-
 ## Core Concepts
 
 React Form Toolkit is built around a few core concepts:
@@ -94,3 +87,14 @@ React Form Toolkit is built around a few core concepts:
 7. **Style System**: Flexible styling with Tailwind CSS
 
 These concepts work together to provide a complete form management solution.
+
+## Related Documentation
+
+- [Getting Started](./getting-started.md) - Installation and basic setup
+- [Form Provider](./form-provider.md) - Learn about the FormProvider component
+- [Form Field](./form-field.md) - Explore the FormField component
+- [Validation](./validation.md) - Learn about form validation
+
+## Next Steps
+
+Ready to get started? Head over to the [Getting Started](./getting-started.md) guide to learn how to install and set up React Form Toolkit in your project.

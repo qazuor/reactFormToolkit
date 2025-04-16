@@ -1,54 +1,75 @@
 [
-  {
-    "title": "Introduction",
-    "path": "introduction.md"
-  },
-  {
-    "title": "Form Provider",
-    "path": "form-provider.md"
-  },
-  {
-    "title": "Form Field",
-    "path": "form-field.md"
-  },
-  {
-    "title": "Form Buttons",
-    "path": "form-buttons.md"
-  },
-  {
-    "title": "Conditional Field",
-    "path": "conditional-field.md"
-  },
-  {
-    "title": "Field Array",
-    "path": "field-array.md"
-  },
-  {
-    "title": "Dependant Field",
-    "path": "dependant-field.md"
-  },
-  {
-    "title": "Hooks",
-    "path": "hooks.md"
-  },
-  {
-    "title": "I18n",
-    "path": "i18n.md"
-  },
-  {
-    "title": "Styling",
-    "path": "styling.md"
-  },
-  {
-    "title": "Utilities",
-    "path": "utilities.md"
-  },
-  {
-    "title": "Api Reference",
-    "path": "api-reference.md"
-  },
-  {
-    "title": "Deployment",
-    "path": "deployment.md"
-  }
+    {
+        "title": "Introduction",
+        "path": "introduction.md"
+    },
+    {
+        "title": "Getting Started",
+        "path": "getting-started.md"
+    },
+    {
+        "title": "Form Provider",
+        "path": "form-provider.md"
+    },
+    {
+        "title": "Form Field",
+        "path": "form-field.md"
+    },
+    {
+        "title": "Form Buttons",
+        "path": "form-buttons.md"
+    },
+    {
+        "title": "Form Description",
+        "path": "form-description.md"
+    },
+    {
+        "title": "Dependant Field",
+        "path": "dependant-field.md"
+    },
+    {
+        "title": "Conditional Field",
+        "path": "conditional-field.md"
+    },
+    {
+        "title": "Field Array",
+        "path": "field-array.md"
+    },
+    {
+        "title": "Validation",
+        "path": "validation.md"
+    },
+    {
+        "title": "I18n",
+        "path": "i18n.md"
+    },
+    {
+        "title": "Styling",
+        "path": "styling.md"
+    },
+    {
+        "title": "UI Libraries",
+        "path": "ui-libraries.md"
+    },
+    {
+        "title": "Hooks",
+        "path": "hooks.md"
+    },
+    {
+        "title": "Utilities",
+        "path": "utilities.md"
+    },
+    {
+        "title": "Api Reference",
+        "path": "api-reference.md"
+    },
+
+    {
+        "title": "Comparison",
+        "path": "comparison.md"
+    },
+    {
+        "title": "Contributing",
+        "path": "contributing.md"
+    }
 ]
