@@ -19,7 +19,7 @@ import rehypePrism from 'rehype-prism-plus';
 interface TocElement {
     type: string;
     tagName?: string;
-    properties?: Record<string, string | number | boolean | undefined>;
+    properties?: Record<string, string | number | boolean | string[] | undefined>;
     children?: TocElement[];
 }
 
@@ -179,9 +179,13 @@ export const DocsViewer: FC<DocsViewerProps> = ({ docFile, useTOC = true }) => {
                                     const processNode = (node: TocElement) => {
                                         if (node.tagName === 'a' && node.properties) {
                                             // Add a class to identify TOC links
-                                            node.properties.className = (node.properties.className || []).concat([
-                                                'toc-link'
-                                            ]);
+                                            node.properties.className = (
+                                                Array.isArray(node.properties.className)
+                                                    ? node.properties.className
+                                                    : []
+                                            )
+                                                .concat(['toc-link'])
+                                                .join(' ');
                                         }
 
                                         if (node.children) {
