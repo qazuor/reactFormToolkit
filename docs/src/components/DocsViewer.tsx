@@ -1,5 +1,5 @@
 import toc from '@jsdevtools/rehype-toc';
-import { type FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Markdown from 'react-markdown';
 import { useLocation } from 'react-router-dom';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
@@ -23,7 +23,12 @@ interface TocElement {
     children?: TocElement[];
 }
 
-export const DocsViewer: FC = () => {
+interface DocsViewerProps {
+    docFile: string;
+    useTOC?: boolean;
+}
+
+export const DocsViewer: FC<DocsViewerProps> = ({ docFile, useTOC = true }) => {
     const { t } = useTranslation();
     const location = useLocation();
     const [content, setContent] = useState<string>(t('docViewer.loading'));
@@ -31,7 +36,7 @@ export const DocsViewer: FC = () => {
 
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
-        const path = location.pathname.replace('docs/', '');
+        const path = docFile ? docFile : location.pathname.replace('docs/', '');
         const mdPath = `/docs/${lang}/${path}.md?raw`;
 
         fetch(mdPath)
@@ -71,6 +76,9 @@ export const DocsViewer: FC = () => {
                         toc,
                         {
                             customizeTOC: (toc: TocElement) => {
+                                if (useTOC === false) {
+                                    return null;
+                                }
                                 const title = {
                                     type: 'element',
                                     tagName: 'div',
